@@ -1,1 +1,5 @@
 # Aplicación Web para facilitar la tramitación para las Formación en Centros Trabajo
+
+Plataforma de gestión de solicitudes de Formación en Centros de Trabajo (FCT). Con el objetivo de conectar estudiantes de Formación Profesional con empresas que ofrezcan plazas de prácticas, facilitando el proceso de búsqueda, gestión, y seguimiento. Además de permitile a los centros educativos supervisar el progreso de los alumnos a través de las fichas semanales.
+Debido a toda la información pertinente a los alumnos, empresas, y centros, se hará uso de MySQL como sistema gestor de bases de datos, además de tener una arquitectura predominantemente de servidor, utilizando Java Spring Boot. De todas formas, se tendrá una arquitectura cliente en JavaScript que deberá reflejar la información de manera clara y concisa.
+Las herramientas principales para el desarrollo serán el IDE Visual Studio Code para programar, además de MySQL Workbench para la creación de la base de datos. Para el despliegue se utilizará Docker.
