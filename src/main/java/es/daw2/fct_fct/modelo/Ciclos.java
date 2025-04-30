@@ -22,13 +22,13 @@ public class Ciclos {
     private String name;
     @Column(name = "year", nullable = false)
     private Short year;
-    @Column(name = "nivel", nullable = false, columnDefinition = "enum('Medio','Superior')")
+    @Column(name = "nivel", nullable = false, columnDefinition = "enum('MEDIO','SUPERIOR')")
     private Nivel nivel;
     @Column(name = "familia_profesional", nullable = false, columnDefinition = "varchar(255)")
     private String familiaProfesional;
 
     public enum Nivel{
-        Medio,
-        Superior
+        MEDIO,
+        SUPERIOR
     }
 }
