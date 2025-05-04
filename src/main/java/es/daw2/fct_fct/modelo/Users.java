@@ -26,4 +26,11 @@ public class Users {
     private String email;
     @Column(name = "is_admin", nullable = false, columnDefinition = "tinyint(1) default 0")
     private boolean is_admin;
+
+    public Users(String email, String password) {
+        this.name = "";
+        this.password = password;
+        this.email = email;
+        this.is_admin = false;
+    }
 }
