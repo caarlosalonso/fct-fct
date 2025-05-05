@@ -7,7 +7,7 @@ public class PasswordUtils {
     // Para las contraseñas encriptadas
     private static final BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
 
-    public static boolean passwordsMatch(String rawPassword, String hashedPassword) {
+    public static boolean doPasswordsMatch(String rawPassword, String hashedPassword) {
         return bCryptPasswordEncoder.matches(rawPassword, hashedPassword);
     }
 
