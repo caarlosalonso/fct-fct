@@ -15,8 +15,10 @@ public class PasswordUtils {
         return bCryptPasswordEncoder.encode(password);
     }
 
-    public static boolean isPasswordValid(String password) {
-        if (password.length() < 8) return false;    // La contraseña es demasiado corta
+    public static PasswordValidity isPasswordValid(String password) {
+        if (password == null) return PasswordValidity.INVALID;          // La contraseña no puede ser nula
+        if (password.length() < 8) return PasswordValidity.TOO_SHORT;   // La contraseña es demasiado corta
+        if (password.length() > 128) return PasswordValidity.TOO_LONG;  // La contraseña es demasiado larga
 
         // Validar la complejidad de la contraseña
         boolean hasUpperCase = false;
@@ -33,6 +35,31 @@ public class PasswordUtils {
             }
         }
 
-        return hasUpperCase && hasLowerCase && hasDigit;
+        if (hasUpperCase && hasLowerCase && hasDigit)
+            return PasswordValidity.VALID;      // Si son todos verdaderos, la contraseña es válida
+        return PasswordValidity.INVALID;        // Si no, la contraseña es inválida
+    }
+
+    /**
+     * Enum representing the validity of a password.
+     * The objective is to provide a more descriptive way of indicating how valid a password is.
+     */
+    public enum PasswordValidity {
+        /**
+         * The password is valid.
+         */
+        VALID,
+        /**
+         * The password is too short.
+         */
+        TOO_SHORT,
+        /**
+         * The password is too long.
+         */
+        TOO_LONG,
+        /**
+         * The password is invalid.
+         */
+        INVALID
     }
 }
