@@ -25,21 +25,10 @@ public class Fct {
     @GeneratedValue
     private int id;
 
-    @Column(name = "fecha_inicio", nullable = false)
-    private Date fechaInicio;
-
-    @Column(name = "fecha_fin", nullable = false)
-    private Date fechaFin;
-
     @ManyToOne
     @JsonIgnore
     @JoinColumn(name = "alumno_id")
     private Alumnos alumno;
-
-    @ManyToOne
-    @JsonIgnore
-    @JoinColumn(name = "ciclo_id")
-    private Ciclos ciclo;
 
     @ManyToOne
     @JsonIgnore
@@ -48,6 +37,17 @@ public class Fct {
 
     @ManyToOne
     @JsonIgnore
-    @JoinColumn(name = "jefatura_id")
-    private Jefaturas jefatura;
+    @JoinColumn(name = "empresa_id")
+    private Empresas empresa;
+
+    @ManyToOne
+    @JsonIgnore
+    @JoinColumn(name = "ciclo_id")
+    private Ciclos ciclo;
+
+    @Column(name = "fecha_inicio", nullable = true)
+    private Date fechaInicio;
+
+    @Column(name = "fecha_fin", nullable = true)
+    private Date fechaFin;
 }

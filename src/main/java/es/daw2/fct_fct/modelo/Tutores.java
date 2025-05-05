@@ -18,9 +18,15 @@ import lombok.NoArgsConstructor;
 @Entity
 @Table(name = "tutores")
 public class Tutores {
+
     @Id
     @GeneratedValue
     private int id;
+
+    @ManyToOne
+    @JsonIgnore
+    @JoinColumn(name = "ciclo_id")
+    private Ciclos ciclo;
 
     @ManyToOne
     @JsonIgnore

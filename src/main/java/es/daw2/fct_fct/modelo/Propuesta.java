@@ -16,19 +16,20 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "puestos")
-public class Puestos {
+@Table(name = "prupuestas")
+public class Propuesta {
     @Id
     @GeneratedValue
     private int id;
 
     @ManyToOne
     @JsonIgnore
-    @JoinColumn
-    private Empresas empresa;
+    @JoinColumn(name = "alumno_id")
+    private Alumnos alumno;
 
     @ManyToOne
     @JsonIgnore
-    @JoinColumn
-    private Ciclos ciclo;
+    @JoinColumn(name = "empresa_id")
+    private Empresas empresa;
+
 }

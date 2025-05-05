@@ -18,16 +18,20 @@ public class Ciclos {
     @Id
     @GeneratedValue
     private int id;
+
     @Column(name = "name", nullable = false, columnDefinition = "varchar(255)")
     private String name;
+
     @Column(name = "year", nullable = false)
     private Short year;
+
     @Column(name = "nivel", nullable = false, columnDefinition = "enum('MEDIO','SUPERIOR')")
     private Nivel nivel;
+
     @Column(name = "familia_profesional", nullable = false, columnDefinition = "varchar(255)")
     private String familiaProfesional;
 
-    public enum Nivel{
+    public enum Nivel {
         MEDIO,
         SUPERIOR
     }

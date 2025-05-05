@@ -22,17 +22,26 @@ public class Alumnos {
     @Id
     @GeneratedValue
     private int id;
-    @Column(name = "dni", nullable = false, columnDefinition = "varchar(9)")
-    private String dni;
-    @Column(name = "phone", nullable = false, columnDefinition = "varchar(15)")
-    private String phone;
-    @Column(name = "adress", nullable = false, columnDefinition = "varchar(255)")
-    private String address;
-    @Column(name = "convocatoria", nullable = false, columnDefinition = "int default 3")
-    private int convocatoria = 3;
 
+    @ManyToOne
+    @JsonIgnore
+    @JoinColumn(name = "ciclo_id")
+    private Ciclos ciclo;
+    
     @ManyToOne
     @JsonIgnore
     @JoinColumn(name = "user_id")
     private Users user;
+
+    @Column(name = "dni", nullable = false, columnDefinition = "varchar(9)")
+    private String dni;
+
+    @Column(name = "phone", nullable = false, columnDefinition = "varchar(15)")
+    private String phone;
+
+    @Column(name = "adress", nullable = false, columnDefinition = "varchar(255)")
+    private String address;
+
+    @Column(name = "convocatoria", nullable = false, columnDefinition = "int default 3")
+    private int convocatoria;
 }

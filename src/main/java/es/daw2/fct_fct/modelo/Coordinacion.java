@@ -16,8 +16,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "jefaturas")
-public class Jefaturas {
+@Table(name = "coordinaciones")
+public class Coordinacion {
     @Id
     @GeneratedValue
     private int id;
