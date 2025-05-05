@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import es.daw2.fct_fct.dto.UserDTO;
 import es.daw2.fct_fct.modelo.Users;
 import es.daw2.fct_fct.servicio.ServicioUser;
 
@@ -22,6 +23,13 @@ public class ControladorUser {
         if (userFound == null)
             return ResponseEntity.status(401).body("Invalid credentials");
         
-        return ResponseEntity.ok(userFound);
+        UserDTO dto = new UserDTO(
+            userFound.getId(),
+            userFound.getName(),
+            userFound.getEmail(),
+            userFound.isAdmin()
+        );
+
+        return ResponseEntity.ok(dto);
     }
 }
