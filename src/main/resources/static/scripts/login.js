@@ -45,7 +45,7 @@ form.addEventListener("submit", (event) => {
     })
     .then((response) => {
         switch (response.status) {
-            case 204:
+            case 200:
                 // Redirect to the home page
                 window.location.href = "/home";
                 break;
