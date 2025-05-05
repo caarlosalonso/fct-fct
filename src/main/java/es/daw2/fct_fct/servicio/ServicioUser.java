@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import es.daw2.fct_fct.modelo.Users;
 import es.daw2.fct_fct.repositorio.RepositorioUser;
+import es.daw2.fct_fct.utils.PasswordUtils;
 
 @Service
 public class ServicioUser implements InterfaceServicioUser {
@@ -31,8 +32,7 @@ public class ServicioUser implements InterfaceServicioUser {
         if (loginUser == null) return null;     // El email no existe
         // El email existe, se verifica la contraseña
 
-        // Se debe reemplazar con verificación de contraseñas encriptadas
-        if (password.equalsIgnoreCase(loginUser.getPassword()))
+        if (PasswordUtils.doPasswordsMatch(password, loginUser.getPassword()))
             return loginUser;   // La contraseña es correcta
         else
             return null;        // La contraseña es incorrecta
