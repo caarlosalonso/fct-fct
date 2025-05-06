@@ -22,7 +22,7 @@ form.addEventListener("submit", (event) => {
 
     // Information to be sent
     const data = {
-        email: email,
+        email: email.toLowerCase(),
         password: password,
     };
 
