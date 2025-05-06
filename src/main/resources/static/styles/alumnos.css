@@ -1,0 +1,13 @@
+.alumnos-list {
+    display: flex;
+    flex-direction: column;
+}
+.alumno {
+    display: flex;
+    flex-direction: column;
+}
+.alumno-info {
+    display: flex;
+    gap: 10px;
+    flex-direction: row;
+}
