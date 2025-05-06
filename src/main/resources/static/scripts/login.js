@@ -22,12 +22,6 @@ form.addEventListener("submit", (event) => {
         failManagement(true, emailValidationResponse, [emailInput]); // Fails email
         error = true;
     }
-    const passwordValidationResponse = validatePassord(password);
-    if (!! passwordValidationResponse) {
-        failManagement(true, passwordValidationResponse, [passwordInput]); // Fails password
-        error = true;
-    }
-
     if (error) return;
 
     // Information to be sent
@@ -132,11 +126,4 @@ function validateEmail(email) {
         return 'Login fallido: Email inválido'; // Returns an error message if the email is invalid
     }
     return true; // Returns true if the email is valid
-}
-
-function validatePassord(password) {
-    if (password.length < 8) {
-        return 'Login fallido: La contraseña debe tener al menos 8 caracteres'; // Returns an error message if the password is invalid
-    }
-    return true; // Returns true if the password is valid
 }
