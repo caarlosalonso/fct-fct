@@ -33,7 +33,7 @@ form.addEventListener("submit", (event) => {
         },
         body: JSON.stringify(data),
     })
-    .then((response) => {
+    .then(response => {
         switch (response.status) {
             case 200:
                 // Redirect to the home page
@@ -54,15 +54,11 @@ form.addEventListener("submit", (event) => {
 });
 
 passwordInput.addEventListener("input", (event) => {
-    if (errorShown) {
-        failManagement(false, '', [passwordInput]); // Hides the error message
-    }
+    if (errorShown) failManagement(false, '', [passwordInput]);     // Hides the error message
 });
 
 emailInput.addEventListener("input", (event) => {
-    if (errorShown) {
-        failManagement(false, '', [emailInput]); // Hides the error message
-    }
+    if (errorShown) failManagement(false, '', [emailInput]);        // Hides the error message
 });
 
 // Functions
@@ -97,10 +93,10 @@ function failManagement(fail, message, inputs) {
  * @returns {void}
  */
 function showErrorMessage(message) {
-    errorMessage.style.display = "block"; // Shows the error message
-    errorMessage.innerText = message; // Sets the error message
-    errorShown = true; // Sets the error shown to true
-    loginButton.disabled = true; // Disables the login button
+    errorMessage.style.display = "block";   // Shows the error message
+    errorMessage.innerText = message;       // Sets the error message
+    errorShown = true;                      // Sets the error shown to true
+    loginButton.disabled = true;            // Disables the login button
 }
 
 /**
@@ -109,10 +105,10 @@ function showErrorMessage(message) {
  * @returns {void}
  */
 function hideErrorMessage() {
-    errorMessage.style.display = "none"; // Hides the error message
-    errorMessage.innerText = ""; // Clears the error message
-    errorShown = false; // Sets the error shown to false
-    loginButton.disabled = false; // Enables the login button
+    errorMessage.style.display = "none";    // Hides the error message
+    errorMessage.innerText = "";            // Clears the error message
+    errorShown = false;                     // Sets the error shown to false
+    loginButton.disabled = false;           // Enables the login button
 }
 
 // Function to validate email format
