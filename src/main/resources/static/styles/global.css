@@ -1,3 +1,6 @@
+/* --------------- */
+/*   Root styles   */
+/* --------------- */
 :root {
     --primary-color: #2ad630;
     --secondary-color: #6156fd;
@@ -8,4 +11,25 @@
     --error-color: #ff0000;
     --success-color: #4CAF50;
     --focus-color: #6156fd;
+}
+
+/* --------------- */
+/* Password styles */
+/* --------------- */
+.wrapper-password {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.password-icon {
+    position: absolute;
+    right: 10px;
+    bottom: 8px;
+    max-width: 26px;
+
+    &:hover {
+        cursor: pointer;
+    }
 }
