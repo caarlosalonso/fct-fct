@@ -14,15 +14,11 @@ form.addEventListener("submit", (event) => {
     event.preventDefault();                 // Prevents the form from being sent.
     const email = emailInput.value;         // Gets the email's value
     const password = passwordInput.value;   // Gets the password's value
-    let error = false;                      // Sets the error to false
 
-    // Validates the email and the password
-    const emailValidationResponse = validateEmail(email);
-    if (!! emailValidationResponse) {
-        failManagement(true, emailValidationResponse, [emailInput]); // Fails email
-        error = true;
+    // Validates the email
+    if (! validateEmail(email)) {
+        return;
     }
-    if (error) return;
 
     // Information to be sent
     const data = {
@@ -121,9 +117,14 @@ function hideErrorMessage() {
 
 // Function to validate email format
 function validateEmail(email) {
-    const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; // Regular expression to validate email format
-    if (! regex.test(String(email).toLowerCase())) {
-        return 'Login fallido: Email inválido'; // Returns an error message if the email is invalid
+    if (email.length === 0) {
+        failManagement(true, 'Login fallido: Email vacío', [emailInput]);       // Fails email
+        return false;                               // Returns false if the email is invalid
     }
-    return true; // Returns true if the email is valid
+    const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;     // Regular expression to validate email format
+    if (! regex.test(String(email).toLowerCase())) {
+        failManagement(true, 'Login fallido: Email inválido', [emailInput]);    // Fails email
+        return false;                               // Returns false if the email is invalid
+    }
+    return true;                                    // Returns true if the email is valid
 }
