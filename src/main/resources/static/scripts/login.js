@@ -74,13 +74,13 @@ function failManagement(fail, message, inputs) {
     if (fail) {
         showErrorMessage(message);              // Shows the error message
         inputs.forEach((input) => {
-            input.classList.add("error");       // Adds the error class to the input
+            input.parentNode.classList.add('invalid');
         });
         loginButton.disabled = true;            // Disables the login button
     } else {
         hideErrorMessage();                     // Hides the error message
         inputs.forEach((input) => {
-            input.classList.remove("error");    // Removes the error class from the input
+            input.parentNode.classList.remove("invalid");    // Removes the error class from the input
         });
         loginButton.disabled = false;           // Enables the login button
     }
