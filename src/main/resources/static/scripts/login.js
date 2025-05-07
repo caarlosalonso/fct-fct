@@ -14,25 +14,15 @@ form.addEventListener("submit", (event) => {
     event.preventDefault();                 // Prevents the form from being sent.
     const email = emailInput.value;         // Gets the email's value
     const password = passwordInput.value;   // Gets the password's value
-    let error = false;                      // Sets the error to false
 
-    // Validates the email and the password
-    const emailValidationResponse = validateEmail(email);
-    if (!! emailValidationResponse) {
-        failManagement(true, emailValidationResponse, [emailInput]); // Fails email
-        error = true;
+    // Validates the email
+    if (! validateEmail(email)) {
+        return;
     }
-    const passwordValidationResponse = validatePassord(password);
-    if (!! passwordValidationResponse) {
-        failManagement(true, passwordValidationResponse, [passwordInput]); // Fails password
-        error = true;
-    }
-
-    if (error) return;
 
     // Information to be sent
     const data = {
-        email: email,
+        email: email.toLowerCase(),
         password: password,
     };
 
@@ -43,9 +33,9 @@ form.addEventListener("submit", (event) => {
         },
         body: JSON.stringify(data),
     })
-    .then((response) => {
+    .then(response => {
         switch (response.status) {
-            case 204:
+            case 200:
                 // Redirect to the home page
                 window.location.href = "/home";
                 break;
@@ -64,15 +54,11 @@ form.addEventListener("submit", (event) => {
 });
 
 passwordInput.addEventListener("input", (event) => {
-    if (errorShown) {
-        failManagement(false, '', [passwordInput]); // Hides the error message
-    }
+    if (errorShown) failManagement(false, '', [passwordInput]);     // Hides the error message
 });
 
 emailInput.addEventListener("input", (event) => {
-    if (errorShown) {
-        failManagement(false, '', [emailInput]); // Hides the error message
-    }
+    if (errorShown) failManagement(false, '', [emailInput]);        // Hides the error message
 });
 
 // Functions
@@ -107,10 +93,10 @@ function failManagement(fail, message, inputs) {
  * @returns {void}
  */
 function showErrorMessage(message) {
-    errorMessage.style.display = "block"; // Shows the error message
-    errorMessage.innerText = message; // Sets the error message
-    errorShown = true; // Sets the error shown to true
-    loginButton.disabled = true; // Disables the login button
+    errorMessage.style.display = "block";   // Shows the error message
+    errorMessage.innerText = message;       // Sets the error message
+    errorShown = true;                      // Sets the error shown to true
+    loginButton.disabled = true;            // Disables the login button
 }
 
 /**
@@ -119,24 +105,22 @@ function showErrorMessage(message) {
  * @returns {void}
  */
 function hideErrorMessage() {
-    errorMessage.style.display = "none"; // Hides the error message
-    errorMessage.innerText = ""; // Clears the error message
-    errorShown = false; // Sets the error shown to false
-    loginButton.disabled = false; // Enables the login button
+    errorMessage.style.display = "none";    // Hides the error message
+    errorMessage.innerText = "";            // Clears the error message
+    errorShown = false;                     // Sets the error shown to false
+    loginButton.disabled = false;           // Enables the login button
 }
 
 // Function to validate email format
 function validateEmail(email) {
-    const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; // Regular expression to validate email format
+    if (email.length === 0) {
+        failManagement(true, 'Login fallido: Email vacío', [emailInput]);       // Fails email
+        return false;                               // Returns false if the email is invalid
+    }
+    const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;     // Regular expression to validate email format
     if (! regex.test(String(email).toLowerCase())) {
-        return 'Login fallido: Email inválido'; // Returns an error message if the email is invalid
+        failManagement(true, 'Login fallido: Email inválido', [emailInput]);    // Fails email
+        return false;                               // Returns false if the email is invalid
     }
-    return true; // Returns true if the email is valid
-}
-
-function validatePassord(password) {
-    if (password.length < 8) {
-        return 'Login fallido: La contraseña debe tener al menos 8 caracteres'; // Returns an error message if the password is invalid
-    }
-    return true; // Returns true if the password is valid
+    return true;                                    // Returns true if the email is valid
 }

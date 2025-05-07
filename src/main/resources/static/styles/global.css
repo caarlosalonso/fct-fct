@@ -1,3 +1,6 @@
+/* --------------- */
+/*   Root styles   */
+/* --------------- */
 :root {
     --primary-color: #2ad630;
     --secondary-color: #6156fd;
@@ -8,4 +11,112 @@
     --error-color: #ff0000;
     --success-color: #4CAF50;
     --focus-color: #6156fd;
+}
+
+/* --------------- */
+/*   Input styles  */
+/* --------------- */
+.form-group {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    padding: 2px 5px;
+    margin: 15px auto 15px auto;
+}
+
+.form-input {
+    width: 90%;
+    position: relative;
+}
+
+input.text-based {
+    width: 100%;
+    padding: 10px 10px;
+    border-radius: 6px;
+    border: 1px solid #dedede;
+    color: var(--text-color);
+    transition: 0.3s ease-in-out;
+    background-color: #303030;
+
+    &:focus {
+        border: 1px solid var(--focus-color);
+    }
+}
+
+.label {
+    position: absolute;
+    color: #dedede;
+    z-index: 1;
+    padding: 0px 5px;
+    margin: 0px;
+    font-size: 1.3rem;
+    transition: 190ms ease-in-out;
+
+    &.active {
+        transform: scale(0.85) translateY(-25px) translateX(-5px);
+        background-color: #303030;
+    }
+
+    &.focus {
+        color: var(--focus-color);
+    }
+
+    &.required {
+        &::before {
+            content: "*";
+            color: #FF7300;
+            margin-right: 2px;
+        }
+    }
+}
+
+/* --------------- */
+/* Password styles */
+/* --------------- */
+input.password.text-based {
+    border-radius: 6px 0px 0px 6px;
+    border-right: 1.5px dashed #999999;
+}
+
+.password-icon {
+    padding: 5px 5px;
+    height: 26.5px;     /*  Don't know why it must be .5, but it must           */
+    width: 26.5px;      /*  Does not need to be .5, but I want it to be a square*/
+    border-radius: 0px 6px 6px 0px;
+    border: 1px solid #dedede;
+    background-color: #303030;
+    border-left: none;
+    display: flex;
+    align-items: center;
+
+    &:hover {
+        cursor: pointer;
+    }
+}
+
+.password-icon-img {
+    width: 100%;
+    height: 100%;
+}
+
+/* -------------------- */
+/* Invalid input styles */
+/* -------------------- */
+.form-group.invalid {
+    & input.text-based {
+        border-color: var(--error-color);
+
+        & + .label {
+            color: var(--error-color);
+        }
+    }
+
+    & .password-icon {
+        border-color: var(--error-color);
+    }
+
+    & .password-icon-img {
+        filter: brightness(0) saturate(100%) invert(20%) sepia(100%) saturate(5085%) hue-rotate(353deg) brightness(92%) contrast(124%);
+    }
 }
