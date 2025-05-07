@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?><!-- Uploaded to: SVG Repo, www.svgrepo.com, Generator: SVG Repo Mixer Tools -->
+
+<!-- Modified: Had to shift -12 -12, scale to 0.9 and then shift again by 12 12 so it matches with crossed eye svg-->
+<svg width="800px" height="800px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M 2.1 12 C 2.1 12 5.7 4.8 12 4.8 C 18.3 4.8 21.9 12 21.9 12" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M 2.1 12 C 2.1 12 5.7 19.2 12 19.2 C 18.3 19.2 21.9 12 21.9 12" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    <circle cx="12" cy="12" r="3" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>
