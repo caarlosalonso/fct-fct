@@ -81,8 +81,8 @@ input.password.text-based {
 
 .password-icon {
     padding: 5px 5px;
-    height: 26.5px;     /*  Don't know why it must be .5, but it must           */
-    width: 26.5px;      /*  Does not need to be .5, but I want it to be a square*/
+    height: 26px;
+    width: 26px;
     border-radius: 0px 6px 6px 0px;
     border: 1px solid #dedede;
     background-color: #303030;
