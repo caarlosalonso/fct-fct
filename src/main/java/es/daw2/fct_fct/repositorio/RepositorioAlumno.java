@@ -4,6 +4,6 @@ import org.springframework.data.repository.CrudRepository;
 
 import es.daw2.fct_fct.modelo.Alumnos;
 
-public interface RepositorioAlumno extends CrudRepository<Alumnos,Integer>{
+public interface RepositorioAlumno extends CrudRepository<Alumnos, Long>{
 
 }

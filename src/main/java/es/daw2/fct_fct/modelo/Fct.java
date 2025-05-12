@@ -23,7 +23,7 @@ import lombok.NoArgsConstructor;
 public class Fct {
     @Id
     @GeneratedValue
-    private int id;
+    private Long id;
 
     @ManyToOne
     @JsonIgnore

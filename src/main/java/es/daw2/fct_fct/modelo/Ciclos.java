@@ -17,7 +17,7 @@ import lombok.NoArgsConstructor;
 public class Ciclos {
     @Id
     @GeneratedValue
-    private int id;
+    private Long id;
 
     @Column(name = "name", nullable = false, columnDefinition = "varchar(255)")
     private String name;

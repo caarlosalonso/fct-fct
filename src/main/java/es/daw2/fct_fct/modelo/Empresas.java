@@ -17,7 +17,7 @@ import lombok.NoArgsConstructor;
 public class Empresas {
     @Id
     @GeneratedValue
-    private int id;
+    private Long id;
 
     @Column(name = "estado", nullable = false, columnDefinition = "ENUM('PENDIENTE', 'ACEPTADO', 'DENEGADO')")
     public Estado estado;

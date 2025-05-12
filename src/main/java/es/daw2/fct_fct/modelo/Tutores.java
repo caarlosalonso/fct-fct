@@ -18,10 +18,9 @@ import lombok.NoArgsConstructor;
 @Entity
 @Table(name = "tutores")
 public class Tutores {
-
     @Id
     @GeneratedValue
-    private int id;
+    private Long id;
 
     @ManyToOne
     @JsonIgnore

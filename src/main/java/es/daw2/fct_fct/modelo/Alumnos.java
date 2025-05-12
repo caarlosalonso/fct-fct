@@ -21,7 +21,7 @@ import lombok.NoArgsConstructor;
 public class Alumnos {
     @Id
     @GeneratedValue
-    private int id;
+    private Long id;
 
     @ManyToOne
     @JsonIgnore

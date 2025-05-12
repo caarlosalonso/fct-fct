@@ -20,7 +20,7 @@ import lombok.NoArgsConstructor;
 public class Propuesta {
     @Id
     @GeneratedValue
-    private int id;
+    private Long id;
 
     @ManyToOne
     @JsonIgnore
