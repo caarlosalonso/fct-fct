@@ -10,8 +10,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
 @Entity
 @Table(name = "ciclos")
 public class Ciclos {
@@ -22,16 +22,17 @@ public class Ciclos {
     @Column(name = "name", nullable = false, columnDefinition = "varchar(255)")
     private String name;
 
-    @Column(name = "year", nullable = false)
-    private Short year;
-
-    @Column(name = "nivel", nullable = false, columnDefinition = "enum('MEDIO','SUPERIOR')")
+    @Column(name = "nivel", nullable = false, columnDefinition = "enum('BASICO', 'MEDIO', 'SUPERIOR')")
     private Nivel nivel;
 
     @Column(name = "familia_profesional", nullable = false, columnDefinition = "varchar(255)")
     private String familiaProfesional;
 
+    @Column(name = "horas_practicas", nullable = false, columnDefinition = "UNSIGNED TINYINT")
+    private Short horasPracticas;
+
     public enum Nivel {
+        BASICO,
         MEDIO,
         SUPERIOR
     }

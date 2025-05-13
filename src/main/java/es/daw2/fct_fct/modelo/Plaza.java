@@ -2,8 +2,8 @@ package es.daw2.fct_fct.modelo;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
@@ -16,14 +16,20 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "tutores")
-public class Tutores {
+@Table(name = "plazas")
+public class Plaza {
     @Id
-    @GeneratedValue
-    private Long id;
-
     @ManyToOne
     @JsonIgnore
-    @JoinColumn(name = "user_id")
-    private Users user;
+    @JoinColumn(name = "empresa_id")
+    private Empresas empresas;
+
+    @Id
+    @ManyToOne
+    @JsonIgnore
+    @JoinColumn(name = "ciclo_id")
+    private Ciclos ciclos;
+
+    @Column(name = "plazas", nullable = false, columnDefinition = "INT")
+    private Integer plazas;
 }

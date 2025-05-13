@@ -10,8 +10,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
 @Entity
 @Table(name="users")
 public class Users {
@@ -28,9 +28,9 @@ public class Users {
     @Column(name = "password", nullable = false, columnDefinition = "varchar(255)")
     private String password;
 
-    @Column(name = "updated_password", nullable = false, columnDefinition = "tinyint(1) default 0")
-    private boolean updated_password;
+    @Column(name = "updated_password", nullable = false, columnDefinition = "TINYINT DEFAULT 0")
+    private boolean updatedPassword;
 
-    @Column(name = "is_admin", nullable = false, columnDefinition = "tinyint(1) default 0")
-    private boolean is_admin;
+    @Column(name = "is_admin", nullable = false, columnDefinition = "TINYINT DEFAULT 0")
+    private boolean isAdmin;
 }

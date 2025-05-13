@@ -1,6 +1,6 @@
 package es.daw2.fct_fct.modelo;
 
-import java.sql.Date;
+import java.time.LocalDate;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -16,8 +16,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
 @Entity
 @Table(name = "alumnos_has_ciclos")
 public class Fct {
@@ -46,8 +46,14 @@ public class Fct {
     private Ciclos ciclo;
 
     @Column(name = "fecha_inicio", nullable = true)
-    private Date fechaInicio;
+    private LocalDate fechaInicio;
 
     @Column(name = "fecha_fin", nullable = true)
-    private Date fechaFin;
+    private LocalDate fechaFin;
+
+    @Column(name = "observaciones", nullable = true, columnDefinition = "VARCHAR(2047)")
+    private String observaciones;
+
+    @Column(name = "apto", nullable = true, columnDefinition = "TINYINT")
+    private Boolean apto;
 }

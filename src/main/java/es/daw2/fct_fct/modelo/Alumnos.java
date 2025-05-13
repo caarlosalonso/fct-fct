@@ -14,8 +14,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
 @Entity
 @Table(name="alumnos")
 public class Alumnos {
@@ -23,11 +23,6 @@ public class Alumnos {
     @GeneratedValue
     private Long id;
 
-    @ManyToOne
-    @JsonIgnore
-    @JoinColumn(name = "ciclo_id")
-    private Ciclos ciclo;
-    
     @ManyToOne
     @JsonIgnore
     @JoinColumn(name = "user_id")
@@ -44,4 +39,7 @@ public class Alumnos {
 
     @Column(name = "convocatoria", nullable = false, columnDefinition = "int default 3")
     private int convocatoria;
+
+    @Column(name = "curriculum_file", nullable = true, columnDefinition = "VARCHAR(255)")
+    private String curriculumFile;
 }
