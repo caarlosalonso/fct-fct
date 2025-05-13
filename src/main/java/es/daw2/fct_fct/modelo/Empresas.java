@@ -11,7 +11,6 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.Lob;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
@@ -33,8 +32,7 @@ public class Empresas {
     @JoinColumn(name = "propuesta_por")
     private Users propuesta_por;
 
-    @Lob
-    @Column(name = "observaciones", nullable = true, columnDefinition = "TEXT")
+    @Column(name = "observaciones", nullable = true, columnDefinition = "VARCHAR(2047)")
     private String observaciones;
 
     @Column(name = "estado", nullable = false, columnDefinition = "ENUM('PENDIENTE', 'ACEPTADO', 'DENEGADO')")
