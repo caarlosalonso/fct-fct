@@ -1,0 +1,38 @@
+.alumnos-list {
+    display: flex;
+    flex-direction: column;
+}
+.alumno {
+    display: flex;
+    flex-direction: column;
+}
+.alumno-info {
+    display: flex;
+    gap: 10px;
+    flex-direction: row;
+}
+
+#alumno-form {
+    background-color: #303030;
+    border-radius: var(--border-radius);
+    color: var(--text-color);
+    padding: 10px;
+    margin: 0 auto;
+    width: 400px;
+}
+
+#submit {
+    background-color: var(--success-color);
+    color: var(--text-color);
+    border: none;
+    padding: 10px 20px;
+    border-radius: var(--border-radius);
+    cursor: pointer;
+    font-size: 1.1rem;
+    transition: 0.5s ease-in-out;
+
+    &:disabled {
+        background-color: #83b685;
+        cursor: not-allowed;
+    }
+}
