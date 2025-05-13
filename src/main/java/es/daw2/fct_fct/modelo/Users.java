@@ -1,5 +1,7 @@
 package es.daw2.fct_fct.modelo;
 
+import javax.validation.constraints.Email;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -22,6 +24,7 @@ public class Users {
     @Column(name = "name", nullable = false, columnDefinition = "varchar(255)")
     private String name;
 
+    @Email(regexp = ".+@.+\\..+")
     @Column(name = "email", nullable = false, columnDefinition = "varchar(255)")
     private String email;
 
