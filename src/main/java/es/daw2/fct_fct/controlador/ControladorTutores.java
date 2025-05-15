@@ -18,8 +18,6 @@ import es.daw2.fct_fct.servicio.ServicioTutores;
 
 
 
-
-
 @RestController
 public class ControladorTutores {
 
@@ -73,19 +71,19 @@ public class ControladorTutores {
 
         a.setId(id);
 
-        Tutores alumnoActualizado = servicioTutores.addTutores(a);
+        Tutores tutorActualizado = servicioTutores.addTutores(a);
 
         URI location = URI.create("/tutores/" +a.getId());
 
-        return ResponseEntity.ok().location(location).body(alumnoActualizado);
+        return ResponseEntity.ok().location(location).body(tutorActualizado);
     }
 
     //cruD
     @DeleteMapping("/borrarTutor/{id}")
     public ResponseEntity<?> borrarTutor(@PathVariable Long id){
-        boolean alumnoEliminado = servicioTutores.borrarTutores(id);
+        boolean tutorEliminado = servicioTutores.borrarTutores(id);
 
-        if(alumnoEliminado){
+        if(tutorEliminado){
             return ResponseEntity.ok("Tutor eliminado con éxito");
         }else{
             return ResponseEntity.badRequest().body("No se ha encontrado al tutor con el id: " + id);
