@@ -1,6 +1,7 @@
 package es.daw2.fct_fct.servicio;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,6 +17,28 @@ public class ServicioAlumno implements IFServicioAlumno{
 
     @Override
     public List<Alumnos> listaAlumnos(){
-        return (List<Alumnos>) repositorioAlumno.findAll(); //cast a list del iterable que devuelve findAll()
+        return (List<Alumnos>) repositorioAlumno.findAll();
+    }
+
+    @Override
+    public Alumnos addAlumnos(Alumnos a){
+        return repositorioAlumno.save(a);
+    }
+
+    @Override
+    public Optional<Alumnos> getAlumnosId(Long id){
+        return repositorioAlumno.findById(id);
+    }
+
+    @Override
+    public boolean borrarAlumnos(Long id){
+        Optional<Alumnos> alumnoOptional = repositorioAlumno.findById(id);
+
+        if(alumnoOptional.isPresent()){
+            repositorioAlumno.delete(alumnoOptional.get());
+            return true;
+        }else{
+            return false;
+        }
     }
 }
