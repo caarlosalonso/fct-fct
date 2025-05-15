@@ -33,10 +33,10 @@ public class ServicioTutores implements IFServicioTutores{
 
     @Override
     public boolean borrarTutores(Long id){
-        Optional<Tutores> alumnoOptional = repositorioTutores.findById(id);
+        Optional<Tutores> tutorOptional = repositorioTutores.findById(id);
 
-        if(alumnoOptional.isPresent()){
-            repositorioTutores.delete(alumnoOptional.get());
+        if(tutorOptional.isPresent()){
+            repositorioTutores.delete(tutorOptional.get());
             return true;
         }else{
             return false;
