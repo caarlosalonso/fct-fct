@@ -2,20 +2,36 @@
 /*   Root styles   */
 /* --------------- */
 :root {
+    --border-radius: 12px;
+    --margin-asterisk: 3px;
+
     --primary-color: #2ad630;
     --secondary-color: #6156fd;
-    --background-color: #f2f2f2;
+    --background-color: #303030;
     --text-color: #ffffff;
-    --border-radius: 12px;
+    --border-color: #eeeeee;
 
     --error-color: #ff0000;
-    --success-color: #4CAF50;
-    --focus-color: #6156fd;
+    --success-color: #4caf50;
+
+    --focus-color: hsl(147, 100%, 65%);
+    --required-color: hsl(27, 100%, 65%);
+    --frozen-color: hsl(213, 100%, 65%);
+    --changed-color: hsl(56, 100%, 65%);
+    --disabled-color: #aaaaaa;
 }
 
-/* --------------- */
-/*   Input styles  */
-/* --------------- */
+/* ---------------------------------------------------------------------------- */
+/*                                GENERAL STYLES                                */
+/* ---------------------------------------------------------------------------- */
+.hidden {
+    display: none;
+}
+
+
+/* ---------------------------------------------------------------------------- */
+/*                                 INPUT STYLES                                 */
+/* ---------------------------------------------------------------------------- */
 .form-group {
     display: flex;
     flex-direction: row;
@@ -30,24 +46,67 @@
     position: relative;
 }
 
+.legend {
+    margin: auto;
+    width: 90%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-around;
+    font-size: 0.85rem;
+    padding: 5px;
+    font-style: normal;
+}
+
+.legendText {
+    margin: 0px;
+
+    &.required {
+        color: var(--required-color);
+    }
+
+    &.frozen {
+        color: var(--frozen-color);
+    }
+
+    &.changed {
+        color: var(--changed-color);
+    }
+
+    &.required, &.frozen, &.changed {
+        &::before {
+            content: "*";
+            margin-right: var(--margin-asterisk);
+            font-style: normal;
+        }
+    }
+}
+
 input.text-based {
     width: 100%;
     padding: 10px 10px;
     border-radius: 6px;
-    border: 1px solid #dedede;
+    border: 1px solid var(--border-color);
     color: var(--text-color);
     transition: 0.3s ease-in-out;
-    background-color: #303030;
+    background-color: var(--background-color);
 
     &:focus {
         border: 1px solid var(--focus-color);
+    }
+
+    &:disabled {
+        border-color: var(--disabled-color);
+        color: var(--disabled-color);
+        cursor: not-allowed;
     }
 }
 
 .label {
     position: absolute;
-    color: #dedede;
+    color: var(--border-color);
     z-index: 1;
+    left: 8px;
     padding: 0px 5px;
     margin: 0px;
     font-size: 1.3rem;
@@ -55,7 +114,7 @@ input.text-based {
 
     &.active {
         transform: scale(0.85) translateY(-25px) translateX(-5px);
-        background-color: #303030;
+        background-color: var(--background-color);
     }
 
     &.focus {
@@ -63,17 +122,43 @@ input.text-based {
     }
 
     &.required {
+        left: 6px;
+        
         &::before {
             content: "*";
-            color: #FF7300;
-            margin-right: 2px;
+            color: var(--required-color);
+            margin-right: var(--margin-asterisk);
+            font-style: normal;
+        }
+    }
+
+    &.frozen {
+        color: var(--frozen-color);
+
+        &::after {
+            content: "*";
+            color: var(--frozen-color);
+            margin-left: var(--margin-asterisk);
+            font-style: normal;
+        }
+    }
+
+    &.changed {
+        font-style: italic;
+        color: var(--changed-color);
+
+        &::after {
+            content: "*";
+            color: var(--changed-color);
+            margin-left: var(--margin-asterisk);
+            font-style: normal;
         }
     }
 }
 
-/* --------------- */
-/* Password styles */
-/* --------------- */
+/* ---------------------------------------------------------------------------- */
+/*                                PASSWORD STYLES                               */
+/* ---------------------------------------------------------------------------- */
 input.password.text-based {
     border-radius: 6px 0px 0px 6px;
     border-right: 1.5px dashed #999999;
@@ -84,8 +169,8 @@ input.password.text-based {
     height: 26px;
     width: 26px;
     border-radius: 0px 6px 6px 0px;
-    border: 1px solid #dedede;
-    background-color: #303030;
+    border: 1px solid var(--border-color);
+    background-color: var(--background-color);
     border-left: none;
     display: flex;
     align-items: center;
@@ -100,9 +185,17 @@ input.password.text-based {
     height: 100%;
 }
 
-/* -------------------- */
-/* Invalid input styles */
-/* -------------------- */
+/* ---------------------------------------------------------------------------- */
+/*                              AUTOCOMPLETE STYLES                             */
+/* ---------------------------------------------------------------------------- */
+.autocomplete {
+    color: #999999;
+    position: absolute;
+}
+
+/* ---------------------------------------------------------------------------- */
+/*                             INVALID INPUT STYLES                             */
+/* ---------------------------------------------------------------------------- */
 .form-group.invalid {
     & input.text-based {
         border-color: var(--error-color);
