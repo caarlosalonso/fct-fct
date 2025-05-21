@@ -37,8 +37,7 @@ public class ServicioAlumno implements IFServicioAlumno{
         if(alumnoOptional.isPresent()){
             repositorioAlumno.delete(alumnoOptional.get());
             return true;
-        }else{
-            return false;
         }
+            return false;
     }
 }
