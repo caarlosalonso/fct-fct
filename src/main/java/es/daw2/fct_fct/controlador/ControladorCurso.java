@@ -54,6 +54,24 @@ public class ControladorCurso {
             return ResponseEntity.status(404).body("No se encontraron cursos con el id: " + id); //No me deja poner el notFound()
         }
     }
+
+    //crUd
+    @PostMapping("/actualizarCurso/{id}")
+    public ResponseEntity<?> modificarCurso(@PathVariable Long id, @RequestBody Curso c) {
+        Optional<Curso> optional = servicioCurso.getCursoId(id);
+
+        if (!optional.isPresent()) {
+            return ResponseEntity.notFound().build();
+        }
+        c.setId(id);
+
+        Curso cursoActualizado = servicioCurso.addCurso(c);
+
+        URI location = URI.create("/listarCursosId" + c.getId());
+
+        return ResponseEntity.created(location).body(cursoActualizado);
+    }
+
     //cRuD
     @DeleteMapping("/borrarCurso/{id}")
     public ResponseEntity<?> borrarCurso(@PathVariable Long id) {
