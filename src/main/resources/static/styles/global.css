@@ -1,6 +1,6 @@
-/* --------------- */
-/*   Root styles   */
-/* --------------- */
+/* ---------------------------------------------------------------------------- */
+/*                                  ROOT STYLES                                 */
+/* ---------------------------------------------------------------------------- */
 :root {
     --border-radius: 12px;
     --margin-asterisk: 3px;
@@ -11,7 +11,10 @@
     --text-color: #ffffff;
     --border-color: #eeeeee;
 
-    --error-color: #ff0000;
+    --error-color: #ff6464;
+    --error-filter: brightness(0) saturate(100%) invert(59%) sepia(62%) saturate(5812%) hue-rotate(330deg) brightness(124%) contrast(100%);
+    --error-animation: error 450ms;
+
     --success-color: #4caf50;
 
     --focus-color: hsl(147, 100%, 65%);
@@ -20,6 +23,15 @@
     --changed-color: hsl(56, 100%, 65%);
     --disabled-color: #aaaaaa;
 }
+
+
+/* ---------------------------------------------------------------------------- */
+/*                                  BODY STYLES                                 */
+/* ---------------------------------------------------------------------------- */
+body {
+    margin: 0px;
+}
+
 
 /* ---------------------------------------------------------------------------- */
 /*                                GENERAL STYLES                                */
@@ -84,6 +96,7 @@
 
 input.text-based {
     width: 100%;
+    z-index: 1;
     padding: 10px 10px;
     border-radius: 6px;
     border: 1px solid var(--border-color);
@@ -105,15 +118,15 @@ input.text-based {
 .label {
     position: absolute;
     color: var(--border-color);
-    z-index: 1;
-    left: 8px;
+    z-index: 2;
+    left: 10px;
     padding: 0px 5px;
     margin: 0px;
     font-size: 1.3rem;
     transition: 190ms ease-in-out;
 
     &.active {
-        transform: scale(0.85) translateY(-25px) translateX(-5px);
+        transform: translateX(-50%) scale(0.85) translateX(calc(50% + 5px)) translateY(-25px);
         background-color: var(--background-color);
     }
 
@@ -122,8 +135,6 @@ input.text-based {
     }
 
     &.required {
-        left: 6px;
-        
         &::before {
             content: "*";
             color: var(--required-color);
@@ -156,6 +167,46 @@ input.text-based {
     }
 }
 
+.buttons-wrapper {
+    gap: 20px;
+}
+
+.form-buttons {
+    color: var(--text-color);
+    border: none;
+    padding: 10px 20px;
+    border-radius: var(--border-radius);
+    cursor: pointer;
+    font-size: 1.1rem;
+    transition: 0.5s ease-in-out;
+
+    &#submit {
+        background-color: #00d107;
+    }
+
+    &#reset {
+        background-color: #ff4949;
+    }
+
+    &:disabled {
+        background-color: #83b685;
+        cursor: not-allowed;
+    }
+}
+
+#error-section {
+    height: 40px;
+}
+
+#error-message {
+    color: var(--error-color);
+
+    &.effect {
+        animation: var(--error-animation);
+    }
+}
+
+
 /* ---------------------------------------------------------------------------- */
 /*                                PASSWORD STYLES                               */
 /* ---------------------------------------------------------------------------- */
@@ -165,6 +216,7 @@ input.password.text-based {
 }
 
 .password-icon {
+    z-index: 1;
     padding: 5px 5px;
     height: 26px;
     width: 26px;
@@ -185,23 +237,38 @@ input.password.text-based {
     height: 100%;
 }
 
+
 /* ---------------------------------------------------------------------------- */
 /*                              AUTOCOMPLETE STYLES                             */
 /* ---------------------------------------------------------------------------- */
 .autocomplete {
     color: #999999;
     position: absolute;
+    z-index: 1;
 }
+
 
 /* ---------------------------------------------------------------------------- */
 /*                             INVALID INPUT STYLES                             */
 /* ---------------------------------------------------------------------------- */
 .form-group.invalid {
+    &.effect {
+        animation: var(--error-animation);
+
+        & * {
+            transition: 0s;
+        }
+    }
+
     & input.text-based {
         border-color: var(--error-color);
 
         & + .label {
             color: var(--error-color);
+
+            &::before {
+                color: var(--error-color);
+            }
         }
     }
 
@@ -210,6 +277,70 @@ input.password.text-based {
     }
 
     & .password-icon-img {
-        filter: brightness(0) saturate(100%) invert(20%) sepia(100%) saturate(5085%) hue-rotate(353deg) brightness(92%) contrast(124%);
+        filter: var(--error-filter);
+    }
+}
+
+
+/* ---------------------------------------------------------------------------- */
+/*                                   VALIDITY                                   */
+/* ---------------------------------------------------------------------------- */
+.validity {
+    position: absolute;
+    z-index: 0;
+    right: 15px;
+    margin: 0px;
+    height: 38px;
+    width: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    padding-right: 6px;
+    border-radius: 0px var(--border-radius) var(--border-radius) 0px;
+    transition: 400ms ease-in-out;
+    color: #ffffff;
+
+    &.valid {
+        background-color: #00d107;
+    }
+
+    &.invalid {
+        background-color: #ff4949;
+    }
+
+    &.show {
+        transform: translateX(40px);
+    }
+
+    &.hide {
+        transform: translate(0px);
+    }
+}
+
+
+/* ---------------------------------------------------------------------------- */
+/*                                   KEYFRAMES                                  */
+/* ---------------------------------------------------------------------------- */
+@keyframes error {
+    0% {
+        color: #ffffff;
+        transform: rotate(3deg) scale(1.25);
+    }
+
+    100% {
+        color: var(--error-color);
+        transform: rotate(0deg) scale(1);
+    }
+}
+
+@keyframes pop-out {
+    0% {
+        transform: translateX(0);
+    }
+    90% {
+        transform: translateX(110px);
+    }
+    100% {
+        transform: translateX(100px);
     }
 }
