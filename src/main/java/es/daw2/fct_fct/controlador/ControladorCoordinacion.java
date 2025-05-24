@@ -22,7 +22,7 @@ public class ControladorCoordinacion {
     private ServicioCoordinacion servicioCoordinacion;
 
     //Crud
-    @PostMapping("/addTutor")
+    @PostMapping("/addCoordinacion")
     public ResponseEntity<?> crearCoordinacion(@RequestBody Coordinacion c) {
         servicioCoordinacion.addCoordinacion(c);
         
