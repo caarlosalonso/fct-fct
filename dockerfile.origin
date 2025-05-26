@@ -13,4 +13,5 @@ COPY . /app
 RUN chmod +x ./mvnw && ./mvnw clean install -DskipTests
 
 # Ejecutar la aplicación con el JAR generado
-CMD ["java", "-jar", "target/fct-fct-0.0.1-SNAPSHOT.jar"]
+CMD ["sh", "-c", "java -jar target/fct-fct-0.0.1-SNAPSHOT.jar --server.port=$PORT"]
+
