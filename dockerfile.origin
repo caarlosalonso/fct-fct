@@ -1,6 +1,16 @@
+#FROM eclipse-temurin:21-jdk AS build
+
+#WORKDIR /app
+#COPY . /app
+
+#RUN chmod +x ./mvnw && ./mvnw -DoutputFile=target/mvn-dependency-list.log -B -DskipTests clean dependency:list install
+
 FROM eclipse-temurin:21-jdk AS build
 
 WORKDIR /app
 COPY . /app
 
-RUN chmod +x ./mvnw && ./mvnw -DoutputFile=target/mvn-dependency-list.log -B -DskipTests clean dependency:list install
+RUN chmod +x ./mvnw && ./mvnw clean install -DskipTests
+
+# Ejecutar la aplicación con el JAR generado
+CMD ["java", "-jar", "target/fct-fct-0.0.1-SNAPSHOT.jar"]
