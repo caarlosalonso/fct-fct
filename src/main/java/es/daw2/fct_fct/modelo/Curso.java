@@ -21,11 +21,12 @@ import lombok.NoArgsConstructor;
 public class Curso {
     @Id
     @GeneratedValue
+    @Column(name = "curso_id", columnDefinition = "BIGINT UNSIGNED")
     private Long curso_id;
 
     @ManyToOne
     @JsonIgnore
-    @JoinColumn(name = "alumno_id", referencedColumnName = "alumno_id", nullable = false)
+    @JoinColumn(name = "alumno_id", nullable = false)
     private Alumno alumnos;
 
     @ManyToOne
