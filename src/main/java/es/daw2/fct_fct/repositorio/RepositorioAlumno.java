@@ -2,8 +2,8 @@ package es.daw2.fct_fct.repositorio;
 
 import org.springframework.data.repository.CrudRepository;
 
-import es.daw2.fct_fct.modelo.Alumnos;
+import es.daw2.fct_fct.modelo.Alumno;
 
-public interface RepositorioAlumno extends CrudRepository<Alumnos, Long>{
+public interface RepositorioAlumno extends CrudRepository<Alumno, Long>{
 
 }

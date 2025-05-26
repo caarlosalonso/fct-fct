@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 
-import es.daw2.fct_fct.modelo.Alumnos;
+import es.daw2.fct_fct.modelo.Alumno;
 import es.daw2.fct_fct.servicio.ServicioAlumno;
 
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -24,10 +24,10 @@ public class ControladorAlumno {
 
     //Crud
     @PostMapping("/addAlumno")
-    public ResponseEntity<?> crearAlumno(@RequestBody Alumnos a) {
+    public ResponseEntity<?> crearAlumno(@RequestBody Alumno a) {
         servicioAlumno.addAlumnos(a);
-        
-        URI location = URI.create("/listarAlumnosId" +a.getId());
+
+        URI location = URI.create("/listarAlumnosId" + a.getAlumno_id());
 
         return ResponseEntity.created(location).body(a);
     }
@@ -36,7 +36,7 @@ public class ControladorAlumno {
     //cRud
     @GetMapping("/listarAlumnos")
     public ResponseEntity<?> listaAlumnos() {
-        Iterable<Alumnos> it = null;
+        Iterable<Alumno> it = null;
         it = servicioAlumno.listaAlumnos();
 
         if (it!=null) {
@@ -49,7 +49,7 @@ public class ControladorAlumno {
     //cRud
     @GetMapping("/alumnos/{id}")
     public ResponseEntity<?> listaAlumnosId(@PathVariable Long id) {
-        Optional<Alumnos> alumnos = servicioAlumno.getAlumnosId(id);
+        Optional<Alumno> alumnos = servicioAlumno.getAlumnosId(id);
 
         if (alumnos.isPresent()) {
             return ResponseEntity.ok(alumnos.get());
@@ -60,18 +60,18 @@ public class ControladorAlumno {
     
     //crUd
     @PostMapping("/actualizarAlumnos/{id}")
-    public ResponseEntity<?> actualizarAlumno(@PathVariable Long id, @RequestBody Alumnos a){
-        Optional<Alumnos> optional = servicioAlumno.getAlumnosId(id);
+    public ResponseEntity<?> actualizarAlumno(@PathVariable Long id, @RequestBody Alumno a){
+        Optional<Alumno> optional = servicioAlumno.getAlumnosId(id);
 
         if(!optional.isPresent()){
             return ResponseEntity.notFound().build();
         }
 
-        a.setId(id);
+        a.setAlumno_id(id);
 
-        Alumnos alumnoActualizado = servicioAlumno.addAlumnos(a);
+        Alumno alumnoActualizado = servicioAlumno.addAlumnos(a);
 
-        URI location = URI.create("/alumnos/" +a.getId());
+        URI location = URI.create("/alumnos/" + a.getAlumno_id());
 
         return ResponseEntity.ok().location(location).body(alumnoActualizado);
     }

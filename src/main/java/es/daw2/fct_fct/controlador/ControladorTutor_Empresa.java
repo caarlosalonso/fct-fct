@@ -25,8 +25,8 @@ public class ControladorTutor_Empresa {
     @PostMapping("/addTutor_Empresa")
     public ResponseEntity<?> crearTutor_Empresa(@RequestBody Tutor_empresa t) {
         servicioTutor_Empresa.addTutor_Empresa(t);
-        
-        URI location = URI.create("/listarTutor_EmpresaId" +t.getId());
+
+        URI location = URI.create("/listarTutor_EmpresaId" + t.getTutor_empresa_id());
 
         return ResponseEntity.created(location).body(t);
     }
@@ -62,14 +62,14 @@ public class ControladorTutor_Empresa {
         Optional<Tutor_empresa> tutor_empresa = servicioTutor_Empresa.getTutor_EmpresaId(id);
 
         if (!tutor_empresa.isPresent()) {
-            return ResponseEntity.notFound().build();     
+            return ResponseEntity.notFound().build();
         }
-    
-        t.setId(id);
-        
+
+        t.setTutor_empresa_id(id);
+
         Tutor_empresa tutorActualizado = servicioTutor_Empresa.addTutor_Empresa(t);
 
-        URI location = URI.create("/listarTutor_EmpresaId" + t.getId());
+        URI location = URI.create("/listarTutor_EmpresaId" + t.getTutor_empresa_id());
 
         return ResponseEntity.ok().location(location).body(tutorActualizado);
     }

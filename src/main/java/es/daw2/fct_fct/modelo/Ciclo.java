@@ -14,10 +14,10 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Entity
 @Table(name = "ciclos")
-public class Ciclos {
+public class Ciclo {
     @Id
     @GeneratedValue
-    private Long id;
+    private Long ciclo_id;
 
     @Column(name = "name", nullable = false, columnDefinition = "varchar(255)")
     private String name;

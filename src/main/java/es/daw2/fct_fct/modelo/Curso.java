@@ -3,8 +3,9 @@ package es.daw2.fct_fct.modelo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.Column;
-import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.MapsId;
@@ -19,20 +20,21 @@ import lombok.NoArgsConstructor;
 @Entity
 @Table(name = "cursos")
 public class Curso {
-    @EmbeddedId
-    private CursoId id;
+    @Id
+    @GeneratedValue
+    private Long curso_id;
 
     @ManyToOne
     @JsonIgnore
     @MapsId("alumnoId")
     @JoinColumn(name = "alumno_id")
-    private Alumnos alumnos;
+    private Alumno alumnos;
 
     @ManyToOne
     @JsonIgnore
     @MapsId("cicloId")
     @JoinColumn(name = "ciclo_id")
-    private Ciclos ciclos;
+    private Ciclo ciclos;
     
     @Column(name = "horas_hechas", nullable = false, columnDefinition = "TINYINT UNSIGNED")
     private Short horasHechas;
