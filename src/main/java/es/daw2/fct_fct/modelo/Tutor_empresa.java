@@ -23,12 +23,12 @@ import lombok.NoArgsConstructor;
 public class Tutor_empresa {
     @Id
     @GeneratedValue
-    private Long id;
+    private Long tutor_empresa_id;
 
     @ManyToOne
     @JsonIgnore
     @JoinColumn(name = "empresa_id")
-    private Empresas empresas;
+    private Empresa empresa;
 
     @Column(name = "nombre", nullable = false, columnDefinition = "VARCHAR(255)")
     private String nombre;

@@ -22,15 +22,15 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Entity
 @Table(name = "empresas")
-public class Empresas {
+public class Empresa {
     @Id
     @GeneratedValue
-    private Long id;
+    private Long empresa_id;
 
     @ManyToOne
     @JsonIgnore
     @JoinColumn(name = "propuesta_por")
-    private Users propuesta_por;
+    private User propuesta_por;
 
     @Column(name = "observaciones", nullable = true, columnDefinition = "VARCHAR(2047)")
     private String observaciones;

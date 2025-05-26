@@ -17,13 +17,13 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Entity
 @Table(name = "tutores")
-public class Tutores {
+public class Tutor {
     @Id
     @GeneratedValue
-    private Long id;
+    private Long tutor_id;
 
     @ManyToOne
     @JsonIgnore
     @JoinColumn(name = "user_id")
-    private Users user;
+    private User user;
 }

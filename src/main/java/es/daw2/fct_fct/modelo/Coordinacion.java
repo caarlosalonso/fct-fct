@@ -20,10 +20,10 @@ import lombok.NoArgsConstructor;
 public class Coordinacion {
     @Id
     @GeneratedValue
-    private Long id;
+    private Long coordinacion_id;
 
     @ManyToOne
     @JsonIgnore
     @JoinColumn(name = "user_id")
-    private Users user;
+    private User user;
 }

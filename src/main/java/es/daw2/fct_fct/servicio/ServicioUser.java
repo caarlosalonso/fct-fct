@@ -6,7 +6,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import es.daw2.fct_fct.modelo.Users;
+import es.daw2.fct_fct.modelo.User;
 import es.daw2.fct_fct.repositorio.RepositorioUser;
 import es.daw2.fct_fct.utils.PasswordUtils;
 
@@ -17,9 +17,9 @@ public class ServicioUser implements IFServicioUser {
     RepositorioUser repositorioUser;
     
     @Override
-    public Users findByEmailAndPassword(String email, String password) {
-        Users loginUser = null;
-        for (Users user : repositorioUser.findAll()) {
+    public User findByEmailAndPassword(String email, String password) {
+        User loginUser = null;
+        for (User user : repositorioUser.findAll()) {
             if (user.getEmail().equalsIgnoreCase(email)) {
                 loginUser = user;
             }
@@ -36,23 +36,23 @@ public class ServicioUser implements IFServicioUser {
 
     
     @Override
-    public List<Users> listaUsers() {
-        return (List<Users>) repositorioUser.findAll();
+    public List<User> listaUsers() {
+        return (List<User>) repositorioUser.findAll();
     }
 
     @Override
-    public Users addUsers(Users u) {
+    public User addUsers(User u) {
         return repositorioUser.save(u);
     }
 
     @Override
-    public Optional<Users> getUsersId(Long id) {
+    public Optional<User> getUsersId(Long id) {
         return repositorioUser.findById(id);
     }
 
     @Override
     public boolean borrarUsers(Long id){
-        Optional<Users> userOptional = repositorioUser.findById(id);
+        Optional<User> userOptional = repositorioUser.findById(id);
 
         if(userOptional.isPresent()){
             repositorioUser.delete(userOptional.get());

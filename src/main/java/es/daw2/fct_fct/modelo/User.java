@@ -16,10 +16,10 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Entity
 @Table(name="users")
-public class Users {
+public class User {
     @Id
     @GeneratedValue
-    private Long id;
+    private Long user_id;
 
     @Column(name = "name", nullable = false, columnDefinition = "varchar(255)")
     private String name;
@@ -37,7 +37,7 @@ public class Users {
     @Column(name = "is_admin", nullable = false, columnDefinition = "TINYINT DEFAULT 0")
     private boolean isAdmin;
 
-    public Users(String email, String password) {
+    public User(String email, String password) {
         this.name = "";
         this.password = password;
         this.email = email;

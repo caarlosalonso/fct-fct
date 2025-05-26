@@ -23,27 +23,27 @@ import lombok.NoArgsConstructor;
 public class Fct {
     @Id
     @GeneratedValue
-    private Long id;
+    private Long fct_id;
 
     @ManyToOne
     @JsonIgnore
     @JoinColumn(name = "alumno_id")
-    private Alumnos alumno;
+    private Alumno alumno;
 
     @ManyToOne
     @JsonIgnore
     @JoinColumn(name = "tutor_id")
-    private Tutores tutor;
+    private Tutor tutor;
 
     @ManyToOne
     @JsonIgnore
     @JoinColumn(name = "empresa_id")
-    private Empresas empresa;
+    private Empresa empresa;
 
     @ManyToOne
     @JsonIgnore
     @JoinColumn(name = "ciclo_id")
-    private Ciclos ciclo;
+    private Ciclo ciclo;
 
     @Column(name = "fecha_inicio", nullable = true)
     private LocalDate fechaInicio;

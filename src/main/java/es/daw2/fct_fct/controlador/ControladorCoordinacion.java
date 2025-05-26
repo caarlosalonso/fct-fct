@@ -25,8 +25,8 @@ public class ControladorCoordinacion {
     @PostMapping("/addCoordinacion")
     public ResponseEntity<?> crearCoordinacion(@RequestBody Coordinacion c) {
         servicioCoordinacion.addCoordinacion(c);
-        
-        URI location = URI.create("/listarCoordinacionId" +c.getId());
+
+        URI location = URI.create("/listarCoordinacionId" +c.getCoordinacion_id());
 
         return ResponseEntity.created(location).body(c);
     }
@@ -65,11 +65,11 @@ public class ControladorCoordinacion {
             return ResponseEntity.notFound().build();
         }
 
-        c.setId(id);
+        c.setCoordinacion_id(id);
 
         Coordinacion coordinacionActualizado = servicioCoordinacion.addCoordinacion(c);
 
-        URI location = URI.create("/coordinacion/" +c.getId());
+        URI location = URI.create("/coordinacion/" +c.getCoordinacion_id());
 
         return ResponseEntity.ok().location(location).body(coordinacionActualizado);
     }

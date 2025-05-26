@@ -6,7 +6,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import es.daw2.fct_fct.modelo.Ciclos;
+import es.daw2.fct_fct.modelo.Ciclo;
 import es.daw2.fct_fct.repositorio.RepositorioCiclos;
 
 @Service
@@ -16,23 +16,23 @@ public class ServicioCiclos implements IFServicioCiclos{
     RepositorioCiclos repositorioCiclos;
 
     @Override
-    public List<Ciclos> listaCiclos(){
-        return (List<Ciclos>) repositorioCiclos.findAll();
+    public List<Ciclo> listaCiclos(){
+        return (List<Ciclo>) repositorioCiclos.findAll();
     }
 
     @Override
-    public Ciclos addCiclos(Ciclos c){
+    public Ciclo addCiclos(Ciclo c){
         return repositorioCiclos.save(c);
     }
 
     @Override
-    public Optional<Ciclos> getCiclosId(Long id){
+    public Optional<Ciclo> getCiclosId(Long id){
         return repositorioCiclos.findById(id);
     }
 
     @Override
     public boolean borrarCiclos(Long id){
-        Optional<Ciclos> ciclosOptional = repositorioCiclos.findById(id);
+        Optional<Ciclo> ciclosOptional = repositorioCiclos.findById(id);
 
         if(ciclosOptional.isPresent()){
             repositorioCiclos.delete(ciclosOptional.get());

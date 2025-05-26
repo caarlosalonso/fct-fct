@@ -23,17 +23,17 @@ import lombok.NoArgsConstructor;
 public class Review {
     @Id
     @GeneratedValue
-    private Long id;
+    private Long review_id;
 
     @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "user_id")
-    private Users user;
+    private User user;
 
     @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "empresa_id")
-    private Empresas empresa;
+    private Empresa empresa;
 
     @Column(name = "score", nullable = false, columnDefinition = "TINYINT")
     private Byte score;
