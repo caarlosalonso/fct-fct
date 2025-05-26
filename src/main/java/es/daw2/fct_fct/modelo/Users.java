@@ -1,6 +1,6 @@
 package es.daw2.fct_fct.modelo;
 
-import javax.validation.constraints.Email;
+import jakarta.validation.constraints.Email;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
