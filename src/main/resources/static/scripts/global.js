@@ -36,7 +36,7 @@ class Form {
         this.getEntries();
         this.buildLegend();
         this.buildErrorMessage();
-        this.buildSubmitAndReset();
+        this.buildSubmit();
         this.buildEvents();
 
         Form.formMap.set(this.form, this);
@@ -48,6 +48,8 @@ class Form {
                 case 'email':       this.entries.push(new EmailInput(input));       break;
                 case 'password':    this.entries.push(new PasswordInput(input));    break;
                 case 'text':        this.entries.push(new TextInput(input));        break;
+                case 'tel':         this.entries.push(new TelInput(input));         break;
+                case 'file':        this.entries.push(new FileInput(input));        break;
                 default:            this.entries.push(new Input(input));            break;
             }
         });
@@ -68,17 +70,18 @@ class Form {
         this.errorSection.appendChild(this.errorMessage);
     }
 
-    buildSubmitAndReset() {
+    buildSubmit() {
         const wrapper = document.createElement('div');
         wrapper.classList.add('form-group', 'buttons-wrapper');
+        wrapper.id = 'buttons-wrapper';
         this.form.appendChild(wrapper);
 
-        this.submit = document.createElement('input');
+        this.submit = document.createElement('button');
         this.submit.type = 'submit';
         this.submit.id = 'submit';
         this.submit.classList.add('form-buttons');
 
-        this.submit.value = Utility.getAttributeValueOrDefault('submit-text', 'Submit', this.form);
+        this.submit.textContent = Utility.getAttributeValueOrDefault('submit-text', 'Submit', this.form);
         wrapper.appendChild(this.submit);
     }
 
@@ -110,8 +113,31 @@ class Form {
             if (! this.showErrorIfRequiredEmpty()) return;
             if (! this.showErrorIfNotValid()) return;
 
+            this.submitLoading();
+
             this.onSubmit();
         });
+    }
+
+    submitLoading() {
+        this.submit.disabled = true;
+        this.submit.classList.add('loading');
+        this.submit.textContent = '';
+        
+        const spinner = document.createElement('span');
+        spinner.classList.add('spinner-border', 'spinner-border-sm');
+        this.submit.appendChild(spinner);
+    }
+
+    submitFinish() {
+        this.submit.disabled = false;
+        this.submit.classList.remove('loading');
+        this.submit.textContent = Utility.getAttributeValueOrDefault('submit-text', 'Submit', this.form);
+        
+        const spinner = this.submit.querySelector('.spinner-border');
+        if (spinner) {
+            spinner.remove();
+        }
     }
 
     /**
@@ -124,12 +150,18 @@ class Form {
                 this.entries.forEach((input) => {
                     input.undoChanges();
                 });
-            } else {
-
+                return true;
             }
+            return false;
         }
+        return true;
     }
 
+    reset() {
+        this.entries.forEach((input) => {
+            input.clear();
+        });
+    }
 
     hasAnyChanged() {
         return this.entries.some((input) => {
@@ -204,10 +236,10 @@ class Form {
             target = document.getElementById(target);
             if (target === null) {
                 console.warn(`Input [${target}] is invalid.`);
-                return;
+                return null;
             }
         }
-        return this.entries.get(target) || null;
+        return this.entries.find(entry => entry.input === target) || null;
     }
 
     static initForm(formElement) {
@@ -252,101 +284,8 @@ class Input {
         }
     }
 
-    init() {}
-
     equals(id) {
         return this.input.id === id;
-    }
-
-    validate() {
-        return true;
-    }
-
-}
-
-class TextInput extends Input {
-    constructor(input) {
-        super(input);
-    }
-
-    init() {
-        this.buildInput();
-        this.updateState();
-        this.createValidityElements();
-    }
-
-    buildInput() {
-        this.label = document.createElement('p');
-        this.label.classList.add('label');
-        this.label.innerText = this.input.getAttribute('label');
-
-        /*  The label's height isn't computed until it is added to the DOM, but
-            it can't be added to DOM until it's position is computed, because,
-            if it's added later, it would slide into position which would look
-            bad. To fix this, the height is assumed to be 24px.                 */
-        /*                     parent's half height      label's half height   ?*/
-        let verticalPosition = this.parent.offsetHeight / 2 - 12             - 1;
-        this.label.style.top = verticalPosition + "px";
-        this.parent.appendChild(this.label);
-        
-        if (! this.isEmpty()) {
-            this.states.active = true;
-        }
-
-        this.input.addEventListener('input', (event) => {
-            this.checkChange();
-        });
-
-        //  On focus, moves the label up
-        this.input.addEventListener('focus', (event) => {
-            this.states.focus = true;
-            if (this.isEmpty()) this.states.active = true;
-            this.updateState();
-        });
-
-        //  When focus is lost, moves the label back
-        this.input.addEventListener('blur', (event) => {
-            this.states.focus = false;
-            if (this.isEmpty()) this.states.active = false;
-            this.updateState();
-        });
-
-        /*  Makes it so, if the label is clicked, the input is focused          */
-        this.label.addEventListener('click', (event) => {
-            this.input.focus();
-        });
-    }
-
-    updateState() {
-        const {label, states} = this;
-        label.classList.toggle('active', states.active);
-        label.classList.toggle('focus', states.focus);
-        label.classList.toggle('required', states.required);
-        label.classList.toggle('tracked', states.tracked);
-        label.classList.toggle('changed', states.changed);
-
-        if (this.states.frozen) {
-            this.label.classList.add('frozen');
-            this.input.setAttribute('disabled', 'disabled');
-            this.input.setAttribute('frozen', 'frozen');
-        } else {
-            this.label.classList.remove('frozen');
-            this.input.removeAttribute('disabled');
-            this.input.removeAttribute('frozen');
-        }
-    }
-
-    checkChange() {
-        this.parent.classList.remove('invalid');
-
-        this.showValidity();
-
-        if (! this.states.tracked) return;
-
-        this.states.changed =
-            this.input.value !== this.states.trackedValue;
-
-        this.updateState();
     }
 
     createValidityElements() {
@@ -398,6 +337,112 @@ class TextInput extends Input {
         }
     }
 
+    buildLabel() {
+        this.label = document.createElement('p');
+        this.label.classList.add('label');
+        this.label.innerText = this.input.getAttribute('label');
+
+        /*  The label's height isn't computed until it is added to the DOM, but
+            it can't be added to DOM until it's position is computed, because,
+            if it's added later, it would slide into position which would look
+            bad. To fix this, the height is assumed to be 24px.                 */
+        /*                     parent's half height      label's half height   ?*/
+        let verticalPosition = this.parent.offsetHeight / 2 - 12             - 1;
+        this.label.style.top = `${verticalPosition}px`;
+        this.parent.appendChild(this.label);
+    }
+
+    updateState() {
+        const {label, states} = this;
+        label.classList.toggle('active', states.active);
+        label.classList.toggle('focus', states.focus);
+        label.classList.toggle('required', states.required);
+        label.classList.toggle('tracked', states.tracked);
+        label.classList.toggle('changed', states.changed);
+
+        if (this.states.frozen) {
+            this.label.classList.add('frozen');
+            this.input.setAttribute('disabled', 'disabled');
+            this.input.setAttribute('frozen', 'frozen');
+        } else {
+            this.label.classList.remove('frozen');
+            this.input.removeAttribute('disabled');
+            this.input.removeAttribute('frozen');
+        }
+    }
+
+    validate() {
+        return true;
+    }
+
+    init() {}
+
+    isDifferent() {
+        return false;
+    }
+
+    format(value) {
+        return value;
+    }
+}
+
+class TextInput extends Input {
+    constructor(input) {
+        super(input);
+        this.isDifferent = function() {
+            return this.states.tracked && this.input.value !== this.states.trackedValue;
+        }
+    }
+
+    init() {
+        this.buildLabel();
+        this.buildInput();
+        this.updateState();
+        this.createValidityElements();
+    }
+
+    buildInput() {
+        if (! this.isEmpty()) {
+            this.states.active = true;
+        }
+
+        this.input.addEventListener('input', (event) => {
+            this.checkChange();
+        });
+
+        //  On focus, moves the label up
+        this.input.addEventListener('focus', (event) => {
+            this.states.focus = true;
+            if (this.isEmpty()) this.states.active = true;
+            this.updateState();
+        });
+
+        //  When focus is lost, moves the label back
+        this.input.addEventListener('blur', (event) => {
+            this.states.focus = false;
+            if (this.isEmpty()) this.states.active = false;
+            this.updateState();
+        });
+
+        /*  Makes it so, if the label is clicked, the input is focused          */
+        this.label.addEventListener('click', (event) => {
+            this.input.focus();
+        });
+    }
+
+    checkChange() {
+        this.parent.classList.remove('invalid');
+
+        this.showValidity();
+
+        if (! this.states.tracked) return;
+
+        this.states.changed =
+            this.input.value !== this.states.trackedValue;
+
+        this.updateState();
+    }
+
     getLength() {
         return this.input.value.length;
     }
@@ -415,11 +460,15 @@ class TextInput extends Input {
         if (value === null || value === undefined)
             value = '';
 
+        value = this.format(value);
+
+        this.states.tracked = true;
         this.states.trackedValue = value;
         if (override) {
             this.input.value = value;
             this.states.changed = false;
         }
+        this.states.active = !this.isEmpty();
 
         this.checkChange();
     }
@@ -431,8 +480,13 @@ class TextInput extends Input {
         this.updateState();
     }
 
-    isDifferent() {
-        return this.tracked && this.input.value !== this.states.trackedValue;
+    clear() {
+        this.input.value = '';
+        this.states.active = false;
+        this.states.changed = false;
+        this.states.trackedValue = '';
+        this.updateState();
+        this.checkChange();
     }
 }
 
@@ -608,7 +662,158 @@ class EmailInput extends TextInput {
         // Computes the input's width
         const inputWidth = canvasContext.measureText(this.input.value).width;
         // Computes position
-        const x = paddingLeft + inputWidth + 6;
+        const x = paddingLeft + inputWidth + 1;
         this.autocomplete.style.left = `${x}px`;
+    }
+}
+
+class TelInput extends TextInput {
+    constructor(input) {
+        super(input);
+        this.validate = () => {
+            if (this.isEmpty()) return true;
+            const val = String(this.input.value).replace(/\s/g, '');
+            return /^\d{9}$/.test(val);
+        }
+
+        this.format = function(value) {
+            const raw = value.replace(/\D/g, '');
+            return raw.replace(/(\d{1,3})(\d{1,2})?(\d{1,2})?(\d{1,2})?/, (match, p1, p2, p3, p4) => {
+                return [p1, p2, p3, p4].filter(Boolean).join(' ');
+            });
+        }
+    }
+
+    init() {
+        super.init();
+        this.input.setAttribute('type', 'tel');
+        this.input.addEventListener('input', (event) => {
+            this.input.value = this.format(this.input.value);
+            this.checkChange();
+        });
+    }
+}
+
+
+class FileInput extends Input {
+    constructor(input) {
+        super(input);
+        this.validate = () => {
+            const file = this.input.files[0];
+            if (!file) return true; // No file selected, considered valid
+            const allowedExtensions = this.input.getAttribute('accept')?.split(',') || [];
+            const fileExtension = file.name.split('.').pop().toLowerCase();
+            return allowedExtensions.includes(`.${fileExtension}`);
+        };
+    }
+
+
+    init() {
+        this.buildFileInput();
+        this.createValidityElements();
+    }
+
+    buildFileInput() {
+        this.input.classList.add('vanished');
+
+        this.fakeInput = document.createElement('div');
+        this.fakeInput.classList.add('fake-input');
+        this.fakeInput.innerText = 'Ningún archivo seleccionado';
+        this.fakeInput.addEventListener('click', (event) => {
+            this.input.click();
+        });
+
+        this.parent.appendChild(this.fakeInput);
+
+        this.buildLabel();
+        this.states.active = true;
+        this.updateState();
+
+        this.label.addEventListener('click', (event) => {
+            this.input.click();
+        });
+
+        this.input.addEventListener('change', (event) => {
+            this.setText();
+            this.checkChange();
+        });
+        this.input.addEventListener('focus', (event) => {
+            this.states.focus = true;
+            this.fakeInput.classList.add('focus');
+            this.updateState();
+        });
+
+        //  When focus is lost, moves the label back
+        this.input.addEventListener('blur', (event) => {
+            this.states.focus = false;
+            this.fakeInput.classList.remove('focus');
+            this.updateState();
+        });
+
+        window.addEventListener('resize', () => this.setText());
+    }
+
+    setText() {
+        const file = this.input.files[0];
+        this.fakeInput.innerText = '';
+        if (file) {
+            const computedText = this.computeText(file.name);
+            this.fakeInput.innerText = computedText;
+            return;
+        }
+        this.fakeInput.innerText = 'Ningún archivo seleccionado';
+    }
+
+    computeText(value) {
+        let left = 0, right = 0;
+        const style = window.getComputedStyle(this.fakeInput);
+        const paddingLeft = parseFloat(style.getPropertyValue("padding-left"));
+        const paddingRight = parseFloat(style.getPropertyValue("padding-right"));
+        const canvasContext = document.createElement("canvas").getContext("2d");
+        canvasContext.font = style.getPropertyValue("font");
+        while (true) {
+            let truncated = value;
+            if (left + right > 0) {
+                const middle = (value.length - left - right) / 2;
+                truncated = value.slice(0, Math.ceil(middle)) +
+                            '...' +
+                            value.slice(value.length - Math.floor(middle));
+            }
+            const inputWidth = canvasContext.measureText(truncated).width;
+            const totalWidth = paddingLeft + paddingRight + inputWidth;
+            if (totalWidth <= this.fakeInput.clientWidth) return truncated;
+
+            // Remove one more letter from either side (alternate sides)
+            if ((left + right) % 2 === 0) left++;
+            else right++;
+
+            if (left + right >= value.length) return '...';
+        }
+    }
+
+    checkChange() {
+        this.parent.classList.remove('invalid');
+        this.showValidity();
+    }
+}
+
+class DateInput extends Input {
+    constructor(input) {
+        super(input);
+        this.validate = () => {
+            if (this.isEmpty()) return true;
+            const date = new Date(this.input.value);
+            return !isNaN(date.getTime());
+        };
+
+        this.format = (value) => {
+            const date = new Date(value);
+            return date.toISOString().split('T')[0];
+        };
+    }
+
+    init() {
+        this.input.setAttribute('type', 'date');
+        this.createValidityElements();
     }
 }
