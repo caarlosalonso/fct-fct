@@ -38,8 +38,7 @@ public class ControladorTutores {
     //cRud
     @GetMapping("/listarTutores")
     public ResponseEntity<?> listaTutores() {
-        Iterable<Tutores> it = null;
-        it = servicioTutores.listaTutores();
+        Iterable<Tutores> it = servicioTutores.listaTutores();
 
         if (it!=null) {
             return ResponseEntity.ok(it);

@@ -35,8 +35,7 @@ public class ControladorCoordinacion {
     //cRud
     @GetMapping("/listarCoordinacion")
     public ResponseEntity<?> listaCoordinacion() {
-        Iterable<Coordinacion> it = null;
-        it = servicioCoordinacion.listaCoordinacion();
+        Iterable<Coordinacion> it = servicioCoordinacion.listaCoordinacion();
 
         if (it!=null) {
             return ResponseEntity.ok(it);

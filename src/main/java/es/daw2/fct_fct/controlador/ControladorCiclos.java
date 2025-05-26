@@ -5,16 +5,15 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RestController;
-
-import es.daw2.fct_fct.modelo.Ciclos;
-import es.daw2.fct_fct.servicio.ServicioCiclos;
-
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
+
+import es.daw2.fct_fct.modelo.Ciclos;
+import es.daw2.fct_fct.servicio.ServicioCiclos;
 
 @RestController
 public class ControladorCiclos {
@@ -36,8 +35,7 @@ public class ControladorCiclos {
     //cRud
     @GetMapping("/listarCiclos")
     public ResponseEntity<?> listaCiclos() {
-        Iterable<Ciclos> it = null;
-        it = servicioCiclos.listaCiclos();
+        Iterable<Ciclos> it = servicioCiclos.listaCiclos();
 
         if (it!=null) {
             return ResponseEntity.ok(it);
