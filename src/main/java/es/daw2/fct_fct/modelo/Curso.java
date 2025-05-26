@@ -26,13 +26,11 @@ public class Curso {
 
     @ManyToOne
     @JsonIgnore
-    @MapsId("alumnoId")
     @JoinColumn(name = "alumno_id")
     private Alumno alumnos;
 
     @ManyToOne
     @JsonIgnore
-    @MapsId("cicloId")
     @JoinColumn(name = "ciclo_id")
     private Ciclo ciclos;
     
