@@ -28,7 +28,7 @@ public class Fct {
 
     @ManyToOne
     @JsonIgnore
-    @JoinColumn(name = "alumno_id")
+    @JoinColumn(name = "alumno_id", nullable = false)
     private Alumno alumno;
 
     @ManyToOne
