@@ -34,7 +34,7 @@ public class Alumnos {
     @Column(name = "phone", nullable = false, columnDefinition = "varchar(15)")
     private String phone;
 
-    @Column(name = "adress", nullable = false, columnDefinition = "varchar(255)")
+    @Column(name = "address", nullable = false, columnDefinition = "varchar(255)")
     private String address;
 
     @Column(name = "convocatoria", nullable = false, columnDefinition = "int default 3")
