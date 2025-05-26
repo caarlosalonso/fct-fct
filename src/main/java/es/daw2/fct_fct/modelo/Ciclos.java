@@ -28,7 +28,7 @@ public class Ciclos {
     @Column(name = "familia_profesional", nullable = false, columnDefinition = "varchar(255)")
     private String familiaProfesional;
 
-    @Column(name = "horas_practicas", nullable = false, columnDefinition = "UNSIGNED TINYINT")
+    @Column(name = "horas_practicas", nullable = false, columnDefinition = "TINYINT UNSIGNED")
     private Short horasPracticas;
 
     public enum Nivel {

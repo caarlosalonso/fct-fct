@@ -34,7 +34,7 @@ public class Curso {
     @JoinColumn(name = "ciclo_id")
     private Ciclos ciclos;
     
-    @Column(name = "horas_hechas", nullable = false, columnDefinition = "UNSIGNED TINYINT")
+    @Column(name = "horas_hechas", nullable = false, columnDefinition = "TINYINT UNSIGNED")
     private Short horasHechas;
 
 }
