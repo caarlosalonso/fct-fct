@@ -2,7 +2,7 @@ package es.daw2.fct_fct.modelo;
 
 import java.sql.Date;
 
-import javax.validation.constraints.Email;
+import jakarta.validation.constraints.Email;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
