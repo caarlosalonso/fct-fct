@@ -16,6 +16,7 @@
     --error-animation: error 450ms;
 
     --success-color: #4caf50;
+    --success-animation: success 450ms;
 
     --focus-color: hsl(147, 100%, 65%);
     --required-color: hsl(27, 100%, 65%);
@@ -240,14 +241,18 @@ input.text-based {
 #message {
     &.error {
         color: var(--error-color);
+
+        &.effect {
+            animation: var(--error-animation);
+        }
     }
 
     &.success {
         color: var(--success-color);
-    }
 
-    &.effect {
-        animation: var(--error-animation);
+        &.effect {
+            animation: var(--success-animation);
+        }
     }
 }
 
@@ -407,6 +412,18 @@ input.password.text-based {
 
     100% {
         color: var(--error-color);
+        transform: rotate(0deg) scale(1);
+    }
+}
+
+@keyframes success {
+    0% {
+        color: #ffffff;
+        transform: rotate(-3deg) scale(1.25);
+    }
+
+    100% {
+        color: var(--success-color);
         transform: rotate(0deg) scale(1);
     }
 }
