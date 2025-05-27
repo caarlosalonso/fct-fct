@@ -41,7 +41,7 @@
 
 <script>
     window.addEventListener('FormsCreated', (event) => {
-        const form = document.getElementById('user-creation');
+        const form = Form.getForm('user-creation');
         if (! form) {
             console.error("Form with ID 'user-creation' not found.");
             return;
