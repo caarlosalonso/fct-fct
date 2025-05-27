@@ -71,6 +71,17 @@ public class ControladorUser {
         return ResponseEntity.created(location).body(data);
     }
 
+    // Lo moví más arriba
+    //cRud
+    @GetMapping("/{id}")
+    public ResponseEntity<?> listaAlumnosId(@PathVariable Long id) {
+        Optional<User> users = servicioUser.getUsersId(id);
+        if (users.isPresent()) {
+            return ResponseEntity.ok(users.get());
+        }
+        return ResponseEntity.status(404).body("No se encontraron usuarios con el id: " + id); //No me deja poner el notFound()
+    }
+
     //cRud
     @GetMapping("/listarUsers")
     public ResponseEntity<?> listaUsers() {
@@ -81,16 +92,6 @@ public class ControladorUser {
         }else{
             return ResponseEntity.badRequest().build();
         }
-    }
-    
-    //cRud
-    @GetMapping("/users/{id}")
-    public ResponseEntity<?> listaAlumnosId(@PathVariable Long id) {
-        Optional<User> users = servicioUser.getUsersId(id);
-        if (users.isPresent()) {
-            return ResponseEntity.ok(users.get());
-        }
-        return ResponseEntity.status(404).body("No se encontraron usuarios con el id: " + id); //No me deja poner el notFound()
     }
 
     //crUd

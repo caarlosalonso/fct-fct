@@ -50,11 +50,11 @@
         form.onsubmit = () => {
             console.log('form sent');
 
-            const nombre = form.getInput('email').getValue();
+            const nombre = form.getInput('nombre').getValue();
             const email = form.getInput('email').getValue();
             const password = form.getInput('password').getValue();
             const data = {
-                nombre: nombre,
+                name: nombre,
                 email: email,
                 password: password
             };
