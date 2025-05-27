@@ -457,11 +457,6 @@ input.password.text-based {
 }
 
 @media screen and (max-width: 799px) {
-    .form-group {
-        flex-direction: column;
-        align-items: flex-start;
-    }
-
     .buttons-wrapper {
         flex-direction: column;
         align-items: center;
