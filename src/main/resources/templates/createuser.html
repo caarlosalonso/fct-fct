@@ -68,9 +68,11 @@
                 body: JSON.stringify(data)
             })
             .then(response => {
-                if (response.ok) {
+                if (response.status === 201) {
                     form.showSuccess('Usuario creado correctamente.');
                     form.reset();
+                } else if (response.status === 409) {
+                    form.showError('El correo electrónico ya está en uso.');
                 } else {
                     form.showError('Error al crear el usuario. Por favor, inténtalo de nuevo.');
                 }

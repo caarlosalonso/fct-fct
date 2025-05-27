@@ -60,7 +60,11 @@ public class ControladorUser {
         );
         newUser.setAdmin(false);
         newUser.setUpdatedPassword(false);
-        
+
+        if (servicioUser.checkEmailExists(newUser.getEmail())) {
+            return ResponseEntity.status(409).body("Email already exists"); // Conflicto, ya existe un usuario con ese email
+        }
+
         servicioUser.addUsers(newUser);
 
         UserDTO data = new UserDTO(

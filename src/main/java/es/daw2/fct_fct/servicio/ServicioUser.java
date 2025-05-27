@@ -60,4 +60,8 @@ public class ServicioUser implements IFServicioUser {
         }
         return false;
     }
+
+    public boolean checkEmailExists(String email) {
+        return repositorioUser.findByEmail(email).isPresent();
+    }
 }
