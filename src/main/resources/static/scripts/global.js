@@ -525,7 +525,7 @@ class PasswordInput extends TextInput {
 
         const img = document.createElement('img');
         img.classList.add('password-icon-img');
-        img.src = '../static/images/eye.svg';
+        img.src = '/images/eye.svg';
         img.alt = 'Toggle password visibility';
         this.icon.appendChild(img);
 
@@ -534,10 +534,10 @@ class PasswordInput extends TextInput {
         this.icon.addEventListener('click', () => {
             if (this.input.type === 'password') {
                 this.input.type = 'text';
-                img.src = '../static/images/eye-crossed.svg';
+                img.src = '/images/eye-crossed.svg';
             } else {
                 this.input.type = 'password';
-                img.src = '../static/images/eye.svg';
+                img.src = '/images/eye.svg';
             }
         });
     }
