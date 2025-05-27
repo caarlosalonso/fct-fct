@@ -48,4 +48,9 @@ public class HomeController {
         return "coordinacion.html";
     }
 
+    @GetMapping("/index")
+    public String index() {
+        return "index.html";
+    }
+
 }
