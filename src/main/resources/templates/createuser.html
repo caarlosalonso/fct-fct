@@ -68,6 +68,8 @@
                 body: JSON.stringify(data)
             })
             .then(response => {
+                console.log("Response received:", response);
+
                 if (response.status === 201) {
                     form.showSuccess('Usuario creado correctamente.');
                     form.reset();
@@ -78,6 +80,7 @@
                 }
             })
             .catch(error => {
+                console.error("Error during fetch:", error);
                 form.showError('Error al crear el usuario. Por favor, inténtalo de nuevo.');
             });
         }
