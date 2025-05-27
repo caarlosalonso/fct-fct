@@ -182,6 +182,21 @@ input.text-based {
     }
 }
 
+.form-group {
+    width: 100%;
+}
+
+.grouped-inputs {
+    display: flex;
+    gap: 25px;
+}
+
+.instance {
+    flex: 1 1 auto;
+    padding: 2px 5px;
+    margin: 15px auto 15px auto;
+}
+
 .buttons-wrapper {
     gap: 20px;
 }
@@ -242,8 +257,8 @@ input.password.text-based {
 .password-icon {
     z-index: 1;
     padding: 5px 5px;
-    height: 26px;
-    width: 26px;
+    height: 100%;
+    width: 40px;
     border-radius: 0px 6px 6px 0px;
     border: 1px solid var(--border-color);
     background-color: var(--background-color);
@@ -416,9 +431,6 @@ input.password.text-based {
     .label {
         font-size: 1rem;
     }
-
-
-    
 }
 
 @media screen and (max-width: 799px) {
@@ -443,5 +455,15 @@ input.password.text-based {
     .form-buttons {
         width: 100%;
         margin-bottom: 10px;
+    }
+
+    .grouped-inputs {
+        padding: 0px;
+        gap: 15px;
+        flex-direction: column;
+    }
+
+    .instance {
+        margin: 15px 0px;
     }
 }
