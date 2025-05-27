@@ -3,10 +3,12 @@ package es.daw2.fct_fct.servicio;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import es.daw2.fct_fct.modelo.Formacion;
 import es.daw2.fct_fct.repositorio.RepositorioFormaciones;
 
+@Service
 public class ServicioFormacion implements IFServicioFormacion {
 
     @Autowired
