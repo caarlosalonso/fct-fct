@@ -47,6 +47,7 @@ public class ControladorUser {
     }
 
     //Crud
+    @RequestMapping("/api/users") //Define la ruta base para los endpoints del controlador
     @PostMapping("/create")
     public ResponseEntity<?> crearAlumno(@RequestBody User u) {
         servicioUser.addUsers(u);
