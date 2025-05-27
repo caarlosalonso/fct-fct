@@ -35,7 +35,7 @@ class Form {
     init() {
         this.getEntries();
         this.buildLegend();
-        this.buildErrorMessage();
+        this.buildMessage();
         this.buildSubmit();
         this.buildEvents();
 
@@ -55,19 +55,22 @@ class Form {
         });
         this.entries.forEach((input) => {
             input.init();
+            input.addEventListener('input', (event) => {
+                input.states.errorAffected = false;
+            });
         });
     }
 
-    buildErrorMessage() {
-        this.errorSection = document.createElement('div');
-        this.errorSection.classList.add('form-group');
-        this.errorSection.id = 'error-section';
-        this.form.appendChild(this.errorSection);
+    buildMessage() {
+        this.messageSection = document.createElement('div');
+        this.messageSection.classList.add('form-group');
+        this.messageSection.id = 'message-section';
+        this.form.appendChild(this.messageSection);
 
-        this.errorMessage = document.createElement('p');
-        this.errorMessage.classList.add('hidden');
-        this.errorMessage.id = 'error-message';
-        this.errorSection.appendChild(this.errorMessage);
+        this.message = document.createElement('p');
+        this.message.classList.add('hidden');
+        this.message.id = 'message';
+        this.messageSection.appendChild(this.message);
     }
 
     buildSubmit() {
@@ -176,18 +179,48 @@ class Form {
     }
 
     showError(message) {
-        this.errorMessage.innerText = message;
-        this.errorMessage.classList.remove('hidden');
-        this.errorMessage.classList.add('effect');
-        setTimeout(() => {
-            this.errorMessage.classList.remove('effect');
+        this.clearMessage();
+        this.message.innerText = message;
+        this.message.classList.remove('hidden');
+        this.message.classList.add('effect', 'error');
+        this.messageTimeout = setTimeout(() => {
+            this.message.classList.remove('effect');
         }, 450);
+    }
+
+    showSuccess(message) {
+        this.clearMessage();
+        this.message.innerText = message;
+        this.message.classList.remove('hidden');
+        this.message.classList.add('effect', 'success');
+        this.messageTimeout = setTimeout(() => {
+            this.message.classList.remove('effect');
+        }, 450);
+    }
+
+    clearMessage() {
+        clearTimeout(this.messageTimeout);
+        this.message.classList.add('hidden');
+        this.message.classList.remove('effect', 'error', 'success');
+        this.message.innerText = '';
+    }
+
+    checkAffected() {
+        let anyAffected = false;
+        this.entries.forEach((input) => {
+            anyAffected |= input.states.errorAffected;
+        });
+        if (! anyAffected) this.clearMessage();
     }
 
     showErrorIfRequiredEmpty() {
         return this.showErrorIf(Input.ERROR_MESSAGES.EMPTY_REQUIRED,
                                 (input) => {
-                                    return input.states.required && input.isEmpty();
+                                    if (input.states.required && input.isEmpty()) {
+                                        input.states.errorAffected = true;
+                                        return true;
+                                    }
+                                    return false;
                                 });
     }
 
@@ -195,7 +228,11 @@ class Form {
         return this.showErrorIf(Input.ERROR_MESSAGES.INVALID,
                                 (input) => {
                                     // Los que NO son válidos
-                                    return ! input.validate();
+                                    if ( ! input.validate()) {
+                                        input.states.errorAffected = true;
+                                        return true;
+                                    }
+                                    return false;
                                 });
     }
 
@@ -249,6 +286,7 @@ class Form {
     }
 }
 
+
 class Input {
     static ATTRIBUTES = {
         REQUIRED: 'data-required',
@@ -281,6 +319,7 @@ class Input {
             'trackedValue':     Utility.getElementValueByAttribute(Input.ATTRIBUTES.TRACKED, this.input),
             'valid':            null,
             'showValidity':     Utility.getBooleanAttribute(Input.ATTRIBUTES.SHOW_VALIDITY, this.input),
+            'errorAffected':    false
         }
     }
 
