@@ -29,7 +29,7 @@ class Form {
         this.form = form;
         this.entries = [];
         // Should be replaced with personal code for the form submission.
-        this.onSubmit = () => {};
+        this.onsubmit = () => {};
     }
 
     init() {
@@ -115,7 +115,7 @@ class Form {
 
             this.submitLoading();
 
-            this.onSubmit();
+            this.onsubmit();
         });
     }
 
