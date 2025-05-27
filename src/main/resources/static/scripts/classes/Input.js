@@ -1,4 +1,4 @@
-import { Utility } from '../Utility.js';
+import { Utility } from './Utility.js';
 
 export class Input {
     static ATTRIBUTES = {
