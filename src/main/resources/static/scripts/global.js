@@ -564,6 +564,9 @@ class EmailInput extends TextInput {
 
     constructor(input) {
         super(input);
+        this.getValue = () => {
+            return this.input.value.trim().toLowerCase();
+        }
 
         this.shown = false;
 

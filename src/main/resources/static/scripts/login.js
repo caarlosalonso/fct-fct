@@ -8,7 +8,7 @@ window.addEventListener('FormsCreated', (event) => {
     form.onsubmit = () => {
         console.log("Form sent");
 
-        const email = form.getInput('email').getValue().toLowerCase();
+        const email = form.getInput('email').getValue();
         const password = form.getInput('password').getValue();
 
         // Information to be sent
@@ -17,22 +17,24 @@ window.addEventListener('FormsCreated', (event) => {
             password: password,
         };
 
-        fetch("/login", {
-            method: "POST",
+        fetch('/api/users/login', {
+            method: 'POST',
             headers: {
-                "Content-Type": "application/json",
+                'Content-Type': 'application/json',
             },
             body: JSON.stringify(data),
         })
         .then(response => {
             if (response.ok) {
-                window.location.href = "/alumnado";
+                window.location.href = '/alumnado';
             }
-            form.showErrorMessage("Login fallido: Email o contraseña incorrectos.");
+            form.showError('Login fallido: Email o contraseña incorrectos.');
+            form.submitFinish();
         })
         .catch(error => {
-            console.error("Error during login:", error);
-            form.showErrorMessage("Internal Server Error");
+            console.error('Error during login:', error);
+            form.showError('Internal Server Error');
+            form.submitFinish();
         });
     }
 });

@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import es.daw2.fct_fct.dto.UserDTO;
@@ -18,6 +19,7 @@ import es.daw2.fct_fct.servicio.ServicioUser;
 
 
 @RestController
+@RequestMapping("/api/users")
 public class ControladorUser {
     
     @Autowired
