@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import es.daw2.fct_fct.dto.LoginRequestDTO;
+import es.daw2.fct_fct.dto.UserCreateDTO;
 import es.daw2.fct_fct.dto.UserDTO;
 import es.daw2.fct_fct.modelo.User;
 import es.daw2.fct_fct.servicio.ServicioUser;
@@ -26,8 +28,11 @@ public class ControladorUser {
     private ServicioUser servicioUser;
 
     @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody User user) {
-        User userFound = servicioUser.findByEmailAndPassword(user.getEmail(), user.getPassword());
+    public ResponseEntity<?> login(@RequestBody LoginRequestDTO loginRequestDTO) {
+        User userFound = servicioUser.findByEmailAndPassword(
+            loginRequestDTO.email(),
+            loginRequestDTO.password()
+        );
 
         if (userFound == null)
             return ResponseEntity.status(401).body("Invalid credentials");
@@ -44,14 +49,39 @@ public class ControladorUser {
 
     //Crud
     @PostMapping("/create")
-    public ResponseEntity<?> crearAlumno(@RequestBody User u) {
-        servicioUser.addUsers(u);
+    public ResponseEntity<?> crearUser(@RequestBody UserCreateDTO dto) {
+        // Map DTO to entity
+        User newUser = new User();
+        newUser.setName(dto.name());
+        newUser.setEmail(dto.email());
+        newUser.setPassword(dto.password());
+        newUser.setAdmin(false);
+        newUser.setUpdatedPassword(false);
         
-        URI location = URI.create("listarUsersId" + u.getUser_id());
+        servicioUser.addUsers(newUser);
 
-        return ResponseEntity.created(location).body(u);
+        UserDTO data = new UserDTO(
+            newUser.getUser_id(),
+            newUser.getName(),
+            newUser.getEmail(),
+            newUser.isAdmin()
+        );
+
+        URI location = URI.create("/api/users/" + newUser.getUser_id());
+        return ResponseEntity.created(location).body(data);
     }
-    
+
+    // Lo moví más arriba
+    //cRud
+    @GetMapping("/{id}")
+    public ResponseEntity<?> listaAlumnosId(@PathVariable Long id) {
+        Optional<User> users = servicioUser.getUsersId(id);
+        if (users.isPresent()) {
+            return ResponseEntity.ok(users.get());
+        }
+        return ResponseEntity.status(404).body("No se encontraron usuarios con el id: " + id); //No me deja poner el notFound()
+    }
+
     //cRud
     @GetMapping("/listarUsers")
     public ResponseEntity<?> listaUsers() {
@@ -62,16 +92,6 @@ public class ControladorUser {
         }else{
             return ResponseEntity.badRequest().build();
         }
-    }
-    
-    //cRud
-    @GetMapping("/users/{id}")
-    public ResponseEntity<?> listaAlumnosId(@PathVariable Long id) {
-        Optional<User> users = servicioUser.getUsersId(id);
-        if (users.isPresent()) {
-            return ResponseEntity.ok(users.get());
-        }
-        return ResponseEntity.status(404).body("No se encontraron usuarios con el id: " + id); //No me deja poner el notFound()
     }
 
     //crUd
