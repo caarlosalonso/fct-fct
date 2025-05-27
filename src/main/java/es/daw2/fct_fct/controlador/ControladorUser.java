@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import es.daw2.fct_fct.dto.UserDTO;
-import es.daw2.fct_fct.modelo.Users;
+import es.daw2.fct_fct.modelo.User;
 import es.daw2.fct_fct.servicio.ServicioUser;
 
 
@@ -24,14 +24,14 @@ public class ControladorUser {
     private ServicioUser servicioUser;
 
     @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody Users user) {
-        Users userFound = servicioUser.findByEmailAndPassword(user.getEmail(), user.getPassword());
+    public ResponseEntity<?> login(@RequestBody User user) {
+        User userFound = servicioUser.findByEmailAndPassword(user.getEmail(), user.getPassword());
 
         if (userFound == null)
             return ResponseEntity.status(401).body("Invalid credentials");
         
         UserDTO dto = new UserDTO(
-            userFound.getId(),
+            userFound.getUser_id(),
             userFound.getName(),
             userFound.getEmail(),
             userFound.isAdmin()
@@ -42,10 +42,10 @@ public class ControladorUser {
 
     //Crud
     @PostMapping("/addUser")
-    public ResponseEntity<?> crearAlumno(@RequestBody Users u) {
+    public ResponseEntity<?> crearAlumno(@RequestBody User u) {
         servicioUser.addUsers(u);
         
-        URI location = URI.create("listarUsersId" + u.getId());
+        URI location = URI.create("listarUsersId" + u.getUser_id());
 
         return ResponseEntity.created(location).body(u);
     }
@@ -53,7 +53,7 @@ public class ControladorUser {
     //cRud
     @GetMapping("/listarUsers")
     public ResponseEntity<?> listaUsers() {
-        Iterable<Users> it = servicioUser.listaUsers();
+        Iterable<User> it = servicioUser.listaUsers();
 
         if (it!=null) {
             return ResponseEntity.ok(it);
@@ -65,7 +65,7 @@ public class ControladorUser {
     //cRud
     @GetMapping("/users/{id}")
     public ResponseEntity<?> listaAlumnosId(@PathVariable Long id) {
-        Optional<Users> users = servicioUser.getUsersId(id);
+        Optional<User> users = servicioUser.getUsersId(id);
         if (users.isPresent()) {
             return ResponseEntity.ok(users.get());
         }
@@ -74,18 +74,18 @@ public class ControladorUser {
 
     //crUd
     @PostMapping("/actualizarUsers/{id}")
-    public ResponseEntity<?> actualizarUser(@PathVariable Long id, @RequestBody Users u){
-        Optional<Users> optional = servicioUser.getUsersId(id);
+    public ResponseEntity<?> actualizarUser(@PathVariable Long id, @RequestBody User u){
+        Optional<User> optional = servicioUser.getUsersId(id);
 
         if(!optional.isPresent()){
             return ResponseEntity.notFound().build();
         }
 
-        u.setId(id);
+        u.setUser_id(id);
 
-        Users userActualizado = servicioUser.addUsers(u);
+        User userActualizado = servicioUser.addUsers(u);
 
-        URI location = URI.create("/users/" +u.getId());
+        URI location = URI.create("/users/" +u.getUser_id());
 
         return ResponseEntity.ok().location(location).body(userActualizado);
     }

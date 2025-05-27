@@ -9,5 +9,4 @@ class FctFctApplicationTests {
 	@Test
 	void contextLoads() {
 	}
-
 }

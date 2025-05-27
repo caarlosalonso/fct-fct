@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import es.daw2.fct_fct.modelo.Tutores;
+import es.daw2.fct_fct.modelo.Tutor;
 import es.daw2.fct_fct.servicio.ServicioTutores;
 
 
@@ -26,10 +26,10 @@ public class ControladorTutores {
 
     //Crud
     @PostMapping("/addTutor")
-    public ResponseEntity<?> crearTutores(@RequestBody Tutores t) {
+    public ResponseEntity<?> crearTutores(@RequestBody Tutor t) {
         servicioTutores.addTutores(t);
-        
-        URI location = URI.create("/listarTutoresId" +t.getId());
+
+        URI location = URI.create("/listarTutoresId" + t.getTutor_id());
 
         return ResponseEntity.created(location).body(t);
     }
@@ -38,7 +38,7 @@ public class ControladorTutores {
     //cRud
     @GetMapping("/listarTutores")
     public ResponseEntity<?> listaTutores() {
-        Iterable<Tutores> it = servicioTutores.listaTutores();
+        Iterable<Tutor> it = servicioTutores.listaTutores();
 
         if (it!=null) {
             return ResponseEntity.ok(it);
@@ -50,7 +50,7 @@ public class ControladorTutores {
     //cRud
     @GetMapping("/tutores/{id}")
     public ResponseEntity<?> listaTutoresId(@PathVariable Long id) {
-        Optional<Tutores> Tutores = servicioTutores.getTutoresId(id);
+        Optional<Tutor> Tutores = servicioTutores.getTutoresId(id);
 
         if (Tutores.isPresent()) {
             return ResponseEntity.ok(Tutores.get());
@@ -61,18 +61,18 @@ public class ControladorTutores {
     
     //crUd
     @PostMapping("/actualizarTutores/{id}")
-    public ResponseEntity<?> actualizarTutor(@PathVariable Long id, @RequestBody Tutores a){
-        Optional<Tutores> optional = servicioTutores.getTutoresId(id);
+    public ResponseEntity<?> actualizarTutor(@PathVariable Long id, @RequestBody Tutor a){
+        Optional<Tutor> optional = servicioTutores.getTutoresId(id);
 
         if(!optional.isPresent()){
             return ResponseEntity.notFound().build();
         }
 
-        a.setId(id);
+        a.setTutor_id(id);
 
-        Tutores tutorActualizado = servicioTutores.addTutores(a);
+        Tutor tutorActualizado = servicioTutores.addTutores(a);
 
-        URI location = URI.create("/tutores/" +a.getId());
+        URI location = URI.create("/tutores/" + a.getTutor_id());
 
         return ResponseEntity.ok().location(location).body(tutorActualizado);
     }

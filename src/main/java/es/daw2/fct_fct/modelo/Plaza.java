@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
@@ -19,16 +21,18 @@ import lombok.NoArgsConstructor;
 @Table(name = "plazas")
 public class Plaza {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long plaza_id;
+
     @ManyToOne
     @JsonIgnore
-    @JoinColumn(name = "empresa_id")
-    private Empresas empresas;
+    @JoinColumn(name = "empresa_id", referencedColumnName = "empresa_id", nullable = false)
+    private Empresa empresa;
 
-    @Id
     @ManyToOne
     @JsonIgnore
     @JoinColumn(name = "ciclo_id")
-    private Ciclos ciclos;
+    private Ciclo ciclo;
 
     @Column(name = "plazas", nullable = false, columnDefinition = "INT")
     private Integer plazas;

@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import es.daw2.fct_fct.modelo.Ciclos;
+import es.daw2.fct_fct.modelo.Ciclo;
 import es.daw2.fct_fct.servicio.ServicioCiclos;
 
 @RestController
@@ -23,10 +23,10 @@ public class ControladorCiclos {
 
     //Crud
     @PostMapping("/addCiclo")
-    public ResponseEntity<?> crearCiclo(@RequestBody Ciclos c) {
+    public ResponseEntity<?> crearCiclo(@RequestBody Ciclo c) {
         servicioCiclos.addCiclos(c);
-        
-        URI location = URI.create("/listarCiclosId" +c.getId());
+
+        URI location = URI.create("/listarCiclosId" + c.getCiclo_id());
 
         return ResponseEntity.created(location).body(c);
     }
@@ -35,7 +35,7 @@ public class ControladorCiclos {
     //cRud
     @GetMapping("/listarCiclos")
     public ResponseEntity<?> listaCiclos() {
-        Iterable<Ciclos> it = servicioCiclos.listaCiclos();
+        Iterable<Ciclo> it = servicioCiclos.listaCiclos();
 
         if (it!=null) {
             return ResponseEntity.ok(it);
@@ -47,7 +47,7 @@ public class ControladorCiclos {
     //cRud
     @GetMapping("/ciclos/{id}")
     public ResponseEntity<?> listaCiclosId(@PathVariable Long id) {
-        Optional<Ciclos> ciclos = servicioCiclos.getCiclosId(id);
+        Optional<Ciclo> ciclos = servicioCiclos.getCiclosId(id);
 
         if (ciclos.isPresent()) {
             return ResponseEntity.ok(ciclos.get());
@@ -58,18 +58,18 @@ public class ControladorCiclos {
 
     //crUd
     @PostMapping("/actualizarCiclo/{id}")
-    public ResponseEntity<?> actualizarCiclo(@PathVariable Long id, @RequestBody Ciclos c) {
-        Optional<Ciclos> ciclos = servicioCiclos.getCiclosId(id);
+    public ResponseEntity<?> actualizarCiclo(@PathVariable Long id, @RequestBody Ciclo c) {
+        Optional<Ciclo> ciclos = servicioCiclos.getCiclosId(id);
 
         if (!ciclos.isPresent()) {
             return ResponseEntity.status(404).body("No se encontraron ciclos con el id: " + id); //No me deja poner el notFound()
         }
         
-        c.setId(id);
+        c.setCiclo_id(id);
         
-        Ciclos cicloActualizado = servicioCiclos.addCiclos(c);
+        Ciclo cicloActualizado = servicioCiclos.addCiclos(c);
 
-        URI location = URI.create("/listarCiclosId" + cicloActualizado.getId());
+        URI location = URI.create("/listarCiclosId" + cicloActualizado.getCiclo_id());
 
         return ResponseEntity.created(location).body(cicloActualizado);
     }

@@ -18,34 +18,29 @@
             width: 600px;
         }
 
-
-        #submit {
-            background-color: var(--success-color);
-            color: var(--text-color);
-            border: none;
-            padding: 10px 20px;
-            border-radius: var(--border-radius);
-            cursor: pointer;
-            font-size: 1.1rem;
-            transition: 0.5s ease-in-out;
-
-            &:disabled {
-                background-color: #83b685;
-                cursor: not-allowed;
-            }
+        .title {
+            font-size: 32px;
+            font-weight: bold;
+            text-align: center;
+            margin: 12px 0px 30px 0px;
         }
     </style>
 </head>
 <body>
-
-    <form id="form" action="?" method="POST">
-        <h1 style="text-align: center; margin-bottom: 30px;">Iniciar Sesión</h1>
+    <form id="form" method="POST" submit-text="Enviar">
+        <p class="title">Título</p>
         <div id="inputs">
             <div class="form-group form-input">
-                <input type="email" id="email" name="email" class="text-based input" label="Introduce tu email" data-required="true">
+                <input type="email" id="email" name="email" class="text-based input" label="Introduce tu email" data-required="true" data-show-validity="true">
             </div>
             <div class="form-group form-input">
-                <input type="password" autocapitalize="false" spellcheck="false" id="password" name="password" class="text-based input password" label="Introduce tu contraseña" data-required="true">
+                <input type="password" id="password" name="password" class="text-based input password" label="Introduce tu contraseña" data-password-type="fill" data-required="true">
+            </div>
+            <div class="form-group form-input">
+                <input type="text" id="long" name="name" class="text-based input" label="Longer text to test if it's related to the size" data-required="true">
+            </div>
+            <div class="form-group form-input">
+                <input type="text" id="short" name="name" class="text-based input" label="s" data-required="true">
             </div>
             <div class="form-group form-input">
                 <input type="text" id="name" name="name" class="text-based input" label="Tu nombre" value="John Doe" data-freeze="true">
@@ -54,9 +49,14 @@
                 <input type="text" id="empresa" name="empresa" class="text-based input" label="Tu empresa" value="123456789" data-track-changes="true">
             </div>
         </div>
-        <div class="form-group">
-            <input type="submit" id="submit" value="Enviar">
-        </div>
     </form>
 </body>
 </html>
+
+<script>
+
+    window.addEventListener('FormsCreated', (event) => {
+        const form = Form.getForm('form');
+        
+    });
+</script>

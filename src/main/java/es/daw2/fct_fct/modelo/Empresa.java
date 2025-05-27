@@ -2,17 +2,17 @@ package es.daw2.fct_fct.modelo;
 
 import java.sql.Date;
 
-import jakarta.validation.constraints.Email;
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.Email;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -22,15 +22,15 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Entity
 @Table(name = "empresas")
-public class Empresas {
+public class Empresa {
     @Id
-    @GeneratedValue
-    private Long id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long empresa_id;
 
     @ManyToOne
     @JsonIgnore
     @JoinColumn(name = "propuesta_por")
-    private Users propuesta_por;
+    private User propuesta_por;
 
     @Column(name = "observaciones", nullable = true, columnDefinition = "VARCHAR(2047)")
     private String observaciones;

@@ -7,6 +7,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
@@ -22,18 +23,18 @@ import lombok.NoArgsConstructor;
 @Table(name = "reviews")
 public class Review {
     @Id
-    @GeneratedValue
-    private Long id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long review_id;
 
     @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "user_id")
-    private Users user;
+    private User user;
 
     @JsonIgnore
     @ManyToOne
-    @JoinColumn(name = "empresa_id")
-    private Empresas empresa;
+    @JoinColumn(name = "empresa_id", referencedColumnName = "empresa_id", nullable = false)
+    private Empresa empresa;
 
     @Column(name = "score", nullable = false, columnDefinition = "TINYINT")
     private Byte score;

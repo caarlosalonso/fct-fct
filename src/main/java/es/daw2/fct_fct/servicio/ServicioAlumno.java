@@ -6,7 +6,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import es.daw2.fct_fct.modelo.Alumnos;
+import es.daw2.fct_fct.modelo.Alumno;
 import es.daw2.fct_fct.repositorio.RepositorioAlumno;
 
 @Service
@@ -16,23 +16,23 @@ public class ServicioAlumno implements IFServicioAlumno{
     RepositorioAlumno repositorioAlumno;
 
     @Override
-    public List<Alumnos> listaAlumnos(){
-        return (List<Alumnos>) repositorioAlumno.findAll();
+    public List<Alumno> listaAlumnos(){
+        return (List<Alumno>) repositorioAlumno.findAll();
     }
 
     @Override
-    public Alumnos addAlumnos(Alumnos a){
+    public Alumno addAlumnos(Alumno a){
         return repositorioAlumno.save(a);
     }
 
     @Override
-    public Optional<Alumnos> getAlumnosId(Long id){
-        return repositorioAlumno.findById(id);
+    public Optional<Alumno> getAlumnosId(Long alumno_id){
+        return repositorioAlumno.findById(alumno_id);
     }
 
     @Override
-    public boolean borrarAlumnos(Long id){
-        Optional<Alumnos> alumnoOptional = repositorioAlumno.findById(id);
+    public boolean borrarAlumnos(Long alumno_id){
+        Optional<Alumno> alumnoOptional = repositorioAlumno.findById(alumno_id);
 
         if(alumnoOptional.isPresent()){
             repositorioAlumno.delete(alumnoOptional.get());

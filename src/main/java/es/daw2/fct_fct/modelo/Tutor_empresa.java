@@ -1,16 +1,16 @@
 package es.daw2.fct_fct.modelo;
 
-import jakarta.validation.constraints.Email;
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.Email;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -22,13 +22,13 @@ import lombok.NoArgsConstructor;
 @Table(name = "tutores_empresas")
 public class Tutor_empresa {
     @Id
-    @GeneratedValue
-    private Long id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long tutor_empresa_id;
 
     @ManyToOne
     @JsonIgnore
-    @JoinColumn(name = "empresa_id")
-    private Empresas empresas;
+    @JoinColumn(name = "empresa_id", referencedColumnName = "empresa_id", nullable = false)
+    private Empresa empresa;
 
     @Column(name = "nombre", nullable = false, columnDefinition = "VARCHAR(255)")
     private String nombre;

@@ -7,6 +7,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
@@ -19,31 +20,31 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "alumnos_has_ciclos")
+@Table(name = "cursos")
 public class Fct {
     @Id
-    @GeneratedValue
-    private Long id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long fct_id;
 
     @ManyToOne
     @JsonIgnore
-    @JoinColumn(name = "alumno_id")
-    private Alumnos alumno;
+    @JoinColumn(name = "alumno_id", nullable = false)
+    private Alumno alumno;
 
     @ManyToOne
     @JsonIgnore
     @JoinColumn(name = "tutor_id")
-    private Tutores tutor;
+    private Tutor tutor;
 
     @ManyToOne
     @JsonIgnore
-    @JoinColumn(name = "empresa_id")
-    private Empresas empresa;
+    @JoinColumn(name = "empresa_id", referencedColumnName = "empresa_id", nullable = false)
+    private Empresa empresa;
 
     @ManyToOne
     @JsonIgnore
     @JoinColumn(name = "ciclo_id")
-    private Ciclos ciclo;
+    private Ciclo ciclo;
 
     @Column(name = "fecha_inicio", nullable = true)
     private LocalDate fechaInicio;
