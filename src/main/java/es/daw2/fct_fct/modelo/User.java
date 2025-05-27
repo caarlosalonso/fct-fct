@@ -37,6 +37,13 @@ public class User {
     @Column(name = "is_admin", nullable = false, columnDefinition = "TINYINT DEFAULT 0")
     private boolean isAdmin;
 
+    public User(String name, String email, String password) {
+        this.name = name;
+        this.password = password;
+        this.email = email;
+        this.isAdmin = false;
+    }
+
     public User(String email, String password) {
         this.name = "";
         this.password = password;
