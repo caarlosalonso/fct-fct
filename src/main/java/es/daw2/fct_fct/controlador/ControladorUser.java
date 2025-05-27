@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import es.daw2.fct_fct.dto.LoginRequestDTO;
+import es.daw2.fct_fct.dto.UserCreateDTO;
 import es.daw2.fct_fct.dto.UserDTO;
 import es.daw2.fct_fct.modelo.User;
 import es.daw2.fct_fct.servicio.ServicioUser;
@@ -47,16 +48,29 @@ public class ControladorUser {
     }
 
     //Crud
-    @RequestMapping("/api/users") //Define la ruta base para los endpoints del controlador
     @PostMapping("/create")
-    public ResponseEntity<?> crearAlumno(@RequestBody User u) {
-        servicioUser.addUsers(u);
+    public ResponseEntity<?> crearUser(@RequestBody UserCreateDTO dto) {
+        // Map DTO to entity
+        User newUser = new User();
+        newUser.setName(dto.name());
+        newUser.setEmail(dto.email());
+        newUser.setPassword(dto.password());
+        newUser.setAdmin(false);
+        newUser.setUpdatedPassword(false);
         
-        URI location = URI.create("listarUsersId" + u.getUser_id());
+        servicioUser.addUsers(newUser);
 
-        return ResponseEntity.created(location).body(u);
+        UserDTO data = new UserDTO(
+            newUser.getUser_id(),
+            newUser.getName(),
+            newUser.getEmail(),
+            newUser.isAdmin()
+        );
+
+        URI location = URI.create("/api/users/" + newUser.getUser_id());
+        return ResponseEntity.created(location).body(data);
     }
-    
+
     //cRud
     @GetMapping("/listarUsers")
     public ResponseEntity<?> listaUsers() {
