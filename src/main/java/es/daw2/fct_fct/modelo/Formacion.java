@@ -31,8 +31,8 @@ public class Formacion {
     @Column(name = "familia_profesional", nullable = false, columnDefinition = "varchar(255)")
     private String familiaProfesional;
 
-    @Column(name = "horas_practicas", nullable = false, columnDefinition = "TINYINT UNSIGNED")
-    private Short horasPracticas;
+    @Column(name = "horas_practicas", nullable = false, columnDefinition = "SMALLINT UNSIGNED")
+    private Integer horasPracticas;
 
     public enum Nivel {
         BASICO,

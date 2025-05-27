@@ -3,18 +3,16 @@ window.addEventListener('DOMContentLoaded', (event) => {
 });
 
 function fetchFormaciones() {
-    const dataExample = [
-        {
-            "formacion_id": 1,
-            "nombre": "Desarrollo de Aplicaciones Web",
-            "acronimo": "DAW",
-            "nivel": "SUPERIOR",
-            "familia_profesional": "Desarrollo de Software",
-            "horas": 300
-        }
-    ];
+    const NIVELES = {
+        'BASICA': 'Básica',
+        'MEDIO': 'Medio',
+        'SUPERIOR': 'Superior'
+    }
 
-    fetch('/formaciones', {
+    const formacionesContainer = document.getElementById('formaciones-container');
+    formacionesContainer.innerHTML = '';
+
+    fetch('/api/formaciones/all', {
         method: 'GET',
         headers: {
             'Content-Type': 'application/json'
@@ -26,22 +24,20 @@ function fetchFormaciones() {
         throw new Error('Network response was not ok');
     })
     .then(data => {
-        const ciclosContainer = document.getElementById('ciclos-container');
-        ciclosContainer.innerHTML = ''; // Clear existing options
-        data.forEach(ciclo => {
+        data.forEach(formacion => {
             const div = document.createElement('div');
-            div.classList.add('ciclo-item');
+            div.classList.add('formacion-item');
             // Should be replaced with createElements
             div.innerHTML = `
-                <p class="ciclo-titulo">(${ciclo.acronimo}) ${ciclo.nombre}</p>
-                <p class="ciclo-nivel">${ciclo.nivel}</p>
-                <p class="ciclo-familia-profesional">${ciclo.familia_profesional}</p>
-                <p class="ciclo-horas">${ciclo.horas}</p>
+                <p class="formacion-titulo">(${formacion.acronimo}) ${formacion.name}</p>
+                <p class="formacion-nivel">${NIVELES[formacion.nivel]}</p>
+                <p class="formacion-familia-profesional">${formacion.familiaProfesional}</p>
+                <p class="formacion-horas">${formacion.horasPracticas}</p>
             `;
-            ciclosContainer.appendChild(div);
+            formacionesContainer.appendChild(div);
         });
     })
     .catch(error => {
-        console.error('Error fetching ciclos:', error);
+        formacionesContainer.innerHTML = '<p>Error al cargar las formaciones.</p>';
     });
 }
