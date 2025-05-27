@@ -26,13 +26,12 @@ window.addEventListener('FormsCreated', (event) => {
         })
         .then(response => {
             if (response.ok) {
-                window.location.href = '/alumnado';
+                window.location.href = '/index';
             }
             form.showError('Login fallido: Email o contraseña incorrectos.');
             form.submitFinish();
         })
         .catch(error => {
-            console.error('Error during login:', error);
             form.showError('Internal Server Error');
             form.submitFinish();
         });
