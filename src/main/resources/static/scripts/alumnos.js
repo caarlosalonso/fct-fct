@@ -1,3 +1,5 @@
+import { Form } from './classes/Form.js';
+
 let chosenCurso = null;
 
 window.addEventListener('FormsCreated', (event) => {

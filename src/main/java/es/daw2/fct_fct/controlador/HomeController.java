@@ -4,6 +4,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 
 import jakarta.servlet.http.HttpSession;
+import org.springframework.web.bind.annotation.RequestParam;
+
 
 
 @Controller
@@ -35,5 +37,15 @@ public class HomeController {
     public String crear() {
         return "createuser.html";
     }
-    
+
+    @GetMapping("/error")
+    public String error() {
+        return "error.html";
+    }
+
+    @GetMapping("/coordinacion")
+    public String coordinacion() {
+        return "coordinacion.html";
+    }
+
 }

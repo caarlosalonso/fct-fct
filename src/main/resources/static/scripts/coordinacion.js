@@ -1,3 +1,5 @@
+import { Form } from './classes/Form.js';
+
 window.addEventListener('DOMContentLoaded', (event) => {
     fetchFormaciones();
 });
