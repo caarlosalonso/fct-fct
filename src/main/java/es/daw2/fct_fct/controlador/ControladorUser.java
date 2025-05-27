@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import es.daw2.fct_fct.dto.LoginRequestDTO;
 import es.daw2.fct_fct.dto.UserDTO;
 import es.daw2.fct_fct.modelo.User;
 import es.daw2.fct_fct.servicio.ServicioUser;
@@ -26,8 +27,11 @@ public class ControladorUser {
     private ServicioUser servicioUser;
 
     @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody User user) {
-        User userFound = servicioUser.findByEmailAndPassword(user.getEmail(), user.getPassword());
+    public ResponseEntity<?> login(@RequestBody LoginRequestDTO loginRequestDTO) {
+        User userFound = servicioUser.findByEmailAndPassword(
+            loginRequestDTO.email(),
+            loginRequestDTO.password()
+        );
 
         if (userFound == null)
             return ResponseEntity.status(401).body("Invalid credentials");
