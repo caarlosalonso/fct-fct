@@ -55,7 +55,7 @@ class Form {
         });
         this.entries.forEach((input) => {
             input.init();
-            input.addEventListener('input', (event) => {
+            input.input.addEventListener('input', (event) => {
                 input.states.errorAffected = false;
             });
         });
