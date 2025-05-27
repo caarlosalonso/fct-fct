@@ -31,8 +31,8 @@ public class Plaza {
 
     @ManyToOne
     @JsonIgnore
-    @JoinColumn(name = "ciclo_id")
-    private Ciclo ciclo;
+    @JoinColumn(name = "formacion_id")
+    private Formacion formacion;
 
     @Column(name = "plazas", nullable = false, columnDefinition = "INT")
     private Integer plazas;
