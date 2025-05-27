@@ -48,11 +48,12 @@
         }
 
         form.onsubmit = () => {
-            console.log('form sent');
+            console.log("Form submitted");
 
             const nombre = form.getInput('nombre').getValue();
             const email = form.getInput('email').getValue();
             const password = form.getInput('password').getValue();
+
             const data = {
                 name: nombre,
                 email: email,
@@ -68,17 +69,10 @@
             })
             .then(response => {
                 if (response.ok) {
-                    return response.json();
-                } else {
-                    form.showError('Error al crear el usuario. Por favor, inténtalo de nuevo.');
-                }
-            })
-            .then(data => {
-                if (data.success) {
                     form.showSuccess('Usuario creado correctamente.');
                     form.reset();
                 } else {
-                    form.showError(data.message || 'Error al crear el usuario. Por favor, inténtalo de nuevo.');
+                    form.showError('Error al crear el usuario. Por favor, inténtalo de nuevo.');
                 }
             })
             .catch(error => {

@@ -18,6 +18,7 @@ import es.daw2.fct_fct.dto.UserCreateDTO;
 import es.daw2.fct_fct.dto.UserDTO;
 import es.daw2.fct_fct.modelo.User;
 import es.daw2.fct_fct.servicio.ServicioUser;
+import es.daw2.fct_fct.utils.PasswordUtils;
 
 
 @RestController
@@ -54,7 +55,9 @@ public class ControladorUser {
         User newUser = new User();
         newUser.setName(dto.name());
         newUser.setEmail(dto.email());
-        newUser.setPassword(dto.password());
+        newUser.setPassword(
+            PasswordUtils.hashPassword(dto.password())
+        );
         newUser.setAdmin(false);
         newUser.setUpdatedPassword(false);
         
