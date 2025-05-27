@@ -3,12 +3,30 @@ package es.daw2.fct_fct.controlador;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 
+import jakarta.servlet.http.HttpSession;
+
 @Controller
 public class HomeController {
 
     @GetMapping("/")
-    public String home() {
-        //Redirige al archivo estático index.html en src/main/resources/static
+    public String index(HttpSession session) {
+        if (session.getAttribute("user") == null)
+            return "redirect:/login";
+        
+        if (session.getAttribute("role") == null)
+            return "redirect:/login";
+
+        return switch (session.getAttribute("role").toString()) {
+            case "admin"        ->  "admin.html";
+            case "coordinador"  ->  "coordinacion.html";
+            case "tutor"        ->  "tutor.html";
+            case "alumno"       ->  "alumno.html";
+            default             ->  "login.html";
+        };
+    }
+
+    @GetMapping("/login")
+    public String login() {
         return "login.html";
     }
 }

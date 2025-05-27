@@ -43,7 +43,7 @@ public class ControladorUser {
     }
 
     //Crud
-    @PostMapping("/addUser")
+    @PostMapping("/create")
     public ResponseEntity<?> crearAlumno(@RequestBody User u) {
         servicioUser.addUsers(u);
         
