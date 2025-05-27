@@ -384,6 +384,10 @@ class Input {
     format(value) {
         return value;
     }
+
+    getValue() {
+        return null;
+    }
 }
 
 class TextInput extends Input {
@@ -391,6 +395,9 @@ class TextInput extends Input {
         super(input);
         this.isDifferent = function() {
             return this.states.tracked && this.input.value !== this.states.trackedValue;
+        }
+        this.getValue = function() {
+            return this.input.value.trim();
         }
     }
 
@@ -706,7 +713,6 @@ class FileInput extends Input {
             return allowedExtensions.includes(`.${fileExtension}`);
         };
     }
-
 
     init() {
         this.buildFileInput();

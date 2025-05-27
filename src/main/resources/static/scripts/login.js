@@ -8,10 +8,8 @@ window.addEventListener('FormsCreated', (event) => {
     form.onsubmit = () => {
         console.log("Form sent");
 
-        console.log(form, form.getInput('email'), form.getInput('email').getValue());
-
-        const email = form.getInput('email').getValue().trim().toLowerCase();
-        const password = form.getInput('password').getValue().trim();
+        const email = form.getInput('email').getValue().toLowerCase();
+        const password = form.getInput('password').getValue();
 
         // Information to be sent
         const data = {
