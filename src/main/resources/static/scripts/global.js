@@ -8,4 +8,3 @@ document.addEventListener('DOMContentLoaded', (event) => {
         detail: Form.formMap
     }));
 });
-
