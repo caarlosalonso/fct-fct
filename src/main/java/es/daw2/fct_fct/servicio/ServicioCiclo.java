@@ -32,7 +32,7 @@ public class ServicioCiclo implements IFServicioCiclos {
     @Override
     public Ciclo updateCiclo(Long ciclo_id, Ciclo ciclo) {
         if (repositorioCiclos.existsById(ciclo_id)) {
-            ciclo.setCiclo_id(ciclo_id);
+            ciclo.setId(ciclo_id);
             return repositorioCiclos.save(ciclo);
         }
         return null; // O lanzar una excepción si se prefiere
