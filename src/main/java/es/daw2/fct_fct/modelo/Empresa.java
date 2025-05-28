@@ -25,6 +25,7 @@ import lombok.NoArgsConstructor;
 public class Empresa {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "empresa_id")
     private Long id;
 
     @ManyToOne
