@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import es.daw2.fct_fct.modelo.Grupo;
@@ -17,24 +18,25 @@ import es.daw2.fct_fct.servicio.ServicioGrupo;
 
 
 @RestController
+@RequestMapping("/api/grupos")
 public class ControladorGrupo {
 
     @Autowired
     private ServicioGrupo servicioGrupo;
 
     //Crud
-    @PostMapping("/addGrupo")
+    @PostMapping("/add")
     public ResponseEntity<?> crearGrupo(@RequestBody Grupo g) {
         servicioGrupo.addGrupos(g);
 
-        URI location = URI.create("/listarGruposId" + g.getId());
+        URI location = URI.create("/api/grupos/" + g.getId());
 
         return ResponseEntity.created(location).body(g);
     }
     
 
     //cRud
-    @GetMapping("/listarGrupos")
+    @GetMapping("/all")
     public ResponseEntity<?> listaGrupos() {
         Iterable<Grupo> it = servicioGrupo.listaGrupos();
 
@@ -46,7 +48,7 @@ public class ControladorGrupo {
     }
 
     //cRud
-    @GetMapping("/grupos/{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<?> listaGruposId(@PathVariable Long id) {
         Optional<Grupo> grupos = servicioGrupo.getGruposId(id);
 
@@ -58,7 +60,7 @@ public class ControladorGrupo {
     }
 
     //crUd
-    @PostMapping("/actualizarGrupo/{id}")
+    @PostMapping("/update/{id}")
     public ResponseEntity<?> actualizarGrupo(@PathVariable Long id, @RequestBody Grupo g) {
         Optional<Grupo> grupos = servicioGrupo.getGruposId(id);
 
@@ -70,13 +72,13 @@ public class ControladorGrupo {
 
         Grupo grupoActualizado = servicioGrupo.addGrupos(g);
 
-        URI location = URI.create("/listarGruposId" + grupoActualizado.getId());
+        URI location = URI.create("/api/grupos/" + grupoActualizado.getId());
 
         return ResponseEntity.created(location).body(grupoActualizado);
     }
 
     //cruD
-    @DeleteMapping("/borrarGrupo/{id}")
+    @DeleteMapping("/delete/{id}")
     public ResponseEntity<?> borrarGrupo(@PathVariable Long id) {
         boolean grupoEliminado = servicioGrupo.borrarGrupos(id);
 

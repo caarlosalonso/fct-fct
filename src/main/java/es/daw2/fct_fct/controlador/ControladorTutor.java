@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import es.daw2.fct_fct.modelo.Tutor;
@@ -17,24 +18,25 @@ import es.daw2.fct_fct.servicio.ServicioTutores;
 
 
 @RestController
+@RequestMapping("/api/tutores")
 public class ControladorTutor {
 
     @Autowired
     private ServicioTutores servicioTutores;
 
     //Crud
-    @PostMapping("/addTutor")
+    @PostMapping("/add")
     public ResponseEntity<?> crearTutores(@RequestBody Tutor t) {
         servicioTutores.addTutores(t);
 
-        URI location = URI.create("/listarTutoresId" + t.getId());
+        URI location = URI.create("/api/tutores/" + t.getId());
 
         return ResponseEntity.created(location).body(t);
     }
     
 
     //cRud
-    @GetMapping("/listarTutores")
+    @GetMapping("/all")
     public ResponseEntity<?> listaTutores() {
         Iterable<Tutor> it = servicioTutores.listaTutores();
 
@@ -46,7 +48,7 @@ public class ControladorTutor {
     }
 
     //cRud
-    @GetMapping("/tutores/{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<?> listaTutoresId(@PathVariable Long id) {
         Optional<Tutor> Tutores = servicioTutores.getTutoresId(id);
 
@@ -58,7 +60,7 @@ public class ControladorTutor {
     }
     
     //crUd
-    @PostMapping("/actualizarTutores/{id}")
+    @PostMapping("/update/{id}")
     public ResponseEntity<?> actualizarTutor(@PathVariable Long id, @RequestBody Tutor a){
         Optional<Tutor> optional = servicioTutores.getTutoresId(id);
 
@@ -70,13 +72,13 @@ public class ControladorTutor {
 
         Tutor tutorActualizado = servicioTutores.addTutores(a);
 
-        URI location = URI.create("/tutores/" + a.getId());
+        URI location = URI.create("/api/tutores/" + a.getId());
 
         return ResponseEntity.ok().location(location).body(tutorActualizado);
     }
 
     //cruD
-    @DeleteMapping("/borrarTutor/{id}")
+    @DeleteMapping("/delete/{id}")
     public ResponseEntity<?> borrarTutor(@PathVariable Long id){
         boolean tutorEliminado = servicioTutores.borrarTutores(id);
 

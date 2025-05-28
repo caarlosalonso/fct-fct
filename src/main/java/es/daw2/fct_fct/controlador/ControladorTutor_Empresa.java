@@ -10,30 +10,33 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import es.daw2.fct_fct.modelo.Tutor_empresa;
 import es.daw2.fct_fct.servicio.ServicioTutor_Empresa;
 
+
 @RestController
+@RequestMapping("/api/tutor_empresa")
 public class ControladorTutor_Empresa {
 
     @Autowired
     private ServicioTutor_Empresa servicioTutor_Empresa;
 
     //Crud
-    @PostMapping("/addTutor_Empresa")
+    @PostMapping("/add")
     public ResponseEntity<?> crearTutor_Empresa(@RequestBody Tutor_empresa t) {
         servicioTutor_Empresa.addTutor_Empresa(t);
 
-        URI location = URI.create("/listarTutor_EmpresaId" + t.getId());
+        URI location = URI.create("/api/tutor_empresa/" + t.getId());
 
         return ResponseEntity.created(location).body(t);
     }
     
 
     //cRud
-    @GetMapping("/listarTutor_Empresa")
+    @GetMapping("/all")
     public ResponseEntity<?> listaTutor_Empresa() {
         Iterable<Tutor_empresa> it = servicioTutor_Empresa.listaTutor_Empresa();
 
@@ -45,7 +48,7 @@ public class ControladorTutor_Empresa {
     }
 
     //cRud
-    @GetMapping("/tutor_empresa/{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<?> listaTutor_EmpresaId(@PathVariable Long id) {
         Optional<Tutor_empresa> tutor_empresa = servicioTutor_Empresa.getTutor_EmpresaId(id);
 
@@ -57,7 +60,7 @@ public class ControladorTutor_Empresa {
     }
 
     //crUd
-    @PostMapping("/actualizarTutor_Empresa/{id}")
+    @PostMapping("/update/{id}")
     public ResponseEntity<?> actualizarTutor_Empresa(@PathVariable Long id, @RequestBody Tutor_empresa t) {
         Optional<Tutor_empresa> tutor_empresa = servicioTutor_Empresa.getTutor_EmpresaId(id);
 
@@ -69,13 +72,13 @@ public class ControladorTutor_Empresa {
 
         Tutor_empresa tutorActualizado = servicioTutor_Empresa.addTutor_Empresa(t);
 
-        URI location = URI.create("/listarTutor_EmpresaId" + t.getId());
+        URI location = URI.create("/api/tutor_empresa/" + t.getId());
 
         return ResponseEntity.ok().location(location).body(tutorActualizado);
     }
 
     //cruD
-    @DeleteMapping("/borrarTutor_Empresa/{id}")
+    @DeleteMapping("/delete/{id}")
     public ResponseEntity<?> borrarTutor_Empresa(@PathVariable Long id) {
         boolean tutor_empresaEliminado = servicioTutor_Empresa.borrarTutor_Empresa(id);
 

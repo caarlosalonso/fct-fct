@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import es.daw2.fct_fct.modelo.Curso;
@@ -17,13 +18,14 @@ import es.daw2.fct_fct.servicio.ServicioCurso;
 
 
 @RestController
+@RequestMapping("/api/cursos")
 public class ControladorCurso {
 
     @Autowired
     private ServicioCurso servicioCurso;
 
     //Crud
-    @PostMapping("/addCurso")
+    @PostMapping("/add")
     public ResponseEntity<?> crearCurso(@RequestBody Curso c) {
         servicioCurso.addCurso(c);
         
@@ -32,7 +34,7 @@ public class ControladorCurso {
     }
 
     //cRud
-    @GetMapping("/listarCursos")
+    @GetMapping("/all")
     public ResponseEntity<?> listaCursos() {
         Iterable<Curso> it = null;
         it = servicioCurso.listaCursos();
@@ -45,7 +47,7 @@ public class ControladorCurso {
     }
 
     //cRud
-    @GetMapping("/cursos/{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<?> listaCursosId(@PathVariable Long id) {
         Optional<Curso> curso = servicioCurso.getCursoId(id);
 
@@ -57,7 +59,7 @@ public class ControladorCurso {
     }
 
     //crUd
-    @PostMapping("/actualizarCurso/{id}")
+    @PostMapping("/update/{id}")
     public ResponseEntity<?> modificarCurso(@PathVariable Long id, @RequestBody Curso c) {
         Optional<Curso> optional = servicioCurso.getCursoId(id);
 
@@ -74,7 +76,7 @@ public class ControladorCurso {
     }
 
     //cRuD
-    @DeleteMapping("/borrarCurso/{id}")
+    @DeleteMapping("/delete/{id}")
     public ResponseEntity<?> borrarCurso(@PathVariable Long id) {
         boolean Cursoborrado = servicioCurso.borrarCurso(id);
 

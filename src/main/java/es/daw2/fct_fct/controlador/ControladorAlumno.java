@@ -15,26 +15,29 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+
 
 @RestController
+@RequestMapping("/api/alumnos")
 public class ControladorAlumno {
 
     @Autowired
     private ServicioAlumno servicioAlumno;
 
     //Crud
-    @PostMapping("/addAlumno")
+    @PostMapping("/add")
     public ResponseEntity<?> crearAlumno(@RequestBody Alumno a) {
         servicioAlumno.addAlumnos(a);
 
-        URI location = URI.create("/listarAlumnosId" + a.getId());
+        URI location = URI.create("/api/alumnos/" + a.getId());
 
         return ResponseEntity.created(location).body(a);
     }
     
 
     //cRud
-    @GetMapping("/listarAlumnos")
+    @GetMapping("/all")
     public ResponseEntity<?> listaAlumnos() {
         Iterable<Alumno> it = null;
         it = servicioAlumno.listaAlumnos();
@@ -47,7 +50,7 @@ public class ControladorAlumno {
     }
 
     //cRud
-    @GetMapping("/alumnos/{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<?> listaAlumnosId(@PathVariable Long id) {
         Optional<Alumno> alumnos = servicioAlumno.getAlumnosId(id);
 
@@ -59,7 +62,7 @@ public class ControladorAlumno {
     }
     
     //crUd
-    @PostMapping("/actualizarAlumnos/{id}")
+    @PostMapping("/update/{id}")
     public ResponseEntity<?> actualizarAlumno(@PathVariable Long id, @RequestBody Alumno a){
         Optional<Alumno> optional = servicioAlumno.getAlumnosId(id);
 
@@ -71,13 +74,13 @@ public class ControladorAlumno {
 
         Alumno alumnoActualizado = servicioAlumno.addAlumnos(a);
 
-        URI location = URI.create("/alumnos/" + a.getId());
+        URI location = URI.create("/api/alumnos/" + a.getId());
 
         return ResponseEntity.ok().location(location).body(alumnoActualizado);
     }
 
     //cruD
-    @DeleteMapping("/borrarAlumno/{id}")
+    @DeleteMapping("/delete/{id}")
     public ResponseEntity<?> borrarAlumno(@PathVariable Long id){
         boolean alumnoEliminado = servicioAlumno.borrarAlumnos(id);
 

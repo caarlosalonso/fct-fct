@@ -90,7 +90,7 @@ public class ControladorUser {
     }
 
     //cRud
-    @GetMapping("/listarUsers")
+    @GetMapping("/all")
     public ResponseEntity<?> listaUsers() {
         Iterable<User> it = servicioUser.listaUsers();
 
@@ -102,7 +102,7 @@ public class ControladorUser {
     }
 
     //crUd
-    @PostMapping("/actualizarUsers/{id}")
+    @PostMapping("/update/{id}")
     public ResponseEntity<?> actualizarUser(@PathVariable Long id, @RequestBody User u){
         Optional<User> optional = servicioUser.getUsersId(id);
 
@@ -114,13 +114,13 @@ public class ControladorUser {
 
         User userActualizado = servicioUser.addUsers(u);
 
-        URI location = URI.create("/users/" +u.getId());
+        URI location = URI.create("/api/users/" +u.getId());
 
         return ResponseEntity.ok().location(location).body(userActualizado);
     }
 
     //cruD
-    @DeleteMapping("/borrarUser/{id}")
+    @DeleteMapping("/delete/{id}")
     public ResponseEntity<?> borrarUser(@PathVariable Long id){
         boolean userBorrado = servicioUser.borrarUsers(id);
 

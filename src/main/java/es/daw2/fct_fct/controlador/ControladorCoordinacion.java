@@ -14,26 +14,29 @@ import org.springframework.web.bind.annotation.RestController;
 
 import es.daw2.fct_fct.modelo.Coordinacion;
 import es.daw2.fct_fct.servicio.ServicioCoordinacion;
+import org.springframework.web.bind.annotation.RequestMapping;
+
 
 @RestController
+@RequestMapping("/api/coordinacion")
 public class ControladorCoordinacion {
 
     @Autowired
     private ServicioCoordinacion servicioCoordinacion;
 
     //Crud
-    @PostMapping("/addCoordinacion")
+    @PostMapping("/add")
     public ResponseEntity<?> crearCoordinacion(@RequestBody Coordinacion c) {
         servicioCoordinacion.addCoordinacion(c);
 
-        URI location = URI.create("/listarCoordinacionId" +c.getId());
+        URI location = URI.create("/api/coordinacion/" +c.getId());
 
         return ResponseEntity.created(location).body(c);
     }
     
 
     //cRud
-    @GetMapping("/listarCoordinacion")
+    @GetMapping("/all")
     public ResponseEntity<?> listaCoordinacion() {
         Iterable<Coordinacion> it = servicioCoordinacion.listaCoordinacion();
 
@@ -45,7 +48,7 @@ public class ControladorCoordinacion {
     }
 
     //cRud
-    @GetMapping("/coordinacion/{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<?> listaCoordinacionId(@PathVariable Long id) {
         Optional<Coordinacion> coordinacion = servicioCoordinacion.getCoordinacionId(id);
 
@@ -57,7 +60,7 @@ public class ControladorCoordinacion {
     }
     
     //crUd
-    @PostMapping("/actualizarCoordinacion/{id}")
+    @PostMapping("/update/{id}")
     public ResponseEntity<?> actualizarCoordinacion(@PathVariable Long id, @RequestBody Coordinacion c){
         Optional<Coordinacion> optional = servicioCoordinacion.getCoordinacionId(id);
 
@@ -69,13 +72,13 @@ public class ControladorCoordinacion {
 
         Coordinacion coordinacionActualizado = servicioCoordinacion.addCoordinacion(c);
 
-        URI location = URI.create("/coordinacion/" +c.getId());
+        URI location = URI.create("/api/coordinacion/" +c.getId());
 
         return ResponseEntity.ok().location(location).body(coordinacionActualizado);
     }
 
     //cruD
-    @DeleteMapping("/borrarCoordinacion/{id}")
+    @DeleteMapping("/delete/{id}")
     public ResponseEntity<?> borrarTutor(@PathVariable Long id){
         boolean coordinacionEliminado = servicioCoordinacion.borrarCoordinacion(id);
 
