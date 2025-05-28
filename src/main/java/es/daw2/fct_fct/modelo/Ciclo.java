@@ -1,14 +1,10 @@
 package es.daw2.fct_fct.modelo;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -24,23 +20,24 @@ public class Ciclo {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long ciclo_id;
 
-    @ManyToOne
-    @JsonIgnore
-    @JoinColumn(name = "formacion_id")
-    private Formacion formacion;
-
     @Column(name = "name", nullable = false, columnDefinition = "varchar(255)")
     private String name;
 
-    @Column(name = "acronimo", nullable = false, columnDefinition = "VARCHAR(10)")
+    @Column(name = "acronimo", nullable = false, columnDefinition = "varchar(10)")
     private String acronimo;
 
-    @Column(name = "horario", nullable = false, columnDefinition = "ENUM('DIURNO', 'VESPERTINO', 'NOCHE')")
-    private Horario horario;
+    @Column(name = "nivel", nullable = false, columnDefinition = "enum('BASICO', 'MEDIO', 'SUPERIOR')")
+    private Nivel nivel;
 
-    public enum Horario {
-        DIURNO,
-        VESPERTINO,
-        NOCHE
+    @Column(name = "familia_profesional", nullable = false, columnDefinition = "varchar(255)")
+    private String familiaProfesional;
+
+    @Column(name = "horas_practicas", nullable = false, columnDefinition = "SMALLINT UNSIGNED")
+    private Integer horasPracticas;
+
+    public enum Nivel {
+        BASICO,
+        MEDIO,
+        SUPERIOR
     }
 }

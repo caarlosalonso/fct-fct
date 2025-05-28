@@ -43,8 +43,8 @@ public class Fct {
 
     @ManyToOne
     @JsonIgnore
-    @JoinColumn(name = "ciclo_id")
-    private Ciclo ciclo;
+    @JoinColumn(name = "grupo_id")
+    private Grupo grupo;
 
     @Column(name = "fecha_inicio", nullable = true)
     private LocalDate fechaInicio;

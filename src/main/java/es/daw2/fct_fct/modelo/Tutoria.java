@@ -31,8 +31,8 @@ public class Tutoria {
 
     @ManyToOne
     @JsonIgnore
-    @JoinColumn(name = "ciclo_id")
-    private Ciclo ciclo;
+    @JoinColumn(name = "grupo_id")
+    private Grupo grupo;
 
     @Column(name = "year", nullable = false, columnDefinition = "SMALLINT")
     private Short year;

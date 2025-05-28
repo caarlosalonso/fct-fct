@@ -32,8 +32,8 @@ public class Curso {
 
     @ManyToOne
     @JsonIgnore
-    @JoinColumn(name = "ciclo_id")
-    private Ciclo ciclos;
+    @JoinColumn(name = "grupo_id")
+    private Grupo grupo;
     
     @Column(name = "horas_hechas", nullable = false, columnDefinition = "TINYINT UNSIGNED")
     private Short horasHechas;
