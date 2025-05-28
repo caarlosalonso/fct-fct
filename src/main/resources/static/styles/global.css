@@ -450,13 +450,11 @@ input.password.text-based {
     }
 }
 
-@media screen and (max-width: 999px) {
-    .label {
-        font-size: 1rem;
-    }
-}
-
 @media screen and (max-width: 799px) {
+    .label {
+        font-size: 1.1rem;
+    }
+
     .buttons-wrapper {
         flex-direction: column;
         align-items: center;
@@ -471,5 +469,28 @@ input.password.text-based {
         padding: 0px;
         gap: 15px;
         flex-direction: column;
+    }
+}
+
+@media screen and (max-width: 419px) {
+    .label {
+        font-size: 1rem;
+    }
+
+    .legendText {
+        font-size: 0.6rem;
+    }
+
+    .text-input {
+        font-size: 14px;
+    }
+
+    .validity {
+        height: 38px;
+    }
+
+    .password-icon {
+        width: 41px;
+        height: 41px;
     }
 }
