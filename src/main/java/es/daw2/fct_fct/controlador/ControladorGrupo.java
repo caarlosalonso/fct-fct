@@ -15,8 +15,9 @@ import org.springframework.web.bind.annotation.RestController;
 import es.daw2.fct_fct.modelo.Grupo;
 import es.daw2.fct_fct.servicio.ServicioGrupo;
 
+
 @RestController
-public class ControladorGrupos {
+public class ControladorGrupo {
 
     @Autowired
     private ServicioGrupo servicioGrupo;

@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 @RestController
 @RequestMapping("/api/ciclos")
-public class ControladorCiclos {
+public class ControladorCiclo {
     
     @Autowired
     private ServicioCiclo servicioCiclo;

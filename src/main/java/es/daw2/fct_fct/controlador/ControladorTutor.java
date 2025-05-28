@@ -1,6 +1,5 @@
 package es.daw2.fct_fct.controlador;
 
-
 import java.net.URI;
 import java.util.Optional;
 
@@ -17,9 +16,8 @@ import es.daw2.fct_fct.modelo.Tutor;
 import es.daw2.fct_fct.servicio.ServicioTutores;
 
 
-
 @RestController
-public class ControladorTutores {
+public class ControladorTutor {
 
     @Autowired
     private ServicioTutores servicioTutores;
