@@ -26,7 +26,7 @@ public class Grupo {
 
     @ManyToOne
     @JsonIgnore
-    @JoinColumn(name = "formacion_id")
+    @JoinColumn(name = "grupo_id")
     private Ciclo formacion;
 
     @Column(name = "name", nullable = false, columnDefinition = "varchar(255)")
