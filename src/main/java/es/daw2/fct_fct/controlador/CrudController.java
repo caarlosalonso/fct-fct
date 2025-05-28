@@ -7,6 +7,14 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
+/**
+ * Abstract controller for CRUD operations.
+ * Contains the basic structure for creation, grouped retrieval, singular retrieval, updating, and deletion of resources.
+ * Has 3 generic types:
+ * - Id: Type of the identifier type for the resource.
+ * - C: Type of the DTO/Object for creation.
+ * - U: Type of the DTO/Object for updating.
+ */
 public abstract class CrudController<Id, C, U> {
     // Crud
     @PostMapping("/create")
