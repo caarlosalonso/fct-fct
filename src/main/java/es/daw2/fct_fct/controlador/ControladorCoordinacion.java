@@ -5,10 +5,7 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -19,14 +16,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 @RestController
 @RequestMapping("/api/coordinacion")
-public class ControladorCoordinacion {
+public class ControladorCoordinacion extends CrudController<Long, Coordinacion, Coordinacion> {
 
     @Autowired
     private ServicioCoordinacion servicioCoordinacion;
 
-    //Crud
-    @PostMapping("/add")
-    public ResponseEntity<?> crearCoordinacion(@RequestBody Coordinacion c) {
+    @Override
+    public ResponseEntity<?> create(@RequestBody Coordinacion c) {
         servicioCoordinacion.addCoordinacion(c);
 
         URI location = URI.create("/api/coordinacion/" +c.getId());
@@ -35,9 +31,8 @@ public class ControladorCoordinacion {
     }
     
 
-    //cRud
-    @GetMapping("/all")
-    public ResponseEntity<?> listaCoordinacion() {
+    @Override
+    public ResponseEntity<?> all() {
         Iterable<Coordinacion> it = servicioCoordinacion.listaCoordinacion();
 
         if (it!=null) {
@@ -47,9 +42,8 @@ public class ControladorCoordinacion {
         }
     }
 
-    //cRud
-    @GetMapping("/{id}")
-    public ResponseEntity<?> listaCoordinacionId(@PathVariable Long id) {
+    @Override
+    public ResponseEntity<?> getById(@PathVariable Long id) {
         Optional<Coordinacion> coordinacion = servicioCoordinacion.getCoordinacionId(id);
 
         if (coordinacion.isPresent()) {
@@ -58,10 +52,9 @@ public class ControladorCoordinacion {
             return ResponseEntity.status(404).body("No se encontó personal de coordinacion con el id: " + id); //No me deja poner el notFound()
         }
     }
-    
-    //crUd
-    @PostMapping("/update/{id}")
-    public ResponseEntity<?> actualizarCoordinacion(@PathVariable Long id, @RequestBody Coordinacion c){
+
+    @Override
+    public ResponseEntity<?> update(@PathVariable Long id, @RequestBody Coordinacion c){
         Optional<Coordinacion> optional = servicioCoordinacion.getCoordinacionId(id);
 
         if(!optional.isPresent()){
@@ -77,9 +70,8 @@ public class ControladorCoordinacion {
         return ResponseEntity.ok().location(location).body(coordinacionActualizado);
     }
 
-    //cruD
-    @DeleteMapping("/delete/{id}")
-    public ResponseEntity<?> borrarTutor(@PathVariable Long id){
+    @Override
+    public ResponseEntity<?> delete(@PathVariable Long id){
         boolean coordinacionEliminado = servicioCoordinacion.borrarCoordinacion(id);
 
         if(coordinacionEliminado){

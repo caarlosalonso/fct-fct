@@ -5,10 +5,7 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -19,25 +16,22 @@ import es.daw2.fct_fct.servicio.ServicioGrupo;
 
 @RestController
 @RequestMapping("/api/grupos")
-public class ControladorGrupo {
+public class ControladorGrupo extends CrudController<Long, Grupo, Grupo> {
 
     @Autowired
     private ServicioGrupo servicioGrupo;
 
-    //Crud
-    @PostMapping("/add")
-    public ResponseEntity<?> crearGrupo(@RequestBody Grupo g) {
+    @Override
+    public ResponseEntity<?> create(@RequestBody Grupo g) {
         servicioGrupo.addGrupos(g);
 
         URI location = URI.create("/api/grupos/" + g.getId());
 
         return ResponseEntity.created(location).body(g);
     }
-    
 
-    //cRud
-    @GetMapping("/all")
-    public ResponseEntity<?> listaGrupos() {
+    @Override
+    public ResponseEntity<?> all() {
         Iterable<Grupo> it = servicioGrupo.listaGrupos();
 
         if (it!=null) {
@@ -47,9 +41,8 @@ public class ControladorGrupo {
         }
     }
 
-    //cRud
-    @GetMapping("/{id}")
-    public ResponseEntity<?> listaGruposId(@PathVariable Long id) {
+    @Override
+    public ResponseEntity<?> getById(@PathVariable Long id) {
         Optional<Grupo> grupos = servicioGrupo.getGruposId(id);
 
         if (grupos.isPresent()) {
@@ -59,9 +52,8 @@ public class ControladorGrupo {
         }
     }
 
-    //crUd
-    @PostMapping("/update/{id}")
-    public ResponseEntity<?> actualizarGrupo(@PathVariable Long id, @RequestBody Grupo g) {
+    @Override
+    public ResponseEntity<?> update(@PathVariable Long id, @RequestBody Grupo g) {
         Optional<Grupo> grupos = servicioGrupo.getGruposId(id);
 
         if (!grupos.isPresent()) {
@@ -77,9 +69,8 @@ public class ControladorGrupo {
         return ResponseEntity.created(location).body(grupoActualizado);
     }
 
-    //cruD
-    @DeleteMapping("/delete/{id}")
-    public ResponseEntity<?> borrarGrupo(@PathVariable Long id) {
+    @Override
+    public ResponseEntity<?> delete(@PathVariable Long id) {
         boolean grupoEliminado = servicioGrupo.borrarGrupos(id);
 
         if (grupoEliminado) {

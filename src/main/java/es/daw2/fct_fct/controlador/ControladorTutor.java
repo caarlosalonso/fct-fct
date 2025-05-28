@@ -5,10 +5,7 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -19,25 +16,22 @@ import es.daw2.fct_fct.servicio.ServicioTutores;
 
 @RestController
 @RequestMapping("/api/tutores")
-public class ControladorTutor {
+public class ControladorTutor extends CrudController<Long, Tutor, Tutor> {
 
     @Autowired
     private ServicioTutores servicioTutores;
 
-    //Crud
-    @PostMapping("/add")
-    public ResponseEntity<?> crearTutores(@RequestBody Tutor t) {
+    @Override
+    public ResponseEntity<?> create(@RequestBody Tutor t) {
         servicioTutores.addTutores(t);
 
         URI location = URI.create("/api/tutores/" + t.getId());
 
         return ResponseEntity.created(location).body(t);
     }
-    
 
-    //cRud
-    @GetMapping("/all")
-    public ResponseEntity<?> listaTutores() {
+    @Override
+    public ResponseEntity<?> all() {
         Iterable<Tutor> it = servicioTutores.listaTutores();
 
         if (it!=null) {
@@ -47,9 +41,8 @@ public class ControladorTutor {
         }
     }
 
-    //cRud
-    @GetMapping("/{id}")
-    public ResponseEntity<?> listaTutoresId(@PathVariable Long id) {
+    @Override
+    public ResponseEntity<?> getById(@PathVariable Long id) {
         Optional<Tutor> Tutores = servicioTutores.getTutoresId(id);
 
         if (Tutores.isPresent()) {
@@ -58,10 +51,9 @@ public class ControladorTutor {
             return ResponseEntity.status(404).body("No se encontraron tutores con el id: " + id); //No me deja poner el notFound()
         }
     }
-    
-    //crUd
-    @PostMapping("/update/{id}")
-    public ResponseEntity<?> actualizarTutor(@PathVariable Long id, @RequestBody Tutor a){
+
+    @Override
+    public ResponseEntity<?> update(@PathVariable Long id, @RequestBody Tutor a){
         Optional<Tutor> optional = servicioTutores.getTutoresId(id);
 
         if(!optional.isPresent()){
@@ -77,9 +69,8 @@ public class ControladorTutor {
         return ResponseEntity.ok().location(location).body(tutorActualizado);
     }
 
-    //cruD
-    @DeleteMapping("/delete/{id}")
-    public ResponseEntity<?> borrarTutor(@PathVariable Long id){
+    @Override
+    public ResponseEntity<?> delete(@PathVariable Long id){
         boolean tutorEliminado = servicioTutores.borrarTutores(id);
 
         if(tutorEliminado){

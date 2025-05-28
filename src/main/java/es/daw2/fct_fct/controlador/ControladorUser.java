@@ -5,8 +5,6 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -23,7 +21,7 @@ import es.daw2.fct_fct.utils.PasswordUtils;
 
 @RestController
 @RequestMapping("/api/users")
-public class ControladorUser {
+public class ControladorUser extends CrudController<Long, UserCreateDTO, User> {
     
     @Autowired
     private ServicioUser servicioUser;
@@ -48,9 +46,8 @@ public class ControladorUser {
         return ResponseEntity.ok(dto);
     }
 
-    //Crud
-    @PostMapping("/create")
-    public ResponseEntity<?> crearUser(@RequestBody UserCreateDTO dto) {
+    @Override
+    public ResponseEntity<?> create(@RequestBody UserCreateDTO dto) {
         // Map DTO to entity
         User newUser = new User();
         newUser.setName(dto.name());
@@ -78,10 +75,9 @@ public class ControladorUser {
         return ResponseEntity.created(location).body(data);
     }
 
-    // Lo moví más arriba
-    //cRud
-    @GetMapping("/{id}")
-    public ResponseEntity<?> listaAlumnosId(@PathVariable Long id) {
+
+    @Override
+    public ResponseEntity<?> getById(@PathVariable Long id) {
         Optional<User> users = servicioUser.getUsersId(id);
         if (users.isPresent()) {
             return ResponseEntity.ok(users.get());
@@ -89,9 +85,8 @@ public class ControladorUser {
         return ResponseEntity.status(404).body("No se encontraron usuarios con el id: " + id); //No me deja poner el notFound()
     }
 
-    //cRud
-    @GetMapping("/all")
-    public ResponseEntity<?> listaUsers() {
+    @Override
+    public ResponseEntity<?> all() {
         Iterable<User> it = servicioUser.listaUsers();
 
         if (it!=null) {
@@ -101,9 +96,8 @@ public class ControladorUser {
         }
     }
 
-    //crUd
-    @PostMapping("/update/{id}")
-    public ResponseEntity<?> actualizarUser(@PathVariable Long id, @RequestBody User u){
+    @Override
+    public ResponseEntity<?> update(@PathVariable Long id, @RequestBody User u){
         Optional<User> optional = servicioUser.getUsersId(id);
 
         if(!optional.isPresent()){
@@ -119,9 +113,8 @@ public class ControladorUser {
         return ResponseEntity.ok().location(location).body(userActualizado);
     }
 
-    //cruD
-    @DeleteMapping("/delete/{id}")
-    public ResponseEntity<?> borrarUser(@PathVariable Long id){
+    @Override
+    public ResponseEntity<?> delete(@PathVariable Long id){
         boolean userBorrado = servicioUser.borrarUsers(id);
 
         if(userBorrado){

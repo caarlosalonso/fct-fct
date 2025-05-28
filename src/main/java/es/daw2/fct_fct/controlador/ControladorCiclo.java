@@ -11,23 +11,19 @@ import org.springframework.web.bind.annotation.RestController;
 import es.daw2.fct_fct.modelo.Ciclo;
 import es.daw2.fct_fct.servicio.ServicioCiclo;
 
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
 
 @RestController
 @RequestMapping("/api/ciclos")
-public class ControladorCiclo {
+public class ControladorCiclo extends CrudController<Long, Ciclo, Ciclo> {
     
     @Autowired
     private ServicioCiclo servicioCiclo;
 
-    @GetMapping("/all")
-    public ResponseEntity<?> getAllCiclos() {
+    @Override
+    public ResponseEntity<?> all() {
         List<Ciclo> ciclos = servicioCiclo.getAllCiclos();
         if (ciclos.isEmpty()) {
             return ResponseEntity.noContent().build();
@@ -35,8 +31,8 @@ public class ControladorCiclo {
         return ResponseEntity.ok(ciclos);
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<?> getCicloById(@PathVariable Long id) {
+    @Override
+    public ResponseEntity<?> getById(@PathVariable Long id) {
         Ciclo ciclo = servicioCiclo.getCicloById(id);
         if (ciclo == null) {
             return ResponseEntity.notFound().build();
@@ -44,14 +40,14 @@ public class ControladorCiclo {
         return ResponseEntity.ok(ciclo);
     }
 
-    @PostMapping("/create")
-    public ResponseEntity<?> createCiclo(@RequestBody Ciclo ciclo) {
+    @Override
+    public ResponseEntity<?> create(@RequestBody Ciclo ciclo) {
         Ciclo nuevoCiclo = servicioCiclo.createCiclo(ciclo);
         return ResponseEntity.status(HttpStatus.CREATED).body(nuevoCiclo);
     }
 
-    @PutMapping("/update/{id}")
-    public ResponseEntity<?> updateCiclo(@PathVariable Long id, @RequestBody Ciclo ciclo) {
+    @Override
+    public ResponseEntity<?> update(@PathVariable Long id, @RequestBody Ciclo ciclo) {
         Ciclo cicloActualizado = servicioCiclo.updateCiclo(id, ciclo);
         if (cicloActualizado == null) {
             return ResponseEntity.notFound().build();
@@ -59,8 +55,8 @@ public class ControladorCiclo {
         return ResponseEntity.ok(cicloActualizado);
     }
 
-    @DeleteMapping("/delete/{id}")
-    public ResponseEntity<?> deleteCiclo(@PathVariable Long id) {
+    @Override
+    public ResponseEntity<?> delete(@PathVariable Long id) {
         servicioCiclo.deleteCiclo(id);
         return ResponseEntity.noContent().build();
     }

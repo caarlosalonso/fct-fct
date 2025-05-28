@@ -10,24 +10,20 @@ import org.springframework.web.bind.annotation.RestController;
 import es.daw2.fct_fct.modelo.Alumno;
 import es.daw2.fct_fct.servicio.ServicioAlumno;
 
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 
 @RestController
 @RequestMapping("/api/alumnos")
-public class ControladorAlumno {
+public class ControladorAlumno extends CrudController<Long, Alumno, Alumno> {
 
     @Autowired
     private ServicioAlumno servicioAlumno;
 
-    //Crud
-    @PostMapping("/add")
-    public ResponseEntity<?> crearAlumno(@RequestBody Alumno a) {
+    @Override
+    public ResponseEntity<?> create(@RequestBody Alumno a) {
         servicioAlumno.addAlumnos(a);
 
         URI location = URI.create("/api/alumnos/" + a.getId());
@@ -36,9 +32,8 @@ public class ControladorAlumno {
     }
     
 
-    //cRud
-    @GetMapping("/all")
-    public ResponseEntity<?> listaAlumnos() {
+    @Override
+    public ResponseEntity<?> all() {
         Iterable<Alumno> it = null;
         it = servicioAlumno.listaAlumnos();
 
@@ -49,9 +44,8 @@ public class ControladorAlumno {
         }
     }
 
-    //cRud
-    @GetMapping("/{id}")
-    public ResponseEntity<?> listaAlumnosId(@PathVariable Long id) {
+    @Override
+    public ResponseEntity<?> getById(@PathVariable Long id) {
         Optional<Alumno> alumnos = servicioAlumno.getAlumnosId(id);
 
         if (alumnos.isPresent()) {
@@ -61,9 +55,8 @@ public class ControladorAlumno {
         }
     }
     
-    //crUd
-    @PostMapping("/update/{id}")
-    public ResponseEntity<?> actualizarAlumno(@PathVariable Long id, @RequestBody Alumno a){
+    @Override
+    public ResponseEntity<?> update(@PathVariable Long id, @RequestBody Alumno a) {
         Optional<Alumno> optional = servicioAlumno.getAlumnosId(id);
 
         if(!optional.isPresent()){
@@ -79,9 +72,8 @@ public class ControladorAlumno {
         return ResponseEntity.ok().location(location).body(alumnoActualizado);
     }
 
-    //cruD
-    @DeleteMapping("/delete/{id}")
-    public ResponseEntity<?> borrarAlumno(@PathVariable Long id){
+    @Override
+    public ResponseEntity<?> delete(@PathVariable Long id) {
         boolean alumnoEliminado = servicioAlumno.borrarAlumnos(id);
 
         if(alumnoEliminado){
