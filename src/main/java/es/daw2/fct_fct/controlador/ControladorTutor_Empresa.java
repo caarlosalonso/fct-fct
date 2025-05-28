@@ -26,7 +26,7 @@ public class ControladorTutor_Empresa {
     public ResponseEntity<?> crearTutor_Empresa(@RequestBody Tutor_empresa t) {
         servicioTutor_Empresa.addTutor_Empresa(t);
 
-        URI location = URI.create("/listarTutor_EmpresaId" + t.getTutor_empresa_id());
+        URI location = URI.create("/listarTutor_EmpresaId" + t.getId());
 
         return ResponseEntity.created(location).body(t);
     }
@@ -65,11 +65,11 @@ public class ControladorTutor_Empresa {
             return ResponseEntity.notFound().build();
         }
 
-        t.setTutor_empresa_id(id);
+        t.setId(id);
 
         Tutor_empresa tutorActualizado = servicioTutor_Empresa.addTutor_Empresa(t);
 
-        URI location = URI.create("/listarTutor_EmpresaId" + t.getTutor_empresa_id());
+        URI location = URI.create("/listarTutor_EmpresaId" + t.getId());
 
         return ResponseEntity.ok().location(location).body(tutorActualizado);
     }

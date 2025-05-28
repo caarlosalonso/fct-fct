@@ -26,7 +26,7 @@ public class ControladorGrupos {
     public ResponseEntity<?> crearGrupo(@RequestBody Grupo g) {
         servicioGrupo.addGrupos(g);
 
-        URI location = URI.create("/listarGruposId" + g.getGrupo_id());
+        URI location = URI.create("/listarGruposId" + g.getId());
 
         return ResponseEntity.created(location).body(g);
     }
@@ -65,11 +65,11 @@ public class ControladorGrupos {
             return ResponseEntity.status(404).body("No se encontraron grupos con el id: " + id); //No me deja poner el notFound()
         }
 
-        g.setGrupo_id(id);
+        g.setId(id);
 
         Grupo grupoActualizado = servicioGrupo.addGrupos(g);
 
-        URI location = URI.create("/listarGruposId" + grupoActualizado.getGrupo_id());
+        URI location = URI.create("/listarGruposId" + grupoActualizado.getId());
 
         return ResponseEntity.created(location).body(grupoActualizado);
     }

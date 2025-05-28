@@ -27,7 +27,7 @@ public class ControladorAlumno {
     public ResponseEntity<?> crearAlumno(@RequestBody Alumno a) {
         servicioAlumno.addAlumnos(a);
 
-        URI location = URI.create("/listarAlumnosId" + a.getAlumno_id());
+        URI location = URI.create("/listarAlumnosId" + a.getId());
 
         return ResponseEntity.created(location).body(a);
     }
@@ -67,11 +67,11 @@ public class ControladorAlumno {
             return ResponseEntity.notFound().build();
         }
 
-        a.setAlumno_id(id);
+        a.setId(id);
 
         Alumno alumnoActualizado = servicioAlumno.addAlumnos(a);
 
-        URI location = URI.create("/alumnos/" + a.getAlumno_id());
+        URI location = URI.create("/alumnos/" + a.getId());
 
         return ResponseEntity.ok().location(location).body(alumnoActualizado);
     }

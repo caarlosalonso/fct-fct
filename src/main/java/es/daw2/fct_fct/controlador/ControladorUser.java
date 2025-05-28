@@ -39,7 +39,7 @@ public class ControladorUser {
             return ResponseEntity.status(401).body("Invalid credentials");
         
         UserDTO dto = new UserDTO(
-            userFound.getUser_id(),
+            userFound.getId(),
             userFound.getName(),
             userFound.getEmail(),
             userFound.isAdmin()
@@ -68,13 +68,13 @@ public class ControladorUser {
         servicioUser.addUsers(newUser);
 
         UserDTO data = new UserDTO(
-            newUser.getUser_id(),
+            newUser.getId(),
             newUser.getName(),
             newUser.getEmail(),
             newUser.isAdmin()
         );
 
-        URI location = URI.create("/api/users/" + newUser.getUser_id());
+        URI location = URI.create("/api/users/" + newUser.getId());
         return ResponseEntity.created(location).body(data);
     }
 
@@ -110,11 +110,11 @@ public class ControladorUser {
             return ResponseEntity.notFound().build();
         }
 
-        u.setUser_id(id);
+        u.setId(id);
 
         User userActualizado = servicioUser.addUsers(u);
 
-        URI location = URI.create("/users/" +u.getUser_id());
+        URI location = URI.create("/users/" +u.getId());
 
         return ResponseEntity.ok().location(location).body(userActualizado);
     }

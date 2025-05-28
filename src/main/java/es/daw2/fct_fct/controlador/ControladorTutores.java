@@ -29,7 +29,7 @@ public class ControladorTutores {
     public ResponseEntity<?> crearTutores(@RequestBody Tutor t) {
         servicioTutores.addTutores(t);
 
-        URI location = URI.create("/listarTutoresId" + t.getTutor_id());
+        URI location = URI.create("/listarTutoresId" + t.getId());
 
         return ResponseEntity.created(location).body(t);
     }
@@ -68,11 +68,11 @@ public class ControladorTutores {
             return ResponseEntity.notFound().build();
         }
 
-        a.setTutor_id(id);
+        a.setId(id);
 
         Tutor tutorActualizado = servicioTutores.addTutores(a);
 
-        URI location = URI.create("/tutores/" + a.getTutor_id());
+        URI location = URI.create("/tutores/" + a.getId());
 
         return ResponseEntity.ok().location(location).body(tutorActualizado);
     }
