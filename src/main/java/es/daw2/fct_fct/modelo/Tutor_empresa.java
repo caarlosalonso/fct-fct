@@ -27,7 +27,7 @@ public class Tutor_empresa {
 
     @ManyToOne
     @JsonIgnore
-    @JoinColumn(name = "empresa_id", referencedColumnName = "empresa_id", nullable = false)
+    @JoinColumn(name = "empresa_id", nullable = false)
     private Empresa empresa;
 
     @Column(name = "nombre", nullable = false, columnDefinition = "VARCHAR(255)")

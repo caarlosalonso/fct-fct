@@ -33,7 +33,7 @@ public class Review {
 
     @JsonIgnore
     @ManyToOne
-    @JoinColumn(name = "empresa_id", referencedColumnName = "empresa_id", nullable = false)
+    @JoinColumn(name = "empresa_id", nullable = false)
     private Empresa empresa;
 
     @Column(name = "score", nullable = false, columnDefinition = "TINYINT")
