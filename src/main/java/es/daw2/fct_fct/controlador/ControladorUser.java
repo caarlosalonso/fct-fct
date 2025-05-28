@@ -47,6 +47,7 @@ public class ControladorUser extends CrudController<Long, UserCreateDTO, User> {
     }
 
     @Override
+    @PostMapping("/create")
     public ResponseEntity<?> create(@RequestBody UserCreateDTO dto) {
         // Map DTO to entity
         User newUser = new User();
