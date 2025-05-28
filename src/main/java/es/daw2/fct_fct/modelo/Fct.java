@@ -24,7 +24,7 @@ import lombok.NoArgsConstructor;
 public class Fct {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long fct_id;
+    private Long id;
 
     @ManyToOne
     @JsonIgnore

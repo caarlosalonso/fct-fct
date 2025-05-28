@@ -22,7 +22,7 @@ import lombok.NoArgsConstructor;
 public class Grupo {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long grupo_id;
+    private Long id;
 
     @ManyToOne
     @JsonIgnore

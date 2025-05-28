@@ -25,7 +25,7 @@ import lombok.NoArgsConstructor;
 public class Empresa {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long empresa_id;
+    private Long id;
 
     @ManyToOne
     @JsonIgnore

@@ -18,7 +18,7 @@ import lombok.NoArgsConstructor;
 public class Ciclo {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long ciclo_id;
+    private Long id;
 
     @Column(name = "name", nullable = false, columnDefinition = "varchar(255)")
     private String name;

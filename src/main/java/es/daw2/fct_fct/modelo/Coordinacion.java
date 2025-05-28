@@ -21,7 +21,7 @@ import lombok.NoArgsConstructor;
 public class Coordinacion {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long coordinacion_id;
+    private Long id;
 
     @ManyToOne
     @JsonIgnore

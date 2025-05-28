@@ -24,7 +24,7 @@ import lombok.NoArgsConstructor;
 public class Review {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long review_id;
+    private Long id;
 
     @JsonIgnore
     @ManyToOne

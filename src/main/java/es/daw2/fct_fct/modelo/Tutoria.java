@@ -22,7 +22,7 @@ import lombok.NoArgsConstructor;
 public class Tutoria {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long tutoria_id;
+    private Long id;
 
     @ManyToOne
     @JsonIgnore
