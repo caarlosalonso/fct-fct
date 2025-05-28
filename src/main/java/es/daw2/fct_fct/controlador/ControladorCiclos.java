@@ -1,88 +1,68 @@
 package es.daw2.fct_fct.controlador;
 
-import java.net.URI;
-import java.util.Optional;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import es.daw2.fct_fct.modelo.Ciclo;
+import es.daw2.fct_fct.servicio.ServicioCiclo;
+
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
 
-import es.daw2.fct_fct.modelo.Ciclo;
-import es.daw2.fct_fct.servicio.ServicioCiclos;
 
 @RestController
+@RequestMapping("/api/ciclos")
 public class ControladorCiclos {
-
-    @Autowired
-    private ServicioCiclos servicioCiclos;
-
-    //Crud
-    @PostMapping("/addCiclo")
-    public ResponseEntity<?> crearCiclo(@RequestBody Ciclo c) {
-        servicioCiclos.addCiclos(c);
-
-        URI location = URI.create("/listarCiclosId" + c.getCiclo_id());
-
-        return ResponseEntity.created(location).body(c);
-    }
     
+    @Autowired
+    private ServicioCiclo servicioCiclo;
 
-    //cRud
-    @GetMapping("/listarCiclos")
-    public ResponseEntity<?> listaCiclos() {
-        Iterable<Ciclo> it = servicioCiclos.listaCiclos();
-
-        if (it!=null) {
-            return ResponseEntity.ok(it);
-        }else{
-            return ResponseEntity.badRequest().build();
+    @GetMapping("/all")
+    public ResponseEntity<?> getAllCiclos() {
+        List<Ciclo> ciclos = servicioCiclo.getAllCiclos();
+        if (ciclos.isEmpty()) {
+            return ResponseEntity.noContent().build();
         }
+        return ResponseEntity.ok(ciclos);
     }
 
-    //cRud
-    @GetMapping("/ciclos/{id}")
-    public ResponseEntity<?> listaCiclosId(@PathVariable Long id) {
-        Optional<Ciclo> ciclos = servicioCiclos.getCiclosId(id);
-
-        if (ciclos.isPresent()) {
-            return ResponseEntity.ok(ciclos.get());
-        }else{
-            return ResponseEntity.status(404).body("No se encontraron ciclos con el id: " + id); //No me deja poner el notFound()
+    @GetMapping("/{id}")
+    public ResponseEntity<?> getCicloById(@PathVariable Long id) {
+        Ciclo ciclo = servicioCiclo.getCicloById(id);
+        if (ciclo == null) {
+            return ResponseEntity.notFound().build();
         }
+        return ResponseEntity.ok(ciclo);
     }
 
-    //crUd
-    @PostMapping("/actualizarCiclo/{id}")
-    public ResponseEntity<?> actualizarCiclo(@PathVariable Long id, @RequestBody Ciclo c) {
-        Optional<Ciclo> ciclos = servicioCiclos.getCiclosId(id);
-
-        if (!ciclos.isPresent()) {
-            return ResponseEntity.status(404).body("No se encontraron ciclos con el id: " + id); //No me deja poner el notFound()
-        }
-        
-        c.setCiclo_id(id);
-        
-        Ciclo cicloActualizado = servicioCiclos.addCiclos(c);
-
-        URI location = URI.create("/listarCiclosId" + cicloActualizado.getCiclo_id());
-
-        return ResponseEntity.created(location).body(cicloActualizado);
+    @PostMapping("/create")
+    public ResponseEntity<?> createCiclo(@RequestBody Ciclo ciclo) {
+        Ciclo nuevoCiclo = servicioCiclo.createCiclo(ciclo);
+        return ResponseEntity.status(HttpStatus.CREATED).body(nuevoCiclo);
     }
 
-    //cruD
-    @DeleteMapping("/borrarCiclo/{id}")
-    public ResponseEntity<?> borrarCiclo(@PathVariable Long id) {
-        boolean cicloEliminado = servicioCiclos.borrarCiclos(id);
-
-        if (cicloEliminado) {
-            return ResponseEntity.ok("Ciclo borrado con éxito");
-        } else {
-            return ResponseEntity.badRequest().body("No se encontraron ciclos con el id: " + id); //No me deja poner el notFound()
+    @PutMapping("/update/{id}")
+    public ResponseEntity<?> updateCiclo(@PathVariable Long id, @RequestBody Ciclo ciclo) {
+        Ciclo cicloActualizado = servicioCiclo.updateCiclo(id, ciclo);
+        if (cicloActualizado == null) {
+            return ResponseEntity.notFound().build();
         }
+        return ResponseEntity.ok(cicloActualizado);
     }
+
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<?> deleteCiclo(@PathVariable Long id) {
+        servicioCiclo.deleteCiclo(id);
+        return ResponseEntity.noContent().build();
+    }
+
 }

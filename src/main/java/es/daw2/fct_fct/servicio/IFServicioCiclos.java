@@ -1,14 +1,13 @@
 package es.daw2.fct_fct.servicio;
 
 import java.util.List;
-import java.util.Optional;
 
 import es.daw2.fct_fct.modelo.Ciclo;
 
 public interface IFServicioCiclos {
-
-    public List<Ciclo> listaCiclos();
-    public Ciclo addCiclos(Ciclo c);
-    public Optional<Ciclo> getCiclosId(Long ciclo_id);
-    public boolean borrarCiclos(Long ciclo_id);
+    List<Ciclo> getAllCiclos();
+    Ciclo getCicloById(Long ciclo_id);
+    Ciclo createCiclo(Ciclo ciclo);
+    Ciclo updateCiclo(Long ciclo_id, Ciclo ciclo);
+    void deleteCiclo(Long ciclo_id);
 }
