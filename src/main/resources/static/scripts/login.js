@@ -29,6 +29,7 @@ window.addEventListener('FormsCreated', (event) => {
         .then(response => {
             if (response.ok) {
                 window.location.href = '/index';
+                return;
             }
             form.showError('Login fallido: Email o contraseña incorrectos.');
             form.submitFinish();
