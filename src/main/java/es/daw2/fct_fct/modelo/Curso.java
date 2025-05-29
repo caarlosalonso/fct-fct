@@ -22,6 +22,7 @@ import lombok.NoArgsConstructor;
 public class Curso {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "curso_id")
     private Long id;
 
     @ManyToOne

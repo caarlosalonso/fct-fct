@@ -22,11 +22,12 @@ import lombok.NoArgsConstructor;
 public class Plaza {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "plaza_id")
     private Long id;
 
     @ManyToOne
     @JsonIgnore
-    @JoinColumn(name = "empresa_id", referencedColumnName = "empresa_id", nullable = false)
+    @JoinColumn(name = "empresa_id", nullable = false)
     private Empresa empresa;
 
     @ManyToOne

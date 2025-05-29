@@ -22,12 +22,13 @@ import lombok.NoArgsConstructor;
 public class Grupo {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "grupo_id")
     private Long id;
 
     @ManyToOne
     @JsonIgnore
-    @JoinColumn(name = "formacion_id")
-    private Ciclo formacion;
+    @JoinColumn(name = "ciclo_id")
+    private Ciclo ciclo;
 
     @Column(name = "name", nullable = false, columnDefinition = "varchar(255)")
     private String name;
