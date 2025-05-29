@@ -19,12 +19,15 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "tutores")
-@AttributeOverride(name = "id", column = @Column(name = "tutor_id", nullable = false, columnDefinition = "BIGINT"))
-public class Tutor extends AbsBaseEntity {
+@Table(name="documentaciones")
+@AttributeOverride(name = "id", column = @Column(name = "documentacion_id", nullable = false, columnDefinition = "BIGINT"))
+public class Documentacion extends AbsBaseEntity {
 
     @ManyToOne
     @JsonIgnore
-    @JoinColumn(name = "user_id")
-    private User user;
+    @JoinColumn(name = "alumno_id")
+    private Alumno alumno;
+
+    @Column(name = "doc_file", nullable = false, columnDefinition = "VARCHAR(255)")
+    private String docFile;
 }
