@@ -17,6 +17,8 @@ import es.daw2.fct_fct.dto.UserDTO;
 import es.daw2.fct_fct.modelo.User;
 import es.daw2.fct_fct.servicio.ServicioUser;
 import es.daw2.fct_fct.utils.PasswordUtils;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 
 
 @RestController
@@ -27,7 +29,9 @@ public class ControladorUser extends CrudController<Long, UserCreateDTO, User> {
     private ServicioUser servicioUser;
 
     @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody LoginRequestDTO loginRequestDTO) {
+    public ResponseEntity<?> login(@RequestBody LoginRequestDTO loginRequestDTO, 
+                                    HttpServletRequest request) {
+
         User userFound = servicioUser.findByEmailAndPassword(
             loginRequestDTO.email(),
             loginRequestDTO.password()
@@ -36,12 +40,18 @@ public class ControladorUser extends CrudController<Long, UserCreateDTO, User> {
         if (userFound == null)
             return ResponseEntity.status(401).body("Invalid credentials");
         
+        HttpSession session = request.getSession(false);
+        if (session != null) session.invalidate();          // Cierra la sesión
+
         UserDTO dto = new UserDTO(
             userFound.getId(),
             userFound.getName(),
             userFound.getEmail(),
             userFound.isAdmin()
         );
+
+        HttpSession newSession = request.getSession(true);
+        newSession.setAttribute("user", dto);
 
         return ResponseEntity.ok(dto);
     }
