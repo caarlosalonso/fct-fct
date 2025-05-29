@@ -28,10 +28,11 @@ window.addEventListener('FormsCreated', (event) => {
         })
         .then(response => {
             if (response.ok) {
+                form.showSuccess('Login exitoso.');
                 window.location.href = '/index';
-                return;
+            } else {
+                form.showError('Login fallido: Email o contraseña incorrectos.');
             }
-            form.showError('Login fallido: Email o contraseña incorrectos.');
             form.submitFinish();
         })
         .catch(error => {
