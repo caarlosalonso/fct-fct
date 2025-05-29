@@ -23,7 +23,7 @@ import lombok.NoArgsConstructor;
 public class Documentacion {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "documentacion_id")
+    @Column(name = "documentacion_id", nullable = false, columnDefinition = "BIGINT")
     private Long id;
 
     @ManyToOne

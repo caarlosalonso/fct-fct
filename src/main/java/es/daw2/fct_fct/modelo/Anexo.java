@@ -23,7 +23,7 @@ import lombok.NoArgsConstructor;
 public class Anexo {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "anexo_id")
+    @Column(name = "anexo_id", nullable = false, columnDefinition = "BIGINT")
     private Long id;
 
     @ManyToOne
