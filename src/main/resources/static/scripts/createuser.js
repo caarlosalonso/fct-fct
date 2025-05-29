@@ -28,6 +28,7 @@ import { Form } from './classes/Form.js';
             .then(response => {
                 if (response.status === 201) {
                     form.showSuccess('Usuario creado correctamente.');
+                    form.submitFinish();
                     form.reset();
                 } else if (response.status === 409) {
                     form.showError('El correo electrónico ya está en uso.');
