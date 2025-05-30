@@ -1,4 +1,4 @@
-import { Form } from './classes/Form.js';
+// All this might get deleted
 
 window.addEventListener('DOMContentLoaded', (event) => {
     fetchFormaciones();
@@ -11,10 +11,10 @@ function fetchFormaciones() {
         'SUPERIOR': 'Superior'
     }
 
-    const formacionesContainer = document.getElementById('formaciones-container');
-    formacionesContainer.innerHTML = '';
+    const ciclosContainer = document.getElementById('ciclos-container');
+    ciclosContainer.innerHTML = '';
 
-    fetch('/api/formaciones/all', {
+    fetch('/api/ciclos/all', {
         method: 'GET',
         headers: {
             'Content-Type': 'application/json'
@@ -26,20 +26,20 @@ function fetchFormaciones() {
         throw new Error('Network response was not ok');
     })
     .then(data => {
-        data.forEach(formacion => {
+        data.forEach(ciclo => {
             const div = document.createElement('div');
-            div.classList.add('formacion-item');
+            div.classList.add('ciclo-item');
             // Should be replaced with createElements
             div.innerHTML = `
-                <p class="formacion-titulo">(${formacion.acronimo}) ${formacion.name}</p>
-                <p class="formacion-nivel">${NIVELES[formacion.nivel]}</p>
-                <p class="formacion-familia-profesional">${formacion.familiaProfesional}</p>
-                <p class="formacion-horas">${formacion.horasPracticas}</p>
+                <p class="ciclo-titulo">(${ciclo.acronimo}) ${ciclo.name}</p>
+                <p class="ciclo-nivel">${NIVELES[ciclo.nivel]}</p>
+                <p class="ciclo-familia-profesional">${ciclo.familiaProfesional}</p>
+                <p class="ciclo-horas">${ciclo.horasPracticas}</p>
             `;
-            formacionesContainer.appendChild(div);
+            ciclosContainer.appendChild(div);
         });
     })
     .catch(error => {
-        formacionesContainer.innerHTML = '<p>Error al cargar las formaciones.</p>';
+        ciclosContainer.innerHTML = '<p>Error al cargar los ciclos.</p>';
     });
 }
