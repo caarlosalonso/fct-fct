@@ -1,5 +1,7 @@
 package es.daw2.fct_fct.modelo;
 
+import java.time.LocalDateTime;
+
 import jakarta.persistence.AttributeOverride;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -30,8 +32,8 @@ public class User extends AbsBaseEntity {
     @Column(name = "password", nullable = false, columnDefinition = "varchar(255)")
     private String password;
 
-    @Column(name = "updated_password", nullable = false, columnDefinition = "TINYINT DEFAULT 0")
-    private boolean updatedPassword;
+    @Column(name = "updated_password_at", nullable = true, columnDefinition = "DATETIME DEFAULT NULL")
+    private LocalDateTime updatedPasswordAt;
 
     @Column(name = "is_admin", nullable = false, columnDefinition = "TINYINT DEFAULT 0")
     private boolean isAdmin;
