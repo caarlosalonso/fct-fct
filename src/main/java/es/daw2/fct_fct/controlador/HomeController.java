@@ -34,7 +34,9 @@ public class HomeController {
     }
 
     @GetMapping("/crear")
-    public String crear() {
+    public String crear(HttpServletRequest request) {
+        HttpSession session = request.getSession(false);
+        if (session == null) return "redirect:/login";
         return "createuser.html";
     }
 
