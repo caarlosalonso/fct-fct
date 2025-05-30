@@ -302,8 +302,28 @@ input.password.text-based {
     position: absolute;
     z-index: 1;
     margin: 0px;
+
+    &.dni {
+        font-size: 14px;
+        background-color: var(--background-color);
+        left: 11px;
+    }
 }
 
+.autocomplete-values {
+    &.written {
+        color: var(--text-color);
+    }
+
+    &.predicted {
+        color: #999999;
+    }
+}
+
+
+/* ---------------------------------------------------------------------------- */
+/*                               FILE TYPE STYLES                               */
+/* ---------------------------------------------------------------------------- */
 .file-name-display {
     font-size: 0.9rem;
     color: var(--text-color);
