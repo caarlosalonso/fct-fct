@@ -24,7 +24,7 @@ export class DNIInput extends TextInput {
             // Checks the first letters for NIE
             if (/^[XYZ]/.test(dni)) {
                 const letraInicial = dni.charAt(0);
-                dni = dni.replace(letraInicial, { X: '0', Y: '1', Z: '2' }[letraInicial]);
+                dni = dni.replace(letraInicial, this.nIEPrefixToNumber(letraInicial));
             }
 
             const control = dni.slice(-1);
@@ -84,7 +84,7 @@ export class DNIInput extends TextInput {
             const prefix = val[0];
             const digits = val.slice(1);
             const zeros = '0'.repeat(7 - digits.length);
-            const nieNumber = (prefix === "X" ? "0" : prefix === "Y" ? "1" : "2") + zeros + digits;
+            const nieNumber = this.nIEPrefixToNumber(prefix) + zeros + digits;
             const letter = this.computeLetraControl(nieNumber);
             return prefix + zeros + digits + letter;
         }
@@ -122,7 +122,7 @@ export class DNIInput extends TextInput {
             const prefix = val[0];
             const digits = val.slice(1);
             const zeros = '0'.repeat(7 - digits.length);
-            const nieNumber = (prefix === "X" ? "0" : prefix === "Y" ? "1" : "2") + zeros + digits;
+            const nieNumber = this.nIEPrefixToNumber(prefix) + zeros + digits;
             const letter = this.computeLetraControl(nieNumber);
             spans.push(this.makeSpan(prefix, 'written'));
             spans.push(this.makeSpan(zeros, 'predicted'));
@@ -135,9 +135,13 @@ export class DNIInput extends TextInput {
         this.hideAutocomplete();
     }
 
+    nIEPrefixToNumber(prefix) {
+        return { X: '0', Y: '1', Z: '2' }[prefix] || '';
+    }
+
     makeSpan(text, className) {
         const span = document.createElement('span');
-        if (className) span.className = className;
+        if (className) span.classList.add(className);
         span.textContent = text;
         return span;
     }
@@ -156,7 +160,6 @@ export class DNIInput extends TextInput {
     }
 
     moveAutocomplete() {
-        // Optional: adapt to your layout, similar to EmailInput
         // Get the computed style
         const style = window.getComputedStyle(this.input);
         const paddingLeft = parseFloat(style.getPropertyValue("padding-left"));
@@ -165,6 +168,8 @@ export class DNIInput extends TextInput {
         // Computes the input's width
         const inputWidth = canvasContext.measureText(this.input.value).width;
         // Computes position
+
+        // It shouldn't move?
         const x = paddingLeft + inputWidth + 1;
         this.autocomplete.style.left = `${x}px`;
         this.autocomplete.style.position = 'absolute';
