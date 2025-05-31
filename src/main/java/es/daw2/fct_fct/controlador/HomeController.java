@@ -74,8 +74,8 @@ Do not disturb the sacred semicolon's deep slumber.
 
     @GetMapping("/crear")
     public String crear(HttpServletRequest request) {
-        HttpSession session = request.getSession(false);
-        if (session == null) return "redirect:/login";
+        //HttpSession session = request.getSession(false);
+        //if (session == null) return "redirect:/login";
         return "createuser.html";
     }
 
