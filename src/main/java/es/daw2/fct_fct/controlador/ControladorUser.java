@@ -29,7 +29,7 @@ public class ControladorUser extends CrudController<Long, UserCreateDTO, User> {
     private ServicioUser servicioUser;
 
     @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody LoginRequestDTO loginRequestDTO, 
+    public ResponseEntity<?> login(@RequestBody LoginRequestDTO loginRequestDTO,
                                     HttpServletRequest request) {
 
         User userFound = servicioUser.findByEmailAndPassword(
@@ -41,17 +41,17 @@ public class ControladorUser extends CrudController<Long, UserCreateDTO, User> {
             return ResponseEntity.status(401).body("Invalid credentials");
         
         HttpSession session = request.getSession(false);
-        if (session != null) session.invalidate();          // Cierra la sesión
+        if (session != null) session.invalidate();          // Cierra la sesión anterior si existe
 
         UserDTO dto = new UserDTO(
             userFound.getId(),
             userFound.getName(),
-            userFound.getEmail(),
-            userFound.isAdmin()
+            userFound.getEmail()
         );
 
         HttpSession newSession = request.getSession(true);
         newSession.setAttribute("user", dto);
+        newSession.setAttribute("role", userFound.getRole());
 
         return ResponseEntity.ok(dto);
     }
@@ -65,7 +65,10 @@ public class ControladorUser extends CrudController<Long, UserCreateDTO, User> {
         newUser.setPassword(
             PasswordUtils.hashPassword(dto.password())
         );
-        newUser.setAdmin(false);
+    /*  No se deberían crear 'users' así porque sí. Si se crea uno, debería ser
+        un ADMIN. Así que se debe verificar si los crea un ADMIN. Por ahora,
+        solo se permite la creación de ALUMNOS desde el controlador de Users.   */
+        newUser.setRole(User.Role.ALUMNO);
         newUser.setUpdatedPasswordAt(null);
 
         if (servicioUser.checkEmailExists(newUser.getEmail())) {
@@ -77,14 +80,12 @@ public class ControladorUser extends CrudController<Long, UserCreateDTO, User> {
         UserDTO data = new UserDTO(
             newUser.getId(),
             newUser.getName(),
-            newUser.getEmail(),
-            newUser.isAdmin()
+            newUser.getEmail()
         );
 
         URI location = URI.create("/api/users/" + newUser.getId());
         return ResponseEntity.created(location).body(data);
     }
-
 
     @Override
     public ResponseEntity<?> getById(@PathVariable Long id) {
