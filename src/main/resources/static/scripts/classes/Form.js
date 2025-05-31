@@ -6,6 +6,7 @@ import { TextInput } from "./TextInput.js";
 import { TelInput } from "./TelInput.js";
 import { FileInput } from "./FileInput.js";
 import { DateInput } from "./DateInput.js";
+import { DNIInput } from "./DNIInput.js";
 
 export class Form {
     static formMap = new Map();
@@ -35,6 +36,7 @@ export class Form {
                 case 'text':        this.entries.push(new TextInput(input));        break;
                 case 'tel':         this.entries.push(new TelInput(input));         break;
                 case 'file':        this.entries.push(new FileInput(input));        break;
+                case 'dni':         this.entries.push(new DNIInput(input));         break;
                 default:            this.entries.push(new Input(input));            break;
             }
         });
