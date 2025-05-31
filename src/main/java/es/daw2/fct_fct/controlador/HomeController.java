@@ -13,8 +13,8 @@ public class HomeController {
 
     private enum PAGES {
     /*  Authentication                                                          */
-        LOGIN("/auth/login.html"),
-        REDIRECT_LOGIN("redirect:/auth/login.html"),
+        LOGIN("auth/login.html"),
+        REDIRECT_LOGIN("redirect:auth/login.html"),
     /*  Errors                                                                  */
         ERROR("/error.html"),
     /*  User Management                                                         */
@@ -74,8 +74,8 @@ Do not disturb the sacred semicolon's deep slumber.
 
     @GetMapping("/crear")
     public String crear(HttpServletRequest request) {
-        //HttpSession session = request.getSession(false);
-        //if (session == null) return "redirect:/login";
+        HttpSession session = request.getSession(false);
+        if (session == null) return PAGES.REDIRECT_LOGIN.getPath();
         return "createuser.html";
     }
 
