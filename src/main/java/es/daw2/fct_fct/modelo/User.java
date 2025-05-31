@@ -1,5 +1,7 @@
 package es.daw2.fct_fct.modelo;
 
+import java.time.LocalDateTime;
+
 import jakarta.persistence.AttributeOverride;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -20,6 +22,9 @@ import lombok.NoArgsConstructor;
 @AttributeOverride(name = "id", column = @Column(name = "user_id", nullable = false, columnDefinition = "BIGINT"))
 public class User extends AbsBaseEntity {
 
+    @Column(name = "role", nullable = false, columnDefinition = "ENUM('ADMIN', 'TUTOR', 'COORDINADOR', 'ALUMNO')")
+    private Role role;
+
     @Column(name = "name", nullable = false, columnDefinition = "varchar(255)")
     private String name;
 
@@ -30,23 +35,13 @@ public class User extends AbsBaseEntity {
     @Column(name = "password", nullable = false, columnDefinition = "varchar(255)")
     private String password;
 
-    @Column(name = "updated_password", nullable = false, columnDefinition = "TINYINT DEFAULT 0")
-    private boolean updatedPassword;
+    @Column(name = "updated_password_at", nullable = true, columnDefinition = "DATETIME DEFAULT NULL")
+    private LocalDateTime updatedPasswordAt;
 
-    @Column(name = "is_admin", nullable = false, columnDefinition = "TINYINT DEFAULT 0")
-    private boolean isAdmin;
-
-    public User(String name, String email, String password) {
-        this.name = name;
-        this.password = password;
-        this.email = email;
-        this.isAdmin = false;
-    }
-
-    public User(String email, String password) {
-        this.name = "";
-        this.password = password;
-        this.email = email;
-        this.isAdmin = false;
+    public enum Role {
+        ADMIN,
+        TUTOR,
+        COORDINADOR,
+        ALUMNO
     }
 }
