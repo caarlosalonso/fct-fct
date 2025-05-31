@@ -13,19 +13,19 @@ public class HomeController {
 
     private enum PAGES {
     /*  Authentication                                                          */
-        LOGIN("auth/login.html"),
-        REDIRECT_LOGIN("redirect:auth/login.html"),
+        LOGIN("/login"),
+        REDIRECT_LOGIN("redirect:/login"),
     /*  Errors                                                                  */
-        ERROR("/error.html"),
+        ERROR("/error"),
     /*  User Management                                                         */
     /*  Admin                                                                   */
-        ADMIN("/admin.html"),
+        ADMIN("/admin"),
     /*  Coordinación                                                            */
-        COORDINACION("/coordinacion.html"),
+        COORDINACION("/coordinacion"),
     /*  Tutor                                                                   */
-        TUTOR("/tutor.html"),
+        TUTOR("/tutor"),
     /*  Alumno                                                                  */
-        ALUMNO("/alumno.html"),
+        ALUMNO("/alumno"),
 
 
 
@@ -69,7 +69,7 @@ Do not disturb the sacred semicolon's deep slumber.
 
     @GetMapping("/login")
     public String login() {
-        return PAGES.LOGIN.getPath();
+        return "login.html";
     }
 
     @GetMapping("/crear")
@@ -81,12 +81,12 @@ Do not disturb the sacred semicolon's deep slumber.
 
     @GetMapping("/error")
     public String error() {
-        return PAGES.ERROR.getPath();
+        return "error.html";
     }
 
     @GetMapping("/coordinacion")
     public String coordinacion() {
-        return PAGES.COORDINACION.getPath();
+        return "coordinacion.html";
     }
 
     @GetMapping("/index")
@@ -94,4 +94,18 @@ Do not disturb the sacred semicolon's deep slumber.
         return "index.html";
     }
 
+    @GetMapping("/admin")
+    public String admin() {
+        return "admin.html";
+    }
+
+    @GetMapping("/tutor")
+    public String tutor() {
+        return "tutor.html";
+    }
+
+    @GetMapping("/alumno")
+    public String alumno() {
+        return "alumno.html";
+    }
 }
