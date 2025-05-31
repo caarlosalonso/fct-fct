@@ -27,6 +27,11 @@ public class Grupo extends AbsBaseEntity {
     @JoinColumn(name = "ciclo_id")
     private Ciclo ciclo;
 
+    @ManyToOne
+    @JsonIgnore
+    @JoinColumn(name = "ciclo_lectivo_id")
+    private CicloLectivo cicloLectivo;
+
     @Column(name = "name", nullable = false, columnDefinition = "varchar(255)")
     private String name;
 
@@ -35,9 +40,6 @@ public class Grupo extends AbsBaseEntity {
 
     @Column(name = "horario", nullable = false, columnDefinition = "ENUM('DIURNO', 'VESPERTINO', 'NOCHE')")
     private Horario horario;
-
-    @Column(name = "ciclo_lectivo", nullable = false, columnDefinition = "VARCHAR(9)")
-    private String cicloLectivo;
 
     public enum Horario {
         DIURNO,
