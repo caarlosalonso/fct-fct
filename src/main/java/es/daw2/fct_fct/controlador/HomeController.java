@@ -3,6 +3,7 @@ package es.daw2.fct_fct.controlador;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 
+import es.daw2.fct_fct.modelo.User;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 
@@ -19,12 +20,12 @@ public class HomeController {
         Object role = session.getAttribute("role");
         if (user == null || role == null) return "redirect:/login";
 
-        return switch (role.toString()) {
-            case "admin"        -> "admin.html";
-            case "coordinador"  -> "coordinacion.html";
-            case "tutor"        -> "tutor.html";
-            case "alumno"       -> "alumno.html";
-            default             -> "login.html";
+        return switch (role) {
+            case User.Role.ADMIN        -> "admin.html";
+            case User.Role.COORDINADOR  -> "coordinacion.html";
+            case User.Role.TUTOR        -> "tutor.html";
+            case User.Role.ALUMNO       -> "alumno.html";
+            default                     -> "login.html";
         };
     }
 
