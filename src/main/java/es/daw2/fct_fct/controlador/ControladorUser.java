@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import es.daw2.fct_fct.dto.LoginRequestDTO;
 import es.daw2.fct_fct.dto.UserCreateDTO;
 import es.daw2.fct_fct.dto.UserDTO;
+import es.daw2.fct_fct.dto.UserResetPasswordTutorDTO;
 import es.daw2.fct_fct.modelo.User;
 import es.daw2.fct_fct.servicio.ServicioUser;
 import es.daw2.fct_fct.utils.PasswordUtils;
@@ -54,6 +55,32 @@ public class ControladorUser extends CrudController<Long, UserCreateDTO, User> {
         newSession.setAttribute("role", userFound.getRole());
 
         return ResponseEntity.ok(dto);
+    }
+
+    @PostMapping("/reset-password/{id}")
+    public ResponseEntity<?> postMethodName(@PathVariable Long id,
+                                @RequestBody UserResetPasswordTutorDTO entity,
+                                HttpServletRequest request) {
+
+    /*  Debemos obligatoriamente revisar la sesión para que no puedan
+        cambiar las contraseñas extraños                                        */
+        HttpSession session = request.getSession(false);
+        if (session == null ||
+            session.getAttribute("user") == null ||
+            session.getAttribute("role") != "tutor") {
+            return ResponseEntity.status(401).body("Unauthorized");
+        }
+
+        Optional<User> userOptional = servicioUser.getUsersId(id);
+
+        if (userOptional.isPresent()) {
+            User user = userOptional.get();
+            user.setPassword(PasswordUtils.hashPassword(entity.newPassword()));
+            servicioUser.addUsers(user);
+            return ResponseEntity.ok("Password updated successfully");
+        }
+
+        return ResponseEntity.notFound().build();
     }
 
     @Override
