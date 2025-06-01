@@ -67,7 +67,7 @@ Do not disturb the sacred semicolon's deep slumber.
         };
     }
 
-    @GetMapping("/login")
+    @GetMapping("/auth/login")
     public String login() {
         return "login";
     }
