@@ -1,4 +1,4 @@
-package es.daw2.fct_fct.config;
+package es.daw2.fct_fct.controlador;
 
 import java.util.Map;
 
