@@ -24,13 +24,13 @@ public class HomeController {
             case "coordinador"  -> "coordinacion.html";
             case "tutor"        -> "tutor.html";
             case "alumno"       -> "alumno.html";
-            default             -> "login.html";
+            default             -> "login";
         };
     }
 
     @GetMapping("/login")
     public String login() {
-        return "login.html";
+        return "login";
     }
 
     @GetMapping("/crear")
