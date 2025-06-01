@@ -69,7 +69,7 @@ Do not disturb the sacred semicolon's deep slumber.
 
     @GetMapping("/login")
     public String login() {
-        return "/auth/login.html";
+        return "auth/login.html";
     }
 
     @GetMapping("/crear")
