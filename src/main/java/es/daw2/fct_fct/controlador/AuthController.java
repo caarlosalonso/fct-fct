@@ -25,7 +25,7 @@ public class AuthController {
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody LoginRequestDTO dto) throws Exception {
         // Valida con el dto el email y password del usuario en la base de datos
-        User u = ServicioUser.findByEmailAndPassword(dto.getEmail(), dto.getPassword());
+        User u = ServicioUser.findByEmailAndPassword(dto.email(), dto.password());
         if (u == null) {
         return ResponseEntity.status(401).build();
         }
