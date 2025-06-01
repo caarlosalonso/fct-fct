@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import es.daw2.fct_fct.dto.LoginRequestDTO;
 import es.daw2.fct_fct.dto.UserCreateDTO;
 import es.daw2.fct_fct.dto.UserDTO;
+import es.daw2.fct_fct.dto.UserResetPasswordTutorDTO;
 import es.daw2.fct_fct.modelo.User;
 import es.daw2.fct_fct.servicio.ServicioUser;
 import es.daw2.fct_fct.utils.PasswordUtils;
@@ -29,7 +30,7 @@ public class ControladorUser extends CrudController<Long, UserCreateDTO, User> {
     private ServicioUser servicioUser;
 
     @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody LoginRequestDTO loginRequestDTO, 
+    public ResponseEntity<?> login(@RequestBody LoginRequestDTO loginRequestDTO,
                                     HttpServletRequest request) {
 
         User userFound = servicioUser.findByEmailAndPassword(
@@ -41,19 +42,45 @@ public class ControladorUser extends CrudController<Long, UserCreateDTO, User> {
             return ResponseEntity.status(401).body("Invalid credentials");
         
         HttpSession session = request.getSession(false);
-        if (session != null) session.invalidate();          // Cierra la sesión
+        if (session != null) session.invalidate();          // Cierra la sesión anterior si existe
 
         UserDTO dto = new UserDTO(
             userFound.getId(),
             userFound.getName(),
-            userFound.getEmail(),
-            userFound.isAdmin()
+            userFound.getEmail()
         );
 
         HttpSession newSession = request.getSession(true);
         newSession.setAttribute("user", dto);
+        newSession.setAttribute("role", userFound.getRole());
 
         return ResponseEntity.ok(dto);
+    }
+
+    @PostMapping("/reset-password/{id}")
+    public ResponseEntity<?> postMethodName(@PathVariable Long id,
+                                @RequestBody UserResetPasswordTutorDTO entity,
+                                HttpServletRequest request) {
+
+    /*  Debemos obligatoriamente revisar la sesión para que no puedan
+        cambiar las contraseñas extraños                                        */
+        HttpSession session = request.getSession(false);
+        if (session == null ||
+            session.getAttribute("user") == null ||
+            session.getAttribute("role") != "tutor") {
+            return ResponseEntity.status(401).body("Unauthorized");
+        }
+
+        Optional<User> userOptional = servicioUser.getUsersId(id);
+
+        if (userOptional.isPresent()) {
+            User user = userOptional.get();
+            user.setPassword(PasswordUtils.hashPassword(entity.newPassword()));
+            servicioUser.addUsers(user);
+            return ResponseEntity.ok("Password updated successfully");
+        }
+
+        return ResponseEntity.notFound().build();
     }
 
     @Override
@@ -65,8 +92,11 @@ public class ControladorUser extends CrudController<Long, UserCreateDTO, User> {
         newUser.setPassword(
             PasswordUtils.hashPassword(dto.password())
         );
-        newUser.setAdmin(false);
-        newUser.setUpdatedPassword(false);
+    /*  No se deberían crear 'users' así porque sí. Si se crea uno, debería ser
+        un ADMIN. Así que se debe verificar si los crea un ADMIN. Por ahora,
+        solo se permite la creación de ALUMNOS desde el controlador de Users.   */
+        newUser.setRole(User.Role.ALUMNO);
+        newUser.setUpdatedPasswordAt(null);
 
         if (servicioUser.checkEmailExists(newUser.getEmail())) {
             return ResponseEntity.status(409).body("Email already exists"); // Conflicto, ya existe un usuario con ese email
@@ -77,14 +107,12 @@ public class ControladorUser extends CrudController<Long, UserCreateDTO, User> {
         UserDTO data = new UserDTO(
             newUser.getId(),
             newUser.getName(),
-            newUser.getEmail(),
-            newUser.isAdmin()
+            newUser.getEmail()
         );
 
         URI location = URI.create("/api/users/" + newUser.getId());
         return ResponseEntity.created(location).body(data);
     }
-
 
     @Override
     public ResponseEntity<?> getById(@PathVariable Long id) {

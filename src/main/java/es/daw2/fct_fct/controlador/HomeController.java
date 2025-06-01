@@ -3,6 +3,7 @@ package es.daw2.fct_fct.controlador;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 
+import es.daw2.fct_fct.modelo.User;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 
@@ -10,31 +11,71 @@ import jakarta.servlet.http.HttpSession;
 @Controller
 public class HomeController {
 
+    private enum PAGES {
+    /*  Authentication                                                          */
+        LOGIN("/login"),
+        REDIRECT_LOGIN("redirect:/login"),
+    /*  Errors                                                                  */
+        ERROR("/error"),
+    /*  User Management                                                         */
+    /*  Admin                                                                   */
+        ADMIN("/admin"),
+    /*  Coordinación                                                            */
+        COORDINACION("/coordinacion"),
+    /*  Tutor                                                                   */
+        TUTOR("/tutor"),
+    /*  Alumno                                                                  */
+        ALUMNO("/alumno"),
+
+
+
+
+    /*
+Do not disturb the sacred semicolon's deep slumber.
+    *  \   |*  /     *
+      * \  |  /  *          *
+ *   --- */;/* ---      *
+   *    /  |  \   *           *
+       / * |   \      *
+*/
+        private final String path;
+
+        PAGES(String path) {
+            this.path = path;
+        }
+
+        public String getPath() {
+            return path;
+        }
+    }
+
     @GetMapping("/")
     public String index(HttpServletRequest request) {
         HttpSession session = request.getSession(false);    // No crea sesión.
-        if (session == null) return "redirect:/login";
+        if (session == null) return PAGES.REDIRECT_LOGIN.getPath();
 
         Object user = session.getAttribute("user");
         Object role = session.getAttribute("role");
-        if (user == null || role == null) return "redirect:/login";
+        if (user == null || role == null) return PAGES.REDIRECT_LOGIN.getPath();
 
-        return switch (role.toString()) {
-            case "admin"        -> "admin.html";
-            case "coordinador"  -> "coordinacion.html";
-            case "tutor"        -> "tutor.html";
-            case "alumno"       -> "alumno.html";
-            default             -> "login.html";
+        return switch (role) {
+            case User.Role.ADMIN        -> PAGES.ADMIN.getPath();
+            case User.Role.COORDINADOR  -> PAGES.COORDINACION.getPath();
+            case User.Role.TUTOR        -> PAGES.TUTOR.getPath();
+            case User.Role.ALUMNO       -> PAGES.ALUMNO.getPath();
+            default                     -> PAGES.LOGIN.getPath();
         };
     }
 
     @GetMapping("/login")
     public String login() {
-        return "login.html";
+        return "auth/login.html";
     }
 
     @GetMapping("/crear")
-    public String crear() {
+    public String crear(HttpServletRequest request) {
+        HttpSession session = request.getSession(false);
+        if (session == null) return PAGES.REDIRECT_LOGIN.getPath();
         return "createuser.html";
     }
 
@@ -53,4 +94,18 @@ public class HomeController {
         return "index.html";
     }
 
+    @GetMapping("/admin")
+    public String admin() {
+        return "admin.html";
+    }
+
+    @GetMapping("/tutor")
+    public String tutor() {
+        return "tutor.html";
+    }
+
+    @GetMapping("/alumno")
+    public String alumno() {
+        return "alumno.html";
+    }
 }

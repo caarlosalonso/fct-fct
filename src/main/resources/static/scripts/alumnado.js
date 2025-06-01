@@ -1,4 +1,5 @@
 import { Form } from './classes/Form.js';
+import { PasswordInput } from './classes/PasswordInput.js';
 
 let chosenCurso = null;
 
@@ -270,6 +271,7 @@ function setInputsToUpdate(form, id) {
 
     document.getElementById('titulo').textContent = `Información del alumno de ${chosenCurso.textContent}`;
     addDeleteButton(form, id);
+    addForgotPasswordButton(form, id);
 
     const alumno = map.find(a => a.id === id);
     if (!alumno) return;
@@ -418,6 +420,114 @@ function deleteFinish(deleteButton) {
     deleteButton.classList.remove('loading');
     deleteButton.textContent = 'Eliminar alumno';
     const spinner = deleteButton.querySelector('.spinner-border');
+    if (spinner) {
+        spinner.remove();
+    }
+}
+
+function deleteForgotPasswordButton() {
+    const forgotPasswordButtonDiv = document.getElementById('forgot-password-div');
+    if (forgotPasswordButtonDiv) document.getElementById('buttons-wrapper').removeChild(forgotPasswordButtonDiv);
+}
+
+function addForgotPasswordButton(form, id) {
+    deleteForgotPasswordButton();
+
+    const forgotPasswordButtonDiv = document.createElement('div');
+    forgotPasswordButtonDiv.id = 'forgot-password-div';
+    forgotPasswordButtonDiv.style.display = 'flex';
+    forgotPasswordButtonDiv.style.alignItems = 'center';
+    document.getElementById('buttons-wrapper').appendChild(forgotPasswordButtonDiv);
+
+    const forgotPasswordField = document.createElement('input');
+    forgotPasswordField.id = 'forgot-password-field';
+    forgotPasswordField.classList.add('collapsed');
+    forgotPasswordField.type = 'password';
+    forgotPasswordField.setAttribute('label', "Nueva contraseña");
+    forgotPasswordField.setAttribute('data-required', 'true');
+    forgotPasswordButtonDiv.appendChild(forgotPasswordField);
+
+    new PasswordInput(forgotPasswordField);
+
+    const forgotPasswordButton = document.createElement('button');
+    forgotPasswordButton.id = 'forgot-password';
+    forgotPasswordButton.classList.add('form-buttons');
+    forgotPasswordButton.textContent = 'Restablecer contraseña';
+    forgotPasswordButtonDiv.appendChild(forgotPasswordButton);
+
+    let confirmMode = false;
+    let escapeHandler = null;
+
+    function cancelPasswordReset() {
+        forgotPasswordField.value = '';
+        forgotPasswordField.classList.add('collapsed');
+        forgotPasswordButton.textContent = 'Restablecer contraseña';
+        confirmMode = false;
+        if (escapeHandler) {
+            forgotPasswordField.removeEventListener('keydown', escapeHandler);
+            escapeHandler = null;
+        }
+    }
+
+    forgotPasswordButton.addEventListener('click', async (event) => {
+        event.preventDefault();
+        if (!confirmMode) {
+            forgotPasswordField.classList.remove('collapsed');
+            forgotPasswordField.focus();
+            forgotPasswordButton.textContent = 'Confirmar';
+            confirmMode = true;
+
+            // Add escape handler
+            escapeHandler = (event) => {
+                if (event.key === 'Escape') {
+                    cancelPasswordReset();
+                }
+            };
+            forgotPasswordField.addEventListener('keydown', escapeHandler);
+        } else {
+            const newPassword = forgotPasswordField.value.trim();
+            if (!newPassword) {
+                form.showError('Introduce una nueva contraseña');
+                return;
+            }
+            passwordResetLoading(forgotPasswordButton);
+            try {
+                const response = await fetch(`/api/users/reset-password/${id}`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ newPassword })
+                });
+                if (response.ok) {
+                    form.submitFinish('Contraseña restablecida correctamente');
+                    cancelPasswordReset();
+                } else {
+                    form.showError('Error al restablecer la contraseña');
+                }
+            } catch (error) {
+                form.showError('Error al restablecer la contraseña: ' + error.message);
+            } finally {
+                passwordResetFinish(forgotPasswordButton);
+            }
+        }
+    });
+}
+
+function passwordResetLoading(forgotPasswordButton) {
+    forgotPasswordButton.disabled = true;
+    forgotPasswordButton.classList.add('loading');
+    forgotPasswordButton.textContent = '';
+    const spinner = document.createElement('span');
+    spinner.classList.add('spinner-border', 'spinner-border-sm');
+    forgotPasswordButton.appendChild(spinner);
+}
+
+function passwordResetFinish(forgotPasswordButton) {
+    forgotPasswordButton.disabled = false;
+    forgotPasswordButton.classList.remove('loading');
+    forgotPasswordButton.textContent = 'Restablecer contraseña';
+    const spinner = forgotPasswordButton.querySelector('.spinner-border');
     if (spinner) {
         spinner.remove();
     }
