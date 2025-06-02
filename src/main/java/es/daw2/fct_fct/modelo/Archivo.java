@@ -19,15 +19,28 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name="anexos")
-@AttributeOverride(name = "id", column = @Column(name = "anexo_id", nullable = false, columnDefinition = "BIGINT"))
-public class Anexo extends AbsBaseEntity {
+@Table(name="archivos")
+@AttributeOverride(name = "id", column = @Column(name = "archivo_id", nullable = false, columnDefinition = "BIGINT"))
+public class Archivo extends AbsBaseEntity {
 
     @ManyToOne
     @JsonIgnore
     @JoinColumn(name = "alumno_id")
     private Alumno alumno;
 
-    @Column(name = "anexo_file", nullable = false, columnDefinition = "VARCHAR(255)")
-    private String anexoFile;
+    @Column(name = "name", nullable = false, columnDefinition = "VARCHAR(255)")
+    private String name;
+
+    @Column(name = "file", nullable = false, columnDefinition = "VARCHAR(255)")
+    private String file;
+
+    @Column(name = "type", nullable = false, columnDefinition = "ENUM('CV', 'ANEXO', 'JUSTIFICANTE', 'OTRO')")
+    private Type type;
+
+    public enum Type {
+        CV,
+        ANEXO,
+        JUSTIFICANTE,
+        OTRO
+    }
 }
