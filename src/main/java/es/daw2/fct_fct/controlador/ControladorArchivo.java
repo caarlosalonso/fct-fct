@@ -16,11 +16,9 @@ import es.daw2.fct_fct.servicio.ServicioUser;
 @RequestMapping("/api/ficheros")
 public class ControladorArchivo {
 
-    //@Autowired
-    private ServicioArchivo servicioArchivo;
+    private final ServicioArchivo servicioArchivo;
 
-    //@Autowired
-    private ServicioUser servicioUser;
+    private final ServicioUser servicioUser;
 
     // ???? Un constructor?
     public ControladorArchivo(ServicioArchivo servicioArchivo, ServicioUser servicioUser) {
@@ -36,18 +34,18 @@ public class ControladorArchivo {
     public ResponseEntity<?> subir(
             @RequestParam("email") String email,
             @RequestParam("password") String password,
-            @RequestBody("file") MultipartFile file) {
+            @RequestParam("file") MultipartFile file) {
 
-        try {
-            
-
-            //Llamada al servicio que sube el archivo a Firebase
-            servicioArchivo.subirArchivo(user, file);
-
-            return ResponseEntity.ok(Map.of("mensaje", "Archivo subido correctamente"));
-        } catch (IOException e) {
-            return ResponseEntity.status(500)
-                                .body(Map.of("error", "Error subiendo el archivo: " + e.getMessage()));
+        // 1) Validamos credenciales usando tu servicio
+        User user = servicioUser.findByEmailAndPassword(email, password);
+        if (user == null) {
+            return ResponseEntity.status(401)
+                                .body(Map.of("error", "Credenciales inválidas"));
         }
+
+        //Llamada al servicio que sube el archivo a Firebase
+        servicioArchivo.subirArchivo(user, file);
+
+        return ResponseEntity.ok(Map.of("mensaje", "Archivo subido correctamente"));
     }
 }
