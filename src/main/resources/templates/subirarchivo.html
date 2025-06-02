@@ -29,14 +29,17 @@
 <script>
     document.addEventListener('FormsCreated', (event) => {
         const form = Form.getForm('alumno-form');
-
+        
         form.onsubmit = (event) => {
+
+            const FormData = new FormData(event.target);
+            
             const archivo = form.getInput('archivo').getValue();
 
             fetch('/api/ficheros/subir', {
                 method: 'POST',
                 enctype: 'multipart/form-data',
-                body: archivo
+                body: FormData
             })
             .then(response => {
                 if (response.ok) {
