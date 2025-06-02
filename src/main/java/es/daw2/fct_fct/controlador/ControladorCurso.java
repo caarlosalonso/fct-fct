@@ -23,7 +23,7 @@ public class ControladorCurso extends CrudController<Long, Curso, Curso> {
 
     @Override
     public ResponseEntity<?> create(@RequestBody Curso c) {
-        servicioCurso.addCurso(c);
+        servicioCurso.save(c);
         
         URI location = URI.create("/listarCursosId" +c.getId());
         return ResponseEntity.created(location).body(c);
@@ -32,7 +32,7 @@ public class ControladorCurso extends CrudController<Long, Curso, Curso> {
     @Override
     public ResponseEntity<?> all() {
         Iterable<Curso> it = null;
-        it = servicioCurso.listaCursos();
+        it = servicioCurso.list();
 
         if (it!=null) {
             return ResponseEntity.ok(it);
@@ -43,7 +43,7 @@ public class ControladorCurso extends CrudController<Long, Curso, Curso> {
 
     @Override
     public ResponseEntity<?> getById(@PathVariable Long id) {
-        Optional<Curso> curso = servicioCurso.getCursoId(id);
+        Optional<Curso> curso = servicioCurso.getById(id);
 
         if (curso.isPresent()) {
             return ResponseEntity.ok(curso.get());
@@ -54,14 +54,17 @@ public class ControladorCurso extends CrudController<Long, Curso, Curso> {
 
     @Override
     public ResponseEntity<?> update(@PathVariable Long id, @RequestBody Curso c) {
-        Optional<Curso> optional = servicioCurso.getCursoId(id);
+        Optional<Curso> optional = servicioCurso.getById(id);
 
         if (!optional.isPresent()) {
             return ResponseEntity.notFound().build();
         }
         c.setId(id);
 
-        Curso cursoActualizado = servicioCurso.addCurso(c);
+        Optional<Curso> cursoActualizado = servicioCurso.update(id, c);
+        if (!cursoActualizado.isPresent()) {
+            return ResponseEntity.badRequest().body("No se ha podido actualizar el curso con el id: " + id);
+        }
 
         URI location = URI.create("/listarCursosId" + c.getId());
 
@@ -70,7 +73,7 @@ public class ControladorCurso extends CrudController<Long, Curso, Curso> {
 
     @Override
     public ResponseEntity<?> delete(@PathVariable Long id) {
-        boolean Cursoborrado = servicioCurso.borrarCurso(id);
+        boolean Cursoborrado = servicioCurso.delete(id);
 
         if (Cursoborrado) {
             return ResponseEntity.ok("Curso borrado con exito");

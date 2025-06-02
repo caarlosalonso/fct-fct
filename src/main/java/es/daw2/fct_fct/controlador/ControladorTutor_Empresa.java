@@ -23,7 +23,7 @@ public class ControladorTutor_Empresa extends CrudController<Long, Tutor_empresa
 
     @Override
     public ResponseEntity<?> create(@RequestBody Tutor_empresa t) {
-        servicioTutor_Empresa.addTutor_Empresa(t);
+        servicioTutor_Empresa.save(t);
 
         URI location = URI.create("/api/tutor_empresa/" + t.getId());
 
@@ -32,7 +32,7 @@ public class ControladorTutor_Empresa extends CrudController<Long, Tutor_empresa
 
     @Override
     public ResponseEntity<?> all() {
-        Iterable<Tutor_empresa> it = servicioTutor_Empresa.listaTutor_Empresa();
+        Iterable<Tutor_empresa> it = servicioTutor_Empresa.list();
 
         if (it!=null) {
             return ResponseEntity.ok(it);
@@ -43,7 +43,7 @@ public class ControladorTutor_Empresa extends CrudController<Long, Tutor_empresa
 
     @Override
     public ResponseEntity<?> getById(@PathVariable Long id) {
-        Optional<Tutor_empresa> tutor_empresa = servicioTutor_Empresa.getTutor_EmpresaId(id);
+        Optional<Tutor_empresa> tutor_empresa = servicioTutor_Empresa.getById(id);
 
         if (tutor_empresa.isPresent()) {
             return ResponseEntity.ok(tutor_empresa.get());
@@ -54,7 +54,7 @@ public class ControladorTutor_Empresa extends CrudController<Long, Tutor_empresa
 
     @Override
     public ResponseEntity<?> update(@PathVariable Long id, @RequestBody Tutor_empresa t) {
-        Optional<Tutor_empresa> tutor_empresa = servicioTutor_Empresa.getTutor_EmpresaId(id);
+        Optional<Tutor_empresa> tutor_empresa = servicioTutor_Empresa.getById(id);
 
         if (!tutor_empresa.isPresent()) {
             return ResponseEntity.notFound().build();
@@ -62,7 +62,10 @@ public class ControladorTutor_Empresa extends CrudController<Long, Tutor_empresa
 
         t.setId(id);
 
-        Tutor_empresa tutorActualizado = servicioTutor_Empresa.addTutor_Empresa(t);
+        Optional<Tutor_empresa> tutorActualizado = servicioTutor_Empresa.update(id, t);
+        if (!tutorActualizado.isPresent()) {
+            return ResponseEntity.badRequest().body("No se ha podido actualizar el tutor con el id: " + id);
+        }
 
         URI location = URI.create("/api/tutor_empresa/" + t.getId());
 
@@ -71,7 +74,7 @@ public class ControladorTutor_Empresa extends CrudController<Long, Tutor_empresa
 
     @Override
     public ResponseEntity<?> delete(@PathVariable Long id) {
-        boolean tutor_empresaEliminado = servicioTutor_Empresa.borrarTutor_Empresa(id);
+        boolean tutor_empresaEliminado = servicioTutor_Empresa.delete(id);
 
         if (tutor_empresaEliminado) {
             return ResponseEntity.ok().body("Tutor de empresa eliminado con éxito");

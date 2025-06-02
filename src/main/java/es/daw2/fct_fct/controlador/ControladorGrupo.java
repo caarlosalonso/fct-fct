@@ -23,7 +23,7 @@ public class ControladorGrupo extends CrudController<Long, Grupo, Grupo> {
 
     @Override
     public ResponseEntity<?> create(@RequestBody Grupo g) {
-        servicioGrupo.addGrupos(g);
+        servicioGrupo.save(g);
 
         URI location = URI.create("/api/grupos/" + g.getId());
 
@@ -32,7 +32,7 @@ public class ControladorGrupo extends CrudController<Long, Grupo, Grupo> {
 
     @Override
     public ResponseEntity<?> all() {
-        Iterable<Grupo> it = servicioGrupo.listaGrupos();
+        Iterable<Grupo> it = servicioGrupo.list();
 
         if (it!=null) {
             return ResponseEntity.ok(it);
@@ -43,7 +43,7 @@ public class ControladorGrupo extends CrudController<Long, Grupo, Grupo> {
 
     @Override
     public ResponseEntity<?> getById(@PathVariable Long id) {
-        Optional<Grupo> grupos = servicioGrupo.getGruposId(id);
+        Optional<Grupo> grupos = servicioGrupo.getById(id);
 
         if (grupos.isPresent()) {
             return ResponseEntity.ok(grupos.get());
@@ -54,7 +54,7 @@ public class ControladorGrupo extends CrudController<Long, Grupo, Grupo> {
 
     @Override
     public ResponseEntity<?> update(@PathVariable Long id, @RequestBody Grupo g) {
-        Optional<Grupo> grupos = servicioGrupo.getGruposId(id);
+        Optional<Grupo> grupos = servicioGrupo.getById(id);
 
         if (!grupos.isPresent()) {
             return ResponseEntity.status(404).body("No se encontraron grupos con el id: " + id); //No me deja poner el notFound()
@@ -62,16 +62,19 @@ public class ControladorGrupo extends CrudController<Long, Grupo, Grupo> {
 
         g.setId(id);
 
-        Grupo grupoActualizado = servicioGrupo.addGrupos(g);
+        Optional<Grupo> grupoActualizado = servicioGrupo.update(id, g);
+        if (!grupoActualizado.isPresent()) {
+            return ResponseEntity.badRequest().body("No se ha podido actualizar el grupo con el id: " + id);
+        }
 
-        URI location = URI.create("/api/grupos/" + grupoActualizado.getId());
+        URI location = URI.create("/api/grupos/" + grupoActualizado.get().getId());
 
-        return ResponseEntity.created(location).body(grupoActualizado);
+        return ResponseEntity.created(location).body(grupoActualizado.get());
     }
 
     @Override
     public ResponseEntity<?> delete(@PathVariable Long id) {
-        boolean grupoEliminado = servicioGrupo.borrarGrupos(id);
+        boolean grupoEliminado = servicioGrupo.delete(id);
 
         if (grupoEliminado) {
             return ResponseEntity.ok("Grupo borrado con éxito");

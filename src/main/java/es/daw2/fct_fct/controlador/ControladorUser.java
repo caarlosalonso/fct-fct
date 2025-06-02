@@ -71,12 +71,12 @@ public class ControladorUser extends CrudController<Long, UserCreateDTO, User> {
             return ResponseEntity.status(401).body("Unauthorized");
         }
 
-        Optional<User> userOptional = servicioUser.getUsersId(id);
+        Optional<User> userOptional = servicioUser.getById(id);
 
         if (userOptional.isPresent()) {
             User user = userOptional.get();
             user.setPassword(PasswordUtils.hashPassword(entity.newPassword()));
-            servicioUser.addUsers(user);
+            servicioUser.save(user);
             return ResponseEntity.ok("Password updated successfully");
         }
 
@@ -102,7 +102,7 @@ public class ControladorUser extends CrudController<Long, UserCreateDTO, User> {
             return ResponseEntity.status(409).body("Email already exists"); // Conflicto, ya existe un usuario con ese email
         }
 
-        servicioUser.addUsers(newUser);
+        servicioUser.save(newUser);
 
         UserDTO data = new UserDTO(
             newUser.getId(),
@@ -116,7 +116,7 @@ public class ControladorUser extends CrudController<Long, UserCreateDTO, User> {
 
     @Override
     public ResponseEntity<?> getById(@PathVariable Long id) {
-        Optional<User> users = servicioUser.getUsersId(id);
+        Optional<User> users = servicioUser.getById(id);
         if (users.isPresent()) {
             return ResponseEntity.ok(users.get());
         }
@@ -125,7 +125,7 @@ public class ControladorUser extends CrudController<Long, UserCreateDTO, User> {
 
     @Override
     public ResponseEntity<?> all() {
-        Iterable<User> it = servicioUser.listaUsers();
+        Iterable<User> it = servicioUser.list();
 
         if (it!=null) {
             return ResponseEntity.ok(it);
@@ -136,7 +136,7 @@ public class ControladorUser extends CrudController<Long, UserCreateDTO, User> {
 
     @Override
     public ResponseEntity<?> update(@PathVariable Long id, @RequestBody User u){
-        Optional<User> optional = servicioUser.getUsersId(id);
+        Optional<User> optional = servicioUser.getById(id);
 
         if(!optional.isPresent()){
             return ResponseEntity.notFound().build();
@@ -144,7 +144,10 @@ public class ControladorUser extends CrudController<Long, UserCreateDTO, User> {
 
         u.setId(id);
 
-        User userActualizado = servicioUser.addUsers(u);
+        Optional<User> userActualizado = servicioUser.update(id, u);
+        if (!userActualizado.isPresent()) {
+            return ResponseEntity.badRequest().body("No se ha podido actualizar el usuario con el id: " + id);
+        }
 
         URI location = URI.create("/api/users/" +u.getId());
 
@@ -153,7 +156,7 @@ public class ControladorUser extends CrudController<Long, UserCreateDTO, User> {
 
     @Override
     public ResponseEntity<?> delete(@PathVariable Long id){
-        boolean userBorrado = servicioUser.borrarUsers(id);
+        boolean userBorrado = servicioUser.delete(id);
 
         if(userBorrado){
             return ResponseEntity.ok().body("Usuario borrado correctamente");
