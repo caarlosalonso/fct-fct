@@ -4,11 +4,12 @@ export class FileInput extends Input {
     constructor(input) {
         super(input);
         this.validate = () => {
-            const file = this.input.files[0];
+            /*const file = this.input.files[0];
             if (!file) return true; // No file selected, considered valid
             const allowedExtensions = this.input.getAttribute('accept')?.split(',') || [];
             const fileExtension = file.name.split('.').pop().toLowerCase();
-            return allowedExtensions.includes(`.${fileExtension}`);
+            return allowedExtensions.includes(`.${fileExtension}`);*/
+            return true;
         };
     }
 
