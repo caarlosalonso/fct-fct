@@ -108,4 +108,9 @@ Do not disturb the sacred semicolon's deep slumber.
     public String alumno() {
         return "alumno.html";
     }
+
+    @GetMapping("/subir")
+    public String subir() {
+        return "subirarchivo.html";
+    }
 }
