@@ -27,6 +27,10 @@
 </html>
 
 <script>
+ // Import and configure Firebase
+    import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
+    const storage = getStorage();
+
     document.addEventListener('FormsCreated', (event) => {
         const form = Form.getForm('alumno-form');
         
@@ -35,6 +39,22 @@
             const FormData = new FormData(event.target);
             
             const archivo = form.getInput('archivo').getValue();
+
+            // Assume you have a File object (e.g., from an <input type="file" />)
+    const file = fileInput.files[0];
+
+    // Create a storage reference
+    const storageRef = ref(storage, 'uploads/' + file.name);
+
+    // Upload the file
+    uploadBytes(storageRef, file).then((snapshot) => {
+    console.log('Uploaded file!');
+    // Get the download URL
+    getDownloadURL(storageRef).then((url) => {
+        console.log('File available at', url);
+        // Store this URL in Firestore if you want
+    });
+    });
 
             fetch('/api/ficheros/subir', {
                 method: 'POST',
@@ -59,4 +79,7 @@
             });
         }
     });
+   
+
+    
 </script>
