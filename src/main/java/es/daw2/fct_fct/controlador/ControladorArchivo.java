@@ -13,12 +13,16 @@ import es.daw2.fct_fct.servicio.ServicioArchivo;
 import es.daw2.fct_fct.servicio.ServicioUser;
 
 @RestController
-@RequestMapping("/archivos")
+@RequestMapping("/api/ficheros")
 public class ControladorArchivo {
 
-    private final ServicioArchivo servicioArchivo;
-    private final ServicioUser servicioUser;
+    //@Autowired
+    private ServicioArchivo servicioArchivo;
 
+    //@Autowired
+    private ServicioUser servicioUser;
+
+    // ???? Un constructor?
     public ControladorArchivo(ServicioArchivo servicioArchivo, ServicioUser servicioUser) {
         this.servicioArchivo = servicioArchivo;
         this.servicioUser = servicioUser;
