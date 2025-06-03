@@ -18,7 +18,7 @@
         <div id="inputs" class="form-container">
             <div class="instance form-input grouped-inputs">
                 <div class="form-group form-input">
-                    <input type="file" name="archivo" id="archivo" class="input" label="Archivo" data-required="true">
+                    <input type="file" name="archivo" id="archivo" class="input" label="Archivo" required="true">
                 </div>
             </div>
         </div>
@@ -26,7 +26,7 @@
 </body>
 </html>
 
-<script>
+<script type="module">
  // Import and configure Firebase
     import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
     const storage = getStorage();
@@ -79,41 +79,3 @@
 
     
 </script>
-
-<script>
-  document
-    .getElementById('alumno-form')
-    .addEventListener('submit', async function(e) {
-      e.preventDefault(); // Evita recarga de página
-
-      const form = e.target;
-      const fileInput = document.getElementById('file');
-      const file = fileInput.files[0];
-      if (!file) {
-        alert('Debes seleccionar un archivo');
-        return;
-      }
-
-      // Construye FormData y envía al backend
-      const data = new FormData();
-      data.append('file', file);
-
-      try {
-        const res = await fetch('/api/ficheros/subir', {
-          method: 'POST',
-          credentials: 'include', // si usas sesión
-          body: data
-        });
-        if (!res.ok) {
-          const err = await res.json();
-          alert('Error: ' + (err.error || res.statusText));
-          return;
-        }
-        const json = await res.json();
-        alert(json.mensaje); // “Archivo subido correctamente”
-      } catch (err) {
-        alert('Error al subir el archivo: ' + err.message);
-      }
-    });
-</script>
-
