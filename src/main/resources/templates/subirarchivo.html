@@ -14,11 +14,11 @@
     <title>Subir Archivo</title>
 </head>
 <body>
-    <form id="alumno-form" method="POST" submit-text="Subir fichero">
+    <form id="alumno-form" method="POST" submit-text="Subir fichero" enctype="multipart/form-data">
         <div id="inputs" class="form-container">
             <div class="instance form-input grouped-inputs">
                 <div class="form-group form-input">
-                    <input type="file" name="archivo" id="archivo" class="input" label="Archivo">
+                    <input type="file" name="archivo" id="archivo" class="input" label="Archivo" data-required="true">
                 </div>
             </div>
         </div>
@@ -34,52 +34,86 @@
     document.addEventListener('FormsCreated', (event) => {
         const form = Form.getForm('alumno-form');
         
-        form.onsubmit = (event) => {
-
-            const FormData = new FormData(event.target);
+            form.onsubmit = async function (event) {
+                const FormData = new FormData(event.target);
             
-            const archivo = form.getInput('archivo').getValue();
+                const archivo = form.getInput('archivo').getValue();
 
-            // Assume you have a File object (e.g., from an <input type="file" />)
-    const file = fileInput.files[0];
+                const file = fileInput.files[0];
 
-    // Create a storage reference
-    const storageRef = ref(storage, 'uploads/' + file.name);
+                const data = new FormData();
+                data.append('file', file);
 
-    // Upload the file
-    uploadBytes(storageRef, file).then((snapshot) => {
-    console.log('Uploaded file!');
-    // Get the download URL
-    getDownloadURL(storageRef).then((url) => {
-        console.log('File available at', url);
-        // Store this URL in Firestore if you want
-    });
-    });
+                // Crear una referencia al archivo en Firebase
+                const storageRef = ref(storage, 'uploads/' + file.name);
 
-            fetch('/api/ficheros/subir', {
-                method: 'POST',
-                enctype: 'multipart/form-data',
-                body: FormData
-            })
-            .then(response => {
-                if (response.ok) {
-                    return response.json();
-                } else {
-                    throw new Error('Error al subir el archivo');
+                // Subir el archivo a Firebase
+                uploadBytes(storageRef, file).then((snapshot) => {
+                    console.log('Uploaded file!');
+
+                // Obtener el URL de descarga del archivo
+                getDownloadURL(storageRef).then((url) => {
+                    console.log('File available at', url);
+                });
+                });
+
+                try {
+                    const res = await fetch('/api/ficheros/subir', {
+                    method: 'POST',
+                    credentials: 'include', // si usas sesión
+                    body: data
+                });
+                    if (!res.ok) {
+                        const err = await res.json();
+                        alert('Error: ' + (err.error || res.statusText));
+                            return;
                 }
-            })
-            .then(data => {
-                console.log('Archivo subido con éxito:', data);
-                // Aquí puedes manejar la respuesta del servidor
-                alert('Archivo subido correctamente');
-            })
-            .catch(error => {
-                console.error('Error al subir el archivo:', error);
-                alert('Error al subir el archivo');
-            });
+                    const json = await res.json();
+                    alert(json.mensaje); // “Archivo subido correctamente”
+                } catch (err) {
+                    alert('Error al subir el archivo: ' + err.message);
+                }
         }
     });
-   
+
 
     
 </script>
+
+<script>
+  document
+    .getElementById('alumno-form')
+    .addEventListener('submit', async function(e) {
+      e.preventDefault(); // Evita recarga de página
+
+      const form = e.target;
+      const fileInput = document.getElementById('file');
+      const file = fileInput.files[0];
+      if (!file) {
+        alert('Debes seleccionar un archivo');
+        return;
+      }
+
+      // Construye FormData y envía al backend
+      const data = new FormData();
+      data.append('file', file);
+
+      try {
+        const res = await fetch('/api/ficheros/subir', {
+          method: 'POST',
+          credentials: 'include', // si usas sesión
+          body: data
+        });
+        if (!res.ok) {
+          const err = await res.json();
+          alert('Error: ' + (err.error || res.statusText));
+          return;
+        }
+        const json = await res.json();
+        alert(json.mensaje); // “Archivo subido correctamente”
+      } catch (err) {
+        alert('Error al subir el archivo: ' + err.message);
+      }
+    });
+</script>
+
