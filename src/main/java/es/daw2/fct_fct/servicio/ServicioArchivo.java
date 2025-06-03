@@ -16,12 +16,12 @@ import es.daw2.fct_fct.repositorio.RepositorioVAlumno;
 @Service
 public class ServicioArchivo extends AbstractService<Long, vAlumno, RepositorioVAlumno> {
 
-    private final String bucketName = StorageClient.getInstance().bucket().getName();
-
     @Autowired
     private servicioVAlumno servicioVAlumno;
 
     public void subirArchivo(User user, MultipartFile archivo) throws IOException {
+
+        String bucketName = StorageClient.getInstance().bucket().getName();
 
         Optional<vAlumno> va = servicioVAlumno.getByUserId(user.getId());
 
