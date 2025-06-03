@@ -27,9 +27,23 @@
 </html>
 
 <script type="module">
-    // Import and configure Firebase
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-app.js";
+    
+    // Import the functions you need from the SDKs you need
+    import { initializeApp } from "firebase/app";
+    import { getAnalytics } from "firebase/analytics";
+    // TODO: Add SDKs for Firebase products that you want to use
+    // https://firebase.google.com/docs/web/setup#available-libraries
+
+    // Your web app's Firebase configuration
+    // For Firebase JS SDK v7.20.0 and later, measurementId is optional
     import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-storage.js";
+
+    import {firebaseConfig} from "./firebaseConfig.js";
+
+    // Initialize Firebase
+    const app = initializeApp(firebaseConfig);
+    const analytics = getAnalytics(app);
+    
     const storage = getStorage();
 
     document.addEventListener('FormsCreated', (event) => {
@@ -60,15 +74,14 @@
 
                 try {
                     const res = await fetch('/api/ficheros/subir', {
-                    method: 'POST',
-                    credentials: 'include', // si usas sesión
-                    body: data
-                });
+                        method: 'POST',
+                        credentials: 'include', // si usas sesión
+                        body: data
+                    });
                     if (!res.ok) {
                         const err = await res.json();
-                        alert('Error: ' + (err.error || res.statusText));
-                            return;
-                }
+                        return alert('Error: ' + (err.error || res.statusText));
+                    }
                     const json = await res.json();
                     alert(json.mensaje); // “Archivo subido correctamente”
                 } catch (err) {
