@@ -36,4 +36,4 @@ build/
 .env
 
 ### Firebase ###
-firebaseConfig.js
+.envFirebase
