@@ -48,10 +48,4 @@ public class Alumno extends AbsBaseEntity {
 
     @Column(name = "address", nullable = true, columnDefinition = "varchar(255)")
     private String address;
-
-    @Column(name = "curriculum_file", nullable = true, columnDefinition = "VARCHAR(255)")
-    private String curriculumFile;
-
-    @Column(name = "anexo_ocho", nullable = true, columnDefinition = "VARCHAR(255)")
-    private String anexoOcho;
 }
