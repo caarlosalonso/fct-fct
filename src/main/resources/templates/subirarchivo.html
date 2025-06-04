@@ -18,7 +18,7 @@
         <div id="inputs" class="form-container">
             <div class="instance form-input grouped-inputs">
                 <div class="form-group form-input">
-                    <input type="file" name="archivo" id="archivo" class="input" label="Archivo" required="true">
+                    <input type="file" name="file" id="file" class="input" label="file" required="true">
                 </div>
             </div>
         </div>
@@ -56,11 +56,12 @@
 
     document.addEventListener('FormsCreated', (event) => {
         const form = Form.getForm('alumno-form');
+        const fileInput = document.getElementById('file');
         
             form.onsubmit = async function (event) {
                 const FormData = new FormData(event.target);
             
-                const archivo = form.getInput('archivo').getValue();
+                const archivo = form.getInput('file').getValue();
 
                 const file = fileInput.files[0];
 
