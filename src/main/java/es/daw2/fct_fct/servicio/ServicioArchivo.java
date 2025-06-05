@@ -38,7 +38,7 @@ public class ServicioArchivo extends AbstractService<Long, vAlumno, RepositorioV
             vAlumno.getId(),
             archivo.getOriginalFilename());*/
 
-        String ruta = String.format("%s/",
+        String ruta = String.format("%s",
             archivo.getOriginalFilename());
         
 

@@ -22,7 +22,6 @@ public class ControladorArchivo {
 
     private final ServicioUser servicioUser;
 
-    // ???? Un constructor?
     public ControladorArchivo(ServicioArchivo servicioArchivo, ServicioUser servicioUser) {
         this.servicioArchivo = servicioArchivo;
         this.servicioUser = servicioUser;
@@ -38,6 +37,11 @@ public class ControladorArchivo {
             @RequestParam("password") String password,
             @RequestParam("file") MultipartFile file) throws IOException {
 
+            System.out.println("Nombre: " + file.getOriginalFilename());
+            System.out.println("Tamaño: " + file.getSize());
+            System.out.println("Tipo: " + file.getContentType());
+
+
         // 1) Validamos credenciales usando tu servicio
         User user = servicioUser.findByEmailAndPassword(email, password);
         if (user == null) {
@@ -46,7 +50,12 @@ public class ControladorArchivo {
         }
 
         //Llamada al servicio que sube el archivo a Firebase
-        servicioArchivo.subirArchivo(user, file);
+        try {
+            servicioArchivo.subirArchivo(user, file);
+        } catch (Exception e) {
+            e.printStackTrace(); // o log
+            return ResponseEntity.status(500).body(Map.of("error", e.getMessage()));
+        }
 
         return ResponseEntity.ok(Map.of("mensaje", "Archivo subido correctamente"));
     }
