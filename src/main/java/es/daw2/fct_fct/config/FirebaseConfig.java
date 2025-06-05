@@ -17,6 +17,7 @@ import com.google.firebase.FirebaseOptions;
 @Configuration
 public class FirebaseConfig {
 
+    
     private final Environment env;
 
     public FirebaseConfig(Environment env) {
@@ -25,25 +26,24 @@ public class FirebaseConfig {
 
     @PostConstruct
     public void init() throws Exception {
+        // No inicializa Firebase en tests
+        if (env.getActiveProfiles() != null &&
+            java.util.Arrays.asList(env.getActiveProfiles()).contains("test")) return;
 
-        if (Arrays.asList(env.getActiveProfiles()).contains("test")) return;
+        // Carga el JSON desde /resources
+        InputStream serviceAccount = getClass().getClassLoader().getResourceAsStream("firebase-key.json");
 
-        String credJson = System.getProperty("GOOGLE_APPLICATION_CREDENTIALS_JSON");
-
-        // Debug temporal:
-        System.out.println("GOOGLE_APPLICATION_CREDENTIALS_JSON:");
-        System.out.println(credJson);
-        
-        if (credJson == null || credJson.isEmpty()) {
-            throw new IllegalStateException("GOOGLE_APPLICATION_CREDENTIALS_JSON env variable not set or empty");
+        if (serviceAccount == null) {
+            throw new IllegalStateException("No se encontró firebase-key.json en resources");
         }
-        InputStream is = new ByteArrayInputStream(credJson.getBytes(StandardCharsets.UTF_8));
-        FirebaseOptions opts = FirebaseOptions.builder()
-            .setCredentials(GoogleCredentials.fromStream(is))
-            .setStorageBucket("tfc-fct-3b0fa.appspot.com") // <-- Correct format
+
+        FirebaseOptions options = FirebaseOptions.builder()
+            .setCredentials(GoogleCredentials.fromStream(serviceAccount))
+            .setStorageBucket("tfc-fct-3b0fa.appspot.com")
             .build();
+
         if (FirebaseApp.getApps().isEmpty()) {
-            FirebaseApp.initializeApp(opts);
+            FirebaseApp.initializeApp(options);
         }
     }
 }
