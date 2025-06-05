@@ -28,7 +28,7 @@ public class FirebaseConfig {
 
         if (Arrays.asList(env.getActiveProfiles()).contains("test")) return;
 
-        String credJson = System.getenv("GOOGLE_APPLICATION_CREDENTIALS_JSON");
+        String credJson = System.getProperty("GOOGLE_APPLICATION_CREDENTIALS_JSON");
 
         // Debug temporal:
         System.out.println("GOOGLE_APPLICATION_CREDENTIALS_JSON:");
