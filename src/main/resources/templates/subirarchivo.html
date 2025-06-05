@@ -47,7 +47,7 @@
         appId: "1:1090078079288:web:3f7df9b5e75370efb0a9cd",
         measurementId: "G-52M3VYWPJZ"
 };
-
+console.log("1");
     // Initialize Firebase
     const app = initializeApp(firebaseConfig);
     const analytics = getAnalytics(app);
@@ -57,7 +57,7 @@
     document.addEventListener('FormsCreated', (event) => {
         const form = Form.getForm('alumno-form');
         const fileInput = document.getElementById('file');
-        
+console.log("2");
             form.onsubmit = async function (event) {
                 const FormData = new FormData(event.target);
             
@@ -80,7 +80,7 @@
                     console.log('File available at', url);
                 });
                 });
-
+console.log("3");
                 try {
                     const res = await fetch('/api/ficheros/subir', {
                         method: 'POST',

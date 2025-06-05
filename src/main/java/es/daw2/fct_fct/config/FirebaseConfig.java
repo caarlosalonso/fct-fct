@@ -29,6 +29,10 @@ public class FirebaseConfig {
         if (Arrays.asList(env.getActiveProfiles()).contains("test")) return;
 
         String credJson = System.getenv("GOOGLE_APPLICATION_CREDENTIALS_JSON");
+
+        // Debugging output
+        System.err.println("GOOGLE_APPLICATION_CREDENTIALS_JSON: " + credJson);
+        
         if (credJson == null || credJson.isEmpty()) {
             throw new IllegalStateException("GOOGLE_APPLICATION_CREDENTIALS_JSON env variable not set or empty");
         }
