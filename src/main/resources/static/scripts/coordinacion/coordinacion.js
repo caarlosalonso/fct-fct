@@ -89,30 +89,33 @@ function promise() {
 }
 
 function fetchCiclos() {
-    console.log("2")
     return new Promise((res, rej) => {
         fetch('/api/ciclos/all')
-            .then(response => response.json())
-            .then(data => {
-                if (data) {
-                    res(data);
-                } else {
-                    rej(new Error('No se encontraron ciclos'));
-                }
-            })
-            .catch((error) => {
-                rej(error);
-            });
+        .then(response => {
+            if (response.status === 204) res([]);
+            else if (response.ok) {
+                const data = response.json();
+                if (data) return res(data);
+                else rej(new Error('No se encontraron ciclos'));
+            } else {
+                rej(new Error('No se encontraron ciclos'));
+            }
+        })
+        .catch((error) => {
+            rej(error);
+        });
     });
 }
 
 function fetchCiclosLectivos() {
     return new Promise((res, rej) => {
         fetch('/api/ciclos-lectivos/all')
-        .then(response => response.json())
-        .then(data => {
-            if (data) {
-                res(data);
+        .then(response => {
+            if (response.status === 204) res([]);
+            else if (response.ok) {
+                const data = response.json();
+                if (data) return res(data);
+                else rej(new Error('No se encontraron ciclos lectivos'));
             } else {
                 rej(new Error('No se encontraron ciclos lectivos'));
             }
@@ -126,10 +129,12 @@ function fetchCiclosLectivos() {
 function fetchGrupos() {
     return new Promise((res, rej) => {
         fetch('/api/grupos/all')
-        .then(response => response.json())
-        .then(data => {
-            if (data) {
-                res(data);
+        .then(response => {
+            if (response.status === 204) res([]);
+            else if (response.ok) {
+                const data = response.json();
+                if (data) return res(data);
+                else rej(new Error('No se encontraron grupos'));
             } else {
                 rej(new Error('No se encontraron grupos'));
             }
