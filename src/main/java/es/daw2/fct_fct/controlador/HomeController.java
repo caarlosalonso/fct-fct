@@ -86,7 +86,7 @@ Do not disturb the sacred semicolon's deep slumber.
 
     @GetMapping("/coordinacion")
     public String coordinacion() {
-        return "coordinacion.html";
+        return "coordinacion/coordinacion.html";
     }
 
     @GetMapping("/index")
