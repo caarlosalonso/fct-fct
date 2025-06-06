@@ -330,7 +330,7 @@ function createCicloCell(ciclo, rowIdx) {
     cellContent.innerHTML = `
         <span class="cell-title">${ciclo.name} <span class="cell-subtitle">(${ciclo.acronimo})</span></span>
         <span class="cell-subtitle">${ciclo.familiaProfesional}</span>
-        <span class="cell-subtitle">${CICLOS[ciclo.nivel]}</span>
+        <span class="cell-subtitle">${NIVELES[ciclo.nivel]}</span>
         <span class="cell-subtitle">${ciclo.horasPracticas}</span>
         <span class="cell-actions">
             <svg class="edit-svg" viewBox="0 -0.5 25 25" xmlns="http://www.w3.org/2000/svg">
