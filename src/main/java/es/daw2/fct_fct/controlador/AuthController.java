@@ -31,8 +31,7 @@ public class AuthController {
         }
 
     // Genera custom token
-    String firebaseToken = FirebaseAuth.getInstance()
-        .createCustomToken(u.getId().toString());
+    String firebaseToken = FirebaseAuth.getInstance().createCustomToken(u.getId().toString());
 
     
     return ResponseEntity.ok(Map.of("firebaseToken", firebaseToken));
