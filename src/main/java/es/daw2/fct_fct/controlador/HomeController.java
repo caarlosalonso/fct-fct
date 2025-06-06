@@ -1,15 +1,24 @@
 package es.daw2.fct_fct.controlador;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 
+import es.daw2.fct_fct.modelo.Alumno;
 import es.daw2.fct_fct.modelo.User;
+import es.daw2.fct_fct.servicio.ServicioAlumno;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 
 
 @Controller
 public class HomeController {
+
+    @Autowired
+    private ServicioAlumno servicioAlumno;
 
     private enum PAGES {
     /*  Authentication                                                          */
@@ -125,13 +134,20 @@ Do not disturb the sacred semicolon's deep slumber.
     }
 
     @GetMapping("/perfil")
-    public String perfil(HttpServletRequest request) {
+    public String perfil(HttpServletRequest request, Model model) {
         HttpSession session = request.getSession(false);
         if (session == null) return PAGES.REDIRECT_LOGIN.getPath();
 
         Object user = session.getAttribute("user");
         Object role = session.getAttribute("role");
         if (user == null || role == null) return PAGES.REDIRECT_LOGIN.getPath();
+
+        if (role.equals(User.Role.ALUMNO)) {
+            // Si el usuario es un alumno, obtenemos su información
+            Long alumnoId = ((Alumno) user).getId();
+            Alumno alumno = servicioAlumno.getById(alumnoId).orElse(null);
+            model.addAttribute("alumno", alumno);
+        }
 
         return switch (role) {
             case User.Role.ADMIN        -> "admin/profile.html";
@@ -140,5 +156,12 @@ Do not disturb the sacred semicolon's deep slumber.
             case User.Role.ALUMNO       -> "alumno/profile.html";
             default                     -> PAGES.REDIRECT_LOGIN.getPath();
         };
+    }
+
+    @PostMapping("/perfil")
+    public String actualizarPerfil(@ModelAttribute Alumno alumno, Model model, HttpServletRequest request) {
+        // Actualizar el perfil del alumno
+        model.addAttribute("alumno", alumno);
+        return "alumno/profile.html";
     }
 }
