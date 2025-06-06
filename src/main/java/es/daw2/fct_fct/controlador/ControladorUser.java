@@ -110,25 +110,9 @@ public class ControladorUser extends CrudController<Long, User, UserCreateDTO, U
         return ResponseEntity.created(location).body(data);
     }
 
-    @Override
-    public ResponseEntity<?> getById(@PathVariable Long id) {
-        Optional<User> users = service.getById(id);
-        if (users.isPresent()) {
-            return ResponseEntity.ok(users.get());
-        }
-        return ResponseEntity.status(404).body("No se encontraron usuarios con el id: " + id); //No me deja poner el notFound()
-    }
+    // all ya existe en CrudController
 
-    @Override
-    public ResponseEntity<?> all() {
-        Iterable<User> it = service.list();
-
-        if (it!=null) {
-            return ResponseEntity.ok(it);
-        }else{
-            return ResponseEntity.badRequest().build();
-        }
-    }
+    // getById ya existe en CrudController
 
     @Override
     public ResponseEntity<?> update(@PathVariable Long id, @RequestBody User u){
@@ -150,14 +134,5 @@ public class ControladorUser extends CrudController<Long, User, UserCreateDTO, U
         return ResponseEntity.ok().location(location).body(userActualizado);
     }
 
-    @Override
-    public ResponseEntity<?> delete(@PathVariable Long id){
-        boolean userBorrado = service.delete(id);
-
-        if(userBorrado){
-            return ResponseEntity.ok().body("Usuario borrado correctamente");
-        }else{
-            return ResponseEntity.badRequest().body("No se ha podido borrar el usuario con id: " + id);
-        }
-    }
+    // delete ya existe en CrudController
 }

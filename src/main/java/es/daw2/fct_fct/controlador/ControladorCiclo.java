@@ -1,6 +1,5 @@
 package es.daw2.fct_fct.controlador;
 
-import java.util.List;
 import java.util.Optional;
 
 import org.springframework.http.HttpStatus;
@@ -19,23 +18,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 @RequestMapping("/api/ciclos")
 public class ControladorCiclo extends CrudController<Long, Ciclo, Ciclo, Ciclo, ServicioCiclo> {
 
-    @Override
-    public ResponseEntity<?> all() {
-        List<Ciclo> ciclos = service.list();
-        if (ciclos.isEmpty()) {
-            return ResponseEntity.noContent().build();
-        }
-        return ResponseEntity.ok(ciclos);
-    }
+    // all ya existe en CrudController
 
-    @Override
-    public ResponseEntity<?> getById(@PathVariable Long id) {
-        Optional<Ciclo> ciclo = service.getById(id);
-        if (!ciclo.isPresent()) {
-            return ResponseEntity.notFound().build();
-        }
-        return ResponseEntity.ok(ciclo.get());
-    }
+    // getById ya existe en CrudController
 
     @Override
     public ResponseEntity<?> create(@RequestBody Ciclo ciclo) {
@@ -52,10 +37,5 @@ public class ControladorCiclo extends CrudController<Long, Ciclo, Ciclo, Ciclo, 
         return ResponseEntity.ok(cicloActualizado.get());
     }
 
-    @Override
-    public ResponseEntity<?> delete(@PathVariable Long id) {
-        service.delete(id);
-        return ResponseEntity.noContent().build();
-    }
-
+    // delete ya existe en CrudController
 }

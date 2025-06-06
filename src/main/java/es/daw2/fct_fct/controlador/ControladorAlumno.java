@@ -27,28 +27,9 @@ public class ControladorAlumno extends CrudController<Long, Alumno, Alumno, Alum
         return ResponseEntity.created(location).body(a);
     }
 
-    @Override
-    public ResponseEntity<?> all() {
-        Iterable<Alumno> it = null;
-        it = service.list();
+    // all ya existe en CrudController
 
-        if (it!=null) {
-            return ResponseEntity.ok(it);
-        }else{
-            return ResponseEntity.badRequest().build();
-        }
-    }
-
-    @Override
-    public ResponseEntity<?> getById(@PathVariable Long id) {
-        Optional<Alumno> alumnos = service.getById(id);
-
-        if (alumnos.isPresent()) {
-            return ResponseEntity.ok(alumnos.get());
-        }else{
-            return ResponseEntity.status(404).body("No se encontraron alumnos con el id: " + id); //No me deja poner el notFound()
-        }
-    }
+    // getById ya existe en CrudController
 
     @Override
     public ResponseEntity<?> update(@PathVariable Long id, @RequestBody Alumno a) {
@@ -70,15 +51,5 @@ public class ControladorAlumno extends CrudController<Long, Alumno, Alumno, Alum
         return ResponseEntity.ok().location(location).body(alumnoActualizado);
     }
 
-    @Override
-    public ResponseEntity<?> delete(@PathVariable Long id) {
-        boolean alumnoEliminado = service.delete(id);
-
-        if(alumnoEliminado){
-            return ResponseEntity.ok("Alumno eliminado con éxito");
-        }else{
-            return ResponseEntity.badRequest().body("No se ha encontrado al alumno con el id: " + id);
-        }
-    }
-    
+    // delete ya existe en CrudController
 }

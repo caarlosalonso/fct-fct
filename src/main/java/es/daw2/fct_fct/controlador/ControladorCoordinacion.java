@@ -27,27 +27,9 @@ public class ControladorCoordinacion extends CrudController<Long, Coordinacion, 
     }
     
 
-    @Override
-    public ResponseEntity<?> all() {
-        Iterable<Coordinacion> it = service.list();
+    // all ya existe en CrudController
 
-        if (it!=null) {
-            return ResponseEntity.ok(it);
-        }else{
-            return ResponseEntity.badRequest().build();
-        }
-    }
-
-    @Override
-    public ResponseEntity<?> getById(@PathVariable Long id) {
-        Optional<Coordinacion> coordinacion = service.getById(id);
-
-        if (coordinacion.isPresent()) {
-            return ResponseEntity.ok(coordinacion.get());
-        }else{
-            return ResponseEntity.status(404).body("No se encontó personal de coordinacion con el id: " + id); //No me deja poner el notFound()
-        }
-    }
+    // getById ya existe en CrudController
 
     @Override
     public ResponseEntity<?> update(@PathVariable Long id, @RequestBody Coordinacion c){
@@ -69,15 +51,5 @@ public class ControladorCoordinacion extends CrudController<Long, Coordinacion, 
         return ResponseEntity.ok().location(location).body(coordinacionActualizado);
     }
 
-    @Override
-    public ResponseEntity<?> delete(@PathVariable Long id){
-        boolean coordinacionEliminado = service.delete(id);
-
-        if(coordinacionEliminado){
-            return ResponseEntity.ok("Coordinacion eliminada con éxito");
-        }else{
-            return ResponseEntity.badRequest().body("No se ha encontrado al coordinador con el id: " + id);
-        }
-    }
-
+    // delete ya existe en CrudController
 }

@@ -61,7 +61,8 @@ public abstract class CrudController<Id, T, C, U, S extends AbstractService<Id, 
     // cruD
     @DeleteMapping("/{id}")
     ResponseEntity<?> delete(@PathVariable Id id) {
-        if (!service.delete(id)) return ResponseEntity.badRequest().body("No se ha podido eliminar el recurso con el id: " + id);
+        boolean deleted = service.delete(id);
+        if (!deleted) return ResponseEntity.badRequest().body("No se ha podido eliminar el recurso con el id: " + id);
         return ResponseEntity.noContent().build();
     }
 }

@@ -28,27 +28,9 @@ public class ControladorGrupo extends CrudController<Long, Grupo, Grupo, Grupo, 
         return ResponseEntity.created(location).body(g);
     }
 
-    @Override
-    public ResponseEntity<?> all() {
-        Iterable<Grupo> it = service.list();
+    // all ya existe en CrudController
 
-        if (it!=null) {
-            return ResponseEntity.ok(it);
-        }else{
-            return ResponseEntity.badRequest().build();
-        }
-    }
-
-    @Override
-    public ResponseEntity<?> getById(@PathVariable Long id) {
-        Optional<Grupo> grupos = service.getById(id);
-
-        if (grupos.isPresent()) {
-            return ResponseEntity.ok(grupos.get());
-        }else{
-            return ResponseEntity.status(404).body("No se encontraron grupos con el id: " + id); //No me deja poner el notFound()
-        }
-    }
+    // getById ya existe en CrudController
 
     @Override
     public ResponseEntity<?> update(@PathVariable Long id, @RequestBody Grupo g) {
@@ -70,14 +52,5 @@ public class ControladorGrupo extends CrudController<Long, Grupo, Grupo, Grupo, 
         return ResponseEntity.created(location).body(grupoActualizado.get());
     }
 
-    @Override
-    public ResponseEntity<?> delete(@PathVariable Long id) {
-        boolean grupoEliminado = service.delete(id);
-
-        if (grupoEliminado) {
-            return ResponseEntity.ok("Grupo borrado con éxito");
-        } else {
-            return ResponseEntity.badRequest().body("No se encontraron grupos con el id: " + id); //No me deja poner el notFound()
-        }
-    }
+    // delete ya existe en CrudController
 }
