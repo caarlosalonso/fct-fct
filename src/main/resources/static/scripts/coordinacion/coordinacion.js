@@ -105,7 +105,7 @@ function fetchCiclos() {
 
 function fetchCiclosLectivos() {
     return new Promise((res, rej) => {
-        fetch('/api/ciclosLectivos/all')
+        fetch('/api/ciclos-lectivos/all')
         .then(response => response.json())
         .then(data => {
             if (data && data.length > 0) {
