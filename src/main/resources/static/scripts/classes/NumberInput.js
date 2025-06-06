@@ -24,14 +24,17 @@ export class NumberInput extends TextInput {
 
             return true;
         }
-
-        input.addEventListener('pointerdown', () => {
-            this.states.active = true;
-            this.updateState();
-        });
     }
 
     init() {
         super.init();
+        this.createEventListeners();
+    }
+
+    createEventListeners() {
+        this.input.addEventListener('input', () => {
+            this.states.dirty = true;
+            this.updateState();
+        });
     }
 }

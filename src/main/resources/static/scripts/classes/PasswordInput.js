@@ -3,11 +3,14 @@ import { TextInput } from "./TextInput.js";
 export class PasswordInput extends TextInput {
     constructor(input) {
         super(input);
-        this.buildPassword();
-
         this.validate = () => {
             return true;
         }
+    }
+
+    init() {
+        super.init();
+        this.buildPassword();
     }
 
     buildPassword() {

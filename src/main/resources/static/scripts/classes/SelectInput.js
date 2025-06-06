@@ -1,6 +1,6 @@
-import { Input } from './Input.js';
+import { TextInput } from './TextInput.js';
 
-export class SelectInput extends Input {
+export class SelectInput extends TextInput {
     constructor(input) {
         super(input);
         this.options = [];
@@ -26,9 +26,5 @@ export class SelectInput extends Input {
             const [value, label] = option.split(':');
             this.options.push({ value, label });
         });
-    }
-
-    clear() {
-        this.input.value = null;
     }
 }
