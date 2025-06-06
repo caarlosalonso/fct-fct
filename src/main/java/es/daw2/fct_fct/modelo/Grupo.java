@@ -32,8 +32,14 @@ public class Grupo extends AbsBaseEntity {
     @JoinColumn(name = "ciclo_lectivo_id")
     private CicloLectivo cicloLectivo;
 
+    @Column(name = "numero", nullable = false, columnDefinition = "TINYINT UNSIGNED")
+    private Short numero;
+
     @Column(name = "horario", nullable = false, columnDefinition = "ENUM('DIURNO', 'VESPERTINO', 'NOCHE')")
     private Horario horario;
+
+    @Column(name = "anexo_ocho", nullable = true, columnDefinition = "VARCHAR(255)")
+    private String anexoOcho;
 
     public enum Horario {
         DIURNO,

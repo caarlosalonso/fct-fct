@@ -23,6 +23,8 @@ public class ControladorGrupo extends CrudController<Long, Grupo, Grupo> {
 
     @Override
     public ResponseEntity<?> create(@RequestBody Grupo g) {
+        //Grupo grupo = new Grupo();
+
         servicioGrupo.save(g);
 
         URI location = URI.create("/api/grupos/" + g.getId());
