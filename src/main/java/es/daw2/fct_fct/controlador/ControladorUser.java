@@ -50,6 +50,7 @@ public class ControladorUser extends CrudController<Long, User, UserCreateDTO, U
         HttpSession newSession = request.getSession(true);
         newSession.setAttribute("user", dto);
         newSession.setAttribute("role", userFound.getRole());
+        newSession.setAttribute("nombre", userFound.getName());
 
         return ResponseEntity.ok(dto);
     }

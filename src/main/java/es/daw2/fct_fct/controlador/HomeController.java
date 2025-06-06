@@ -1,6 +1,5 @@
 package es.daw2.fct_fct.controlador;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -9,16 +8,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 import es.daw2.fct_fct.modelo.Alumno;
 import es.daw2.fct_fct.modelo.User;
-import es.daw2.fct_fct.servicio.ServicioAlumno;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 
 
 @Controller
 public class HomeController {
-
-    @Autowired
-    private ServicioAlumno servicioAlumno;
 
     private enum PAGES {
     /*  Authentication                                                          */
@@ -140,9 +135,10 @@ Do not disturb the sacred semicolon's deep slumber.
 
         Object user = session.getAttribute("user");
         Object role = session.getAttribute("role");
+        Object nombre = session.getAttribute("nombre");
         if (user == null || role == null) return PAGES.REDIRECT_LOGIN.getPath();
 
-        model.addAttribute("alumno", user);
+        model.addAttribute("alumno", nombre);
 
         return switch (role) {
             case User.Role.ADMIN        -> "admin/profile.html";
