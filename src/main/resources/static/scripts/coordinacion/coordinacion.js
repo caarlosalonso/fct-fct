@@ -442,7 +442,7 @@ function addCiclo() {
         const horasPracticas = form.getInput('ciclo-practicas').getValue();
 
         let ciclo = {
-            nombre: name,
+            name: name,
             acronimo: acronimo,
             familiaProfesional: familiaProfesional,
             nivel: nivel,
