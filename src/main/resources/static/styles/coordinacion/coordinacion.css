@@ -1,6 +1,6 @@
 main {
     width: 90%;
-    margin: 10px auto 0 auto;
+    margin: 10px auto 50px auto;
     background-color: #686868;
     border-radius: 16px;
 }
@@ -104,7 +104,7 @@ main {
 
     &.filled-cell {
         display: grid;
-        grid-template-columns: auto 35px;
+        grid-template-columns: auto 35px 35px;
         width: 100%;
         height: 100%;
         background-color: #818181;
@@ -145,7 +145,24 @@ main {
     &:hover {
         cursor: pointer;
         background-color: #b87ab8;
-        fill: #ffc3ff;
+        fill: #ffffff;
+    }
+}
+
+.delete-svg {
+    max-width: 35px;
+    background-color: #ffbaba;
+    fill: #000000;
+    border-radius: 10px;
+    grid-column: 3;
+    grid-row: 1 / span 99;
+    height: 100%;
+    transition: 300ms ease-in-out;
+
+    &:hover {
+        cursor: pointer;
+        background-color: #ff7a7a;
+        fill: #ffffff;
     }
 }
 
@@ -155,9 +172,25 @@ main {
 }
 
 .cell-subtitle {
+    font-weight: normal;
     font-style: italic;
     font-size: 0.90rem;
 }
+
+.cell-actions {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    gap: 5px;
+
+    & > * {
+        display: block;
+        flex-grow: 1;
+    }
+}
+
 
 #error-message-section {
     display: flex;
@@ -195,9 +228,4 @@ main {
     &.collapsed {
         height: 0px;
     }
-}
-
-
-#abreviacion {
-    width: 200px;
 }
