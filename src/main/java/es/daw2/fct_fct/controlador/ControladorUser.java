@@ -92,7 +92,7 @@ public class ControladorUser extends CrudController<Long, User, UserCreateDTO, U
             return ResponseEntity.status(403).body("Forbidden: You can only change your own password");
         }
 
-        Optional<User> userOptional = servicioUser.getById(id);
+        Optional<User> userOptional = service.getById(id);
 
         if (userOptional.isEmpty()) {
             return ResponseEntity.notFound().build();
@@ -118,7 +118,7 @@ public class ControladorUser extends CrudController<Long, User, UserCreateDTO, U
         }
 
         user.setPassword(PasswordUtils.hashPassword(entity.newPassword()));
-        servicioUser.save(user);
+        service.save(user);
         return ResponseEntity.ok("Password updated successfully");
     }
 
