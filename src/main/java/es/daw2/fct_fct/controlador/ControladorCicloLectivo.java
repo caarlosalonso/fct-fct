@@ -15,7 +15,7 @@ import es.daw2.fct_fct.servicio.ServicioCicloLectivo;
 
 @RestController
 @RequestMapping("/api/ciclos-lectivos")
-public class ControladorCicloLectivo extends CrudController<Long, CicloLectivo, CicloLectivo> {
+public class ControladorCicloLectivo extends CrudController<Long, CicloLectivo, CicloLectivo, CicloLectivo, ServicioCicloLectivo> {
 
     @Autowired
     private ServicioCicloLectivo servicioCicloLectivo;

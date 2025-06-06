@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 @RestController
 @RequestMapping("/api/coordinacion")
-public class ControladorCoordinacion extends CrudController<Long, Coordinacion, Coordinacion> {
+public class ControladorCoordinacion extends CrudController<Long, Coordinacion, Coordinacion, Coordinacion, ServicioCoordinacion> {
 
     @Autowired
     private ServicioCoordinacion servicioCoordinacion;

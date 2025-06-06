@@ -16,7 +16,7 @@ import es.daw2.fct_fct.servicio.ServicioTutores;
 
 @RestController
 @RequestMapping("/api/tutores")
-public class ControladorTutor extends CrudController<Long, Tutor, Tutor> {
+public class ControladorTutor extends CrudController<Long, Tutor, Tutor, Tutor, ServicioTutores> {
 
     @Autowired
     private ServicioTutores servicioTutores;

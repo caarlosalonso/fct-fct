@@ -24,7 +24,7 @@ import jakarta.servlet.http.HttpSession;
 
 @RestController
 @RequestMapping("/api/users")
-public class ControladorUser extends CrudController<Long, UserCreateDTO, User> {
+public class ControladorUser extends CrudController<Long, User, UserCreateDTO, User, ServicioUser> {
     
     @Autowired
     private ServicioUser servicioUser;

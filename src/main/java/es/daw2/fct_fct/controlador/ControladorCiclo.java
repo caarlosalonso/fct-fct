@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 @RestController
 @RequestMapping("/api/ciclos")
-public class ControladorCiclo extends CrudController<Long, Ciclo, Ciclo> {
+public class ControladorCiclo extends CrudController<Long, Ciclo, Ciclo, Ciclo, ServicioCiclo> {
     
     @Autowired
     private ServicioCiclo servicioCiclo;

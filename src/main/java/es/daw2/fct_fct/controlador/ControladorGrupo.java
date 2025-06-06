@@ -16,7 +16,7 @@ import es.daw2.fct_fct.servicio.ServicioGrupo;
 
 @RestController
 @RequestMapping("/api/grupos")
-public class ControladorGrupo extends CrudController<Long, Grupo, Grupo> {
+public class ControladorGrupo extends CrudController<Long, Grupo, Grupo, Grupo, ServicioGrupo> {
 
     @Autowired
     private ServicioGrupo servicioGrupo;

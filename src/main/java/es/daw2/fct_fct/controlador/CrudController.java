@@ -1,5 +1,10 @@
 package es.daw2.fct_fct.controlador;
 
+import java.util.List;
+import java.util.Optional;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.CrudRepository;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -7,15 +12,23 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
+import es.daw2.fct_fct.servicio.AbstractService;
+
 /**
  * Abstract controller for CRUD operations.
  * Contains the basic structure for creation, grouped retrieval, singular retrieval, updating, and deletion of resources.
  * Has 3 generic types:
  * - Id: Type of the identifier type for the resource.
+ * - T: Type of the DTO/Object for the resource.
  * - C: Type of the DTO/Object for creation.
  * - U: Type of the DTO/Object for updating.
+ * - S: Type of the service that extends AbstractService.
  */
-public abstract class CrudController<Id, C, U> {
+public abstract class CrudController<Id, T, C, U, S extends AbstractService<Id, T, ? extends CrudRepository<T, Id>>> {
+
+    @Autowired
+    protected S service;
+    
     // Crud
     @PostMapping("/create")
     ResponseEntity<?> create(@RequestBody C dto) throws UnsupportedOperationException {
@@ -24,14 +37,19 @@ public abstract class CrudController<Id, C, U> {
 
     // cRud
     @GetMapping("/all")
-    ResponseEntity<?> all() throws UnsupportedOperationException {
-        throw new UnsupportedOperationException("Get all operation is not supported");
+    ResponseEntity<?> all() {
+        List<T> items = service.list();
+        if (items == null) return ResponseEntity.badRequest().build();
+        if (items.isEmpty()) return ResponseEntity.noContent().build();
+        return ResponseEntity.ok(items);
     }
 
     // cRud
     @GetMapping("/{id}")
-    ResponseEntity<?> getById(@PathVariable Id id) throws UnsupportedOperationException {
-        throw new UnsupportedOperationException("Get by ID operation is not supported");
+    ResponseEntity<?> getById(@PathVariable Id id) {
+        Optional<T> item = service.getById(id);
+        if (!item.isPresent()) return ResponseEntity.notFound().build();
+        return ResponseEntity.ok(item.get());
     }
 
     // crUd
@@ -42,7 +60,8 @@ public abstract class CrudController<Id, C, U> {
 
     // cruD
     @DeleteMapping("/{id}")
-    ResponseEntity<?> delete(@PathVariable Id id) throws UnsupportedOperationException {
-        throw new UnsupportedOperationException("Delete operation is not supported");
+    ResponseEntity<?> delete(@PathVariable Id id) {
+        if (!service.delete(id)) return ResponseEntity.badRequest().body("No se ha podido eliminar el recurso con el id: " + id);
+        return ResponseEntity.noContent().build();
     }
 }
