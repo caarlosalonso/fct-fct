@@ -4,16 +4,15 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.google.firebase.auth.FirebaseAuth;
 
-import es.daw2.fct_fct.dto.LoginRequestDTO;
 import es.daw2.fct_fct.modelo.User;
 import es.daw2.fct_fct.servicio.ServicioUser;
+import jakarta.servlet.http.HttpSession;
 
 @RestController
 @RequestMapping("/auth")
@@ -22,18 +21,22 @@ public class AuthController {
     @Autowired
     ServicioUser ServicioUser;
 
-    @PostMapping("/firebaseToken")
-    public ResponseEntity<?> login(@RequestBody LoginRequestDTO dto) throws Exception {
-        // Valida con el dto el email y password del usuario en la base de datos
-        User u = ServicioUser.findByEmailAndPassword(dto.email(), dto.password());
-        if (u == null) {
-        return ResponseEntity.status(401).build();
+    @GetMapping("/firebaseToken")
+    public ResponseEntity<?> getFirebaseToken(HttpSession session) throws Exception {
+        Object userIdObj = session.getAttribute("userId");
+        if (userIdObj == null) {
+            return ResponseEntity.status(401).body(Map.of("error", "No hay sesión activa"));
         }
 
-    // Genera custom token
-    String firebaseToken = FirebaseAuth.getInstance().createCustomToken(u.getId().toString());
+        Long userId = (Long) userIdObj;
+        User u = ServicioUser.getById(userId).orElse(null);
+        if (u == null) {
+            return ResponseEntity.status(401).body(Map.of("error", "Usuario no encontrado en sesión"));
+        }
 
-    
-    return ResponseEntity.ok(Map.of("firebaseToken", firebaseToken));
+        String firebaseToken = FirebaseAuth.getInstance()
+            .createCustomToken(u.getId().toString());
+
+        return ResponseEntity.ok(Map.of("firebaseToken", firebaseToken));
     }
 }
