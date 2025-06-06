@@ -142,7 +142,7 @@ Do not disturb the sacred semicolon's deep slumber.
         Object role = session.getAttribute("role");
         if (user == null || role == null) return PAGES.REDIRECT_LOGIN.getPath();
 
-        
+        model.addAttribute("alumno", user);
 
         return switch (role) {
             case User.Role.ADMIN        -> "admin/profile.html";
