@@ -1,8 +1,5 @@
 package es.daw2.fct_fct.controlador;
 
-import java.util.List;
-
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -15,28 +12,17 @@ import es.daw2.fct_fct.servicio.ServicioCicloLectivo;
 
 @RestController
 @RequestMapping("/api/ciclos-lectivos")
-public class ControladorCicloLectivo extends CrudController<Long, CicloLectivo, CicloLectivo> {
-
-    @Autowired
-    private ServicioCicloLectivo servicioCicloLectivo;
+public class ControladorCicloLectivo extends CrudController<Long, CicloLectivo, CicloLectivo, CicloLectivo, ServicioCicloLectivo> {
 
     @Override
     ResponseEntity<?> create(@RequestBody CicloLectivo dto) {
-        CicloLectivo nuevoCicloLectivo = servicioCicloLectivo.save(dto);
+        CicloLectivo nuevoCicloLectivo = service.save(dto);
         return ResponseEntity.ok(nuevoCicloLectivo);
     }
 
-    @Override
-    ResponseEntity<?> all() {
-        List<CicloLectivo> ciclos = servicioCicloLectivo.list();
-        return ResponseEntity.ok(ciclos);
-    }
+    // all ya existe en CrudController
 
-    @Override
-    ResponseEntity<?> getById(@PathVariable Long id) {
-        // Implementación para obtener un Ciclo Lectivo por ID
-        throw new UnsupportedOperationException("Get by ID operation is not supported");
-    }
+    // getById ya existe en CrudController
 
     @Override
     ResponseEntity<?> update(@PathVariable Long id, @RequestBody CicloLectivo dto) {
@@ -44,9 +30,5 @@ public class ControladorCicloLectivo extends CrudController<Long, CicloLectivo, 
         throw new UnsupportedOperationException("Update operation is not supported");
     }
 
-    @Override
-    ResponseEntity<?> delete(@PathVariable Long id) {
-        // Implementación para eliminar un Ciclo Lectivo
-        throw new UnsupportedOperationException("Delete operation is not supported");
-    }
+    // delete ya existe en CrudController
 }
