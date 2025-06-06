@@ -142,12 +142,7 @@ Do not disturb the sacred semicolon's deep slumber.
         Object role = session.getAttribute("role");
         if (user == null || role == null) return PAGES.REDIRECT_LOGIN.getPath();
 
-        if (role.equals(User.Role.ALUMNO)) {
-            // Si el usuario es un alumno, obtenemos su información
-            Long alumnoId = ((Alumno) user).getId();
-            Alumno alumno = servicioAlumno.getById(alumnoId).orElse(null);
-            model.addAttribute("alumno", alumno);
-        }
+        
 
         return switch (role) {
             case User.Role.ADMIN        -> "admin/profile.html";
