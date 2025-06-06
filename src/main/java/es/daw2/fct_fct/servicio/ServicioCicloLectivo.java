@@ -13,14 +13,14 @@ public class ServicioCicloLectivo extends AbstractService<Long, CicloLectivo, Re
     @Override
     public Optional<CicloLectivo> getById(Long id) {
         Optional<CicloLectivo> cicloLectivo = repository.findById(id);
-        return cicloLectivo.filter((c) -> c.getDeletedAt() != null);
+        return cicloLectivo.filter((c) -> c.getDeletedAt() == null);
     }
     
     @Override
     public List<CicloLectivo> list() {
         List<CicloLectivo> ciclosLectivos = (List<CicloLectivo>) repository.findAll();
         ciclosLectivos = ciclosLectivos.stream()
-            .filter((ciclo) -> ciclo.getDeletedAt() != null)
+            .filter((ciclo) -> ciclo.getDeletedAt() == null)
             .toList();
         return ciclosLectivos;
     }
@@ -29,7 +29,7 @@ public class ServicioCicloLectivo extends AbstractService<Long, CicloLectivo, Re
     public boolean delete(Long id) {
         if (id == null) return false;
         Optional<CicloLectivo> cicloLectivo = repository.findById(id);
-        if (cicloLectivo.filter((c) -> c.getDeletedAt() != null).isEmpty()) {
+        if (cicloLectivo.filter((c) -> c.getDeletedAt() == null).isEmpty()) {
             return false;
         }
         repository.deleteById(id);

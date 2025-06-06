@@ -15,14 +15,14 @@ public class ServicioGrupo extends AbstractService<Long, Grupo, RepositorioGrupo
     @Override
     public Optional<Grupo> getById(Long id) {
         Optional<Grupo> grupo = repository.findById(id);
-        return grupo.filter((g) -> g.getDeletedAt() != null);
+        return grupo.filter((g) -> g.getDeletedAt() == null);
     }
     
     @Override
     public List<Grupo> list() {
         List<Grupo> grupos = (List<Grupo>) repository.findAll();
         grupos = grupos.stream()
-            .filter((grupo) -> grupo.getDeletedAt() != null)
+            .filter((grupo) -> grupo.getDeletedAt() == null)
             .toList();
         return grupos;
     }
@@ -31,7 +31,7 @@ public class ServicioGrupo extends AbstractService<Long, Grupo, RepositorioGrupo
     public boolean delete(Long id) {
         if (id == null) return false;
         Optional<Grupo> grupo = repository.findById(id);
-        if (grupo.filter((g) -> g.getDeletedAt() != null).isEmpty()) {
+        if (grupo.filter((g) -> g.getDeletedAt() == null).isEmpty()) {
             return false;
         }
         repository.deleteById(id);
