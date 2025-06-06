@@ -1,6 +1,7 @@
 package es.daw2.fct_fct.controlador;
 
 import java.net.URI;
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import es.daw2.fct_fct.dto.CreateGrupoDTO;
+import es.daw2.fct_fct.dto.GrupoAllDTO;
 import es.daw2.fct_fct.modelo.Ciclo;
 import es.daw2.fct_fct.modelo.CicloLectivo;
 import es.daw2.fct_fct.modelo.Grupo;
@@ -60,7 +62,24 @@ public class ControladorGrupo extends CrudController<Long, Grupo, CreateGrupoDTO
         return ResponseEntity.created(location).body(grupo);
     }
 
-    // all ya existe en CrudController
+    @Override
+    ResponseEntity<?> all() {
+        List<Grupo> items = service.list();
+        if (items == null) return ResponseEntity.badRequest().build();
+        if (items.isEmpty()) return ResponseEntity.noContent().build();
+
+        GrupoAllDTO[] grupoAllDTO = items.stream()
+            .map(grupo -> new GrupoAllDTO(
+                grupo.getId(),
+                grupo.getCiclo().getId(),
+                grupo.getCicloLectivo().getId(),
+                grupo.getNumero(),
+                grupo.getHorario())
+            )
+            .toArray(GrupoAllDTO[]::new);
+
+        return ResponseEntity.ok(grupoAllDTO);
+    }
 
     // getById ya existe en CrudController
 
