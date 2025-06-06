@@ -57,35 +57,31 @@ console.log("1.2");
     const storage = getStorage();
 console.log("1.3");
 
-    const form = Form.getForm('alumno-form');
+    const form = document.getElementById('alumno-form');
     const fileInput = document.getElementById('file');
 console.log("1.4");
         
         form.addEventListener('submit', async (event) => {
 console.log("2");
-                const FormData = new FormData(event.target);
-            
-                const archivo = form.getInput('file').getValue();
+                
+            const file = fileInput.files[0];
+            if (!file) {
+                alert("Selecciona un archivo");
+                return;
+            }
 
-                const file = fileInput.files[0];
-
-                const data = new FormData();
-                data.append('file', file);
-
-                // Crear una referencia al archivo en Firebase
-                const storageRef = ref(storage, 'uploads/' + file.name);
-
-                // Subir el archivo a Firebase
-                uploadBytes(storageRef, file).then((snapshot) => {
-                    console.log('Uploaded file!');
-
-                // Obtener el URL de descarga del archivo
-                getDownloadURL(storageRef).then((url) => {
-                    console.log('File available at', url);
-                });
-                });
+            const storageRef = ref(storage, 'uploads/' + file.name);
 console.log("3");
                 try {
+                    await uploadBytes(storageRef, file);
+                    console.log('Uploaded file!');
+
+                    const url = await getDownloadURL(storageRef);
+                    console.log('File available at', url);
+
+                    const data = new FormData();
+                    data.append('file', file);
+                    
                     const res = await fetch('/api/ficheros/subir', {
                         method: 'POST',
                         credentials: 'include', // si usas sesión
