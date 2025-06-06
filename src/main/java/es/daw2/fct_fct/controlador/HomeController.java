@@ -88,8 +88,15 @@ Do not disturb the sacred semicolon's deep slumber.
     }
 
     @GetMapping("/admin")
-    public String admin() {
-        return "admin.html";
+    public String admin(HttpServletRequest request) {
+        HttpSession session = request.getSession(false);
+        if (session == null) return PAGES.REDIRECT_LOGIN.getPath();
+        Object user = session.getAttribute("user");
+        Object role = session.getAttribute("role");
+        if (user == null || role == null || !role.equals(User.Role.ADMIN)) {
+            return PAGES.REDIRECT_LOGIN.getPath();
+        }
+        return "admin/admin.html";
     }
 
     @GetMapping("/tutor")
