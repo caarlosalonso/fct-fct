@@ -100,8 +100,13 @@ Do not disturb the sacred semicolon's deep slumber.
     }
 
     @GetMapping("/tutor")
-    public String tutor() {
-        return "tutor.html";
+    public String tutor(HttpServletRequest request) {
+        HttpSession session = request.getSession(false);
+        if (session == null) return PAGES.REDIRECT_LOGIN.getPath();
+        Object user = session.getAttribute("user");
+        Object role = session.getAttribute("role");
+        if (user == null || role == null) return PAGES.REDIRECT_LOGIN.getPath();
+        return "tutor/tutor.html";
     }
 
     @GetMapping("/alumno")
