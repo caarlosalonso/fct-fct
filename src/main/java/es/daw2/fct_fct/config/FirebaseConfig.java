@@ -25,31 +25,32 @@ public class FirebaseConfig {
 
     @PostConstruct
     public void init() throws Exception {
-        // No inicializa Firebase en tests
         if (env.getActiveProfiles() != null &&
             Arrays.asList(env.getActiveProfiles()).contains("test")) return;
 
-            String base64Creds = System.getenv("GOOGLE_APPLICATION_CREDENTIALS_BASE64");
-            InputStream serviceAccount;
+        String base64Creds = System.getenv("GOOGLE_APPLICATION_CREDENTIALS_BASE64");
 
-            if (base64Creds != null && !base64Creds.isEmpty()) {
-                byte[] decodedBytes = Base64.getDecoder().decode(base64Creds);
-                serviceAccount = new ByteArrayInputStream(decodedBytes);
-            } else {
-                serviceAccount = getClass().getClassLoader().getResourceAsStream("firebase-key.json");
+        if (base64Creds == null || base64Creds.isEmpty()) {
+            throw new IllegalStateException("Variable GOOGLE_APPLICATION_CREDENTIALS_BASE64 no está definida o está vacía");
+        }
 
-                if (serviceAccount == null) {
-                    throw new IllegalStateException("No se encontró firebase-key.json y la variable GOOGLE_APPLICATION_CREDENTIALS_BASE64 no está definida");
-                }
+        try {
+            byte[] decodedBytes = Base64.getDecoder().decode(base64Creds);
+            InputStream serviceAccount = new ByteArrayInputStream(decodedBytes);
+
+            FirebaseOptions options = FirebaseOptions.builder()
+                .setCredentials(GoogleCredentials.fromStream(serviceAccount))
+                .setStorageBucket("tfc-fct-3b0fa.appspot.com")
+                .build();
+
+            if (FirebaseApp.getApps().isEmpty()) {
+                FirebaseApp.initializeApp(options);
+                System.out.println("Firebase inicializado correctamente.");
             }
-
-        FirebaseOptions options = FirebaseOptions.builder()
-            .setCredentials(GoogleCredentials.fromStream(serviceAccount))
-            .setStorageBucket("tfc-fct-3b0fa.appspot.com")
-            .build();
-
-        if (FirebaseApp.getApps().isEmpty()) {
-            FirebaseApp.initializeApp(options);
+        } catch (Exception e) {
+            System.out.println("Error al inicializar Firebase:");
+            e.printStackTrace();
+            throw e;
         }
     }
 }
