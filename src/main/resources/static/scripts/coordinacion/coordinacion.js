@@ -67,6 +67,7 @@ function createAbreviatedNameEventListener() {
 
 function promise() {
     tableLoading();
+    console.log("1")
 
     Promise.all([
         fetchCiclos(),
@@ -79,6 +80,7 @@ function promise() {
             grupos
         ]) => {
             drawTable(ciclos, ciclosLectivos, grupos);
+            console.log("10")
         }
     ).catch((error) => {
         tableFail();
@@ -87,11 +89,12 @@ function promise() {
 }
 
 function fetchCiclos() {
+    console.log("2")
     return new Promise((res, rej) => {
         fetch('/api/ciclos/all')
             .then(response => response.json())
             .then(data => {
-                if (data && data.length > 0) {
+                if (data) {
                     res(data);
                 } else {
                     rej(new Error('No se encontraron ciclos'));
@@ -108,7 +111,7 @@ function fetchCiclosLectivos() {
         fetch('/api/ciclos-lectivos/all')
         .then(response => response.json())
         .then(data => {
-            if (data && data.length > 0) {
+            if (data) {
                 res(data);
             } else {
                 rej(new Error('No se encontraron ciclos lectivos'));
@@ -125,7 +128,7 @@ function fetchGrupos() {
         fetch('/api/grupos/all')
         .then(response => response.json())
         .then(data => {
-            if (data && data.length > 0) {
+            if (data) {
                 res(data);
             } else {
                 rej(new Error('No se encontraron grupos'));
