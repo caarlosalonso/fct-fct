@@ -2,9 +2,8 @@ package es.daw2.fct_fct.config;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
-import java.nio.charset.StandardCharsets;
-import java.util.Base64;
 import java.util.Arrays;
+import java.util.Base64;
 
 import javax.annotation.PostConstruct;
 
@@ -30,14 +29,19 @@ public class FirebaseConfig {
         if (env.getActiveProfiles() != null &&
             Arrays.asList(env.getActiveProfiles()).contains("test")) return;
 
-        String base64Creds = env.getProperty("GOOGLE_APPLICATION_CREDENTIALS_BASE64");
+            String base64Creds = System.getenv("GOOGLE_APPLICATION_CREDENTIALS_BASE64");
+            InputStream serviceAccount;
 
-        if (base64Creds == null || base64Creds.isEmpty()) {
-            throw new IllegalStateException("Variable GOOGLE_APPLICATION_CREDENTIALS_BASE64 no está definida");
-        }
+            if (base64Creds != null && !base64Creds.isEmpty()) {
+                byte[] decodedBytes = Base64.getDecoder().decode(base64Creds);
+                serviceAccount = new ByteArrayInputStream(decodedBytes);
+            } else {
+                serviceAccount = getClass().getClassLoader().getResourceAsStream("firebase-key.json");
 
-        byte[] decodedBytes = Base64.getDecoder().decode(base64Creds);
-        InputStream serviceAccount = new ByteArrayInputStream(decodedBytes);
+                if (serviceAccount == null) {
+                    throw new IllegalStateException("No se encontró firebase-key.json y la variable GOOGLE_APPLICATION_CREDENTIALS_BASE64 no está definida");
+                }
+            }
 
         FirebaseOptions options = FirebaseOptions.builder()
             .setCredentials(GoogleCredentials.fromStream(serviceAccount))
