@@ -1,5 +1,7 @@
 package es.daw2.fct_fct.controlador;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -26,8 +28,8 @@ public class ControladorCicloLectivo extends CrudController<Long, CicloLectivo, 
 
     @Override
     ResponseEntity<?> all() {
-        // Implementación para obtener todos los Ciclos Lectivos
-        throw new UnsupportedOperationException("Get all operation is not supported");
+        List<CicloLectivo> ciclos = servicioCicloLectivo.list();
+        return ResponseEntity.ok(ciclos);
     }
 
     @Override
