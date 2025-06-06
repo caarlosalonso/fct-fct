@@ -56,6 +56,12 @@ console.log("1.2");
     
     const storage = getStorage();
 console.log("1.3");
+
+    window.addEventListener('DOMContentLoaded', () => {
+        document.dispatchEvent(new CustomEvent('FormsCreated'));
+    });
+console.log("1.4");
+
     document.addEventListener('FormsCreated', (event) => {
 console.log("2");
         const form = Form.getForm('alumno-form');
