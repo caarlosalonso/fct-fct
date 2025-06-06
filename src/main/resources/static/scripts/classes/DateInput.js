@@ -19,4 +19,13 @@ export class DateInput extends Input {
         this.input.setAttribute('type', 'date');
         this.createValidityElements();
     }
+
+    clear() {
+        this.input.value = '';
+        this.states.active = false;
+        this.states.changed = false;
+        this.states.trackedValue = '';
+        this.updateState();
+        this.checkChange();
+    }
 }
