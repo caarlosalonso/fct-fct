@@ -18,15 +18,15 @@ import org.springframework.web.bind.annotation.RequestBody;
 @RequestMapping("/api/ciclos")
 public class ControladorCiclo extends CrudController<Long, Ciclo, Ciclo, Ciclo, ServicioCiclo> {
 
-    // all ya existe en CrudController
-
-    // getById ya existe en CrudController
-
     @Override
     public ResponseEntity<?> create(@RequestBody Ciclo ciclo) {
         Ciclo nuevoCiclo = service.save(ciclo);
         return ResponseEntity.status(HttpStatus.CREATED).body(nuevoCiclo);
     }
+
+    // all ya existe en CrudController
+
+    // getById ya existe en CrudController
 
     @Override
     public ResponseEntity<?> update(@PathVariable Long id, @RequestBody Ciclo ciclo) {
