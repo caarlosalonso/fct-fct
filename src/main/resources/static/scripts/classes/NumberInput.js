@@ -33,7 +33,7 @@ export class NumberInput extends TextInput {
 
     createEventListeners() {
         this.input.addEventListener('input', () => {
-            this.states.dirty = true;
+            this.states.active = true;
             this.updateState();
         });
     }
