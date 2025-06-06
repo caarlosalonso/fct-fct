@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 import es.daw2.fct_fct.dto.LoginRequestDTO;
 import es.daw2.fct_fct.dto.UserCreateDTO;
 import es.daw2.fct_fct.dto.UserDTO;
+import es.daw2.fct_fct.dto.UserResetPasswordDTO;
 import es.daw2.fct_fct.dto.UserResetPasswordTutorDTO;
 import es.daw2.fct_fct.modelo.User;
 import es.daw2.fct_fct.servicio.ServicioUser;
@@ -54,7 +55,7 @@ public class ControladorUser extends CrudController<Long, User, UserCreateDTO, U
     }
 
     @PostMapping("/reset-password/{id}")
-    public ResponseEntity<?> postMethodName(@PathVariable Long id,
+    public ResponseEntity<?> changePassword(@PathVariable Long id,
                                 @RequestBody UserResetPasswordTutorDTO entity,
                                 HttpServletRequest request) {
 
@@ -77,6 +78,48 @@ public class ControladorUser extends CrudController<Long, User, UserCreateDTO, U
         }
 
         return ResponseEntity.notFound().build();
+    }
+
+    @PostMapping("/password/{id}")
+    public ResponseEntity<?> changePassword(@PathVariable Long id, @RequestBody UserResetPasswordDTO entity, HttpServletRequest request) {
+        HttpSession session = request.getSession(false);
+        if (session == null || session.getAttribute("user") == null) {
+            return ResponseEntity.status(401).body("Unauthorized");
+        }
+
+        Object sessionId = session.getAttribute("id");
+        if (sessionId == null || !(sessionId instanceof Long) || !((Long) sessionId).equals(id)) {
+            return ResponseEntity.status(403).body("Forbidden: You can only change your own password");
+        }
+
+        Optional<User> userOptional = servicioUser.getById(id);
+
+        if (userOptional.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+
+        User user = userOptional.get();
+
+        boolean isCurrentPasswordValid = PasswordUtils.doPasswordsMatch(
+            entity.currentPassword(),
+            user.getPassword()
+        );
+
+        if (!isCurrentPasswordValid) {
+            return ResponseEntity.badRequest().body("Current password is incorrect");
+        }
+
+        if (entity.newPassword() == null || entity.newPassword().isEmpty()) {
+            return ResponseEntity.badRequest().body("New password cannot be empty");
+        }
+
+        if (!entity.newPassword().equals(entity.confirmPassword())) {
+            return ResponseEntity.badRequest().body("New password and confirm password do not match");
+        }
+
+        user.setPassword(PasswordUtils.hashPassword(entity.newPassword()));
+        servicioUser.save(user);
+        return ResponseEntity.ok("Password updated successfully");
     }
 
     @Override

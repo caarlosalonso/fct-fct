@@ -123,4 +123,22 @@ Do not disturb the sacred semicolon's deep slumber.
     public String subir() {
         return "subirarchivo.html";
     }
+
+    @GetMapping("/perfil")
+    public String perfil(HttpServletRequest request) {
+        HttpSession session = request.getSession(false);
+        if (session == null) return PAGES.REDIRECT_LOGIN.getPath();
+
+        Object user = session.getAttribute("user");
+        Object role = session.getAttribute("role");
+        if (user == null || role == null) return PAGES.REDIRECT_LOGIN.getPath();
+
+        return switch (role) {
+            case User.Role.ADMIN        -> "admin/profile.html";
+            case User.Role.COORDINADOR  -> "coordinacion/profile.html";
+            case User.Role.TUTOR        -> "tutor/profile.html";
+            case User.Role.ALUMNO       -> "alumno/profile.html";
+            default                     -> PAGES.REDIRECT_LOGIN.getPath();
+        };
+    }
 }
