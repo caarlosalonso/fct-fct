@@ -186,9 +186,10 @@ function drawTable(ciclos, ciclosLectivos, grupos) {
     ciclosGridWrapper.appendChild(gridData);
 
     const numRows = ciclos.length + 2;
+    const numColumns = Math.max(ciclosLectivos.length, 2);
 
     gridData.style.gridTemplateRows = `repeat(${numRows}, 1fr)`;
-    gridData.style.gridTemplateColumns = `250px repeat(${ciclosLectivos.length}, 1fr) 80px`;
+    gridData.style.gridTemplateColumns = `250px repeat(${numColumns}, 1fr) 80px`;
 
     const topLeftCell = document.createElement('div');
     topLeftCell.classList.add('cell', 'sticky', 'cell-column-header', 'cell-row-header');
