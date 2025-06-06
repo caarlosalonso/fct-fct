@@ -485,7 +485,7 @@ function addCicloLectivo() {
 
     form.onsubmit = (event) => {
         const name = form.getInput('ciclo-lectivo-nombre').getValue();
-        const fechaInicio = form.getInput('ciclo-lectivo-fecha-inicio').getValue();
+        const fechaInicio = form.getInput('ciclo-lectivo-inicio').getValue();
 
         let cicloLectivo = {
             nombre: name,
@@ -511,7 +511,7 @@ function addCicloLectivo() {
     }
     
     form.getInput('ciclo-lectivo-nombre').retrack('');
-    form.getInput('ciclo-lectivo-fecha-inicio').retrack('');
+    form.getInput('ciclo-lectivo-inicio').retrack('');
 
     form.form.querySelector('input[type=submit]').textContent = 'Crear ciclo lectivo';
 }
