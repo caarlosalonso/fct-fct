@@ -423,7 +423,8 @@ function addGrupo(ciclo, cicloLectivo, numero) {
     form.getInput('grupo-numero').retrack(numero);
     form.getInput('grupo-horario').retrack('');
 
-    form.form.querySelector('input[type=submit]').textContent = 'Crear grupo';
+    form.form.setAttribute('submit-text', 'Crear grupo');
+    form.submit.textContent = 'Crear grupo';
 }
 
 function addCiclo() {
@@ -474,7 +475,8 @@ function addCiclo() {
     form.getInput('ciclo-years').retrack('');
     form.getInput('ciclo-practicas').retrack('');
 
-    form.form.querySelector('input[type=submit]').textContent = 'Crear ciclo';
+    form.form.setAttribute('submit-text', 'Crear ciclo');
+    form.submit.textContent = 'Crear ciclo';
 }
 
 function addCicloLectivo() {
@@ -513,7 +515,8 @@ function addCicloLectivo() {
     form.getInput('ciclo-lectivo-nombre').retrack('');
     form.getInput('ciclo-lectivo-inicio').retrack('');
 
-    form.form.querySelector('input[type=submit]').textContent = 'Crear ciclo lectivo';
+    form.form.setAttribute('submit-text', 'Crear ciclo lectivo');
+    form.submit.textContent = 'Crear ciclo lectivo';
 }
 
 function removeGrupo(grupo) {
@@ -613,7 +616,8 @@ function editGrupo(grupo) {
     form.getInput('grupo-numero').retrack(grupo.numero);
     form.getInput('grupo-horario').retrack(grupo.horario);
 
-    form.form.querySelector('input[type=submit]').textContent = 'Actualizar grupo para';
+    form.form.setAttribute('submit-text', 'Actualizar grupo');
+    form.submit.textContent = 'Actualizar grupo';
 }
 
 function editCiclo(ciclo) {
@@ -663,7 +667,8 @@ function editCiclo(ciclo) {
     form.getInput('ciclo-familia').retrack(ciclo.familiaProfesional);
     form.getInput('ciclo-practicas').retrack(ciclo.horasPracticas);
 
-    form.form.querySelector('input[type=submit]').textContent = 'Actualizar ciclo';
+    form.form.setAttribute('submit-text', 'Actualizar ciclo');
+    form.submit.textContent = 'Actualizar ciclo';
 }
 
 function editCicloLectivo(cicloLectivo) {
@@ -704,5 +709,6 @@ function editCicloLectivo(cicloLectivo) {
     form.getInput('ciclo-lectivo-nombre').retrack(cicloLectivo.nombre);
     form.getInput('ciclo-lectivo-fecha-inicio').retrack(cicloLectivo.fechaInicio);
 
-    form.form.querySelector('input[type=submit]').textContent = 'Actualizar ciclo lectivo';
+    form.form.setAttribute('submit-text', 'Actualizar ciclo lectivo');
+    form.submit.textContent = 'Actualizar ciclo lectivo';
 }
