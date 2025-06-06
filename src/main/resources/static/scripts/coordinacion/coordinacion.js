@@ -87,6 +87,7 @@ function promise() {
             drawTable(ciclos, ciclosLectivos, grupos);
         }
     ).catch((error) => {
+        console.log("SOMETHING FAILED AHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHH", error);
         tableFail();
         //drawTable(fetchedCiclos, fetchedCiclosLectivos, fetchedGrupos);
     });
