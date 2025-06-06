@@ -59,8 +59,6 @@ console.log("1");
 console.log("1.2");
 
     const form = document.getElementById('alumno-form');
-    const emailInput = document.getElementById('email');
-    const passwordInput = document.getElementById('password');
     const fileInput = document.getElementById('file');
 
 console.log("1.4");
@@ -70,8 +68,6 @@ console.log("1.4");
 
 console.log("2");
             
-            const email = emailInput.value.trim();
-            const password = passwordInput.value.trim();
             const file = fileInput.files[0];
             if (!file) {
                 alert("Selecciona un archivo");
@@ -81,17 +77,12 @@ console.log("2");
 console.log("3");
 
                 try {
-                    // 1. Login en tu backend para obtener custom token
-                    const loginRes = await fetch('/auth/login', {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({ email, password })
-                    });
-                    if (!loginRes.ok) {
-                        alert('Credenciales inválidas');
-                        return;
+                    // 1. Pedir al backend un custom token para el usuario de la sesión
+                    const tokenRes = await fetch('/auth/firebaseToken');
+                    if (!tokenRes.ok) {
+                        throw new Error('No se pudo obtener el token Firebase');
                     }
-                    const { firebaseToken } = await loginRes.json();
+                    const { firebaseToken } = await tokenRes.json();
 
                     // 2. Autenticación en Firebase con el custom token
                     await signInWithCustomToken(auth, firebaseToken);
@@ -108,7 +99,7 @@ console.log("3");
                 } catch (err) {
                     alert('Error: ' + err.message);
                 }
-        });
+                    });
 
 
     
