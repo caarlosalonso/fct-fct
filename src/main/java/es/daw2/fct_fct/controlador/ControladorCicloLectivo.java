@@ -2,7 +2,6 @@ package es.daw2.fct_fct.controlador;
 
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -17,18 +16,15 @@ import es.daw2.fct_fct.servicio.ServicioCicloLectivo;
 @RequestMapping("/api/ciclos-lectivos")
 public class ControladorCicloLectivo extends CrudController<Long, CicloLectivo, CicloLectivo, CicloLectivo, ServicioCicloLectivo> {
 
-    @Autowired
-    private ServicioCicloLectivo servicioCicloLectivo;
-
     @Override
     ResponseEntity<?> create(@RequestBody CicloLectivo dto) {
-        CicloLectivo nuevoCicloLectivo = servicioCicloLectivo.save(dto);
+        CicloLectivo nuevoCicloLectivo = service.save(dto);
         return ResponseEntity.ok(nuevoCicloLectivo);
     }
 
     @Override
     ResponseEntity<?> all() {
-        List<CicloLectivo> ciclos = servicioCicloLectivo.list();
+        List<CicloLectivo> ciclos = service.list();
         return ResponseEntity.ok(ciclos);
     }
 

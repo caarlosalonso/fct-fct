@@ -3,7 +3,6 @@ package es.daw2.fct_fct.controlador;
 import java.net.URI;
 import java.util.Optional;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -18,12 +17,9 @@ import es.daw2.fct_fct.servicio.ServicioTutores;
 @RequestMapping("/api/tutores")
 public class ControladorTutor extends CrudController<Long, Tutor, Tutor, Tutor, ServicioTutores> {
 
-    @Autowired
-    private ServicioTutores servicioTutores;
-
     @Override
     public ResponseEntity<?> create(@RequestBody Tutor t) {
-        servicioTutores.save(t);
+        service.save(t);
 
         URI location = URI.create("/api/tutores/" + t.getId());
 
@@ -32,7 +28,7 @@ public class ControladorTutor extends CrudController<Long, Tutor, Tutor, Tutor, 
 
     @Override
     public ResponseEntity<?> all() {
-        Iterable<Tutor> it = servicioTutores.list();
+        Iterable<Tutor> it = service.list();
 
         if (it!=null) {
             return ResponseEntity.ok(it);
@@ -43,7 +39,7 @@ public class ControladorTutor extends CrudController<Long, Tutor, Tutor, Tutor, 
 
     @Override
     public ResponseEntity<?> getById(@PathVariable Long id) {
-        Optional<Tutor> Tutores = servicioTutores.getById(id);
+        Optional<Tutor> Tutores = service.getById(id);
 
         if (Tutores.isPresent()) {
             return ResponseEntity.ok(Tutores.get());
@@ -54,7 +50,7 @@ public class ControladorTutor extends CrudController<Long, Tutor, Tutor, Tutor, 
 
     @Override
     public ResponseEntity<?> update(@PathVariable Long id, @RequestBody Tutor a){
-        Optional<Tutor> optional = servicioTutores.getById(id);
+        Optional<Tutor> optional = service.getById(id);
 
         if(!optional.isPresent()){
             return ResponseEntity.notFound().build();
@@ -62,7 +58,7 @@ public class ControladorTutor extends CrudController<Long, Tutor, Tutor, Tutor, 
 
         a.setId(id);
 
-        Optional<Tutor> tutorActualizado = servicioTutores.update(id, a);
+        Optional<Tutor> tutorActualizado = service.update(id, a);
         if (!tutorActualizado.isPresent()) {
             return ResponseEntity.badRequest().body("No se ha podido actualizar el tutor con el id: " + id);
         }
@@ -74,7 +70,7 @@ public class ControladorTutor extends CrudController<Long, Tutor, Tutor, Tutor, 
 
     @Override
     public ResponseEntity<?> delete(@PathVariable Long id){
-        boolean tutorEliminado = servicioTutores.delete(id);
+        boolean tutorEliminado = service.delete(id);
 
         if(tutorEliminado){
             return ResponseEntity.ok("Tutor eliminado con éxito");

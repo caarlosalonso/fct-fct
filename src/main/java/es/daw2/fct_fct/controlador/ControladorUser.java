@@ -3,7 +3,6 @@ package es.daw2.fct_fct.controlador;
 import java.net.URI;
 import java.util.Optional;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -25,15 +24,12 @@ import jakarta.servlet.http.HttpSession;
 @RestController
 @RequestMapping("/api/users")
 public class ControladorUser extends CrudController<Long, User, UserCreateDTO, User, ServicioUser> {
-    
-    @Autowired
-    private ServicioUser servicioUser;
 
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody LoginRequestDTO loginRequestDTO,
                                     HttpServletRequest request) {
 
-        User userFound = servicioUser.findByEmailAndPassword(
+        User userFound = service.findByEmailAndPassword(
             loginRequestDTO.email(),
             loginRequestDTO.password()
         );
@@ -71,12 +67,12 @@ public class ControladorUser extends CrudController<Long, User, UserCreateDTO, U
             return ResponseEntity.status(401).body("Unauthorized");
         }
 
-        Optional<User> userOptional = servicioUser.getById(id);
+        Optional<User> userOptional = service.getById(id);
 
         if (userOptional.isPresent()) {
             User user = userOptional.get();
             user.setPassword(PasswordUtils.hashPassword(entity.newPassword()));
-            servicioUser.save(user);
+            service.save(user);
             return ResponseEntity.ok("Password updated successfully");
         }
 
@@ -98,11 +94,11 @@ public class ControladorUser extends CrudController<Long, User, UserCreateDTO, U
         newUser.setRole(User.Role.ALUMNO);
         newUser.setUpdatedPasswordAt(null);
 
-        if (servicioUser.checkEmailExists(newUser.getEmail())) {
+        if (service.checkEmailExists(newUser.getEmail())) {
             return ResponseEntity.status(409).body("Email already exists"); // Conflicto, ya existe un usuario con ese email
         }
 
-        servicioUser.save(newUser);
+        service.save(newUser);
 
         UserDTO data = new UserDTO(
             newUser.getId(),
@@ -116,7 +112,7 @@ public class ControladorUser extends CrudController<Long, User, UserCreateDTO, U
 
     @Override
     public ResponseEntity<?> getById(@PathVariable Long id) {
-        Optional<User> users = servicioUser.getById(id);
+        Optional<User> users = service.getById(id);
         if (users.isPresent()) {
             return ResponseEntity.ok(users.get());
         }
@@ -125,7 +121,7 @@ public class ControladorUser extends CrudController<Long, User, UserCreateDTO, U
 
     @Override
     public ResponseEntity<?> all() {
-        Iterable<User> it = servicioUser.list();
+        Iterable<User> it = service.list();
 
         if (it!=null) {
             return ResponseEntity.ok(it);
@@ -136,7 +132,7 @@ public class ControladorUser extends CrudController<Long, User, UserCreateDTO, U
 
     @Override
     public ResponseEntity<?> update(@PathVariable Long id, @RequestBody User u){
-        Optional<User> optional = servicioUser.getById(id);
+        Optional<User> optional = service.getById(id);
 
         if(!optional.isPresent()){
             return ResponseEntity.notFound().build();
@@ -144,7 +140,7 @@ public class ControladorUser extends CrudController<Long, User, UserCreateDTO, U
 
         u.setId(id);
 
-        Optional<User> userActualizado = servicioUser.update(id, u);
+        Optional<User> userActualizado = service.update(id, u);
         if (!userActualizado.isPresent()) {
             return ResponseEntity.badRequest().body("No se ha podido actualizar el usuario con el id: " + id);
         }
@@ -156,7 +152,7 @@ public class ControladorUser extends CrudController<Long, User, UserCreateDTO, U
 
     @Override
     public ResponseEntity<?> delete(@PathVariable Long id){
-        boolean userBorrado = servicioUser.delete(id);
+        boolean userBorrado = service.delete(id);
 
         if(userBorrado){
             return ResponseEntity.ok().body("Usuario borrado correctamente");
