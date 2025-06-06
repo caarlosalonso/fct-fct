@@ -16,6 +16,7 @@
 
 
     <main>
+        <h1 id="titulo">Hola ....</h1>
         <section id="password-section" class="section">
             <form id="password-form" method="POST" submit-text="Cambiar contraseña">
                 <div class="inputs form-container">
@@ -33,6 +34,20 @@
                 </div>
             </form>
         </section>
+        <div id="personal-data">
+            <h2 id="titulo2">Datos personales</h2>
+            <form id="alumno-profile-form" th:action="@{/perfil}" method="POST" enctype="multipart/form-data">
+                <div id="inputs" class="form-container">
+                    <div class="instance form-input grouped-inputs">
+                        <div class="form-group form-input">
+                            <label for="nombre">Nombre</label>
+                            <input type="text" id="nombre" name="nombre" class="text-based input" th:value="${alumno.nombre}" readonly>
+                        </div>
+                    </div>
+                    
+                    
+                    
+        </div>
     </main>
 
     <script type="module" src="/scripts/profile/profile.js"></script>
