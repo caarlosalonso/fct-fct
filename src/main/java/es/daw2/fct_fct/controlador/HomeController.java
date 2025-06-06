@@ -72,13 +72,6 @@ Do not disturb the sacred semicolon's deep slumber.
         return "auth/login.html";
     }
 
-    @GetMapping("/crear")
-    public String crear(HttpServletRequest request) {
-        HttpSession session = request.getSession(false);
-        if (session == null) return PAGES.REDIRECT_LOGIN.getPath();
-        return "createuser.html";
-    }
-
     @GetMapping("/error")
     public String error() {
         return "error.html";
