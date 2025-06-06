@@ -67,12 +67,17 @@ function createAbreviatedNameEventListener() {
 
 function promise() {
     tableLoading();
-    console.log("1")
+
+    const ci = fetchCiclos();
+    const cile = fetchCiclosLectivos();
+    const g = fetchGrupos();
+
+    console.log(ci, cile, g);
 
     Promise.all([
-        fetchCiclos(),
-        fetchCiclosLectivos(),
-        fetchGrupos()
+        ci,
+        cile,
+        g
     ]).then(
         ([
             ciclos,
@@ -80,39 +85,42 @@ function promise() {
             grupos
         ]) => {
             drawTable(ciclos, ciclosLectivos, grupos);
-            console.log("10")
         }
     ).catch((error) => {
+        console.log("SOMETHING FAILED AHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHH", error);
         tableFail();
         //drawTable(fetchedCiclos, fetchedCiclosLectivos, fetchedGrupos);
     });
 }
 
 function fetchCiclos() {
-    console.log("2")
     return new Promise((res, rej) => {
         fetch('/api/ciclos/all')
-            .then(response => response.json())
-            .then(data => {
-                if (data) {
-                    res(data);
-                } else {
-                    rej(new Error('No se encontraron ciclos'));
-                }
-            })
-            .catch((error) => {
-                rej(error);
-            });
+        .then(response => {
+            if (response.status === 204) res([]);
+            else if (response.ok) {
+                const data = response.json();
+                if (data) return res(data);
+                else rej(new Error('No se encontraron ciclos'));
+            } else {
+                rej(new Error('No se encontraron ciclos'));
+            }
+        })
+        .catch((error) => {
+            rej(error);
+        });
     });
 }
 
 function fetchCiclosLectivos() {
     return new Promise((res, rej) => {
         fetch('/api/ciclos-lectivos/all')
-        .then(response => response.json())
-        .then(data => {
-            if (data) {
-                res(data);
+        .then(response => {
+            if (response.status === 204) res([]);
+            else if (response.ok) {
+                const data = response.json();
+                if (data) return res(data);
+                else rej(new Error('No se encontraron ciclos lectivos'));
             } else {
                 rej(new Error('No se encontraron ciclos lectivos'));
             }
@@ -126,10 +134,12 @@ function fetchCiclosLectivos() {
 function fetchGrupos() {
     return new Promise((res, rej) => {
         fetch('/api/grupos/all')
-        .then(response => response.json())
-        .then(data => {
-            if (data) {
-                res(data);
+        .then(response => {
+            if (response.status === 204) res([]);
+            else if (response.ok) {
+                const data = response.json();
+                if (data) return res(data);
+                else rej(new Error('No se encontraron grupos'));
             } else {
                 rej(new Error('No se encontraron grupos'));
             }
@@ -320,7 +330,7 @@ function createCicloCell(ciclo, rowIdx) {
     cellContent.innerHTML = `
         <span class="cell-title">${ciclo.name} <span class="cell-subtitle">(${ciclo.acronimo})</span></span>
         <span class="cell-subtitle">${ciclo.familiaProfesional}</span>
-        <span class="cell-subtitle">${CICLOS[ciclo.nivel]}</span>
+        <span class="cell-subtitle">${NIVELES[ciclo.nivel]}</span>
         <span class="cell-subtitle">${ciclo.horasPracticas}</span>
         <span class="cell-actions">
             <svg class="edit-svg" viewBox="0 -0.5 25 25" xmlns="http://www.w3.org/2000/svg">
