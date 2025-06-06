@@ -27,7 +27,10 @@ export class EmailInput extends TextInput {
             const val = String(this.input.value).toLowerCase();
             return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(val);
         }
+    }
 
+    init() {
+        super.init();
         this.buildEmail();
     }
 

@@ -140,4 +140,8 @@ export class Input {
     getValue() {
         return null;
     }
+
+    setValue(value) {
+        this.input.value = value;
+    }
 }

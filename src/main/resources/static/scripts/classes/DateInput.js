@@ -1,31 +1,22 @@
-import { Input } from './Input.js';
+import { TextInput } from './TextInput.js';
 
-export class DateInput extends Input {
+export class DateInput extends TextInput {
     constructor(input) {
         super(input);
+        this.getValue = () => {
+            const date = new Date(this.input.value);
+            return date.toISOString().split('T')[0];
+        }
+
         this.validate = () => {
             if (this.isEmpty()) return true;
             const date = new Date(this.input.value);
             return !isNaN(date.getTime());
-        };
-
-        this.format = (value) => {
-            const date = new Date(value);
-            return date.toISOString().split('T')[0];
         };
     }
 
     init() {
         this.input.setAttribute('type', 'date');
         this.createValidityElements();
-    }
-
-    clear() {
-        this.input.value = '';
-        this.states.active = false;
-        this.states.changed = false;
-        this.states.trackedValue = '';
-        this.updateState();
-        this.checkChange();
     }
 }
