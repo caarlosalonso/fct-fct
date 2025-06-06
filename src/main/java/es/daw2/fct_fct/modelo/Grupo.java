@@ -35,15 +35,12 @@ public class Grupo extends AbsBaseEntity {
     @Column(name = "numero", nullable = false, columnDefinition = "TINYINT UNSIGNED")
     private Short numero;
 
-    @Column(name = "horario", nullable = false, columnDefinition = "ENUM('DIURNO', 'VESPERTINO', 'NOCHE')")
-    private Horario horario;
+    @Column(name = "horario", nullable = false, columnDefinition = "VARCHAR(15)")
+    private String horario;
 
     @Column(name = "anexo_ocho", nullable = true, columnDefinition = "VARCHAR(255)")
     private String anexoOcho;
 
-    public enum Horario {
-        DIURNO,
-        VESPERTINO,
-        NOCHE
-    }
+    @Column(name = "deleted_at", nullable = true, columnDefinition = "DATETIME DEFAULT CURRENT_TIMESTAMP")
+    private String deletedAt;
 }

@@ -25,4 +25,7 @@ public class CicloLectivo extends AbsBaseEntity {
 
     @Column(name = "fecha_inicio", nullable = false, columnDefinition = "DATETIME DEFAULT CURRENT_TIMESTAMP")
     private LocalDateTime fechaInicio;
+
+    @Column(name = "deleted_at", nullable = true, columnDefinition = "DATETIME DEFAULT CURRENT_TIMESTAMP")
+    private String deletedAt;
 }
