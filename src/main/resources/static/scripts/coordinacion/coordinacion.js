@@ -181,6 +181,8 @@ function tableFail() {
 function drawTable(ciclos, ciclosLectivos, grupos) {
     const ciclosList = [];
 
+    console.log(grupos);
+
     const ciclosGridWrapper = document.getElementById('display-grid-wrapper');
     ciclosGridWrapper.innerHTML = "";
 
