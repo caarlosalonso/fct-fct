@@ -378,11 +378,6 @@ function collapseAll() {
     });
 }
 
-
-
-
-
-
 function addGrupo(ciclo, cicloLectivo, numero) {
     collapseAll();
 
@@ -460,7 +455,7 @@ function addCiclo() {
             if (response.ok || response.status === 201) {
                 promise();
             } else {
-                form.showError('Error al crear el ciclo');
+                form.showError(`Error al crear el ciclo: ${response.body}`);
             }
         }).catch(error => {
             console.error('Error al crear el ciclo:', error);
@@ -504,7 +499,7 @@ function addCicloLectivo() {
             if (response.ok || response.status === 201) {
                 promise();
             } else {
-                form.showError('Error al crear el ciclo lectivo');
+                form.showError(`Error al crear el ciclo lectivo: ${response.body}`);
             }
         }).catch(error => {
             console.error('Error al crear el ciclo lectivo:', error);
