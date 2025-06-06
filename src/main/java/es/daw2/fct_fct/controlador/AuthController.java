@@ -22,7 +22,7 @@ public class AuthController {
     @Autowired
     ServicioUser ServicioUser;
 
-    @PostMapping("/login")
+    @PostMapping("/firebaseToken")
     public ResponseEntity<?> login(@RequestBody LoginRequestDTO dto) throws Exception {
         // Valida con el dto el email y password del usuario en la base de datos
         User u = ServicioUser.findByEmailAndPassword(dto.email(), dto.password());
