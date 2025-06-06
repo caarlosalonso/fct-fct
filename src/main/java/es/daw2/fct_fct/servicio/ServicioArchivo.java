@@ -1,39 +1,50 @@
 package es.daw2.fct_fct.servicio;
 
-import java.util.List;
+import java.io.IOException;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
-import es.daw2.fct_fct.modelo.Archivo;
-import es.daw2.fct_fct.repositorio.RepositorioArchivo;
+import com.google.firebase.cloud.StorageClient;
 
-public class ServicioArchivo implements IFServicioArchivo {
+import es.daw2.fct_fct.modelo.User;
+import es.daw2.fct_fct.modelo.vAlumno;
+import es.daw2.fct_fct.repositorio.RepositorioVAlumno;
+
+@Service
+public class ServicioArchivo extends AbstractService<Long, vAlumno, RepositorioVAlumno> {
 
     @Autowired
-    RepositorioArchivo repositorioArchivo;
+    private servicioVAlumno servicioVAlumno;
 
-    @Override
-    public List<Archivo> listaArchivos() {
-        return (List<Archivo>) repositorioArchivo.findAll();
-    }
+    public void subirArchivo(User user, MultipartFile archivo) throws IOException {
 
-    @Override
-    public Archivo addArchivo(Archivo archivo) {
-        return repositorioArchivo.save(archivo);
-    }
+        String bucketName = StorageClient.getInstance().bucket().getName();
 
-    @Override
-    public Optional<Archivo> getArchivoId(Long archivoId) {
-        return repositorioArchivo.findById(archivoId);
-    }
+        Optional<vAlumno> va = servicioVAlumno.getByUserId(user.getId());
 
-    @Override
-    public boolean borrarArchivo(Long archivoId) {
-        if (repositorioArchivo.existsById(archivoId)) {
-            repositorioArchivo.deleteById(archivoId);
-            return true;
+        if (va.isEmpty()) {
+            throw new IllegalArgumentException("El usuario no es un alumno válido");
         }
-        return false;
-    }
+
+        vAlumno vAlumno = va.get();
+        //Construir ruta: año/ciclo/curso/idAlumno/nombreArchivo
+        /*String ruta = String.format("%s/%s/%s/%s/%s",
+            vAlumno.getAño(),
+            vAlumno.getCiclo(),
+            vAlumno.getGrupo(),
+            vAlumno.getId(),
+            archivo.getOriginalFilename());*/
+
+        String ruta = String.format("%s",
+            archivo.getOriginalFilename());
+        
+
+        // Crear el objeto en el bucket
+        StorageClient.getInstance()
+                    .bucket()
+                    .create(ruta, archivo.getBytes(), archivo.getContentType());
+}
 }

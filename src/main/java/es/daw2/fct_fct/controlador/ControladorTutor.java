@@ -23,7 +23,7 @@ public class ControladorTutor extends CrudController<Long, Tutor, Tutor> {
 
     @Override
     public ResponseEntity<?> create(@RequestBody Tutor t) {
-        servicioTutores.addTutores(t);
+        servicioTutores.save(t);
 
         URI location = URI.create("/api/tutores/" + t.getId());
 
@@ -32,7 +32,7 @@ public class ControladorTutor extends CrudController<Long, Tutor, Tutor> {
 
     @Override
     public ResponseEntity<?> all() {
-        Iterable<Tutor> it = servicioTutores.listaTutores();
+        Iterable<Tutor> it = servicioTutores.list();
 
         if (it!=null) {
             return ResponseEntity.ok(it);
@@ -43,7 +43,7 @@ public class ControladorTutor extends CrudController<Long, Tutor, Tutor> {
 
     @Override
     public ResponseEntity<?> getById(@PathVariable Long id) {
-        Optional<Tutor> Tutores = servicioTutores.getTutoresId(id);
+        Optional<Tutor> Tutores = servicioTutores.getById(id);
 
         if (Tutores.isPresent()) {
             return ResponseEntity.ok(Tutores.get());
@@ -54,7 +54,7 @@ public class ControladorTutor extends CrudController<Long, Tutor, Tutor> {
 
     @Override
     public ResponseEntity<?> update(@PathVariable Long id, @RequestBody Tutor a){
-        Optional<Tutor> optional = servicioTutores.getTutoresId(id);
+        Optional<Tutor> optional = servicioTutores.getById(id);
 
         if(!optional.isPresent()){
             return ResponseEntity.notFound().build();
@@ -62,7 +62,10 @@ public class ControladorTutor extends CrudController<Long, Tutor, Tutor> {
 
         a.setId(id);
 
-        Tutor tutorActualizado = servicioTutores.addTutores(a);
+        Optional<Tutor> tutorActualizado = servicioTutores.update(id, a);
+        if (!tutorActualizado.isPresent()) {
+            return ResponseEntity.badRequest().body("No se ha podido actualizar el tutor con el id: " + id);
+        }
 
         URI location = URI.create("/api/tutores/" + a.getId());
 
@@ -71,7 +74,7 @@ public class ControladorTutor extends CrudController<Long, Tutor, Tutor> {
 
     @Override
     public ResponseEntity<?> delete(@PathVariable Long id){
-        boolean tutorEliminado = servicioTutores.borrarTutores(id);
+        boolean tutorEliminado = servicioTutores.delete(id);
 
         if(tutorEliminado){
             return ResponseEntity.ok("Tutor eliminado con éxito");

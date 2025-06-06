@@ -1,45 +1,62 @@
 package es.daw2.fct_fct.controlador;
 
+import java.io.IOException;
+import java.util.Map;
+
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
-import es.daw2.fct_fct.modelo.Archivo;
-
+import es.daw2.fct_fct.modelo.User;
+import es.daw2.fct_fct.servicio.ServicioArchivo;
+import es.daw2.fct_fct.servicio.ServicioUser;
 
 @RestController
-@RequestMapping("/api/archivos")
-public class ControladorArchivo extends CrudController<Long, Archivo, Archivo> {
+@RequestMapping("/api/ficheros")
+public class ControladorArchivo {
 
-    @Override
-    ResponseEntity<?> create(@RequestBody Archivo dto) {
-        // Implementación para crear un Archivo
-        throw new UnsupportedOperationException("Create operation is not supported");
+    private final ServicioArchivo servicioArchivo;
+
+    private final ServicioUser servicioUser;
+
+    public ControladorArchivo(ServicioArchivo servicioArchivo, ServicioUser servicioUser) {
+        this.servicioArchivo = servicioArchivo;
+        this.servicioUser = servicioUser;
     }
+    
+    /**
+     * Endpoint para que un alumno autenticado suba un archivo a Firebase Storage.
+     * Recibe email y password para validar al usuario, y el propio MultipartFile.
+     */
+    @PostMapping("/subir")
+    public ResponseEntity<?> subir(
+            @RequestParam("email") String email,
+            @RequestParam("password") String password,
+            @RequestParam("file") MultipartFile file) throws IOException {
 
-    @Override
-    ResponseEntity<?> all() {
-        // Implementación para obtener todos los Archivos
-        throw new UnsupportedOperationException("Get all operation is not supported");
-    }
+            System.out.println("Nombre: " + file.getOriginalFilename());
+            System.out.println("Tamaño: " + file.getSize());
+            System.out.println("Tipo: " + file.getContentType());
 
-    @Override
-    ResponseEntity<?> getById(@PathVariable Long id) {
-        // Implementación para obtener un Archivo por ID
-        throw new UnsupportedOperationException("Get by ID operation is not supported");
-    }
 
-    @Override
-    ResponseEntity<?> update(@PathVariable Long id, @RequestBody Archivo dto) {
-        // Implementación para actualizar un Archivo
-        throw new UnsupportedOperationException("Update operation is not supported");
-    }
+        // 1) Validamos credenciales usando tu servicio
+        User user = servicioUser.findByEmailAndPassword(email, password);
+        if (user == null) {
+            return ResponseEntity.status(401)
+                                .body(Map.of("error", "Credenciales inválidas"));
+        }
 
-    @Override
-    ResponseEntity<?> delete(@PathVariable Long id) {
-        // Implementación para eliminar un Archivo
-        throw new UnsupportedOperationException("Delete operation is not supported");
+        //Llamada al servicio que sube el archivo a Firebase
+        try {
+            servicioArchivo.subirArchivo(user, file);
+        } catch (Exception e) {
+            e.printStackTrace(); // o log
+            return ResponseEntity.status(500).body(Map.of("error", e.getMessage()));
+        }
+
+        return ResponseEntity.ok(Map.of("mensaje", "Archivo subido correctamente"));
     }
 }

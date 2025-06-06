@@ -23,7 +23,7 @@ public class ControladorCoordinacion extends CrudController<Long, Coordinacion, 
 
     @Override
     public ResponseEntity<?> create(@RequestBody Coordinacion c) {
-        servicioCoordinacion.addCoordinacion(c);
+        servicioCoordinacion.save(c);
 
         URI location = URI.create("/api/coordinacion/" +c.getId());
 
@@ -33,7 +33,7 @@ public class ControladorCoordinacion extends CrudController<Long, Coordinacion, 
 
     @Override
     public ResponseEntity<?> all() {
-        Iterable<Coordinacion> it = servicioCoordinacion.listaCoordinacion();
+        Iterable<Coordinacion> it = servicioCoordinacion.list();
 
         if (it!=null) {
             return ResponseEntity.ok(it);
@@ -44,7 +44,7 @@ public class ControladorCoordinacion extends CrudController<Long, Coordinacion, 
 
     @Override
     public ResponseEntity<?> getById(@PathVariable Long id) {
-        Optional<Coordinacion> coordinacion = servicioCoordinacion.getCoordinacionId(id);
+        Optional<Coordinacion> coordinacion = servicioCoordinacion.getById(id);
 
         if (coordinacion.isPresent()) {
             return ResponseEntity.ok(coordinacion.get());
@@ -55,7 +55,7 @@ public class ControladorCoordinacion extends CrudController<Long, Coordinacion, 
 
     @Override
     public ResponseEntity<?> update(@PathVariable Long id, @RequestBody Coordinacion c){
-        Optional<Coordinacion> optional = servicioCoordinacion.getCoordinacionId(id);
+        Optional<Coordinacion> optional = servicioCoordinacion.getById(id);
 
         if(!optional.isPresent()){
             return ResponseEntity.notFound().build();
@@ -63,7 +63,10 @@ public class ControladorCoordinacion extends CrudController<Long, Coordinacion, 
 
         c.setId(id);
 
-        Coordinacion coordinacionActualizado = servicioCoordinacion.addCoordinacion(c);
+        Optional<Coordinacion> coordinacionActualizado = servicioCoordinacion.update(id, c);
+        if (!coordinacionActualizado.isPresent()) {
+            return ResponseEntity.badRequest().body("No se ha podido actualizar coordinación con el id: " + id);
+        }
 
         URI location = URI.create("/api/coordinacion/" +c.getId());
 
@@ -72,7 +75,7 @@ public class ControladorCoordinacion extends CrudController<Long, Coordinacion, 
 
     @Override
     public ResponseEntity<?> delete(@PathVariable Long id){
-        boolean coordinacionEliminado = servicioCoordinacion.borrarCoordinacion(id);
+        boolean coordinacionEliminado = servicioCoordinacion.delete(id);
 
         if(coordinacionEliminado){
             return ResponseEntity.ok("Coordinacion eliminada con éxito");

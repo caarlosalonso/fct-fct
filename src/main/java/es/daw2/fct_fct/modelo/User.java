@@ -5,6 +5,8 @@ import java.time.LocalDateTime;
 import jakarta.persistence.AttributeOverride;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.Email;
 import lombok.AllArgsConstructor;
@@ -22,6 +24,7 @@ import lombok.NoArgsConstructor;
 @AttributeOverride(name = "id", column = @Column(name = "user_id", nullable = false, columnDefinition = "BIGINT"))
 public class User extends AbsBaseEntity {
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "role", nullable = false, columnDefinition = "ENUM('ADMIN', 'TUTOR', 'COORDINADOR', 'ALUMNO')")
     private Role role;
 

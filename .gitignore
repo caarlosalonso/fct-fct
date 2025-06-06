@@ -34,3 +34,6 @@ build/
 
 ### Railway ###
 .env
+
+### Firebase ###
+firebase-key.json
