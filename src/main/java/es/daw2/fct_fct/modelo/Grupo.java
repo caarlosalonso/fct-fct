@@ -1,5 +1,7 @@
 package es.daw2.fct_fct.modelo;
 
+import java.time.LocalDateTime;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.AttributeOverride;
@@ -42,5 +44,5 @@ public class Grupo extends AbsBaseEntity {
     private String anexoOcho;
 
     @Column(name = "deleted_at", nullable = true, columnDefinition = "DATETIME DEFAULT CURRENT_TIMESTAMP")
-    private String deletedAt;
+    private LocalDateTime deletedAt;
 }
