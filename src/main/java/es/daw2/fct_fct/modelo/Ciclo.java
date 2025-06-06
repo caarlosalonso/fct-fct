@@ -25,8 +25,8 @@ public class Ciclo extends AbsBaseEntity {
     @Column(name = "acronimo", nullable = false, columnDefinition = "varchar(10)")
     private String acronimo;
 
-    @Column(name = "nivel", nullable = false, columnDefinition = "enum('BASICO', 'MEDIO', 'SUPERIOR')")
-    private Nivel nivel;
+    @Column(name = "nivel", nullable = false, columnDefinition = "VARCHAR(20)")
+    private String nivel;
 
     @Column(name = "familia_profesional", nullable = false, columnDefinition = "varchar(255)")
     private String familiaProfesional;
@@ -37,9 +37,6 @@ public class Ciclo extends AbsBaseEntity {
     @Column(name = "horas_practicas", nullable = false, columnDefinition = "SMALLINT UNSIGNED")
     private Integer horasPracticas;
 
-    public enum Nivel {
-        BASICO,
-        MEDIO,
-        SUPERIOR
-    }
+    @Column(name = "deleted_at", nullable = true, columnDefinition = "DATETIME DEFAULT CURRENT_TIMESTAMP")
+    private String deletedAt;
 }
