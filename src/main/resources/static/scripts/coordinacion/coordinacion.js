@@ -67,12 +67,17 @@ function createAbreviatedNameEventListener() {
 
 function promise() {
     tableLoading();
-    console.log("1")
+
+    const ci = fetchCiclos();
+    const cile = fetchCiclosLectivos();
+    const g = fetchGrupos();
+
+    console.log(ci, cile, g);
 
     Promise.all([
-        fetchCiclos(),
-        fetchCiclosLectivos(),
-        fetchGrupos()
+        ci,
+        cile,
+        g
     ]).then(
         ([
             ciclos,
@@ -80,7 +85,6 @@ function promise() {
             grupos
         ]) => {
             drawTable(ciclos, ciclosLectivos, grupos);
-            console.log("10")
         }
     ).catch((error) => {
         tableFail();
