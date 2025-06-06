@@ -68,16 +68,10 @@ function createAbreviatedNameEventListener() {
 function promise() {
     tableLoading();
 
-    const ci = fetchCiclos();
-    const cile = fetchCiclosLectivos();
-    const g = fetchGrupos();
-
-    console.log(ci, cile, g);
-
     Promise.all([
-        ci,
-        cile,
-        g
+        fetchCiclos(),
+        fetchCiclosLectivos(),
+        fetchGrupos()
     ]).then(
         ([
             ciclos,
@@ -87,7 +81,6 @@ function promise() {
             drawTable(ciclos, ciclosLectivos, grupos);
         }
     ).catch((error) => {
-        console.log("SOMETHING FAILED AHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHH", error);
         tableFail();
         //drawTable(fetchedCiclos, fetchedCiclosLectivos, fetchedGrupos);
     });
@@ -195,14 +188,16 @@ function drawTable(ciclos, ciclosLectivos, grupos) {
     gridData.id = 'grid-data';
     ciclosGridWrapper.appendChild(gridData);
 
-    const numRows = ciclos.length + 2;
-    const numColumns = Math.max(ciclosLectivos.length, 2);
+    const numRows = ciclos.length + 1;
+    const numColumns = ciclosLectivos.length;
 
     gridData.style.gridTemplateRows = `repeat(${numRows}, 1fr)`;
     gridData.style.gridTemplateColumns = `250px repeat(${numColumns}, 1fr) 80px`;
 
     const topLeftCell = document.createElement('div');
     topLeftCell.classList.add('cell', 'sticky', 'cell-column-header', 'cell-row-header');
+    topLeftCell.style.gridRow = '1';
+    topLeftCell.style.gridColumn = '1';
 
     const topLeftCellContent = document.createElement('div');
     topLeftCellContent.classList.add('cell-content', 'cell-column-header', 'cell-row-header');
@@ -217,6 +212,7 @@ function drawTable(ciclos, ciclosLectivos, grupos) {
 
     const lastColumn = document.createElement('div');
     lastColumn.classList.add('cell', 'hoverable', 'last-column', 'cell-column-header', 'add-element');
+    lastColumn.style.gridColumn = `${numColumns + 2}`;
 
     const lastColumnContent = document.createElement('div');
     lastColumnContent.classList.add('cell-content', 'empty-cell', 'cell-column-header');
