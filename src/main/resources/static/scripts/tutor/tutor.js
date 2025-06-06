@@ -1,5 +1,5 @@
-import { Form } from './classes/Form.js';
-import { PasswordInput } from './classes/PasswordInput.js';
+import { Form } from './../classes/Form.js';
+import { PasswordInput } from './../classes/PasswordInput.js';
 
 let chosenCurso = null;
 
