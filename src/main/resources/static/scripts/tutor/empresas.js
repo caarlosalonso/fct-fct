@@ -18,7 +18,7 @@ let TIMEOUT;
         }
 
         async function fetchEmpresas() {
-        const response = await fetch('/api/empresas/all');
+        const response = await fetch('/api/empresa/all');
         if (response.status === 204) return [];
         if (!response.ok) throw new Error('No se encontraron empresas');
         return await response.json();
