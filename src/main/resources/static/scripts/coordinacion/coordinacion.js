@@ -464,6 +464,7 @@ function addGrupo(ciclo, cicloLectivo, numero) {
             horario: horario
         };
 
+        console.log(grupo);
         fetch('/api/grupos/create', {
             method: 'POST',
             headers: {
