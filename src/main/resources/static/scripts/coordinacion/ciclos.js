@@ -1,4 +1,4 @@
-import { Form } from './../classes/Form.js';
+import { Form } from '../classes/Form.js';
 
 const NIVELES = {
     'BASICA': 'Básica',

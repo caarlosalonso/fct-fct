@@ -81,9 +81,9 @@ Do not disturb the sacred semicolon's deep slumber.
         return "error.html";
     }
 
-    @GetMapping("/coordinacion")
-    public String coordinacion() {
-        return "coordinacion/coordinacion.html";
+    @GetMapping("/ciclos")
+    public String ciclos() {
+        return "coordinacion/ciclos.html";
     }
 
     @GetMapping("/alumnado")
