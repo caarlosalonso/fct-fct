@@ -18,6 +18,7 @@ public abstract class AbstractService<Id, T, R extends CrudRepository<T, Id>> im
 
     @Override
     public Optional<T> getById(Id id) {
+        if (id == null) return Optional.empty();
         return repository.findById(id);
     }
 
@@ -28,6 +29,7 @@ public abstract class AbstractService<Id, T, R extends CrudRepository<T, Id>> im
 
     @Override
     public Optional<T> update(Id id, T obj) {
+        if (id == null || obj == null) return Optional.empty();
         if (repository.existsById(id)) {
             return Optional.of(repository.save(obj));
         }
@@ -36,6 +38,7 @@ public abstract class AbstractService<Id, T, R extends CrudRepository<T, Id>> im
 
     @Override
     public boolean delete(Id id) {
+        if (id == null) return false;
         if (! repository.existsById(id)) return false;
         repository.deleteById(id);
         return true;

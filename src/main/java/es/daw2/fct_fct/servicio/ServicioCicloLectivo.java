@@ -1,5 +1,6 @@
 package es.daw2.fct_fct.servicio;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -32,7 +33,8 @@ public class ServicioCicloLectivo extends AbstractService<Long, CicloLectivo, Re
         if (cicloLectivo.filter((c) -> c.getDeletedAt() == null).isEmpty()) {
             return false;
         }
-        repository.deleteById(id);
+        cicloLectivo.get().setDeletedAt(LocalDateTime.now());
+        repository.save(cicloLectivo.get());
         return true;
     }
 }

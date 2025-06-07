@@ -1,5 +1,6 @@
 package es.daw2.fct_fct.servicio;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -34,7 +35,8 @@ public class ServicioGrupo extends AbstractService<Long, Grupo, RepositorioGrupo
         if (grupo.filter((g) -> g.getDeletedAt() == null).isEmpty()) {
             return false;
         }
-        repository.deleteById(id);
+        grupo.get().setDeletedAt(LocalDateTime.now());
+        repository.save(grupo.get());
         return true;
     }
 }
