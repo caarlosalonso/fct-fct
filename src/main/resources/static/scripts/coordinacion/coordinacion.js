@@ -86,61 +86,25 @@ function promise() {
     });
 }
 
-function fetchCiclos() {
-    return new Promise((res, rej) => {
-        fetch('/api/ciclos/all')
-        .then(response => {
-            if (response.status === 204) res([]);
-            else if (response.ok) {
-                const data = response.json();
-                if (data) return res(data);
-                else rej(new Error('No se encontraron ciclos'));
-            } else {
-                rej(new Error('No se encontraron ciclos'));
-            }
-        })
-        .catch((error) => {
-            rej(error);
-        });
-    });
+async function fetchCiclos() {
+    const response = await fetch('/api/ciclos/all');
+    if (response.status === 204) return [];
+    if (!response.ok) throw new Error('No se encontraron ciclos');
+    return await response.json();
 }
 
-function fetchCiclosLectivos() {
-    return new Promise((res, rej) => {
-        fetch('/api/ciclos-lectivos/all')
-        .then(response => {
-            if (response.status === 204) res([]);
-            else if (response.ok) {
-                const data = response.json();
-                if (data) return res(data);
-                else rej(new Error('No se encontraron ciclos lectivos'));
-            } else {
-                rej(new Error('No se encontraron ciclos lectivos'));
-            }
-        })
-        .catch((error) => {
-            rej(error);
-        });
-    });
+async function fetchCiclosLectivos() {
+    const response = await fetch('/api/ciclos-lectivos/all');
+    if (response.status === 204) return [];
+    if (!response.ok) throw new Error('No se encontraron ciclos lectivos');
+    return await response.json();
 }
 
-function fetchGrupos() {
-    return new Promise((res, rej) => {
-        fetch('/api/grupos/all')
-        .then(response => {
-            if (response.status === 204) res([]);
-            else if (response.ok) {
-                const data = response.json();
-                if (data) return res(data);
-                else rej(new Error('No se encontraron grupos'));
-            } else {
-                rej(new Error('No se encontraron grupos'));
-            }
-        })
-        .catch((error) => {
-            rej(error);
-        });
-    });
+async function fetchGrupos() {
+    const response = await fetch('/api/grupos/all');
+    if (response.status === 204) return [];
+    if (!response.ok) throw new Error('No se encontraron grupos');
+    return await response.json();
 }
 
 function tableLoading() {
