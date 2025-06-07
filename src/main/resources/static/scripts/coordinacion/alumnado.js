@@ -25,3 +25,10 @@ async function fetchCiclosLectivos() {
 function setCiclosLectivosList(ciclosLectivos) {
     console.log(ciclosLectivos);
 }
+
+async function fetchGruposCiclos() {
+    const response = await fetch('/api/grupos-ciclos/all');
+    if (response.status === 204) return [];
+    if (!response.ok) throw new Error('Error al obtener los grupos');
+    return await response.json();
+}

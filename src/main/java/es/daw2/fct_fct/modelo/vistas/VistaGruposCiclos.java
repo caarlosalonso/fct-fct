@@ -1,0 +1,27 @@
+package es.daw2.fct_fct.modelo.vistas;
+
+import jakarta.persistence.*;
+import lombok.*;
+import org.hibernate.annotations.Immutable;
+
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Entity
+@Immutable
+@Table(name = "vista_grupos_ciclos")
+public class VistaGruposCiclos {
+
+    @Id
+    @Column(name = "ciclo_lectivo_id", nullable = false)
+    private Long cicloLectivoId;
+
+    @Column(name = "grupo_id", nullable = false)
+    private Long grupoId;
+
+    @Column(name = "ciclo_id", nullable = false)
+    private Long ciclo_id;
+
+    @Column(name = "grupo_nombre", nullable = false)
+    private String grupo_nombre;
+}
