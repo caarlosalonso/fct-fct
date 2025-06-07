@@ -13,7 +13,7 @@ function promise() {
         gruposCiclos,
         alumnos
     ]) => {
-        create(ciclosLectivos, gruposCiclos, alumnos);
+        build(ciclosLectivos, gruposCiclos, alumnos);
     }).catch((error) => {
         console.error('Error al obtener los ciclos lectivos:', error);
     })
@@ -40,8 +40,26 @@ async function fetchAlumnos() {
     return await response.json();
 }
 
-function create(ciclosLectivos, gruposCiclos, alumnos) {
-    console.log(ciclosLectivos);
-    console.log(gruposCiclos);
-    console.log(alumnos);
+const info = [];
+
+function build(ciclosLectivos, gruposCiclos, alumnos) {
+    ciclosLectivos.forEach((cicloLectivo) => {
+        info.push({
+            id: cicloLectivo.id,
+            createdAt: cicloLectivo.createdAt,
+            updatedAt: cicloLectivo.updatedAt,
+            nombre: cicloLectivo.nombre,
+            fechaInicio: cicloLectivo.fechaInicio,
+            grupo: gruposCiclos.filter(grupo => grupo.cicloLectivoId === cicloLectivo.id).map(grupo => {
+                return {
+                    cicloLectivoId: grupo.cicloLectivoId,
+                    grupoId: grupo.grupoId,
+                    grupo_nombre: grupo.grupo_nombre,
+                    ciclo_id: grupo.cicloId,
+                    alumnos: alumnos.filter(alumno => alumno.grupoCicloId === grupo.id)
+                };
+            })
+        })
+    });
+    console.log(info);
 }
