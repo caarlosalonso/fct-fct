@@ -1,17 +1,4 @@
-import { Form } from '../classes/Form.js';
-import { PasswordInput } from '../classes/PasswordInput.js';
-
-window.addEventListener('FormsCreated', (event) => {
-    const form = Form.getForm('alumno-form');
-    form.getInput('nia').validate = function () {
-        let nia = this.input.value.trim().toUpperCase();
-        return /^\d{1,8}$/.test(nia);
-    }
-    form.getInput('nuss').validate = function () {
-        let nuss = this.input.value.trim().toUpperCase();
-        return /^\d{11}$/.test(nuss);
-    }
-
+window.addEventListener('DOMContentLoaded', (event) => {
     promise();
 });
 
