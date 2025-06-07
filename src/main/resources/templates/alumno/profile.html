@@ -39,17 +39,47 @@
         </section>
         <div id="personal-data">
             <h2 id="titulo2">Datos personales</h2>
-            <form id="alumno-profile-form" th:action="@{/perfil}" method="POST" enctype="multipart/form-data">
-                <div id="inputs" class="form-container">
-                    <div class="instance form-input grouped-inputs">
-                        <div class="form-group form-input">
-                            <label for="nombre">Nombre</label>
-                            <input type="text" id="nombre" name="nombre" class="text-based input" th:value="${alumno.nombre}" readonly>
+                <form id="alumno-profile-form" autocomplete="off">
+                    <div id="inputs" class="form-container">
+
+                        <div class="instance form-input grouped-inputs">
+                            <div class="form-group form-input">
+                                <input type="text" id="nombre" name="nombre" class="text-based input" label="Nombre" data-required="true" readonly>
+                            </div>
+                        </div>
+
+                        <div class="instance form-input grouped-inputs">
+                            <div class="form-group form-input">
+                                <input type="email" id="email" name="email" class="text-based input" label="Correo" data-show-validity="true" readonly>
+                            </div>
+
+                            <div class="form-group form-input">
+                                <input type="tel" id="telefono" name="telefono" class="text-based input" label="Teléfono" data-show-validity="true">
+                            </div>
+                        </div>
+
+                        <div class="instance form-input grouped-inputs">
+                            <div class="form-group form-input">
+                                <input type="text" name="nia" id="nia" class="text-based input" label="NIA" data-show-validity="true" readonly>
+                            </div>
+
+                            <div class="form-group form-input">
+                                <input type="dni" name="dni" id="dni" class="text-based input" label="DNI" data-show-validity="true" readonly>
+                            </div>
+
+                            <div class="form-group form-input">
+                                <input type="text" name="nuss" id="nuss" class="text-based input" label="NUSS" data-show-validity="true">
+                            </div>
+                        </div>
+
+                        <div class="instance form-input grouped-inputs">
+                            <div class="form-group form-input">
+                                <input type="file" name="cv" id="cv" class="input" label="Curriculum Vitae" accept=".pdf">
+                            </div>
                         </div>
                     </div>
-                    
-                    
-                    
+                    <button type="submit" class="btn btn-primary">Guardar</button>
+                </form>
         </div>
     </main>
 
