@@ -1,7 +1,11 @@
+:root {
+    --background-color: #686868;;
+}
+
 main {
     width: 90%;
     margin: 10px auto 50px auto;
-    background-color: #686868;
+    background-color: var(--background-color);
     border-radius: 16px;
 }
 
