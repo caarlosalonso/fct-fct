@@ -385,7 +385,7 @@ function createFilledCell(year, ciclo, grupo) {
             'delete-svg',
             '-6 -6 60 60',
             'M 42 3 H 28 A 2 2 0 0 0 26 1 H 22 A 2 2 0 0 0 20 3 H 6 A 2 2 0 0 0 6 7 H 42 A 2 2 0 0 0 42 3 Z M 37 11 V 43 H 31 V 19 A 1 1 0 0 0 27 19 V 43 H 21 V 19 A 1 1 0 0 0 17 19 V 43 H 11 V 11 A 2 2 0 0 0 7 11 V 45 A 2 2 0 0 0 9 47 H 39 A 2 2 0 0 0 41 45 V 11 A 2 2 0 0 0 37 11 Z',
-            () => removeGrupo(grupo)
+            () => removeGrupo(grupo, ciclo)
         )
     );
 
@@ -435,8 +435,14 @@ function collapseAll() {
     ];
     forms.forEach(form => {
         form.form.parentNode.classList.add('collapsed');
-        //form.reset();
     });
+}
+
+function finish(form) {
+    form.reset();
+    form.submitFinish();
+    collapseAll();
+    promise();
 }
 
 function addGrupo(ciclo, cicloLectivo, numero) {
@@ -466,7 +472,7 @@ function addGrupo(ciclo, cicloLectivo, numero) {
             body: JSON.stringify(grupo)
         }).then(response => {
             if (response.ok || response.status === 201) {
-                promise();
+                finish(form);
             } else {
                 form.showError(`Error al crear el grupo: ${response.text()}`);
                 console.log(response.text());
@@ -513,7 +519,7 @@ function addCiclo() {
             body: JSON.stringify(ciclo)
         }).then(response => {
             if (response.ok || response.status === 201) {
-                promise();
+                finish(form);
             } else {
                 form.showError(`Error al crear el ciclo: ${response.text()}`);
                 console.log(response.text());
@@ -557,7 +563,7 @@ function addCicloLectivo() {
             body: JSON.stringify(cicloLectivo)
         }).then(response => {
             if (response.ok || response.status === 201) {
-                promise();
+                finish(form);
             } else {
                 form.showError(`Error al crear el ciclo lectivo: ${response.text()}`);
                 console.log(response.text());
@@ -575,8 +581,8 @@ function addCicloLectivo() {
     form.submit.textContent = 'Crear ciclo lectivo';
 }
 
-function removeGrupo(grupo) {
-    if (!confirm(`¿Estás seguro de que quieres eliminar el grupo ${grupo.numero} del ciclo ${grupo.ciclo.nombre} (${grupo.ciclo.acronimo})?`)) {
+function removeGrupo(grupo, ciclo) {
+    if (!confirm(`¿Estás seguro de que quieres eliminar el grupo ${grupo.numero} del ciclo ${ciclo.nombre} (${ciclo.acronimo})?`)) {
         return;
     }
 
@@ -586,8 +592,9 @@ function removeGrupo(grupo) {
         if (response.ok) {
             promise();
         } else {
-            alert(`Error al eliminar el grupo ${grupo.numero}: ${response.text()}`);
-                console.log(response.text());
+            response.text().then((text) => {
+                alert(`Error al eliminar el grupo ${grupo.numero}: ${text}`);
+            });
         }
     }).catch(error => {
         console.error('Error al eliminar el grupo:', error);
@@ -606,8 +613,9 @@ function removeCiclo(ciclo) {
         if (response.ok) {
             promise();
         } else {
-            alert(`Error al eliminar el ciclo ${ciclo.acronimo}: ${response.text()}`);
-                console.log(response.text());
+            response.text().then((text) => {
+                form.showError(`Error al eliminar el ciclo: ${text}`);
+            });
         }
     }).catch(error => {
         console.error('Error al eliminar el ciclo:', error);
@@ -626,8 +634,9 @@ function removeCicloLectivo(cicloLectivo) {
         if (response.ok) {
             promise();
         } else {
-            alert(`Error al eliminar el ciclo lectivo ${cicloLectivo.nombre}: ${response.text()}`);
-                console.log(response.text());
+            response.text().then((text) => {
+                form.showError(`Error al eliminar el ciclo lectivo: ${text}`);
+            });
         }
     }).catch(error => {
         console.error('Error al eliminar el ciclo lectivo:', error);
@@ -662,11 +671,11 @@ function editGrupo(grupo) {
         })
         .then((response) => {
             if (response.ok || response.status === 201) {
-                promise();
+                finish(form);
             } else {
-                const resp = response.json();
-                form.showError(`Error al actualizar el grupo: ${resp.message}`);
-                console.log(resp);
+                response.text().then((text) => {
+                    form.showError(`Error al actualizar el grupo: ${text}`);
+                });
             }
         })
         .catch((error) => {
@@ -712,10 +721,11 @@ function editCiclo(ciclo) {
         })
         .then((response) => {
             if (response.ok || response.status === 201) {
-                promise();
+                finish(form);
             } else {
-                form.showError(`Error al actualizar el ciclo: ${response.text()}`);
-                console.log(response.text());
+                response.text().then((text) => {
+                    form.showError(`Error al actualizar el ciclo: ${text}`);
+                });
             }
         })
         .catch((error) => {
@@ -758,10 +768,11 @@ function editCicloLectivo(cicloLectivo) {
         })
         .then((response) => {
             if (response.ok || response.status === 201) {
-                promise();
+                finish(form);
             } else {
-                form.showError(`Error al actualizar el ciclo lectivo: ${response.text()}`);
-                console.log(response.text());
+                response.text().then((text) => {
+                    form.showError(`Error al actualizar el ciclo lectivo: ${text}`);
+                });
             }
         })
         .catch((error) => {
