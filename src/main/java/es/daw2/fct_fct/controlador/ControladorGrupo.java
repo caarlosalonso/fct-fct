@@ -44,15 +44,9 @@ public class ControladorGrupo extends CrudController<Long, Grupo, CreateGrupoDTO
         if (! cicloLectivoOpt.isPresent()) {
             return ResponseEntity.badRequest().body("No se encontró el ciclo lectivo con el id: " + dto.cicloLectivo());
         }
-
-        Ciclo ciclo = cicloOpt.get();
-        if (dto.numero() == null || dto.numero() < 1 || dto.numero() > ciclo.getYears()) {
-            return ResponseEntity.badRequest().body("El número de grupo debe estar entre 1 y " + ciclo.getYears());
-        }
-
-        grupo.setCiclo(ciclo);
+    
+        grupo.setCiclo(cicloOpt.get());
         grupo.setCicloLectivo(cicloLectivoOpt.get());
-        grupo.setNumero(dto.numero());
         grupo.setHorario(dto.horario());
 
         service.save(grupo);
@@ -103,8 +97,8 @@ public class ControladorGrupo extends CrudController<Long, Grupo, CreateGrupoDTO
         }
 
         Ciclo ciclo = cicloOpt.get();
-        if (dto.numero() == null || dto.numero() < 1 || dto.numero() > ciclo.getYears()) {
-            return ResponseEntity.badRequest().body("El número de grupo debe estar entre 1 y " + ciclo.getYears());
+        if (dto.numero() == null || dto.numero() < 1 || dto.numero() > 2) {
+            return ResponseEntity.badRequest().body("El número de grupo debe estar entre 1 y 2");
         }
 
         Grupo grupo = gruposOpt.get();
@@ -113,11 +107,14 @@ public class ControladorGrupo extends CrudController<Long, Grupo, CreateGrupoDTO
         grupo.setNumero(dto.numero());
         grupo.setHorario(dto.horario());
 
-        Grupo grupoActualizado = service.save(grupo);
+        Optional<Grupo> grupoActualizado = service.update(id, grupo);
+        if (grupoActualizado.isEmpty()) {
+            return ResponseEntity.badRequest().body("No se ha podido actualizar el grupo con el id: " + id);
+        }
 
         URI location = URI.create("/api/grupos/" + id);
 
-        return ResponseEntity.created(location).body(grupoActualizado);
+        return ResponseEntity.created(location).body(grupoActualizado.get());
     }
 
     // delete ya existe en CrudController

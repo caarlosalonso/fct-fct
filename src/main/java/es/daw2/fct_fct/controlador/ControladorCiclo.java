@@ -35,7 +35,6 @@ public class ControladorCiclo extends CrudController<Long, Ciclo, CicloCreateDTO
         nuevoCiclo.setAcronimo(dto.acronimo());
         nuevoCiclo.setNivel(dto.nivel());
         nuevoCiclo.setFamiliaProfesional(dto.familiaProfesional());
-        nuevoCiclo.setYears(dto.years());
         nuevoCiclo.setHorasPracticas(dto.horasPracticas());
 
         nuevoCiclo = service.save(nuevoCiclo);
@@ -61,7 +60,6 @@ public class ControladorCiclo extends CrudController<Long, Ciclo, CicloCreateDTO
         ciclo.setAcronimo(dto.acronimo());
         ciclo.setNivel(dto.nivel());
         ciclo.setFamiliaProfesional(dto.familiaProfesional());
-        ciclo.setYears(dto.years());
         ciclo.setHorasPracticas(dto.horasPracticas());
 
         Optional<Ciclo> cicloActualizado = service.update(id, ciclo);

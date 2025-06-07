@@ -33,9 +33,6 @@ public class Ciclo extends AbsBaseEntity {
     @Column(name = "familia_profesional", nullable = false, columnDefinition = "varchar(255)")
     private String familiaProfesional;
 
-    @Column(name = "years", nullable = false, columnDefinition = "TINYINT UNSIGNED")
-    private Short years;
-
     @Column(name = "horas_practicas", nullable = false, columnDefinition = "SMALLINT UNSIGNED")
     private Integer horasPracticas;
 
