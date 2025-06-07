@@ -118,6 +118,11 @@ Do not disturb the sacred semicolon's deep slumber.
         return "tutor/tutor.html";
     }
 
+    @GetMapping("/empresa")
+    public String empresa() {
+        return "tutor/empresas.html";
+    }
+
     @GetMapping("/alumno")
     public String alumno(HttpServletRequest request) {
         HttpSession session = request.getSession(false);
