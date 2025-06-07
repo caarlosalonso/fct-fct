@@ -5,13 +5,15 @@ window.addEventListener('DOMContentLoaded', (event) => {
 function promise() {
     Promise.all([
         fetchCiclosLectivos(),
-        fetchGruposCiclos()
+        fetchGruposCiclos(),
+        fetchAlumnos()
     ])
     .then(([
         ciclosLectivos,
-        gruposCiclos
+        gruposCiclos,
+        alumnos
     ]) => {
-        create(ciclosLectivos, gruposCiclos);
+        create(ciclosLectivos, gruposCiclos, alumnos);
     }).catch((error) => {
         console.error('Error al obtener los ciclos lectivos:', error);
     })
@@ -31,7 +33,15 @@ async function fetchGruposCiclos() {
     return await response.json();
 }
 
-function create(ciclosLectivos, gruposCiclos) {
+async function fetchAlumnos() {
+    const response = await fetch('/api/vista-alumnos/all');
+    if (response.status === 204) return [];
+    if (!response.ok) throw new Error('Error al obtener los alumnos');
+    return await response.json();
+}
+
+function create(ciclosLectivos, gruposCiclos, alumnos) {
     console.log(ciclosLectivos);
     console.log(gruposCiclos);
+    console.log(alumnos);
 }
