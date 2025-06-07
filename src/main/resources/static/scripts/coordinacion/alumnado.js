@@ -46,6 +46,7 @@ let chosenGrupo = null;
 
 function build(ciclosLectivos, gruposCiclos, alumnos) {
     ciclosLectivos.sort((a, b) => new Date(a.fechaInicio) - new Date(b.fechaInicio));
+    console.log(ciclosLectivos, gruposCiclos, alumnos);
     ciclosLectivos.forEach((cicloLectivo) => {
         info.push({
             id: cicloLectivo.id,
