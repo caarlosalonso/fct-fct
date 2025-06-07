@@ -9,40 +9,6 @@
     --cell-height: 100px;
 }
 
-/* ---------------------------------------------------------------------------- */
-/*                                  NAVIGATION                                  */
-/* ---------------------------------------------------------------------------- */
-#navbar {
-    background-color: var(--background-color);
-    border-bottom: 1px solid #777777;
-    height: 70px;
-    margin-bottom: 15px;
-}
-
-.navigation.nav {
-    padding: 0px 15px;
-    display: flex;
-    justify-content: left;
-    align-items: center;
-    gap: 15px;
-    height: 100%;
-    width: 100%;
-}
-
-.navigation.nav-link {
-    color: var(--text-color);
-    background-color: #99ffff33;
-    border-radius: var(--border-radius);
-    text-decoration: none;
-    padding: 10px 15px;
-    font-size: 18px;
-    transition: 400ms ease-in-out;
-
-    &.active {
-        background-color: #99ffff66;
-        font-weight: bold;
-    }
-}
 
 /* ---------------------------------------------------------------------------- */
 /*                                CURSO SELECTION                               */
