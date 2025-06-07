@@ -1,12 +1,17 @@
 package es.daw2.fct_fct.servicio;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.google.cloud.storage.Blob;
+import com.google.cloud.storage.Bucket;
 import com.google.firebase.cloud.StorageClient;
 
 import es.daw2.fct_fct.modelo.User;
@@ -20,9 +25,6 @@ public class ServicioArchivo extends AbstractService<Long, vAlumno, RepositorioV
     private servicioVAlumno servicioVAlumno;
 
     public void subirArchivo(User user, MultipartFile archivo) throws IOException {
-
-        String bucketName = StorageClient.getInstance().bucket().getName();
-
         Optional<vAlumno> va = servicioVAlumno.getByUserId(user.getId());
 
         if (va.isEmpty()) {
@@ -46,5 +48,19 @@ public class ServicioArchivo extends AbstractService<Long, vAlumno, RepositorioV
         StorageClient.getInstance()
                     .bucket()
                     .create(ruta, archivo.getBytes(), archivo.getContentType());
-}
+    }
+
+    public File descargarArchivo(User user, String nombreArchivo) throws IOException {
+        Bucket bucketName = StorageClient.getInstance().bucket();
+        Blob blob = bucketName.get(nombreArchivo);
+
+        File tempFile = File.createTempFile("firebase-","-" + nombreArchivo);
+        try (OutputStream os = new FileOutputStream(tempFile)) {
+            blob.downloadTo(os);
+        } catch (IOException e) {
+            throw new IOException("Error al descargar el archivo: " + nombreArchivo, e);
+        }
+
+        return tempFile;
+    }
 }
