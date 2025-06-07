@@ -746,7 +746,7 @@ function editCicloLectivo(cicloLectivo) {
 
         const data = {
             nombre: nombre,
-            inicio: inicio
+            fechaInicio: inicio
         }
 
         fetch(`/api/ciclos-lectivos/${cicloLectivo.id}`, {
