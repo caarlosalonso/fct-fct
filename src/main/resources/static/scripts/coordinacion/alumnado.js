@@ -11,8 +11,7 @@ function promise() {
         ciclosLectivos,
         gruposCiclos
     ]) => {
-        setCiclosLectivosList(ciclosLectivos);
-        setGruposCiclosList(gruposCiclos);
+        create(ciclosLectivos, gruposCiclos);
     }).catch((error) => {
         console.error('Error al obtener los ciclos lectivos:', error);
     })
@@ -25,13 +24,14 @@ async function fetchCiclosLectivos() {
     return await response.json();
 }
 
-function setCiclosLectivosList(ciclosLectivos) {
-    console.log(ciclosLectivos);
-}
-
 async function fetchGruposCiclos() {
     const response = await fetch('/api/vista-grupos-ciclos/all');
     if (response.status === 204) return [];
     if (!response.ok) throw new Error('Error al obtener los grupos');
     return await response.json();
+}
+
+function create(ciclosLectivos, gruposCiclos) {
+    console.log(ciclosLectivos);
+    console.log(gruposCiclos);
 }
