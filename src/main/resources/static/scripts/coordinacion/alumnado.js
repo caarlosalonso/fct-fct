@@ -4,12 +4,15 @@ window.addEventListener('DOMContentLoaded', (event) => {
 
 function promise() {
     Promise.all([
-        fetchCiclosLectivos()
+        fetchCiclosLectivos(),
+        fetchGruposCiclos()
     ])
     .then(([
-        ciclosLectivos
+        ciclosLectivos,
+        gruposCiclos
     ]) => {
         setCiclosLectivosList(ciclosLectivos);
+        setGruposCiclosList(gruposCiclos);
     }).catch((error) => {
         console.error('Error al obtener los ciclos lectivos:', error);
     })
