@@ -687,9 +687,9 @@ function editGrupo(grupo) {
     const horario = form.getInput('grupo-horario').getValue();
 
         const data = {
-            ciclo: parseInt(grupo.ciclo),
-            cicloLectivo: parseInt(grupo.cicloLectivo),
-            numero: parseInt(numero),
+            ciclo: grupo.cicloId,
+            cicloLectivo: grupo.cicloLectivoId,
+            numero: numero,
             horario: horario
         }
 
