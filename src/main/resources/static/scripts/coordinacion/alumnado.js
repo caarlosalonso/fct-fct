@@ -123,7 +123,7 @@ function createCiclosLectivos() {
 
         if (chosenCicloLectivo === null) {
             li.classList.add('active');
-            chosenCicloLectivo = cicloLectivo;
+            chosenCicloLectivo = li;
             createGruposCiclos(cicloLectivo.id);
         }
     });
