@@ -304,7 +304,7 @@ function createCicloCell(ciclo, rowIdx) {
 
     // Create title span
     const titleSpan = document.createElement('span');
-    titleSpan.classList.add('cell-title');
+    titleSpan.classList.add('cell-title', 'row-header-span');
     titleSpan.textContent = `${ciclo.name} `;
     cellContent.appendChild(titleSpan);
     
@@ -315,36 +315,31 @@ function createCicloCell(ciclo, rowIdx) {
 
     // Create subtitle spans
     const familiaSubtitleSpan = document.createElement('span');
-    familiaSubtitleSpan.classList.add('cell-subtitle');
+    familiaSubtitleSpan.classList.add('cell-subtitle', 'row-header-span');
     familiaSubtitleSpan.textContent = ciclo.familiaProfesional;
     cellContent.appendChild(familiaSubtitleSpan);
 
     const nivelSubtitleSpan = document.createElement('span');
-    nivelSubtitleSpan.classList.add('cell-subtitle');
+    nivelSubtitleSpan.classList.add('cell-subtitle', 'row-header-span');
     nivelSubtitleSpan.textContent = NIVELES[ciclo.nivel];
     cellContent.appendChild(nivelSubtitleSpan);
 
     const horasSubtitleSpan = document.createElement('span');
-    horasSubtitleSpan.classList.add('cell-subtitle');
+    horasSubtitleSpan.classList.add('cell-subtitle', 'row-header-span');
     horasSubtitleSpan.textContent = ciclo.horasPracticas;
     cellContent.appendChild(horasSubtitleSpan);
 
-    // Create actions span
-    const actionsSpan = document.createElement('span');
-    actionsSpan.classList.add('cell-actions');
-    cellContent.appendChild(actionsSpan);
-
-    actionsSpan.appendChild(
+    cellContent.appendChild(
         createSVG(
-            'edit-svg',
+            'edit-svg row-header-svg',
             '0 -0.5 25 25',
             'M 20.848 1.879 C 19.676 0.707 17.777 0.707 16.605 1.879 L 2.447 16.036 C 2.029 16.455 1.743 16.988 1.627 17.569 L 1.04 20.505 C 0.76 21.904 1.994 23.138 3.393 22.858 L 6.329 22.271 C 6.909 22.155 7.443 21.869 7.862 21.451 L 22.019 7.293 C 23.191 6.121 23.191 4.222 22.019 3.05 L 20.848 1.879 Z M 18.019 3.293 C 18.41 2.902 19.043 2.902 19.433 3.293 L 20.605 4.465 C 20.996 4.855 20.996 5.488 20.605 5.879 L 6.447 20.036 C 6.308 20.176 6.13 20.271 5.936 20.31 L 3.001 20.897 L 3.588 17.962 C 3.627 17.768 3.722 17.59 3.862 17.451 L 13.933 7.379 L 16.52 9.965 L 17.934 8.56 L 15.348 5.965 L 18.019 3.293 Z',
             () => editCiclo(ciclo)
         )
     );
-    actionsSpan.appendChild(
+    cellContent.appendChild(
         createSVG(
-            'delete-svg',
+            'delete-svg row-header-svg',
             '-6 -6 60 60',
             'M 42 3 H 28 A 2 2 0 0 0 26 1 H 22 A 2 2 0 0 0 20 3 H 6 A 2 2 0 0 0 6 7 H 42 A 2 2 0 0 0 42 3 Z M 37 11 V 43 H 31 V 19 A 1 1 0 0 0 27 19 V 43 H 21 V 19 A 1 1 0 0 0 17 19 V 43 H 11 V 11 A 2 2 0 0 0 7 11 V 45 A 2 2 0 0 0 9 47 H 39 A 2 2 0 0 0 41 45 V 11 A 2 2 0 0 0 37 11 Z',
             () => removeCiclo(ciclo)

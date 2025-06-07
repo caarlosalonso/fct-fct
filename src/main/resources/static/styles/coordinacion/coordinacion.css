@@ -122,6 +122,8 @@ main {
         background-color: #505050b9;
         backdrop-filter: blur(6px);
         -webkit-backdrop-filter: blur(6px);
+        display: grid;
+        grid-template-columns: auto auto;
 
         &.full {
             background-color: #505050;
@@ -181,20 +183,17 @@ main {
     font-size: 0.90rem;
 }
 
-.cell-actions {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: center;
-    width: 100%;
-    gap: 5px;
-
-    & > * {
-        display: block;
-        flex-grow: 1;
-    }
+.row-header-span {
+    grid-column: auto / span 2;
 }
 
+.row-header-svg {
+    grid-column: auto;
+    grid-row: auto;
+    width: 100%;
+    max-width: none;
+    max-height: 35px;
+}
 
 #error-message-section {
     display: flex;
