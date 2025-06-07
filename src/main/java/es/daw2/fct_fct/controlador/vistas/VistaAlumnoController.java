@@ -4,15 +4,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import es.daw2.fct_fct.modelo.vistas.VistaInfoAlumno;
-import es.daw2.fct_fct.servicio.vistas.VistaInfoAlumnoService;
+import es.daw2.fct_fct.modelo.vistas.VistaAlumno;
+import es.daw2.fct_fct.servicio.vistas.VistaAlumnoService;
 
 @RestController
 @RequestMapping("/api/vista-alumnos")
-public class VistaInfoAlumnoController {
+public class VistaAlumnoController {
 
     @Autowired
-    private VistaInfoAlumnoService servicio;
+    private VistaAlumnoService servicio;
 
     @GetMapping("/all")
     public ResponseEntity<?> all() {
@@ -21,7 +21,7 @@ public class VistaInfoAlumnoController {
 
     @GetMapping("/{id}")
     public ResponseEntity<?> getById(@PathVariable Long id) {
-        VistaInfoAlumno alumno = servicio.obtenerPorId(id);
+        VistaAlumno alumno = servicio.obtenerPorId(id);
         return (alumno != null) ? ResponseEntity.ok(alumno) : ResponseEntity.notFound().build();
     }
 }

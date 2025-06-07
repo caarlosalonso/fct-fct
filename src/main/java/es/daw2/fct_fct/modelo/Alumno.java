@@ -31,9 +31,6 @@ public class Alumno extends AbsBaseEntity {
     @Column(name = "convocatoria", nullable = false, columnDefinition = "int default 3")
     private int convocatoria;
 
-    @Column(name = "nombre", nullable = true, columnDefinition = "varchar(255)")
-    private String nombre;
-
     @Column(name = "dni", nullable = true, columnDefinition = "varchar(9)")
     private String dni;
 

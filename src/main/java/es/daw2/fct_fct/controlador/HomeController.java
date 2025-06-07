@@ -86,6 +86,11 @@ Do not disturb the sacred semicolon's deep slumber.
         return "coordinacion/coordinacion.html";
     }
 
+    @GetMapping("/alumnado")
+    public String alumnado() {
+        return "coordinacion/alumnado.html";
+    }
+
     @GetMapping("/index")
     public String index() {
         return "index.html";

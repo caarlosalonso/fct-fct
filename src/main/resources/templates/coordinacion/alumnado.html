@@ -28,26 +28,22 @@
             </ul>
         </nav>
     </header>
-    <main id="loading">
-        <div class="loading-container">
-            <div class="spinner spinner-border text-primary" role="status">
+    <main id="main-content">
+        <section id="ciclo-lectivo-selection">
+            <div class="spinner spinner-border color-primary">
                 <span class="visually-hidden">Cargando...</span>
             </div>
-        </div>
-    </main>
-    <main id="main-content">
+        </section>
         <section id="curso-selection">
-            <ul class="cursos nav nav-tabs" id="cursos">
-                <!-- Aquí se añadirán los cursos dinámicamente -->
-            </ul>
+            <div class="spinner spinner-border color-primary">
+                <span class="visually-hidden">Cargando...</span>
+            </div>
         </section>
         <section id="alumnos-section">
             <div id="alumnos-list">
                 <div id="add" class="cell">
                     <svg id="svg-add" fill="#ffffff" viewBox="0 0 48 48" width="40px">
-                        <g>
-                            <path d="M 44 20 L 28 20 L 28 4 C 28 2 26 0 24 0 S 20 2 20 4 L 20 20 L 4 20 C 2 20 0 22 0 24 S 2 28 4 28 L 20 28 L 20 44 C 20 46 22 48 24 48 S 28 46 28 44 L 28 28 L 44 28 C 46 28 48 26 48 24 S 46 20 44 20 Z"/>
-                        </g>
+                        <path d="M 44 20 L 28 20 L 28 4 C 28 2 26 0 24 0 S 20 2 20 4 L 20 20 L 4 20 C 2 20 0 22 0 24 S 2 28 4 28 L 20 28 L 20 44 C 20 46 22 48 24 48 S 28 46 28 44 L 28 28 L 44 28 C 46 28 48 26 48 24 S 46 20 44 20 Z"/>
                     </svg>
                 </div>
                 <div id="alumnos-list-container">
@@ -88,16 +84,6 @@
 
                             <div class="form-group form-input">
                                 <input type="text" name="nuss" id="nuss" class="text-based input" label="Introduce su NUSS" data-show-validity="true">
-                            </div>
-                        </div>
-
-                        <div class="instance form-input grouped-inputs">
-                            <div class="form-group form-input">
-                                <input type="file" name="anexoOcho" id="anexoOcho" class="input" label="Anexo 8" accept=".pdf">
-                            </div>
-
-                            <div class="form-group form-input">
-                                <input type="file" name="cv" id="cv" class="input" label="Curriculum Vitae" accept=".pdf">
                             </div>
                         </div>
 
