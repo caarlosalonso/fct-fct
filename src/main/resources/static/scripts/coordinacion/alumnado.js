@@ -83,6 +83,12 @@ function createCiclosLectivos() {
         li.textContent = cicloLectivo.nombre;
         ul.appendChild(li);
 
+        const cicloLectivoText = document.createElement('p');
+        cicloLectivoText.classList.add('curso', 'nav-link');
+        cicloLectivoText.id = `ciclo-lectivo-${cicloLectivo.id}`;
+        cicloLectivoText.textContent = cicloLectivo.nombre;
+        li.appendChild(cicloLectivoText);
+
         li.addEventListener('click', () => {
             createGruposCiclos(cicloLectivo.id);
         });
@@ -113,11 +119,11 @@ function createGruposCiclos(cicloLectivoId) {
             li.classList.add('grupo', 'nav-item');
             ul.appendChild(li);
 
-            const cursoText = document.createElement('p');
-            cursoText.classList.add('curso', 'nav-link');
-            cursoText.id = `grupo-${grupo.grupoId}`;
-            cursoText.textContent = grupo.grupo_nombre;
-            li.appendChild(cursoText);
+            const grupoText = document.createElement('p');
+            grupoText.classList.add('curso', 'nav-link');
+            grupoText.id = `grupo-${grupo.grupoId}`;
+            grupoText.textContent = grupo.grupo_nombre;
+            li.appendChild(grupoText);
 
             li.addEventListener('click', () => {
                 createAlumnos(grupo.alumnos);
@@ -126,7 +132,7 @@ function createGruposCiclos(cicloLectivoId) {
             if (chosenGrupo === null) {
                 li.classList.add('active');
                 chosenGrupo = li;
-                createAlumnos(chosenGrupo, grupo);
+                createAlumnos(grupo.alumnos);
             }
         });
     }
