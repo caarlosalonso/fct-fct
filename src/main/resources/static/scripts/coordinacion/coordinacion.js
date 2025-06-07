@@ -144,8 +144,7 @@ function tableFail() {
 
 function drawTable(ciclos, ciclosLectivos, grupos) {
     const ciclosList = [];
-
-    console.log(grupos);
+    ciclosLectivos.sort((a, b) => new Date(a.fechaInicio) - new Date(b.fechaInicio));
 
     const ciclosGridWrapper = document.getElementById('display-grid-wrapper');
     ciclosGridWrapper.innerHTML = "";
@@ -207,7 +206,6 @@ function drawTable(ciclos, ciclosLectivos, grupos) {
 
                 // Find grupo for this ciclo, year, cicloLectivo
                 const grupo = grupos.find(g => g.cicloId === ciclo.id && g.cicloLectivoId === cicloLectivo.id && g.numero === year);
-                console.log(grupo);
 
                 const cell = document.createElement('div');
                 cell.classList.add('cell', 'hoverable');
