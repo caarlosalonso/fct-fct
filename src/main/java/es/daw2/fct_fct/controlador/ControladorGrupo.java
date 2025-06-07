@@ -91,7 +91,6 @@ public class ControladorGrupo extends CrudController<Long, Grupo, CreateGrupoDTO
         if (gruposOpt.isEmpty()) {
             return ResponseEntity.notFound().build();
         }
-        Grupo grupo = new Grupo();
 
         Optional<Ciclo> cicloOpt = servicioCiclo.getById(dto.ciclo());
         if (! cicloOpt.isPresent()) {
@@ -108,20 +107,17 @@ public class ControladorGrupo extends CrudController<Long, Grupo, CreateGrupoDTO
             return ResponseEntity.badRequest().body("El número de grupo debe estar entre 1 y " + ciclo.getYears());
         }
 
-        grupo.setId(id);
+        Grupo grupo = gruposOpt.get();
         grupo.setCiclo(ciclo);
         grupo.setCicloLectivo(cicloLectivoOpt.get());
         grupo.setNumero(dto.numero());
         grupo.setHorario(dto.horario());
 
-        Optional<Grupo> grupoActualizado = service.update(id, grupo);
-        if (! grupoActualizado.isPresent()) {
-            return ResponseEntity.badRequest().body("No se ha podido actualizar el grupo con el id: " + id);
-        }
+        Grupo grupoActualizado = service.save(grupo);
 
         URI location = URI.create("/api/grupos/" + id);
 
-        return ResponseEntity.created(location).body(grupoActualizado.get());
+        return ResponseEntity.created(location).body(grupoActualizado);
     }
 
     // delete ya existe en CrudController
