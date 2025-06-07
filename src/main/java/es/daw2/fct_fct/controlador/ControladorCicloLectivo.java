@@ -47,7 +47,7 @@ public class ControladorCicloLectivo extends CrudController<Long, CicloLectivo, 
             return ResponseEntity.badRequest().body("No se encontró el ciclo lectivo con el id: " + id);
         }
 
-        CicloLectivo cicloLectivo = new CicloLectivo();
+        CicloLectivo cicloLectivo = cicloLectivoOpt.get();
         cicloLectivo.setId(id);
         cicloLectivo.setNombre(dto.nombre());
         cicloLectivo.setFechaInicio(dto.fechaInicio());
