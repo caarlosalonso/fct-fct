@@ -1,5 +1,23 @@
-window.addEventListener('DOMContentLoaded', (event) => {
+import { Form } from '../classes/Form.js';
+import { PasswordInput } from '../classes/PasswordInput.js';
+
+window.addEventListener('FormsCreated', (event) => {
+    const form = Form.getForm('alumno-form');
+    form.getInput('nia').validate = function () {
+        let nia = this.input.value.trim().toUpperCase();
+        return /^\d{1,8}$/.test(nia);
+    }
+    form.getInput('nuss').validate = function () {
+        let nuss = this.input.value.trim().toUpperCase();
+        return /^\d{11}$/.test(nuss);
+    }
+
     promise();
+
+    setInputsToCreate(form);
+    document.getElementById('add').addEventListener('click', () => {
+        setInputsToCreate(form);
+    });
 });
 
 function promise() {
@@ -97,6 +115,9 @@ function createCiclosLectivos() {
         li.appendChild(cicloLectivoText);
 
         li.addEventListener('click', () => {
+            if (chosenCicloLectivo) chosenCicloLectivo.classList.remove('active');
+            li.classList.add('active');
+            chosenCicloLectivo = li;
             createGruposCiclos(cicloLectivo.id);
         });
 
@@ -132,6 +153,9 @@ function createGruposCiclos(cicloLectivoId) {
             li.appendChild(grupoText);
 
             li.addEventListener('click', () => {
+                if (chosenGrupo) chosenGrupo.classList.remove('active');
+                li.classList.add('active');
+                chosenGrupo = li;
                 createAlumnos(grupo.alumnos);
             });
 
