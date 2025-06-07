@@ -298,7 +298,7 @@ function createCicloLectivoCell(cicloLectivo) {
 function createCicloCell(ciclo, rowIdx) {
     const cicloHeader = document.createElement('div');
     cicloHeader.classList.add('cell', 'hoverable', 'sticky', 'cell-row-header');
-    cicloHeader.style.gridRow = `${rowIdx} / span 2}`;
+    cicloHeader.style.gridRow = `${rowIdx} / span 2`;
     cicloHeader.style.gridColumn = '1';
 
     const cellContent = document.createElement('div');
