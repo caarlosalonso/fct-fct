@@ -7,7 +7,7 @@ import es.daw2.fct_fct.modelo.Empresa;
 import es.daw2.fct_fct.servicio.ServicioEmpresa;
 
 @RestController
-@RequestMapping("/api/empresas")
+@RequestMapping("/api/empresa")
 public class ControladorEmpresa extends CrudController<Long, Empresa, Empresa, Empresa, ServicioEmpresa> {
 
     // all ya existe en CrudController
