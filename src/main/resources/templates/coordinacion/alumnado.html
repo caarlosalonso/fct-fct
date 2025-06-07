@@ -41,11 +41,6 @@
         </section>
         <section id="alumnos-section">
             <div id="alumnos-list">
-                <div id="add" class="cell">
-                    <svg id="svg-add" fill="#ffffff" viewBox="0 0 48 48" width="40px">
-                        <path d="M 44 20 L 28 20 L 28 4 C 28 2 26 0 24 0 S 20 2 20 4 L 20 20 L 4 20 C 2 20 0 22 0 24 S 2 28 4 28 L 20 28 L 20 44 C 20 46 22 48 24 48 S 28 46 28 44 L 28 28 L 44 28 C 46 28 48 26 48 24 S 46 20 44 20 Z"/>
-                    </svg>
-                </div>
                 <div id="alumnos-list-container">
                     <div id="alumnos-list-scroll">
                         <!-- Aquí se añadirán los alumnos dinámicamente -->
@@ -53,63 +48,67 @@
                 </div>
             </div>
 
-            <div id="set-info">
+            <div id="show-info">
                 <h1 id="titulo">Información del alumno</h1>
-                <form id="alumno-form" method="POST" submit-text="Crear alumno">
-                    <div id="inputs" class="form-container">
-                        <div class="instance form-input grouped-inputs">
-                            <div class="form-group form-input">
-                                <input type="text" id="nombre" name="nombre" class="text-based input" label="Introduce su nombre" data-required="true">
-                            </div>
-                        </div>
-
-                        <div class="instance form-input grouped-inputs">
-                            <div class="form-group form-input">
-                                <input type="email" name="email" id="email" class="text-based input" label="Introduce su correo" data-show-validity="true">
-                            </div>
-
-                            <div class="form-group form-input">
-                                <input type="tel" name="phone" id="phone" class="text-based input" label="Introduce su teléfono" data-show-validity="true">
-                            </div>
-                        </div>
-
-                        <div class="instance form-input grouped-inputs">
-                            <div class="form-group form-input">
-                                <input type="text" name="nia" id="nia" class="text-based input" label="Introduce su NIA" data-show-validity="true">
-                            </div>
-
-                            <div class="form-group form-input">
-                                <input type="dni" name="dni" id="dni" class="text-based input" label="Introduce su DNI" data-show-validity="true">
-                            </div>
-
-                            <div class="form-group form-input">
-                                <input type="text" name="nuss" id="nuss" class="text-based input" label="Introduce su NUSS" data-show-validity="true">
-                            </div>
-                        </div>
-
-                        <div class="instance form-input grouped-inputs">
-                            <div class="form-group form-input">
-                                <input type="text" name="empresa" id="empresa" class="text-based input" label="Introduce su Empresa">
-                            </div>
-                        </div>
-
-                        <div class="instance form-input grouped-inputs">
-                            <div class="form-group form-input">
-                                <input type="text" name="tutorEmpresa" id="tutorEmpresa" class="text-based input" label="Introduce su Tutor de Empresa">
-                            </div>
-                        </div>
-
-                        <div class="instance form-input grouped-inputs">
-                            <div class="form-group form-input">
-                                <input type="email" name="tutorEmpresaEmail" id="tutorEmpresaEmail" class="text-based input" label="Correo del Tutor de Empresa" data-show-validity="true">
-                            </div>
-                            <div class="form-group form-input">
-                                <input type="tel" name="tutorEmpresaPhone" id="tutorEmpresaPhone" class="text-based input" label="Teléfono del Tutor de Empresa" data-show-validity="true">
-                            </div>
+                <div id="alumno-info" class="form-container shadow rounded p-4 bg-white">
+                    <div class="instance form-input grouped-inputs mb-3">
+                        <div class="form-group form-input mb-2">
+                            <label for="nombre" class="fw-bold text-primary">Nombre:</label>
+                            <p id="nombre" class="form-control bg-light"></p>
                         </div>
                     </div>
 
-                </form>
+                    <div class="instance form-input grouped-inputs mb-3 d-flex gap-3">
+                        <div class="form-group form-input flex-fill">
+                            <label for="email" class="fw-bold">Correo:</label>
+                            <p id="email" class="form-control bg-light"></p>
+                        </div>
+                        <div class="form-group form-input flex-fill">
+                            <label for="phone" class="fw-bold">Teléfono:</label>
+                            <p id="phone" class="form-control bg-light"></p>
+                        </div>
+                    </div>
+
+                    <div class="instance form-input grouped-inputs mb-3 d-flex gap-3">
+                        <div class="form-group form-input flex-fill">
+                            <label for="nia" class="fw-bold">NIA:</label>
+                            <p id="nia" class="form-control bg-light"></p>
+                        </div>
+                        <div class="form-group form-input flex-fill">
+                            <label for="dni" class="fw-bold">DNI:</label>
+                            <p id="dni" class="form-control bg-light"></p>
+                        </div>
+                        <div class="form-group form-input flex-fill">
+                            <label for="nuss" class="fw-bold">NUSS:</label>
+                            <p id="nuss" class="form-control bg-light"></p>
+                        </div>
+                    </div>
+
+                    <div class="instance form-input grouped-inputs mb-3">
+                        <div class="form-group form-input">
+                            <label for="empresa" class="fw-bold">Empresa:</label>
+                            <p id="empresa" class="form-control bg-light"></p>
+                        </div>
+                    </div>
+
+                    <div class="instance form-input grouped-inputs mb-3">
+                        <div class="form-group form-input">
+                            <label for="tutorEmpresa" class="fw-bold">Tutor de Empresa:</label>
+                            <p id="tutorEmpresa" class="form-control bg-light"></p>
+                        </div>
+                    </div>
+
+                    <div class="instance form-input grouped-inputs mb-3 d-flex gap-3">
+                        <div class="form-group form-input flex-fill">
+                            <label for="tutorEmpresaEmail" class="fw-bold">Correo del Tutor de Empresa:</label>
+                            <p id="tutorEmpresaEmail" class="form-control bg-light"></p>
+                        </div>
+                        <div class="form-group form-input flex-fill">
+                            <label for="tutorEmpresaPhone" class="fw-bold">Teléfono del Tutor de Empresa:</label>
+                            <p id="tutorEmpresaPhone" class="form-control bg-light"></p>
+                        </div>
+                    </div>
+                </div>
             </div>
         </section>
     </main>

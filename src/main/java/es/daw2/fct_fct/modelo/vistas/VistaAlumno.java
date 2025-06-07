@@ -34,6 +34,9 @@ public class VistaAlumno {
     @Column(name = "nombre_alumno", nullable = false, length = 255)
     private String nombreAlumno;
 
+    @Column(name = "email", nullable = false, length = 255)
+    private String email;
+
     @Column(name = "dni", length = 9)
     private String dni;
 
