@@ -681,10 +681,11 @@ function editGrupo(grupo) {
     const form = Form.getForm('grupo-form');
     form.form.parentNode.classList.remove('collapsed');
 
+    console.log(grupo);
+    form.onsubmit = (event) => {
     const numero = form.getInput('grupo-numero').getValue();
     const horario = form.getInput('grupo-horario').getValue();
 
-    form.onsubmit = (event) => {
         const data = {
             ciclo: parseInt(grupo.ciclo),
             cicloLectivo: parseInt(grupo.cicloLectivo),
@@ -727,13 +728,13 @@ function editCiclo(ciclo) {
     const form = Form.getForm('ciclo-form');
     form.form.parentNode.classList.remove('collapsed');
 
-    const name = form.getInput('ciclo-nombre').getValue();
-    const acronimo = form.getInput('ciclo-acronimo').getValue();
-    const nivel = form.getInput('ciclo-nivel').getValue();
-    const familiaProfesional = form.getInput('ciclo-familia').getValue();
-    const horasPracticas = form.getInput('ciclo-practicas').getValue();
-
     form.onsubmit = (event) => {
+        const name = form.getInput('ciclo-nombre').getValue();
+        const acronimo = form.getInput('ciclo-acronimo').getValue();
+        const nivel = form.getInput('ciclo-nivel').getValue();
+        const familiaProfesional = form.getInput('ciclo-familia').getValue();
+        const horasPracticas = form.getInput('ciclo-practicas').getValue();
+
         const data = {
             name: name,
             acronimo: acronimo,
@@ -763,7 +764,7 @@ function editCiclo(ciclo) {
         });
     }
 
-    form.getInput('ciclo-nombre').retrack(ciclo.nombre);
+    form.getInput('ciclo-nombre').retrack(ciclo.name);
     form.getInput('ciclo-acronimo').retrack(ciclo.acronimo);
     form.getInput('ciclo-nivel').retrack(ciclo.nivel);
     form.getInput('ciclo-familia').retrack(ciclo.familiaProfesional);
@@ -779,10 +780,10 @@ function editCicloLectivo(cicloLectivo) {
     const form = Form.getForm('ciclo-lectivo-form');
     form.form.parentNode.classList.remove('collapsed');
 
-    const nombre = form.getInput('ciclo-lectivo-nombre').getValue();
-    const inicio = form.getInput('ciclo-lectivo-inicio').getValue();
-
     form.onsubmit = (event) => {
+        const nombre = form.getInput('ciclo-lectivo-nombre').getValue();
+        const inicio = form.getInput('ciclo-lectivo-inicio').getValue();
+
         const data = {
             nombre: nombre,
             inicio: inicio
