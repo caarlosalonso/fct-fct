@@ -16,6 +16,7 @@ export class DateInput extends TextInput {
     }
 
     init() {
+        super.init();
         this.input.setAttribute('type', 'date');
         this.createValidityElements();
     }
