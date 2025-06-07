@@ -48,6 +48,7 @@ public class ControladorGrupo extends CrudController<Long, Grupo, CreateGrupoDTO
         grupo.setCiclo(cicloOpt.get());
         grupo.setCicloLectivo(cicloLectivoOpt.get());
         grupo.setHorario(dto.horario());
+        grupo.setNumero(dto.numero());
 
         service.save(grupo);
 
