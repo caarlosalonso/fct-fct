@@ -1,5 +1,6 @@
 package es.daw2.fct_fct.servicio;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -33,7 +34,8 @@ public class ServicioCiclo extends AbstractService<Long, Ciclo, RepositorioCiclo
         if (ciclo.filter((c) -> c.getDeletedAt() == null).isEmpty()) {
             return false;
         }
-        repository.deleteById(id);
+        ciclo.get().setDeletedAt(LocalDateTime.now());
+        repository.save(ciclo.get());
         return true;
     }
 }
