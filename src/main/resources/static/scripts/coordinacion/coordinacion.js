@@ -82,6 +82,7 @@ function promise() {
         }
     ).catch((error) => {
         tableFail();
+        console.error(error);
         //drawTable(fetchedCiclos, fetchedCiclosLectivos, fetchedGrupos);
     });
 }
