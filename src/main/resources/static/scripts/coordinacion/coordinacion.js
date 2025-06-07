@@ -505,7 +505,7 @@ function addGrupo(ciclo, cicloLectivo, numero) {
             if (response.ok || response.status === 201) {
                 promise();
             } else {
-                form.showError(`Error al crear el grupo: ${response.body}`);
+                form.showError(`Error al crear el grupo: ${response.text()}`);
             }
         }).catch(error => {
             console.error('Error al crear el grupo:', error);
@@ -553,7 +553,7 @@ function addCiclo() {
             if (response.ok || response.status === 201) {
                 promise();
             } else {
-                form.showError(`Error al crear el ciclo: ${response.body}`);
+                form.showError(`Error al crear el ciclo: ${response.text()}`);
             }
         }).catch(error => {
             console.error('Error al crear el ciclo:', error);
@@ -597,7 +597,7 @@ function addCicloLectivo() {
             if (response.ok || response.status === 201) {
                 promise();
             } else {
-                form.showError(`Error al crear el ciclo lectivo: ${response.body}`);
+                form.showError(`Error al crear el ciclo lectivo: ${response.text()}`);
             }
         }).catch(error => {
             console.error('Error al crear el ciclo lectivo:', error);
@@ -623,7 +623,7 @@ function removeGrupo(grupo) {
         if (response.ok) {
             promise();
         } else {
-            alert(`Error al eliminar el grupo ${grupo.numero}: ${response.body}`);
+            alert(`Error al eliminar el grupo ${grupo.numero}: ${response.text()}`);
         }
     }).catch(error => {
         console.error('Error al eliminar el grupo:', error);
@@ -642,7 +642,7 @@ function removeCiclo(ciclo) {
         if (response.ok) {
             promise();
         } else {
-            alert(`Error al eliminar el ciclo ${ciclo.acronimo}: ${response.body}`);
+            alert(`Error al eliminar el ciclo ${ciclo.acronimo}: ${response.text()}`);
         }
     }).catch(error => {
         console.error('Error al eliminar el ciclo:', error);
@@ -661,7 +661,7 @@ function removeCicloLectivo(cicloLectivo) {
         if (response.ok) {
             promise();
         } else {
-            alert(`Error al eliminar el ciclo lectivo ${cicloLectivo.nombre}: ${response.body}`);
+            alert(`Error al eliminar el ciclo lectivo ${cicloLectivo.nombre}: ${response.text()}`);
         }
     }).catch(error => {
         console.error('Error al eliminar el ciclo lectivo:', error);
@@ -697,7 +697,7 @@ function editGrupo(grupo) {
             if (response.ok || response.status === 201) {
                 promise();
             } else {
-                form.showError(`Error al actualizar el grupo: ${response.body}`);
+                form.showError(`Error al actualizar el grupo: ${response.text()}`);
             }
         })
         .catch((error) => {
@@ -745,7 +745,7 @@ function editCiclo(ciclo) {
             if (response.ok || response.status === 201) {
                 promise();
             } else {
-                form.showError(`Error al actualizar el grupo: ${response.body}`);
+                form.showError(`Error al actualizar el grupo: ${response.text()}`);
             }
         })
         .catch((error) => {
@@ -790,7 +790,7 @@ function editCicloLectivo(cicloLectivo) {
             if (response.ok || response.status === 201) {
                 promise();
             } else {
-                form.showError(`Error al actualizar el ciclo lectivo: ${response.body}`);
+                form.showError(`Error al actualizar el ciclo lectivo: ${response.text()}`);
             }
         })
         .catch((error) => {
