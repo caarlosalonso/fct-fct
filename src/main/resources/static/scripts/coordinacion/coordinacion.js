@@ -703,8 +703,9 @@ function editGrupo(grupo) {
             if (response.ok || response.status === 201) {
                 promise();
             } else {
-                form.showError(`Error al actualizar el grupo: ${response.text()}`);
-                console.log(response.text());
+                const resp = response.json();
+                form.showError(`Error al actualizar el grupo: ${resp.message}`);
+                console.log(resp);
             }
         })
         .catch((error) => {
