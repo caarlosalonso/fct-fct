@@ -771,7 +771,7 @@ function editCicloLectivo(cicloLectivo) {
     }
 
     form.getInput('ciclo-lectivo-nombre').retrack(cicloLectivo.nombre);
-    form.getInput('ciclo-lectivo-fecha-inicio').retrack(cicloLectivo.fechaInicio);
+    form.getInput('ciclo-lectivo-inicio').retrack(cicloLectivo.fechaInicio);
 
     form.form.setAttribute('submit-text', 'Actualizar ciclo lectivo');
     form.submit.textContent = 'Actualizar ciclo lectivo';
