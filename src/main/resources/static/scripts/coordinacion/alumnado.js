@@ -30,7 +30,7 @@ function setCiclosLectivosList(ciclosLectivos) {
 }
 
 async function fetchGruposCiclos() {
-    const response = await fetch('/api/grupos-ciclos/all');
+    const response = await fetch('/api/vista-grupos-ciclos/all');
     if (response.status === 204) return [];
     if (!response.ok) throw new Error('Error al obtener los grupos');
     return await response.json();
