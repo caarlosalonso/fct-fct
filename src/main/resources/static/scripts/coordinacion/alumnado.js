@@ -62,6 +62,8 @@ function build(ciclosLectivos, gruposCiclos, alumnos) {
         })
     });
     console.log(info);
+
+    createCiclosLectivos();
 }
 
 function createCiclosLectivos() {
