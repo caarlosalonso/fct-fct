@@ -692,8 +692,8 @@ function editGrupo(grupo) {
             horario: horario
         }
 
-        fetch(`/api/grupo/update/${grupo.id}`, {
-            method: 'POST',
+        fetch(`/api/grupo/${grupo.id}`, {
+            method: 'PUT',
             headers: {
                 'Content-Type': 'application/json'
             },
@@ -742,8 +742,8 @@ function editCiclo(ciclo) {
             horasPracticas: horasPracticas
         }
 
-        fetch(`/api/grupo/update/${grupo.id}`, {
-            method: 'POST',
+        fetch(`/api/grupo/${grupo.id}`, {
+            method: 'PUT',
             headers: {
                 'Content-Type': 'application/json'
             },
@@ -788,8 +788,8 @@ function editCicloLectivo(cicloLectivo) {
             inicio: inicio
         }
 
-        fetch(`/api/ciclo-lectivo/update/${cicloLectivo.id}`, {
-            method: 'POST',
+        fetch(`/api/ciclo-lectivo/${cicloLectivo.id}`, {
+            method: 'PUT',
             headers: {
                 'Content-Type': 'application/json'
             },
