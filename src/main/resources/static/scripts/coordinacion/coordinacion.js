@@ -506,6 +506,7 @@ function addGrupo(ciclo, cicloLectivo, numero) {
                 promise();
             } else {
                 form.showError(`Error al crear el grupo: ${response.text()}`);
+                console.log(response.text());
             }
         }).catch(error => {
             console.error('Error al crear el grupo:', error);
@@ -554,6 +555,7 @@ function addCiclo() {
                 promise();
             } else {
                 form.showError(`Error al crear el ciclo: ${response.text()}`);
+                console.log(response.text());
             }
         }).catch(error => {
             console.error('Error al crear el ciclo:', error);
@@ -598,6 +600,7 @@ function addCicloLectivo() {
                 promise();
             } else {
                 form.showError(`Error al crear el ciclo lectivo: ${response.text()}`);
+                console.log(response.text());
             }
         }).catch(error => {
             console.error('Error al crear el ciclo lectivo:', error);
@@ -624,6 +627,7 @@ function removeGrupo(grupo) {
             promise();
         } else {
             alert(`Error al eliminar el grupo ${grupo.numero}: ${response.text()}`);
+                console.log(response.text());
         }
     }).catch(error => {
         console.error('Error al eliminar el grupo:', error);
@@ -643,6 +647,7 @@ function removeCiclo(ciclo) {
             promise();
         } else {
             alert(`Error al eliminar el ciclo ${ciclo.acronimo}: ${response.text()}`);
+                console.log(response.text());
         }
     }).catch(error => {
         console.error('Error al eliminar el ciclo:', error);
@@ -662,6 +667,7 @@ function removeCicloLectivo(cicloLectivo) {
             promise();
         } else {
             alert(`Error al eliminar el ciclo lectivo ${cicloLectivo.nombre}: ${response.text()}`);
+                console.log(response.text());
         }
     }).catch(error => {
         console.error('Error al eliminar el ciclo lectivo:', error);
@@ -698,6 +704,7 @@ function editGrupo(grupo) {
                 promise();
             } else {
                 form.showError(`Error al actualizar el grupo: ${response.text()}`);
+                console.log(response.text());
             }
         })
         .catch((error) => {
@@ -746,6 +753,7 @@ function editCiclo(ciclo) {
                 promise();
             } else {
                 form.showError(`Error al actualizar el grupo: ${response.text()}`);
+                console.log(response.text());
             }
         })
         .catch((error) => {
@@ -791,6 +799,7 @@ function editCicloLectivo(cicloLectivo) {
                 promise();
             } else {
                 form.showError(`Error al actualizar el ciclo lectivo: ${response.text()}`);
+                console.log(response.text());
             }
         })
         .catch((error) => {
