@@ -90,7 +90,7 @@ function createCiclosLectivos() {
         if (chosenCicloLectivo === null) {
             li.classList.add('active');
             chosenCicloLectivo = cicloLectivo;
-            createListGrupos(cicloLectivo);
+            createGruposCiclos(cicloLectivo);
         }
     });
 }
