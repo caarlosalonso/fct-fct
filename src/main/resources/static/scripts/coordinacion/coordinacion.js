@@ -188,7 +188,7 @@ function drawTable(ciclos, ciclosLectivos, grupos) {
                 const display = grupo ?
                                 createFilledCell(year, ciclo, grupo) :
                                 createEmptyCell(ciclo, cicloLectivo, year);
-                if (grupo) cell.onclick = () => {
+                if (!grupo) cell.onclick = () => {
                     addGrupo(ciclo, cicloLectivo, year);
                 }
                 cell.appendChild(display);
