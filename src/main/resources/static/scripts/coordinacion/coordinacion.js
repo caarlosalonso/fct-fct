@@ -201,12 +201,13 @@ function drawTable(ciclos, ciclosLectivos, grupos) {
         );
         ciclosList.push(cicloDiv);
 
-        for (let year = 1; year <= ciclo.years; year++, rowIdx++) {
+        for (let year = 1; year <= 2; year++, rowIdx++) {
             for (let j = 0; j < ciclosLectivos.length; j++) {
                 const cicloLectivo = ciclosLectivos[j];
 
                 // Find grupo for this ciclo, year, cicloLectivo
                 const grupo = grupos.find(g => g.cicloId === ciclo.id && g.cicloLectivoId === cicloLectivo.id && g.numero === year);
+                console.log(grupo);
 
                 const cell = document.createElement('div');
                 cell.classList.add('cell', 'hoverable');
@@ -297,7 +298,7 @@ function createCicloLectivoCell(cicloLectivo) {
 function createCicloCell(ciclo, rowIdx) {
     const cicloHeader = document.createElement('div');
     cicloHeader.classList.add('cell', 'hoverable', 'sticky', 'cell-row-header');
-    cicloHeader.style.gridRow = `${rowIdx} / span ${ciclo.years}`;
+    cicloHeader.style.gridRow = `${rowIdx} / span 2}`;
     cicloHeader.style.gridColumn = '1';
 
     const cellContent = document.createElement('div');
@@ -496,7 +497,6 @@ function addCiclo() {
         const acronimo = form.getInput('ciclo-acronimo').getValue();
         const familiaProfesional = form.getInput('ciclo-familia').getValue();
         const nivel = form.getInput('ciclo-nivel').getValue();
-        const years = form.getInput('ciclo-years').getValue();
         const horasPracticas = form.getInput('ciclo-practicas').getValue();
 
         let ciclo = {
@@ -504,7 +504,6 @@ function addCiclo() {
             acronimo: acronimo,
             familiaProfesional: familiaProfesional,
             nivel: nivel,
-            years: years,
             horasPracticas: horasPracticas
         }
 
@@ -531,7 +530,6 @@ function addCiclo() {
     form.getInput('ciclo-acronimo').retrack('');
     form.getInput('ciclo-familia').retrack('');
     form.getInput('ciclo-nivel').retrack('');
-    form.getInput('ciclo-years').retrack('');
     form.getInput('ciclo-practicas').retrack('');
 
     form.form.setAttribute('submit-text', 'Crear ciclo');
