@@ -87,8 +87,9 @@ public class ControladorGrupo extends CrudController<Long, Grupo, CreateGrupoDTO
     public ResponseEntity<?> update(@PathVariable Long id, @RequestBody CreateGrupoDTO dto) {
         Optional<Grupo> gruposOpt = service.getById(id);
 
-        if (! gruposOpt.isPresent()) {
-            return ResponseEntity.status(404).body("No se encontraron grupos con el id: " + id); //No me deja poner el notFound()
+        if (gruposOpt.isEmpty()) {
+            System.out.println("No se encontró el grupo con el id: " + id);
+            return ResponseEntity.notFound().build();
         }
         Grupo grupo = new Grupo();
 
