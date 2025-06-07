@@ -155,11 +155,9 @@ function createAlumnos(alumnos) {
     alumnosSelection.innerHTML = '';
 
     if (alumnos.length === 0) {
-        document.getElementById('add').classList.add('empty');
         document.getElementById('alumnos-list-container').classList.add('empty');
         return;
     }
-    document.getElementById('add').classList.remove('empty');
     document.getElementById('alumnos-list-container').classList.remove('empty');
 
     alumnos.forEach(alumno => {
