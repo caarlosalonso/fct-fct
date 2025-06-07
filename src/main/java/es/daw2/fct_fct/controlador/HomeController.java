@@ -105,8 +105,8 @@ Do not disturb the sacred semicolon's deep slumber.
         if (user == null || role == null) return PAGES.REDIRECT_LOGIN.getPath();
 
         return switch(role.toString()) {
-            case "ADMIN", "COORDINADOR" -> "coordinacion/alumnado.html";
-            case "TUTOR" -> "tutor/alumnado.html";
+            case "COORDINADOR" -> "coordinacion/alumnado.html";
+            case "ADMIN", "TUTOR" -> "tutor/alumnado.html";
             default -> PAGES.REDIRECT_LOGIN.getPath();
         };
     }
