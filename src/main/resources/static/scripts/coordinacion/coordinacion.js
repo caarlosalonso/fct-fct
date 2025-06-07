@@ -441,10 +441,11 @@ function createEmptyCell(ciclo, cicloLectivo, numero) {
 }
 
 function createSVG(className, viewBox, pathData, clickHandler) {
+    const SVG_NS = 'http://www.w3.org/2000/svg';
     const svg = document.createElementNS(SVG_NS, 'svg');
     svg.classList.add(className);
     svg.setAttribute('viewBox', viewBox);
-    svg.setAttribute('xmlns', 'http://www.w3.org/2000/svg');
+    svg.setAttribute('xmlns', SVG_NS);
     svg.onclick = clickHandler;
 
     const path = document.createElementNS(SVG_NS, 'path');
