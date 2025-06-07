@@ -460,11 +460,10 @@ function addGrupo(ciclo, cicloLectivo, numero) {
         let grupo = {
             ciclo: cicloId,
             cicloLectivo: cicloLectivoId,
-            numero: numero,
+            numero: parseInt(numero),
             horario: horario
         };
 
-        console.log(grupo);
         fetch('/api/grupos/create', {
             method: 'POST',
             headers: {
