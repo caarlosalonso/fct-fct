@@ -474,8 +474,9 @@ function addGrupo(ciclo, cicloLectivo, numero) {
             if (response.ok || response.status === 201) {
                 finish(form);
             } else {
-                form.showError(`Error al crear el grupo: ${response.text()}`);
-                console.log(response.text());
+                response.text().then((text) => {
+                    form.showError(`Error al crear el grupo: ${text}`);
+                });
             }
         }).catch(error => {
             console.error('Error al crear el grupo:', error);
@@ -521,8 +522,9 @@ function addCiclo() {
             if (response.ok || response.status === 201) {
                 finish(form);
             } else {
-                form.showError(`Error al crear el ciclo: ${response.text()}`);
-                console.log(response.text());
+                response.text().then((text) => {
+                    form.showError(`Error al crear el ciclo: ${text}`);
+                });
             }
         }).catch(error => {
             console.error('Error al crear el ciclo:', error);
@@ -565,8 +567,9 @@ function addCicloLectivo() {
             if (response.ok || response.status === 201) {
                 finish(form);
             } else {
-                form.showError(`Error al crear el ciclo lectivo: ${response.text()}`);
-                console.log(response.text());
+                response.text().then((text) => {
+                    form.showError(`Error al crear el ciclo lectivo: ${text}`);
+                });
             }
         }).catch(error => {
             console.error('Error al crear el ciclo lectivo:', error);

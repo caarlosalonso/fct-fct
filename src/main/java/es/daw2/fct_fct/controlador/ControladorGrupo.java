@@ -34,6 +34,7 @@ public class ControladorGrupo extends CrudController<Long, Grupo, CreateGrupoDTO
     @Override
     public ResponseEntity<?> create(@RequestBody CreateGrupoDTO dto) {
         Grupo grupo = new Grupo();
+        System.out.println(dto);
 
         Optional<Ciclo> cicloOpt = servicioCiclo.getById(dto.ciclo());
         if (! cicloOpt.isPresent()) {
