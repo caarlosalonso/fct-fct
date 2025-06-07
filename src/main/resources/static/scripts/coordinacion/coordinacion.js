@@ -686,9 +686,9 @@ function editGrupo(grupo) {
 
     form.onsubmit = (event) => {
         const data = {
-            numero: numero,
-            ciclo: grupo.ciclo,
-            cicloLectivo: grupo.cicloLectivo,
+            ciclo: parseInt(grupo.ciclo),
+            cicloLectivo: parseInt(grupo.cicloLectivo),
+            numero: parseInt(numero),
             horario: horario
         }
 
