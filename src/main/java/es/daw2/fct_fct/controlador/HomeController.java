@@ -82,13 +82,33 @@ Do not disturb the sacred semicolon's deep slumber.
     }
 
     @GetMapping("/ciclos")
-    public String ciclos() {
-        return "coordinacion/ciclos.html";
+    public String ciclos(HttpServletRequest request) {
+        HttpSession session = request.getSession(false);
+        if (session == null) return PAGES.REDIRECT_LOGIN.getPath();
+        Object user = session.getAttribute("user");
+        Object role = session.getAttribute("role");
+        if (user == null || role == null) return PAGES.REDIRECT_LOGIN.getPath();
+
+        return switch(role.toString()) {
+            case "ADMIN", "COORDINADOR" -> "coordinacion/ciclos.html";
+            case "TUTOR" -> "tutor/ciclos.html";
+            default -> PAGES.REDIRECT_LOGIN.getPath();
+        };
     }
 
     @GetMapping("/alumnado")
-    public String alumnado() {
-        return "coordinacion/alumnado.html";
+    public String alumnado(HttpServletRequest request) {
+        HttpSession session = request.getSession(false);
+        if (session == null) return PAGES.REDIRECT_LOGIN.getPath();
+        Object user = session.getAttribute("user");
+        Object role = session.getAttribute("role");
+        if (user == null || role == null) return PAGES.REDIRECT_LOGIN.getPath();
+
+        return switch(role.toString()) {
+            case "ADMIN", "COORDINADOR" -> "coordinacion/alumnado.html";
+            case "TUTOR" -> "tutor/alumnado.html";
+            default -> PAGES.REDIRECT_LOGIN.getPath();
+        };
     }
 
     @GetMapping("/index")
