@@ -41,6 +41,8 @@ async function fetchAlumnos() {
 }
 
 const info = [];
+let chosenCicloLectivo = null;
+let chosenGrupo = null;
 
 function build(ciclosLectivos, gruposCiclos, alumnos) {
     ciclosLectivos.forEach((cicloLectivo) => {
@@ -84,10 +86,18 @@ function createCiclosLectivos() {
         li.addEventListener('click', () => {
             createGruposCiclos(cicloLectivo.id);
         });
+
+        if (chosenCicloLectivo === null) {
+            li.classList.add('active');
+            chosenCicloLectivo = cicloLectivo;
+            createListGrupos(cicloLectivo);
+        }
     });
 }
 
 function createGruposCiclos(cicloLectivoId) {
+    if (chosenGrupo) chosenGrupo.classList.remove('active');
+
     const gruposCiclosSelection = document.getElementById('grupos-ciclos-selection');
     gruposCiclosSelection.innerHTML = '';
 
@@ -100,13 +110,24 @@ function createGruposCiclos(cicloLectivoId) {
     if (cicloLectivo) {
         cicloLectivo.grupos.forEach((grupo) => {
             const li = document.createElement('li');
-            li.classList.add('nav-item');
-            li.textContent = grupo.grupo_nombre;
+            li.classList.add('grupo', 'nav-item');
             ul.appendChild(li);
+
+            const cursoText = document.createElement('p');
+            cursoText.classList.add('curso', 'nav-link');
+            cursoText.id = `grupo-${grupo.grupoId}`;
+            cursoText.textContent = grupo.grupo_nombre;
+            li.appendChild(cursoText);
 
             li.addEventListener('click', () => {
                 createAlumnos(grupo.alumnos);
             });
+
+            if (chosenGrupo === null) {
+                li.classList.add('active');
+                chosenGrupo = li;
+                createAlumnos(chosenGrupo, grupo);
+            }
         });
     }
 }
