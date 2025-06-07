@@ -12,30 +12,6 @@ const HORARIOS = {
     'NOCHE': 'Noche'
 }
 
-const fetchedCiclos = [
-    { id: 1, name: 'Desarrollo de Aplicaciones Web', acronimo: 'DAW', years: 2, nivel: NIVELES.SUPERIOR },
-    { id: 2, name: 'Desarrollo de Aplicaciones Multiplataforma', acronimo: 'DAM', years: 2, nivel: NIVELES.SUPERIOR },
-    { id: 3, name: 'Servicios Microinformaticos y Redes', acronimo: 'SMR', years: 2, nivel: NIVELES.MEDIO }
-];
-
-const fetchedCiclosLectivos = [
-    { id: 1, nombre: '2018-2019', fechaInicio: '01/09/2018' },
-    { id: 2, nombre: '2019-2020', fechaInicio: '01/09/2019' },
-    { id: 3, nombre: '2020-2021', fechaInicio: '01/09/2020' },
-    { id: 4, nombre: '2021-2022', fechaInicio: '01/09/2021' },
-    { id: 5, nombre: '2022-2023', fechaInicio: '01/09/2022' },
-    { id: 6, nombre: '2023-2024', fechaInicio: '01/09/2023' },
-    { id: 7, nombre: '2024-2025', fechaInicio: '01/09/2024' }
-];
-
-const fetchedGrupos = [
-    { id: 1, cicloId: 1, cicloLectivoId: 1, numero: 1, horario: 'DIURNO' },
-    { id: 2, cicloId: 1, cicloLectivoId: 1, numero: 2, horario: 'VESPERTINO' },
-    { id: 3, cicloId: 2, cicloLectivoId: 1, numero: 1, horario: 'NOCHE' },
-    { id: 4, cicloId: 3, cicloLectivoId: 1, numero: 1, horario: 'DIURNO' },
-    { id: 5, cicloId: 3, cicloLectivoId: 2, numero: 1, horario: 'VESPERTINO' }
-];
-
 let TIMEOUT;
 
 window.addEventListener('FormsCreated', (event) => {
@@ -239,7 +215,7 @@ function drawTable(ciclos, ciclosLectivos, grupos) {
         );
         ciclosList.push(cicloDiv);
 
-        for (let year = 1; year <= ciclo.years; year++, rowIdx++) {
+        for (let year = 1; year <= 2; year++, rowIdx++) {
             for (let j = 0; j < ciclosLectivos.length; j++) {
                 const cicloLectivo = ciclosLectivos[j];
 
@@ -322,7 +298,7 @@ function createCicloLectivoCell(cicloLectivo) {
 function createCicloCell(ciclo, rowIdx) {
     const cicloHeader = document.createElement('div');
     cicloHeader.classList.add('cell', 'hoverable', 'sticky', 'cell-row-header');
-    cicloHeader.style.gridRow = `${rowIdx} / span ${ciclo.years}`;
+    cicloHeader.style.gridRow = `${rowIdx} / span 2`;
     cicloHeader.style.gridColumn = '1';
 
     const cellContent = document.createElement('div');
@@ -415,6 +391,8 @@ function addGrupo(ciclo, cicloLectivo, numero) {
             body: JSON.stringify(grupo)
         }).then(response => {
             if (response.ok || response.status === 201) {
+                form.submitFinish();
+                collapseAll();
                 promise();
             } else {
                 form.showError('Error al crear el grupo');
@@ -437,7 +415,6 @@ function addCiclo() {
         const acronimo = form.getInput('ciclo-abreviacion').getValue();
         const familiaProfesional = form.getInput('ciclo-familia').getValue();
         const nivel = form.getInput('ciclo-nivel').getValue();
-        const years = form.getInput('ciclo-years').getValue();
         const horasPracticas = form.getInput('ciclo-practicas').getValue();
 
         let ciclo = {
@@ -445,7 +422,6 @@ function addCiclo() {
             acronimo: acronimo,
             familiaProfesional: familiaProfesional,
             nivel: nivel,
-            years: years,
             horasPracticas: horasPracticas
         }
 
@@ -457,6 +433,8 @@ function addCiclo() {
             body: JSON.stringify(ciclo)
         }).then(response => {
             if (response.ok || response.status === 201) {
+                form.submitFinish();
+                collapseAll();
                 promise();
             } else {
                 form.showError('Error al crear el ciclo');
@@ -466,6 +444,15 @@ function addCiclo() {
             form.showError('Error al crear el ciclo');
         });
     }
+
+    form.getInput('ciclo-nombre').retrack('');
+    form.getInput('ciclo-acronimo').retrack('');
+    form.getInput('ciclo-familia').retrack('');
+    form.getInput('ciclo-nivel').retrack('');
+    form.getInput('ciclo-practicas').retrack('');
+
+    form.form.setAttribute('submit-text', 'Crear ciclo');
+    form.submit.textContent = 'Crear ciclo';
 }
 
 function addCicloLectivo() {
@@ -491,6 +478,8 @@ function addCicloLectivo() {
             body: JSON.stringify(cicloLectivo)
         }).then(response => {
             if (response.ok || response.status === 201) {
+                form.submitFinish();
+                collapseAll();
                 promise();
             } else {
                 form.showError('Error al crear el ciclo lectivo');
@@ -511,6 +500,7 @@ function removeGrupo(grupo) {
         method: 'DELETE'
     }).then(response => {
         if (response.ok) {
+            collapseAll();
             promise();
         } else {
             alert('Error al eliminar el grupo');
@@ -530,6 +520,7 @@ function removeCiclo(ciclo) {
         method: 'DELETE'
     }).then(response => {
         if (response.ok) {
+            collapseAll();
             promise();
         } else {
             alert('Error al eliminar el ciclo');
@@ -549,6 +540,7 @@ function removeCicloLectivo(cicloLectivo) {
         method: 'DELETE'
     }).then(response => {
         if (response.ok) {
+            collapseAll();
             promise();
         } else {
             alert('Error al eliminar el ciclo lectivo');
@@ -572,9 +564,43 @@ function editGrupo(grupo) {
     form.getInput('grupo-horario').setValue(grupo.horario);
 
     form.onsubmit = (event) => {
-        event.preventDefault();
-        // Aquí se puede agregar la lógica para actualizar el grupo
+    const numero = form.getInput('grupo-numero').getValue();
+    const horario = form.getInput('grupo-horario').getValue();
+
+        const data = {
+            ciclo: grupo.cicloId,
+            cicloLectivo: grupo.cicloLectivoId,
+            numero: numero,
+            horario: horario
+        }
+
+        fetch(`/api/grupos/${grupo.id}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
+        })
+        .then((response) => {
+            if (response.ok || response.status === 201) {
+                form.submitFinish();
+                collapseAll();
+                promise();
+            } else {
+                form.showError(`Error al actualizar el grupo`);
+            }
+        })
+        .catch((error) => {
+            console.error('Error al actualizar el grupo:', error);
+            form.showError('Error al actualizar el grupo');
+        });
     }
+
+    form.getInput('grupo-numero').retrack(grupo.numero);
+    form.getInput('grupo-horario').retrack(grupo.horario);
+
+    form.form.setAttribute('submit-text', 'Actualizar grupo');
+    form.submit.textContent = 'Actualizar grupo';
 }
 
 function editCiclo(ciclo) {
@@ -590,9 +616,51 @@ function editCiclo(ciclo) {
     form.getInput('ciclo-anos').setValue(ciclo.years);
 
     form.onsubmit = (event) => {
-        event.preventDefault();
-        // Aquí se puede agregar la lógica para actualizar el ciclo
+        const name = form.getInput('ciclo-nombre').getValue();
+        const acronimo = form.getInput('ciclo-acronimo').getValue();
+        const nivel = form.getInput('ciclo-nivel').getValue();
+        const familiaProfesional = form.getInput('ciclo-familia').getValue();
+        const horasPracticas = form.getInput('ciclo-practicas').getValue();
+
+        const data = {
+            name: name,
+            acronimo: acronimo,
+            nivel: nivel,
+            familiaProfesional: familiaProfesional,
+            horasPracticas: horasPracticas
+        }
+
+        fetch(`/api/ciclos/${ciclo.id}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
+        })
+        .then((response) => {
+            if (response.ok || response.status === 201) {
+                form.submitFinish();
+                collapseAll();
+                promise();
+            } else {
+                form.showError(`Error al actualizar el ciclo: ${response.text()}`);
+                console.log(response.text());
+            }
+        })
+        .catch((error) => {
+            console.error('Error al actualizar el ciclo:', error);
+            form.showError('Error al actualizar el ciclo');
+        });
     }
+
+    form.getInput('ciclo-nombre').retrack(ciclo.name);
+    form.getInput('ciclo-acronimo').retrack(ciclo.acronimo);
+    form.getInput('ciclo-nivel').retrack(ciclo.nivel);
+    form.getInput('ciclo-familia').retrack(ciclo.familiaProfesional);
+    form.getInput('ciclo-practicas').retrack(ciclo.horasPracticas);
+
+    form.form.setAttribute('submit-text', 'Actualizar ciclo');
+    form.submit.textContent = 'Actualizar ciclo';
 }
 
 function editCicloLectivo(cicloLectivo) {
@@ -606,7 +674,40 @@ function editCicloLectivo(cicloLectivo) {
     form.getInput('ciclo-lectivo-fecha-inicio').setValue(cicloLectivo.fechaInicio);
 
     form.onsubmit = (event) => {
-        event.preventDefault();
-        // Aquí se puede agregar la lógica para actualizar el ciclo lectivo
+        const nombre = form.getInput('ciclo-lectivo-nombre').getValue();
+        const inicio = form.getInput('ciclo-lectivo-inicio').getValue();
+
+        const data = {
+            nombre: nombre,
+            inicio: inicio
+        }
+
+        fetch(`/api/ciclos-lectivos/${cicloLectivo.id}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
+        })
+        .then((response) => {
+            if (response.ok || response.status === 201) {
+                form.submitFinish();
+                collapseAll();
+                promise();
+            } else {
+                form.showError(`Error al actualizar el ciclo lectivo: ${response.text()}`);
+                console.log(response.text());
+            }
+        })
+        .catch((error) => {
+            console.error('Error al actualizar el ciclo lectivo:', error);
+            form.showError('Error al actualizar el ciclo lectivo');
+        });
     }
+
+    form.getInput('ciclo-lectivo-nombre').retrack(cicloLectivo.nombre);
+    form.getInput('ciclo-lectivo-fecha-inicio').retrack(cicloLectivo.fechaInicio);
+
+    form.form.setAttribute('submit-text', 'Actualizar ciclo lectivo');
+    form.submit.textContent = 'Actualizar ciclo lectivo';
 }
