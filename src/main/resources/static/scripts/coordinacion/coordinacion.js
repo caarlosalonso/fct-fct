@@ -12,34 +12,9 @@ const HORARIOS = {
     'NOCHE': 'Noche'
 }
 
-const fetchedCiclos = [
-    { id: 1, name: 'Desarrollo de Aplicaciones Web', acronimo: 'DAW', years: 2, nivel: NIVELES.SUPERIOR },
-    { id: 2, name: 'Desarrollo de Aplicaciones Multiplataforma', acronimo: 'DAM', years: 2, nivel: NIVELES.SUPERIOR },
-    { id: 3, name: 'Servicios Microinformaticos y Redes', acronimo: 'SMR', years: 2, nivel: NIVELES.MEDIO }
-];
-
-const fetchedCiclosLectivos = [
-    { id: 1, nombre: '2018-2019', fechaInicio: '01/09/2018' },
-    { id: 2, nombre: '2019-2020', fechaInicio: '01/09/2019' },
-    { id: 3, nombre: '2020-2021', fechaInicio: '01/09/2020' },
-    { id: 4, nombre: '2021-2022', fechaInicio: '01/09/2021' },
-    { id: 5, nombre: '2022-2023', fechaInicio: '01/09/2022' },
-    { id: 6, nombre: '2023-2024', fechaInicio: '01/09/2023' },
-    { id: 7, nombre: '2024-2025', fechaInicio: '01/09/2024' }
-];
-
-const fetchedGrupos = [
-    { id: 1, cicloId: 1, cicloLectivoId: 1, numero: 1, horario: 'DIURNO' },
-    { id: 2, cicloId: 1, cicloLectivoId: 1, numero: 2, horario: 'VESPERTINO' },
-    { id: 3, cicloId: 2, cicloLectivoId: 1, numero: 1, horario: 'NOCHE' },
-    { id: 4, cicloId: 3, cicloLectivoId: 1, numero: 1, horario: 'DIURNO' },
-    { id: 5, cicloId: 3, cicloLectivoId: 2, numero: 1, horario: 'VESPERTINO' }
-];
-
 let TIMEOUT;
 
 window.addEventListener('FormsCreated', (event) => {
-//window.addEventListener('DOMContentLoaded', (event) => {
     createAbreviatedNameEventListener();
     promise();
 });
@@ -83,7 +58,6 @@ function promise() {
     ).catch((error) => {
         tableFail();
         console.error(error);
-        //drawTable(fetchedCiclos, fetchedCiclosLectivos, fetchedGrupos);
     });
 }
 
@@ -182,11 +156,8 @@ function drawTable(ciclos, ciclosLectivos, grupos) {
 
     const lastColumnContent = document.createElement('div');
     lastColumnContent.classList.add('cell-content', 'empty-cell', 'cell-column-header');
-    lastColumnContent.appendChild(
-        createAddSVG(() => {
-            addCicloLectivo();
-        })
-    );
+    lastColumnContent.appendChild(createAddSVG());
+    lastColumnContent.onclick = () => {addCicloLectivo();};
 
     lastColumn.appendChild(lastColumnContent);
     gridData.appendChild(lastColumn);
@@ -217,6 +188,9 @@ function drawTable(ciclos, ciclosLectivos, grupos) {
                 const display = grupo ?
                                 createFilledCell(year, ciclo, grupo) :
                                 createEmptyCell(ciclo, cicloLectivo, year);
+                if (grupo) cell.onclick = () => {
+                    addGrupo(ciclo, cicloLectivo, year);
+                }
                 cell.appendChild(display);
             }
             totalRows++;
@@ -229,11 +203,8 @@ function drawTable(ciclos, ciclosLectivos, grupos) {
 
     const lastRowContent = document.createElement('div');
     lastRowContent.classList.add('cell-content', 'empty-cell', 'cell-row-header', 'full');
-    lastRowContent.appendChild(
-        createAddSVG(() => {
-            addCiclo();
-        })
-    );
+    lastRowContent.appendChild(createAddSVG());
+    lastRowContent.onclick = () => {addCiclo();};
 
     lastRow.appendChild(lastRowContent);
     ciclosGridWrapper.appendChild(lastRow);
@@ -393,11 +364,7 @@ function createFilledCell(year, ciclo, grupo) {
 function createEmptyCell(ciclo, cicloLectivo, numero) {
     const cell = document.createElement('div');
     cell.className = 'cell-content empty-cell add-element';
-    cell.appendChild(
-        createAddSVG(() => {
-            addGrupo(ciclo, cicloLectivo, numero);
-        })
-    );
+    cell.appendChild(createAddSVG());
     return cell;
 }
 
@@ -416,11 +383,11 @@ function createSVG(viewBox, pathData, clickHandler, ...classList) {
     return svg;
 }
 
-function createAddSVG(clickHandler) {
+function createAddSVG() {
     return createSVG(
             '0 0 48 48',
             'M 44 20 L 28 20 L 28 4 C 28 2 26 0 24 0 S 20 2 20 4 L 20 20 L 4 20 C 2 20 0 22 0 24 S 2 28 4 28 L 20 28 L 20 44 C 20 46 22 48 24 48 S 28 46 28 44 L 28 28 L 44 28 C 46 28 48 26 48 24 S 46 20 44 20 Z',
-            clickHandler,
+            () => {},
             'plus-svg'
     );
 }
