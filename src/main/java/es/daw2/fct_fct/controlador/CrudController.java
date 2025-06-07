@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import es.daw2.fct_fct.servicio.AbstractService;
@@ -53,7 +54,7 @@ public abstract class CrudController<Id, T, C, U, S extends AbstractService<Id, 
     }
 
     // crUd
-    @PostMapping("/{id}")
+    @PutMapping("/{id}")
     ResponseEntity<?> update(@PathVariable Id id, @RequestBody U dto) throws UnsupportedOperationException {
         throw new UnsupportedOperationException("Update operation is not supported");
     }
