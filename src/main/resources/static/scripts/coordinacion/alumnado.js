@@ -210,7 +210,7 @@ function setInputsToCreate(form) {
     let isCancelled = form.cancel();
     if (! isCancelled) return;
 
-    document.getElementById('titulo').textContent = `Información del alumno de ${chosenCurso.textContent}`;
+    document.getElementById('titulo').textContent = `Información del alumno de ${chosenGrupo.textContent} de ${chosenCicloLectivo.textContent}`;
     deleteDeleteButton();
 
     form.onsubmit = function (event) {
