@@ -13,11 +13,6 @@ window.addEventListener('FormsCreated', (event) => {
     }
 
     promise();
-
-    setInputsToCreate(form);
-    document.getElementById('add').addEventListener('click', () => {
-        setInputsToCreate(form);
-    });
 });
 
 function promise() {
@@ -84,6 +79,12 @@ function build(ciclosLectivos, gruposCiclos, alumnos) {
     console.log(info);
 
     createCiclosLectivos();
+
+    const form = Form.getForm('alumno-form');
+    setInputsToCreate(form);
+    document.getElementById('add').addEventListener('click', () => {
+        setInputsToCreate(form);
+    });
 }
 
 function createCiclosLectivos() {
