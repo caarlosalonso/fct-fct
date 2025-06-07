@@ -136,6 +136,7 @@ main {
     max-height: 30px;
     transition: 300ms ease-in-out;
     fill: #ffffff;
+    width: 100%;
 }
 
 .edit-svg {
