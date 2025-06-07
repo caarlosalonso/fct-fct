@@ -3,23 +3,25 @@ window.addEventListener('DOMContentLoaded', (event) => {
 });
 
 function promise() {
-    Promise.resolve(fetchVistaAlumnos())
-    .then((alumnos) => {
-        setAlumnosList(alumnos);
+    Promise.all([
+        fetchCiclosLectivos()
+    ])
+    .then(([
+        ciclosLectivos
+    ]) => {
+        setCiclosLectivosList(ciclosLectivos);
     }).catch((error) => {
         console.error('Error al obtener los ciclos lectivos:', error);
     })
 }
 
-const storedCiclosLectivos = [];
-
-async function fetchVistaAlumnos() {
-    const response = await fetch('/api/vista-alumnos/all');
+async function fetchCiclosLectivos() {
+    const response = await fetch('/api/ciclos-lectivos/all');
     if (response.status === 204) return [];
-    if (!response.ok) throw new Error('Error al obtener los alumnos');
+    if (!response.ok) throw new Error('Error al obtener los ciclos lectivos');
     return await response.json();
 }
 
-function setAlumnosList(alumnos) {
-    console.log(alumnos);
+function setCiclosLectivosList(ciclosLectivos) {
+    console.log(ciclosLectivos);
 }
