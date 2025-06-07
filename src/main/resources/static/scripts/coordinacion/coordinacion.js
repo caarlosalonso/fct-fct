@@ -48,7 +48,7 @@ function createAbreviatedNameEventListener() {
     const form = Form.getForm('ciclo-form');
     form.getInput('ciclo-nombre').input.addEventListener('input', (event) => {
         const input = form.getInput('ciclo-nombre').getValue();
-        const acronimoInput = form.getInput('ciclo-abreviacion');
+        const acronimoInput = form.getInput('ciclo-acronimo');
         if (input && input.length > 0) {
             acronimoInput.retrack(
                 input.split(' ')
@@ -68,16 +68,10 @@ function createAbreviatedNameEventListener() {
 function promise() {
     tableLoading();
 
-    const ci = fetchCiclos();
-    const cile = fetchCiclosLectivos();
-    const g = fetchGrupos();
-
-    console.log(ci, cile, g);
-
     Promise.all([
-        ci,
-        cile,
-        g
+        fetchCiclos(),
+        fetchCiclosLectivos(),
+        fetchGrupos()
     ]).then(
         ([
             ciclos,
@@ -87,67 +81,30 @@ function promise() {
             drawTable(ciclos, ciclosLectivos, grupos);
         }
     ).catch((error) => {
-        console.log("SOMETHING FAILED AHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHH", error);
         tableFail();
         //drawTable(fetchedCiclos, fetchedCiclosLectivos, fetchedGrupos);
     });
 }
 
-function fetchCiclos() {
-    return new Promise((res, rej) => {
-        fetch('/api/ciclos/all')
-        .then(response => {
-            if (response.status === 204) res([]);
-            else if (response.ok) {
-                const data = response.json();
-                if (data) return res(data);
-                else rej(new Error('No se encontraron ciclos'));
-            } else {
-                rej(new Error('No se encontraron ciclos'));
-            }
-        })
-        .catch((error) => {
-            rej(error);
-        });
-    });
+async function fetchCiclos() {
+    const response = await fetch('/api/ciclos/all');
+    if (response.status === 204) return [];
+    if (!response.ok) throw new Error('No se encontraron ciclos');
+    return await response.json();
 }
 
-function fetchCiclosLectivos() {
-    return new Promise((res, rej) => {
-        fetch('/api/ciclos-lectivos/all')
-        .then(response => {
-            if (response.status === 204) res([]);
-            else if (response.ok) {
-                const data = response.json();
-                if (data) return res(data);
-                else rej(new Error('No se encontraron ciclos lectivos'));
-            } else {
-                rej(new Error('No se encontraron ciclos lectivos'));
-            }
-        })
-        .catch((error) => {
-            rej(error);
-        });
-    });
+async function fetchCiclosLectivos() {
+    const response = await fetch('/api/ciclos-lectivos/all');
+    if (response.status === 204) return [];
+    if (!response.ok) throw new Error('No se encontraron ciclos lectivos');
+    return await response.json();
 }
 
-function fetchGrupos() {
-    return new Promise((res, rej) => {
-        fetch('/api/grupos/all')
-        .then(response => {
-            if (response.status === 204) res([]);
-            else if (response.ok) {
-                const data = response.json();
-                if (data) return res(data);
-                else rej(new Error('No se encontraron grupos'));
-            } else {
-                rej(new Error('No se encontraron grupos'));
-            }
-        })
-        .catch((error) => {
-            rej(error);
-        });
-    });
+async function fetchGrupos() {
+    const response = await fetch('/api/grupos/all');
+    if (response.status === 204) return [];
+    if (!response.ok) throw new Error('No se encontraron grupos');
+    return await response.json();
 }
 
 function tableLoading() {
@@ -188,6 +145,8 @@ function tableFail() {
 function drawTable(ciclos, ciclosLectivos, grupos) {
     const ciclosList = [];
 
+    console.log(grupos);
+
     const ciclosGridWrapper = document.getElementById('display-grid-wrapper');
     ciclosGridWrapper.innerHTML = "";
 
@@ -195,14 +154,16 @@ function drawTable(ciclos, ciclosLectivos, grupos) {
     gridData.id = 'grid-data';
     ciclosGridWrapper.appendChild(gridData);
 
-    const numRows = ciclos.length + 2;
-    const numColumns = Math.max(ciclosLectivos.length, 2);
+    const numRows = ciclos.length + 1;
+    const numColumns = ciclosLectivos.length;
 
     gridData.style.gridTemplateRows = `repeat(${numRows}, 1fr)`;
     gridData.style.gridTemplateColumns = `250px repeat(${numColumns}, 1fr) 80px`;
 
     const topLeftCell = document.createElement('div');
     topLeftCell.classList.add('cell', 'sticky', 'cell-column-header', 'cell-row-header');
+    topLeftCell.style.gridRow = '1';
+    topLeftCell.style.gridColumn = '1';
 
     const topLeftCellContent = document.createElement('div');
     topLeftCellContent.classList.add('cell-content', 'cell-column-header', 'cell-row-header');
@@ -217,14 +178,15 @@ function drawTable(ciclos, ciclosLectivos, grupos) {
 
     const lastColumn = document.createElement('div');
     lastColumn.classList.add('cell', 'hoverable', 'last-column', 'cell-column-header', 'add-element');
+    lastColumn.style.gridColumn = `${numColumns + 2}`;
 
     const lastColumnContent = document.createElement('div');
     lastColumnContent.classList.add('cell-content', 'empty-cell', 'cell-column-header');
-    lastColumnContent.innerHTML = getPlusSvg();
-    lastColumnContent.title = "Añadir ciclo lectivo";
-    lastColumn.onclick = () => {
-        addCicloLectivo();
-    };
+    lastColumnContent.appendChild(
+        createAddSVG(() => {
+            addCicloLectivo();
+        })
+    );
 
     lastColumn.appendChild(lastColumnContent);
     gridData.appendChild(lastColumn);
@@ -267,10 +229,11 @@ function drawTable(ciclos, ciclosLectivos, grupos) {
 
     const lastRowContent = document.createElement('div');
     lastRowContent.classList.add('cell-content', 'empty-cell', 'cell-row-header', 'full');
-    lastRowContent.innerHTML = getPlusSvg();
-    lastRowContent.onclick = () => {
-        addCiclo();
-    };
+    lastRowContent.appendChild(
+        createAddSVG(() => {
+            addCiclo();
+        })
+    );
 
     lastRow.appendChild(lastRowContent);
     ciclosGridWrapper.appendChild(lastRow);
@@ -291,31 +254,43 @@ function drawTable(ciclos, ciclosLectivos, grupos) {
     }, 0);
 }
 
-function getPlusSvg() {
-    return `
-    <svg class="plus-svg" viewBox="0 0 48 48">
-        <path d="M 44 20 L 28 20 L 28 4 C 28 2 26 0 24 0 S 20 2 20 4 L 20 20 L 4 20 C 2 20 0 22 0 24 S 2 28 4 28 L 20 28 L 20 44 C 20 46 22 48 24 48 S 28 46 28 44 L 28 28 L 44 28 C 46 28 48 26 48 24 S 46 20 44 20 Z"/>
-    </svg>`;
-}
-
 function createCicloLectivoCell(cicloLectivo) {
     const cell = document.createElement('div');
     cell.classList.add('cell', 'hoverable', 'cell-column-header');
 
     const cellContent = document.createElement('div');
     cellContent.classList.add('cell-content', 'cell-column-header', 'filled-cell');
-    cellContent.innerHTML = `
-        <span class="cell-title">${cicloLectivo.nombre}</span>
-        <span class="cell-subtitle">${cicloLectivo.fechaInicio}</span>
-        <svg class="edit-svg" viewBox="0 -0.5 25 25" xmlns="http://www.w3.org/2000/svg">
-            <path d="M 13.2942 7.9588 L 13.2942 7.9588 Z M 6.811 14.8488 L 7.379 15.3385 C 7.3849 15.3317 7.3906 15.3248 7.3962 15.3178 L 6.811 14.8488 Z M 6.64 15.2668 L 5.8915 15.2179 L 5.8908 15.2321 L 6.64 15.2668 Z M 6.5 18.2898 L 5.7508 18.2551 C 5.7491 18.2923 5.7501 18.3296 5.754 18.3667 L 6.5 18.2898 Z M 7.287 18.9768 L 7.3115 19.7264 C 7.3615 19.7247 7.4113 19.7181 7.46 19.7065 L 7.287 18.9768 Z M 10.287 18.2658 L 10.46 18.9956 L 10.4716 18.9927 L 10.287 18.2658 Z M 10.672 18.0218 L 11.2506 18.4991 L 11.2571 18.491 L 10.672 18.0218 Z M 17.2971 10.959 L 17.2971 10.959 Z M 12.1269 7.0205 L 12.1269 7.0205 Z M 14.3 5.5098 L 14.8851 5.979 C 14.8949 5.9667 14.9044 5.9541 14.9135 5.9412 L 14.3 5.5098 Z M 15.929 5.1898 L 16.4088 4.6133 C 16.3849 4.5934 16.3598 4.5751 16.3337 4.5583 L 15.929 5.1898 Z M 18.166 7.0518 L 18.6968 6.5219 C 18.6805 6.5056 18.6635 6.4901 18.6458 6.4753 L 18.166 7.0518 Z M 18.5029 7.8726 L 19.2529 7.8768 V 7.8768 L 18.5029 7.8726 Z M 18.157 8.6898 L 17.632 8.1541 C 17.6108 8.175 17.5908 8.197 17.5721 8.2203 Z M 16.1271 10.0203 L 16.1271 10.0203 Z M 13.4537 7.3786 L 13.4537 7.3786 Z M 16.813 11.2329 L 16.813 11.2329 Z M 12.1238 7.0207 L 6.2258 14.3797 L 7.3962 15.3178 L 13.2942 7.9588 Z M 6.243 14.359 C 6.0356 14.5995 5.9123 14.9011 5.8916 15.218 L 7.3884 15.3156 C 7.3879 15.324 7.3846 15.3321 7.379 15.3385 L 6.243 14.359 Z M 5.8908 15.2321 L 5.7508 18.2551 L 7.2492 18.3245 L 7.3892 15.3015 L 5.8908 15.2321 Z M 5.754 18.3667 C 5.8356 19.1586 6.5159 19.7524 7.3115 19.7264 L 7.2625 18.2272 C 7.2593 18.2273 7.2577 18.2268 7.2567 18.2264 C 7.2553 18.2259 7.2534 18.2249 7.2514 18.2232 C 7.2495 18.2215 7.2482 18.2198 7.2475 18.2185 C 7.247 18.2175 7.2464 18.216 7.246 18.2128 L 5.754 18.3667 Z M 7.46 19.7065 L 10.46 18.9955 L 10.114 17.536 L 7.114 18.247 L 7.46 19.7065 Z M 10.4716 18.9927 C 10.7771 18.9151 11.05 18.7422 11.2506 18.499 L 10.0934 17.5445 C 10.0958 17.5417 10.0989 17.5397 10.1024 17.5388 L 10.4716 18.9927 Z M 11.2571 18.491 L 17.2971 10.959 L 16.1269 10.0206 L 10.0869 17.5526 L 11.2571 18.491 Z M 13.2971 7.959 L 14.8851 5.979 L 13.7149 5.0405 L 12.1269 7.0205 Z M 14.9135 5.9412 C 15.0521 5.7441 15.3214 5.6912 15.5243 5.8212 L 16.3337 4.5583 C 15.4544 3.9948 14.2873 4.2241 13.6865 5.0783 L 14.9135 5.9412 Z M 15.4492 5.7662 L 17.6862 7.6282 L 18.6458 6.4753 L 16.4088 4.6133 L 15.4492 5.7662 Z M 17.6352 7.5816 C 17.7111 7.6577 17.7535 7.761 17.7529 7.8685 L 19.2529 7.8768 C 19.2557 7.369 19.0555 6.8813 18.6968 6.5219 L 17.6352 7.5816 Z M 17.7529 7.8685 C 17.7524 7.976 17.7088 8.0789 17.632 8.1541 L 18.682 9.2254 C 19.0446 8.87 19.2501 8.3845 19.2529 7.8768 L 17.7529 7.8685 Z M 17.5721 8.2203 L 16.1271 10.0203 L 17.2969 10.9593 L 18.7419 9.1593 L 17.5721 8.2203 Z M 11.9703 7.6009 C 12.3196 9.9322 14.4771 11.5503 16.813 11.2329 L 16.611 9.7466 C 15.0881 9.9535 13.6815 8.8986 13.4537 7.3786 Z"/>
-        </svg>
-        <svg class="delete-svg" viewBox="-6 -6 60 60" xmlns="http://www.w3.org/2000/svg">
-            <path d="M 42 3 H 28 a 2 2 0 0 0 -2 -2 H 22 a 2 2 0 0 0 -2 2 H 6 A 2 2 0 0 0 6 7 H 42 a 2 2 0 0 0 0 -4 Z M 39 9 a 2 2 0 0 0 -2 2 V 43 H 11 V 11 a 2 2 0 0 0 -4 0 V 45 a 2 2 0 0 0 2 2 H 39 a 2 2 0 0 0 2 -2 V 11 A 2 2 0 0 0 39 9 Z M 21 37 V 19 a 2 2 0 0 0 -4 0 V 37 a 2 2 0 0 0 4 0 Z M 31 37 V 19 a 2 2 0 0 0 -4 0 V 37 a 2 2 0 0 0 4 0 Z"/>
-        </svg>
-    `;
-    cell.appendChild(cellContent);
 
+    // Create title span
+    const titleSpan = document.createElement('span');
+    titleSpan.classList.add('cell-title');
+    titleSpan.textContent = cicloLectivo.nombre;
+    cellContent.appendChild(titleSpan);
+
+    // Create subtitle span
+    const subtitleSpan = document.createElement('span');
+    subtitleSpan.classList.add('cell-subtitle');
+    subtitleSpan.textContent = cicloLectivo.fechaInicio;
+    cellContent.appendChild(subtitleSpan);
+
+    cellContent.appendChild(
+        createSVG(
+            'edit-svg',
+            '0 -0.5 25 25',
+            'M 20.848 1.879 C 19.676 0.707 17.777 0.707 16.605 1.879 L 2.447 16.036 C 2.029 16.455 1.743 16.988 1.627 17.569 L 1.04 20.505 C 0.76 21.904 1.994 23.138 3.393 22.858 L 6.329 22.271 C 6.909 22.155 7.443 21.869 7.862 21.451 L 22.019 7.293 C 23.191 6.121 23.191 4.222 22.019 3.05 L 20.848 1.879 Z M 18.019 3.293 C 18.41 2.902 19.043 2.902 19.433 3.293 L 20.605 4.465 C 20.996 4.855 20.996 5.488 20.605 5.879 L 6.447 20.036 C 6.308 20.176 6.13 20.271 5.936 20.31 L 3.001 20.897 L 3.588 17.962 C 3.627 17.768 3.722 17.59 3.862 17.451 L 13.933 7.379 L 16.52 9.965 L 17.934 8.56 L 15.348 5.965 L 18.019 3.293 Z',
+            () => editCicloLectivo(cicloLectivo)
+        )
+    );
+    cellContent.appendChild(
+        createSVG(
+            'delete-svg',
+            '-6 -6 60 60',
+            'M 42 3 H 28 A 2 2 0 0 0 26 1 H 22 A 2 2 0 0 0 20 3 H 6 A 2 2 0 0 0 6 7 H 42 A 2 2 0 0 0 42 3 Z M 37 11 V 43 H 31 V 19 A 1 1 0 0 0 27 19 V 43 H 21 V 19 A 1 1 0 0 0 17 19 V 43 H 11 V 11 A 2 2 0 0 0 7 11 V 45 A 2 2 0 0 0 9 47 H 39 A 2 2 0 0 0 41 45 V 11 A 2 2 0 0 0 37 11 Z',
+            () => removeCicloLectivo(cicloLectivo)
+        )
+    );
+
+    cell.appendChild(cellContent);
     return cell;
 }
 
@@ -327,47 +302,130 @@ function createCicloCell(ciclo, rowIdx) {
 
     const cellContent = document.createElement('div');
     cellContent.classList.add('cell-content', 'cell-row-header');
-    cellContent.innerHTML = `
-        <span class="cell-title">${ciclo.name} <span class="cell-subtitle">(${ciclo.acronimo})</span></span>
-        <span class="cell-subtitle">${ciclo.familiaProfesional}</span>
-        <span class="cell-subtitle">${NIVELES[ciclo.nivel]}</span>
-        <span class="cell-subtitle">${ciclo.horasPracticas}</span>
-        <span class="cell-actions">
-            <svg class="edit-svg" viewBox="0 -0.5 25 25" xmlns="http://www.w3.org/2000/svg">
-                <path d="M 13.2942 7.9588 L 13.2942 7.9588 Z M 6.811 14.8488 L 7.379 15.3385 C 7.3849 15.3317 7.3906 15.3248 7.3962 15.3178 L 6.811 14.8488 Z M 6.64 15.2668 L 5.8915 15.2179 L 5.8908 15.2321 L 6.64 15.2668 Z M 6.5 18.2898 L 5.7508 18.2551 C 5.7491 18.2923 5.7501 18.3296 5.754 18.3667 L 6.5 18.2898 Z M 7.287 18.9768 L 7.3115 19.7264 C 7.3615 19.7247 7.4113 19.7181 7.46 19.7065 L 7.287 18.9768 Z M 10.287 18.2658 L 10.46 18.9956 L 10.4716 18.9927 L 10.287 18.2658 Z M 10.672 18.0218 L 11.2506 18.4991 L 11.2571 18.491 L 10.672 18.0218 Z M 17.2971 10.959 L 17.2971 10.959 Z M 12.1269 7.0205 L 12.1269 7.0205 Z M 14.3 5.5098 L 14.8851 5.979 C 14.8949 5.9667 14.9044 5.9541 14.9135 5.9412 L 14.3 5.5098 Z M 15.929 5.1898 L 16.4088 4.6133 C 16.3849 4.5934 16.3598 4.5751 16.3337 4.5583 L 15.929 5.1898 Z M 18.166 7.0518 L 18.6968 6.5219 C 18.6805 6.5056 18.6635 6.4901 18.6458 6.4753 L 18.166 7.0518 Z M 18.5029 7.8726 L 19.2529 7.8768 V 7.8768 L 18.5029 7.8726 Z M 18.157 8.6898 L 17.632 8.1541 C 17.6108 8.175 17.5908 8.197 17.5721 8.2203 Z M 16.1271 10.0203 L 16.1271 10.0203 Z M 13.4537 7.3786 L 13.4537 7.3786 Z M 16.813 11.2329 L 16.813 11.2329 Z M 12.1238 7.0207 L 6.2258 14.3797 L 7.3962 15.3178 L 13.2942 7.9588 Z M 6.243 14.359 C 6.0356 14.5995 5.9123 14.9011 5.8916 15.218 L 7.3884 15.3156 C 7.3879 15.324 7.3846 15.3321 7.379 15.3385 L 6.243 14.359 Z M 5.8908 15.2321 L 5.7508 18.2551 L 7.2492 18.3245 L 7.3892 15.3015 L 5.8908 15.2321 Z M 5.754 18.3667 C 5.8356 19.1586 6.5159 19.7524 7.3115 19.7264 L 7.2625 18.2272 C 7.2593 18.2273 7.2577 18.2268 7.2567 18.2264 C 7.2553 18.2259 7.2534 18.2249 7.2514 18.2232 C 7.2495 18.2215 7.2482 18.2198 7.2475 18.2185 C 7.247 18.2175 7.2464 18.216 7.246 18.2128 L 5.754 18.3667 Z M 7.46 19.7065 L 10.46 18.9955 L 10.114 17.536 L 7.114 18.247 L 7.46 19.7065 Z M 10.4716 18.9927 C 10.7771 18.9151 11.05 18.7422 11.2506 18.499 L 10.0934 17.5445 C 10.0958 17.5417 10.0989 17.5397 10.1024 17.5388 L 10.4716 18.9927 Z M 11.2571 18.491 L 17.2971 10.959 L 16.1269 10.0206 L 10.0869 17.5526 L 11.2571 18.491 Z M 13.2971 7.959 L 14.8851 5.979 L 13.7149 5.0405 L 12.1269 7.0205 Z M 14.9135 5.9412 C 15.0521 5.7441 15.3214 5.6912 15.5243 5.8212 L 16.3337 4.5583 C 15.4544 3.9948 14.2873 4.2241 13.6865 5.0783 L 14.9135 5.9412 Z M 15.4492 5.7662 L 17.6862 7.6282 L 18.6458 6.4753 L 16.4088 4.6133 L 15.4492 5.7662 Z M 17.6352 7.5816 C 17.7111 7.6577 17.7535 7.761 17.7529 7.8685 L 19.2529 7.8768 C 19.2557 7.369 19.0555 6.8813 18.6968 6.5219 L 17.6352 7.5816 Z M 17.7529 7.8685 C 17.7524 7.976 17.7088 8.0789 17.632 8.1541 L 18.682 9.2254 C 19.0446 8.87 19.2501 8.3845 19.2529 7.8768 L 17.7529 7.8685 Z M 17.5721 8.2203 L 16.1271 10.0203 L 17.2969 10.9593 L 18.7419 9.1593 L 17.5721 8.2203 Z M 11.9703 7.6009 C 12.3196 9.9322 14.4771 11.5503 16.813 11.2329 L 16.611 9.7466 C 15.0881 9.9535 13.6815 8.8986 13.4537 7.3786 Z"/>
-            </svg>
-            <svg class="delete-svg" viewBox="-6 -6 60 60" xmlns="http://www.w3.org/2000/svg">
-                <path d="M 42 3 H 28 a 2 2 0 0 0 -2 -2 H 22 a 2 2 0 0 0 -2 2 H 6 A 2 2 0 0 0 6 7 H 42 a 2 2 0 0 0 0 -4 Z M 39 9 a 2 2 0 0 0 -2 2 V 43 H 11 V 11 a 2 2 0 0 0 -4 0 V 45 a 2 2 0 0 0 2 2 H 39 a 2 2 0 0 0 2 -2 V 11 A 2 2 0 0 0 39 9 Z M 21 37 V 19 a 2 2 0 0 0 -4 0 V 37 a 2 2 0 0 0 4 0 Z M 31 37 V 19 a 2 2 0 0 0 -4 0 V 37 a 2 2 0 0 0 4 0 Z"/>
-            </svg>
-        </span>
-    `;
+
+    // Create title span
+    const titleSpan = document.createElement('span');
+    titleSpan.classList.add('cell-title');
+    titleSpan.textContent = `${ciclo.name} `;
+    cellContent.appendChild(titleSpan);
+    
+    const acronymSpan = document.createElement('span');
+    acronymSpan.classList.add('cell-subtitle');
+    acronymSpan.textContent = `(${ciclo.acronimo})`;
+    titleSpan.appendChild(acronymSpan);
+
+    // Create subtitle spans
+    const familiaSubtitleSpan = document.createElement('span');
+    familiaSubtitleSpan.classList.add('cell-subtitle');
+    familiaSubtitleSpan.textContent = ciclo.familiaProfesional;
+    cellContent.appendChild(familiaSubtitleSpan);
+
+    const nivelSubtitleSpan = document.createElement('span');
+    nivelSubtitleSpan.classList.add('cell-subtitle');
+    nivelSubtitleSpan.textContent = NIVELES[ciclo.nivel];
+    cellContent.appendChild(nivelSubtitleSpan);
+
+    const horasSubtitleSpan = document.createElement('span');
+    horasSubtitleSpan.classList.add('cell-subtitle');
+    horasSubtitleSpan.textContent = ciclo.horasPracticas;
+    cellContent.appendChild(horasSubtitleSpan);
+
+    // Create actions span
+    const actionsSpan = document.createElement('span');
+    actionsSpan.classList.add('cell-actions');
+    cellContent.appendChild(actionsSpan);
+
+    actionsSpan.appendChild(
+        createSVG(
+            'edit-svg',
+            '0 -0.5 25 25',
+            'M 20.848 1.879 C 19.676 0.707 17.777 0.707 16.605 1.879 L 2.447 16.036 C 2.029 16.455 1.743 16.988 1.627 17.569 L 1.04 20.505 C 0.76 21.904 1.994 23.138 3.393 22.858 L 6.329 22.271 C 6.909 22.155 7.443 21.869 7.862 21.451 L 22.019 7.293 C 23.191 6.121 23.191 4.222 22.019 3.05 L 20.848 1.879 Z M 18.019 3.293 C 18.41 2.902 19.043 2.902 19.433 3.293 L 20.605 4.465 C 20.996 4.855 20.996 5.488 20.605 5.879 L 6.447 20.036 C 6.308 20.176 6.13 20.271 5.936 20.31 L 3.001 20.897 L 3.588 17.962 C 3.627 17.768 3.722 17.59 3.862 17.451 L 13.933 7.379 L 16.52 9.965 L 17.934 8.56 L 15.348 5.965 L 18.019 3.293 Z',
+            () => editCiclo(ciclo)
+        )
+    );
+    actionsSpan.appendChild(
+        createSVG(
+            'delete-svg',
+            '-6 -6 60 60',
+            'M 42 3 H 28 A 2 2 0 0 0 26 1 H 22 A 2 2 0 0 0 20 3 H 6 A 2 2 0 0 0 6 7 H 42 A 2 2 0 0 0 42 3 Z M 37 11 V 43 H 31 V 19 A 1 1 0 0 0 27 19 V 43 H 21 V 19 A 1 1 0 0 0 17 19 V 43 H 11 V 11 A 2 2 0 0 0 7 11 V 45 A 2 2 0 0 0 9 47 H 39 A 2 2 0 0 0 41 45 V 11 A 2 2 0 0 0 37 11 Z',
+            () => removeCiclo(ciclo)
+        )
+    );
 
     cicloHeader.appendChild(cellContent);
+
     return cicloHeader;
 }
 
 function createFilledCell(year, ciclo, grupo) {
     const cell = document.createElement('div');
     cell.className = 'cell-content filled-cell';
-    cell.innerHTML = `
-        <span class="cell-title">${year}º ${ciclo.acronimo}</span>
-        <span class="cell-subtitle">${HORARIOS[grupo.horario]}</span>
-        <svg class="edit-svg" onclick="editGrupo(${grupo})" viewBox="0 -0.5 25 25" xmlns="http://www.w3.org/2000/svg">
-            <path d="M 13.2942 7.9588 L 13.2942 7.9588 Z M 6.811 14.8488 L 7.379 15.3385 C 7.3849 15.3317 7.3906 15.3248 7.3962 15.3178 L 6.811 14.8488 Z M 6.64 15.2668 L 5.8915 15.2179 L 5.8908 15.2321 L 6.64 15.2668 Z M 6.5 18.2898 L 5.7508 18.2551 C 5.7491 18.2923 5.7501 18.3296 5.754 18.3667 L 6.5 18.2898 Z M 7.287 18.9768 L 7.3115 19.7264 C 7.3615 19.7247 7.4113 19.7181 7.46 19.7065 L 7.287 18.9768 Z M 10.287 18.2658 L 10.46 18.9956 L 10.4716 18.9927 L 10.287 18.2658 Z M 10.672 18.0218 L 11.2506 18.4991 L 11.2571 18.491 L 10.672 18.0218 Z M 17.2971 10.959 L 17.2971 10.959 Z M 12.1269 7.0205 L 12.1269 7.0205 Z M 14.3 5.5098 L 14.8851 5.979 C 14.8949 5.9667 14.9044 5.9541 14.9135 5.9412 L 14.3 5.5098 Z M 15.929 5.1898 L 16.4088 4.6133 C 16.3849 4.5934 16.3598 4.5751 16.3337 4.5583 L 15.929 5.1898 Z M 18.166 7.0518 L 18.6968 6.5219 C 18.6805 6.5056 18.6635 6.4901 18.6458 6.4753 L 18.166 7.0518 Z M 18.5029 7.8726 L 19.2529 7.8768 V 7.8768 L 18.5029 7.8726 Z M 18.157 8.6898 L 17.632 8.1541 C 17.6108 8.175 17.5908 8.197 17.5721 8.2203 Z M 16.1271 10.0203 L 16.1271 10.0203 Z M 13.4537 7.3786 L 13.4537 7.3786 Z M 16.813 11.2329 L 16.813 11.2329 Z M 12.1238 7.0207 L 6.2258 14.3797 L 7.3962 15.3178 L 13.2942 7.9588 Z M 6.243 14.359 C 6.0356 14.5995 5.9123 14.9011 5.8916 15.218 L 7.3884 15.3156 C 7.3879 15.324 7.3846 15.3321 7.379 15.3385 L 6.243 14.359 Z M 5.8908 15.2321 L 5.7508 18.2551 L 7.2492 18.3245 L 7.3892 15.3015 L 5.8908 15.2321 Z M 5.754 18.3667 C 5.8356 19.1586 6.5159 19.7524 7.3115 19.7264 L 7.2625 18.2272 C 7.2593 18.2273 7.2577 18.2268 7.2567 18.2264 C 7.2553 18.2259 7.2534 18.2249 7.2514 18.2232 C 7.2495 18.2215 7.2482 18.2198 7.2475 18.2185 C 7.247 18.2175 7.2464 18.216 7.246 18.2128 L 5.754 18.3667 Z M 7.46 19.7065 L 10.46 18.9955 L 10.114 17.536 L 7.114 18.247 L 7.46 19.7065 Z M 10.4716 18.9927 C 10.7771 18.9151 11.05 18.7422 11.2506 18.499 L 10.0934 17.5445 C 10.0958 17.5417 10.0989 17.5397 10.1024 17.5388 L 10.4716 18.9927 Z M 11.2571 18.491 L 17.2971 10.959 L 16.1269 10.0206 L 10.0869 17.5526 L 11.2571 18.491 Z M 13.2971 7.959 L 14.8851 5.979 L 13.7149 5.0405 L 12.1269 7.0205 Z M 14.9135 5.9412 C 15.0521 5.7441 15.3214 5.6912 15.5243 5.8212 L 16.3337 4.5583 C 15.4544 3.9948 14.2873 4.2241 13.6865 5.0783 L 14.9135 5.9412 Z M 15.4492 5.7662 L 17.6862 7.6282 L 18.6458 6.4753 L 16.4088 4.6133 L 15.4492 5.7662 Z M 17.6352 7.5816 C 17.7111 7.6577 17.7535 7.761 17.7529 7.8685 L 19.2529 7.8768 C 19.2557 7.369 19.0555 6.8813 18.6968 6.5219 L 17.6352 7.5816 Z M 17.7529 7.8685 C 17.7524 7.976 17.7088 8.0789 17.632 8.1541 L 18.682 9.2254 C 19.0446 8.87 19.2501 8.3845 19.2529 7.8768 L 17.7529 7.8685 Z M 17.5721 8.2203 L 16.1271 10.0203 L 17.2969 10.9593 L 18.7419 9.1593 L 17.5721 8.2203 Z M 11.9703 7.6009 C 12.3196 9.9322 14.4771 11.5503 16.813 11.2329 L 16.611 9.7466 C 15.0881 9.9535 13.6815 8.8986 13.4537 7.3786 Z"/>
-        </svg>
-        <svg class="delete-svg" onclick="deleteGroup(${grupo})" viewBox="-6 -6 60 60" xmlns="http://www.w3.org/2000/svg">
-            <path d="M 42 3 H 28 a 2 2 0 0 0 -2 -2 H 22 a 2 2 0 0 0 -2 2 H 6 A 2 2 0 0 0 6 7 H 42 a 2 2 0 0 0 0 -4 Z M 39 9 a 2 2 0 0 0 -2 2 V 43 H 11 V 11 a 2 2 0 0 0 -4 0 V 45 a 2 2 0 0 0 2 2 H 39 a 2 2 0 0 0 2 -2 V 11 A 2 2 0 0 0 39 9 Z M 21 37 V 19 a 2 2 0 0 0 -4 0 V 37 a 2 2 0 0 0 4 0 Z M 31 37 V 19 a 2 2 0 0 0 -4 0 V 37 a 2 2 0 0 0 4 0 Z"/>
-        </svg>
-    `;
+
+    // Create title span
+    const titleSpan = document.createElement('span');
+    titleSpan.classList.add('cell-title');
+    titleSpan.textContent = `${year}º ${ciclo.acronimo}`;
+    cell.appendChild(titleSpan);
+
+    // Create subtitle span
+    const subtitleSpan = document.createElement('span');
+    subtitleSpan.classList.add('cell-subtitle');
+    subtitleSpan.textContent = HORARIOS[grupo.horario];
+    cell.appendChild(subtitleSpan);
+
+    cell.appendChild(
+        createSVG(
+            'edit-svg',
+            '0 -0.5 25 25',
+            'M 20.848 1.879 C 19.676 0.707 17.777 0.707 16.605 1.879 L 2.447 16.036 C 2.029 16.455 1.743 16.988 1.627 17.569 L 1.04 20.505 C 0.76 21.904 1.994 23.138 3.393 22.858 L 6.329 22.271 C 6.909 22.155 7.443 21.869 7.862 21.451 L 22.019 7.293 C 23.191 6.121 23.191 4.222 22.019 3.05 L 20.848 1.879 Z M 18.019 3.293 C 18.41 2.902 19.043 2.902 19.433 3.293 L 20.605 4.465 C 20.996 4.855 20.996 5.488 20.605 5.879 L 6.447 20.036 C 6.308 20.176 6.13 20.271 5.936 20.31 L 3.001 20.897 L 3.588 17.962 C 3.627 17.768 3.722 17.59 3.862 17.451 L 13.933 7.379 L 16.52 9.965 L 17.934 8.56 L 15.348 5.965 L 18.019 3.293 Z',
+            () => editGrupo(grupo)
+        )
+    );
+    cell.appendChild(
+        createSVG(
+            'delete-svg',
+            '-6 -6 60 60',
+            'M 42 3 H 28 A 2 2 0 0 0 26 1 H 22 A 2 2 0 0 0 20 3 H 6 A 2 2 0 0 0 6 7 H 42 A 2 2 0 0 0 42 3 Z M 37 11 V 43 H 31 V 19 A 1 1 0 0 0 27 19 V 43 H 21 V 19 A 1 1 0 0 0 17 19 V 43 H 11 V 11 A 2 2 0 0 0 7 11 V 45 A 2 2 0 0 0 9 47 H 39 A 2 2 0 0 0 41 45 V 11 A 2 2 0 0 0 37 11 Z',
+            () => removeGrupo(grupo)
+        )
+    );
+
     return cell;
 }
 
 function createEmptyCell(ciclo, cicloLectivo, numero) {
     const cell = document.createElement('div');
     cell.className = 'cell-content empty-cell add-element';
-    cell.innerHTML = getPlusSvg();
-    cell.onclick = addGrupo.bind(null, ciclo, cicloLectivo, numero);
+    cell.appendChild(
+        createAddSVG(() => {
+            addGrupo(ciclo, cicloLectivo, numero);
+        })
+    );
     return cell;
+}
+
+function createSVG(className, viewBox, pathData, clickHandler) {
+    const SVG_NS = 'http://www.w3.org/2000/svg';
+    const svg = document.createElementNS(SVG_NS, 'svg');
+    svg.classList.add(className);
+    svg.setAttribute('viewBox', viewBox);
+    svg.setAttribute('xmlns', SVG_NS);
+    svg.onclick = clickHandler;
+
+    const path = document.createElementNS(SVG_NS, 'path');
+    path.setAttribute('d', pathData);
+    svg.appendChild(path);
+
+    return svg;
+}
+
+function createAddSVG(clickHandler) {
+    return createSVG(
+            'plus-svg',
+            '0 0 48 48',
+            'M 44 20 L 28 20 L 28 4 C 28 2 26 0 24 0 S 20 2 20 4 L 20 20 L 4 20 C 2 20 0 22 0 24 S 2 28 4 28 L 20 28 L 20 44 C 20 46 22 48 24 48 S 28 46 28 44 L 28 28 L 44 28 C 46 28 48 26 48 24 S 46 20 44 20 Z',
+            clickHandler
+    );
 }
 
 function collapseAll() {
@@ -382,11 +440,6 @@ function collapseAll() {
     });
 }
 
-
-
-
-
-
 function addGrupo(ciclo, cicloLectivo, numero) {
     collapseAll();
 
@@ -394,10 +447,9 @@ function addGrupo(ciclo, cicloLectivo, numero) {
     form.form.parentNode.classList.remove('collapsed');
 
     form.onsubmit = (event) => {
-        event.preventDefault();
-
         const cicloLectivoId = cicloLectivo.id;
         const cicloId = ciclo.id;
+        const numero = form.getInput('grupo-numero').getValue();
         const horario = form.getInput('grupo-horario').getValue();
 
         let grupo = {
@@ -417,13 +469,20 @@ function addGrupo(ciclo, cicloLectivo, numero) {
             if (response.ok || response.status === 201) {
                 promise();
             } else {
-                form.showError('Error al crear el grupo');
+                form.showError(`Error al crear el grupo: ${response.text()}`);
+                console.log(response.text());
             }
         }).catch(error => {
             console.error('Error al crear el grupo:', error);
             form.showError('Error al crear el grupo');
         });
     }
+
+    form.getInput('grupo-numero').retrack(numero);
+    form.getInput('grupo-horario').retrack('');
+
+    form.form.setAttribute('submit-text', 'Crear grupo');
+    form.submit.textContent = 'Crear grupo';
 }
 
 function addCiclo() {
@@ -434,14 +493,14 @@ function addCiclo() {
 
     form.onsubmit = (event) => {
         const name = form.getInput('ciclo-nombre').getValue();
-        const acronimo = form.getInput('ciclo-abreviacion').getValue();
+        const acronimo = form.getInput('ciclo-acronimo').getValue();
         const familiaProfesional = form.getInput('ciclo-familia').getValue();
         const nivel = form.getInput('ciclo-nivel').getValue();
         const years = form.getInput('ciclo-years').getValue();
         const horasPracticas = form.getInput('ciclo-practicas').getValue();
 
         let ciclo = {
-            nombre: name,
+            name: name,
             acronimo: acronimo,
             familiaProfesional: familiaProfesional,
             nivel: nivel,
@@ -459,13 +518,24 @@ function addCiclo() {
             if (response.ok || response.status === 201) {
                 promise();
             } else {
-                form.showError('Error al crear el ciclo');
+                form.showError(`Error al crear el ciclo: ${response.text()}`);
+                console.log(response.text());
             }
         }).catch(error => {
             console.error('Error al crear el ciclo:', error);
             form.showError('Error al crear el ciclo');
         });
     }
+
+    form.getInput('ciclo-nombre').retrack('');
+    form.getInput('ciclo-acronimo').retrack('');
+    form.getInput('ciclo-familia').retrack('');
+    form.getInput('ciclo-nivel').retrack('');
+    form.getInput('ciclo-years').retrack('');
+    form.getInput('ciclo-practicas').retrack('');
+
+    form.form.setAttribute('submit-text', 'Crear ciclo');
+    form.submit.textContent = 'Crear ciclo';
 }
 
 function addCicloLectivo() {
@@ -476,14 +546,14 @@ function addCicloLectivo() {
 
     form.onsubmit = (event) => {
         const name = form.getInput('ciclo-lectivo-nombre').getValue();
-        const fechaInicio = form.getInput('ciclo-lectivo-fecha-inicio').getValue();
+        const fechaInicio = form.getInput('ciclo-lectivo-inicio').getValue();
 
         let cicloLectivo = {
             nombre: name,
             fechaInicio: fechaInicio
         };
 
-        fetch('/api/ciclosLectivos/create', {
+        fetch('/api/ciclos-lectivos/create', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -493,13 +563,20 @@ function addCicloLectivo() {
             if (response.ok || response.status === 201) {
                 promise();
             } else {
-                form.showError('Error al crear el ciclo lectivo');
+                form.showError(`Error al crear el ciclo lectivo: ${response.text()}`);
+                console.log(response.text());
             }
         }).catch(error => {
             console.error('Error al crear el ciclo lectivo:', error);
             form.showError('Error al crear el ciclo lectivo');
         });
     }
+    
+    form.getInput('ciclo-lectivo-nombre').retrack('');
+    form.getInput('ciclo-lectivo-inicio').retrack('');
+
+    form.form.setAttribute('submit-text', 'Crear ciclo lectivo');
+    form.submit.textContent = 'Crear ciclo lectivo';
 }
 
 function removeGrupo(grupo) {
@@ -513,7 +590,8 @@ function removeGrupo(grupo) {
         if (response.ok) {
             promise();
         } else {
-            alert('Error al eliminar el grupo');
+            alert(`Error al eliminar el grupo ${grupo.numero}: ${response.text()}`);
+                console.log(response.text());
         }
     }).catch(error => {
         console.error('Error al eliminar el grupo:', error);
@@ -532,7 +610,8 @@ function removeCiclo(ciclo) {
         if (response.ok) {
             promise();
         } else {
-            alert('Error al eliminar el ciclo');
+            alert(`Error al eliminar el ciclo ${ciclo.acronimo}: ${response.text()}`);
+                console.log(response.text());
         }
     }).catch(error => {
         console.error('Error al eliminar el ciclo:', error);
@@ -545,13 +624,14 @@ function removeCicloLectivo(cicloLectivo) {
         return;
     }
 
-    fetch(`/api/ciclosLectivos/${cicloLectivo.id}`, {
+    fetch(`/api/ciclos-lectivos/${cicloLectivo.id}`, {
         method: 'DELETE'
     }).then(response => {
         if (response.ok) {
             promise();
         } else {
-            alert('Error al eliminar el ciclo lectivo');
+            alert(`Error al eliminar el ciclo lectivo ${cicloLectivo.nombre}: ${response.text()}`);
+                console.log(response.text());
         }
     }).catch(error => {
         console.error('Error al eliminar el ciclo lectivo:', error);
@@ -565,16 +645,45 @@ function editGrupo(grupo) {
     const form = Form.getForm('grupo-form');
     form.form.parentNode.classList.remove('collapsed');
 
-    form.getInput('grupo-id').setValue(grupo.id);
-    form.getInput('grupo-numero').setValue(grupo.numero);
-    form.getInput('grupo-ciclo').setValue(grupo.ciclo.id);
-    form.getInput('grupo-ciclo-lectivo').setValue(grupo.cicloLectivo.id);
-    form.getInput('grupo-horario').setValue(grupo.horario);
-
+    console.log(grupo);
     form.onsubmit = (event) => {
-        event.preventDefault();
-        // Aquí se puede agregar la lógica para actualizar el grupo
+    const numero = form.getInput('grupo-numero').getValue();
+    const horario = form.getInput('grupo-horario').getValue();
+
+        const data = {
+            ciclo: grupo.cicloId,
+            cicloLectivo: grupo.cicloLectivoId,
+            numero: numero,
+            horario: horario
+        }
+
+        fetch(`/api/grupos/${grupo.id}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
+        })
+        .then((response) => {
+            if (response.ok || response.status === 201) {
+                promise();
+            } else {
+                const resp = response.json();
+                form.showError(`Error al actualizar el grupo: ${resp.message}`);
+                console.log(resp);
+            }
+        })
+        .catch((error) => {
+            console.error('Error al actualizar el grupo:', error);
+            form.showError('Error al actualizar el grupo');
+        });
     }
+
+    form.getInput('grupo-numero').retrack(grupo.numero);
+    form.getInput('grupo-horario').retrack(grupo.horario);
+
+    form.form.setAttribute('submit-text', 'Actualizar grupo');
+    form.submit.textContent = 'Actualizar grupo';
 }
 
 function editCiclo(ciclo) {
@@ -583,16 +692,50 @@ function editCiclo(ciclo) {
     const form = Form.getForm('ciclo-form');
     form.form.parentNode.classList.remove('collapsed');
 
-    form.getInput('ciclo-id').setValue(ciclo.id);
-    form.getInput('ciclo-nombre').setValue(ciclo.nombre);
-    form.getInput('ciclo-acronimo').setValue(ciclo.acronimo);
-    form.getInput('ciclo-nivel').setValue(ciclo.nivel);
-    form.getInput('ciclo-anos').setValue(ciclo.years);
-
     form.onsubmit = (event) => {
-        event.preventDefault();
-        // Aquí se puede agregar la lógica para actualizar el ciclo
+        const name = form.getInput('ciclo-nombre').getValue();
+        const acronimo = form.getInput('ciclo-acronimo').getValue();
+        const nivel = form.getInput('ciclo-nivel').getValue();
+        const familiaProfesional = form.getInput('ciclo-familia').getValue();
+        const horasPracticas = form.getInput('ciclo-practicas').getValue();
+
+        const data = {
+            name: name,
+            acronimo: acronimo,
+            nivel: nivel,
+            familiaProfesional: familiaProfesional,
+            horasPracticas: horasPracticas
+        }
+
+        fetch(`/api/ciclos/${ciclo.id}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
+        })
+        .then((response) => {
+            if (response.ok || response.status === 201) {
+                promise();
+            } else {
+                form.showError(`Error al actualizar el ciclo: ${response.text()}`);
+                console.log(response.text());
+            }
+        })
+        .catch((error) => {
+            console.error('Error al actualizar el ciclo:', error);
+            form.showError('Error al actualizar el ciclo');
+        });
     }
+
+    form.getInput('ciclo-nombre').retrack(ciclo.name);
+    form.getInput('ciclo-acronimo').retrack(ciclo.acronimo);
+    form.getInput('ciclo-nivel').retrack(ciclo.nivel);
+    form.getInput('ciclo-familia').retrack(ciclo.familiaProfesional);
+    form.getInput('ciclo-practicas').retrack(ciclo.horasPracticas);
+
+    form.form.setAttribute('submit-text', 'Actualizar ciclo');
+    form.submit.textContent = 'Actualizar ciclo';
 }
 
 function editCicloLectivo(cicloLectivo) {
@@ -601,12 +744,39 @@ function editCicloLectivo(cicloLectivo) {
     const form = Form.getForm('ciclo-lectivo-form');
     form.form.parentNode.classList.remove('collapsed');
 
-    form.getInput('ciclo-lectivo-id').setValue(cicloLectivo.id);
-    form.getInput('ciclo-lectivo-nombre').setValue(cicloLectivo.nombre);
-    form.getInput('ciclo-lectivo-fecha-inicio').setValue(cicloLectivo.fechaInicio);
-
     form.onsubmit = (event) => {
-        event.preventDefault();
-        // Aquí se puede agregar la lógica para actualizar el ciclo lectivo
+        const nombre = form.getInput('ciclo-lectivo-nombre').getValue();
+        const inicio = form.getInput('ciclo-lectivo-inicio').getValue();
+
+        const data = {
+            nombre: nombre,
+            inicio: inicio
+        }
+
+        fetch(`/api/ciclos-lectivos/${cicloLectivo.id}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
+        })
+        .then((response) => {
+            if (response.ok || response.status === 201) {
+                promise();
+            } else {
+                form.showError(`Error al actualizar el ciclo lectivo: ${response.text()}`);
+                console.log(response.text());
+            }
+        })
+        .catch((error) => {
+            console.error('Error al actualizar el ciclo lectivo:', error);
+            form.showError('Error al actualizar el ciclo lectivo');
+        });
     }
+
+    form.getInput('ciclo-lectivo-nombre').retrack(cicloLectivo.nombre);
+    form.getInput('ciclo-lectivo-fecha-inicio').retrack(cicloLectivo.fechaInicio);
+
+    form.form.setAttribute('submit-text', 'Actualizar ciclo lectivo');
+    form.submit.textContent = 'Actualizar ciclo lectivo';
 }

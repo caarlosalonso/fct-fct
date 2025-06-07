@@ -11,24 +11,31 @@
     <script type="module" src="/scripts/global.js"></script>
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Página principal - Tutor</title>
+    <title>Coordinación - Alumnado</title>
 
-    <link rel="stylesheet" href="/styles/tutor/tutor.css">
+    <link rel="stylesheet" href="/styles/coordinacion/alumnado.css">
 </head>
 <body>
     <header>
         <nav id="navbar">
             <ul class="navigation nav">
                 <li class="navigation nav-item">
-                    <a href="/alumnado" class="navigation nav-link active">Alumnos</a>
+                    <a href="/ciclos" class="navigation nav-link">Ciclos</a>
                 </li>
                 <li class="navigation nav-item">
-                    <a href="/empresas" class="navigation nav-link">Empresas</a>
+                    <a href="/alumnado" class="navigation nav-link active">Alumnado</a>
                 </li>
             </ul>
         </nav>
     </header>
-    <main>
+    <main id="loading">
+        <div class="loading-container">
+            <div class="spinner spinner-border text-primary" role="status">
+                <span class="visually-hidden">Cargando...</span>
+            </div>
+        </div>
+    </main>
+    <main id="main-content">
         <section id="curso-selection">
             <ul class="cursos nav nav-tabs" id="cursos">
                 <!-- Aquí se añadirán los cursos dinámicamente -->
@@ -120,6 +127,6 @@
             </div>
         </section>
     </main>
-    <script type="module" src="/scripts/tutor/tutor.js"></script>
+    <script type="module" src="/scripts/coordinacion/alumnado.js"></script>
 </body>
 </html>

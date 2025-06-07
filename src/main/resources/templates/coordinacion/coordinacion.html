@@ -2,6 +2,9 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
+    <link rel="icon" type="image/png" sizes="32x32" href="https://site.educa.madrid.org/ies.arquitectoventurarodriguez.boadilla//wp-content/uploads/ies.arquitectoventurarodriguez.boadilla/2023/05/cropped-logo-ventura-rodriguez.jpg">
+    <link rel="icon" type="image/x-icon" href="https://site.educa.madrid.org/ies.arquitectoventurarodriguez.boadilla//wp-content/uploads/ies.arquitectoventurarodriguez.boadilla/2023/05/cropped-logo-ventura-rodriguez.jpg">
+
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4Q6Gf2aSP4eDXB8Miphtr37CMZZQ5oXLH2yaXMJ2w8e2ZtHTl7GptT4jmndRuHDT" crossorigin="anonymous">
     <link rel="stylesheet" href="/styles/global.css">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/js/bootstrap.bundle.min.js" integrity="sha384-j1CDi7MgGQ12Z7Qab0qlWQ/Qqz24Gc6BM0thvEMVjHnfYGF0rmFCozFSxQBxwHKO" crossorigin="anonymous"></script>
@@ -13,13 +16,25 @@
     <link rel="stylesheet" href="/styles/coordinacion/coordinacion.css">
 </head>
 <body>
+    <header>
+        <nav id="navbar">
+            <ul class="navigation nav">
+                <li class="navigation nav-item">
+                    <a href="/ciclos" class="navigation nav-link active">Ciclos</a>
+                </li>
+                <li class="navigation nav-item">
+                    <a href="/alumnado" class="navigation nav-link">Alumnado</a>
+                </li>
+            </ul>
+        </nav>
+    </header>
     <main>
         <section id="display-section">
             <div id="display-grid-wrapper">
                 <!-- Generated automatically -->
             </div>
         </section>
-        <section id="ciclo-section" class="section">
+        <section id="ciclo-section" class="section collapsed">
             <form id="ciclo-form" method="POST" submit-text="Crear ciclo">
                 <div class="inputs form-container">
                     <div class="instance form-input grouped-inputs">
@@ -27,7 +42,7 @@
                             <input type="text" id="ciclo-nombre" name="nombre" class="text-based input" label="Nombre ciclo" data-required="true">
                         </div>
                         <div class="form-group form-input">
-                            <input type="text" id="ciclo-abreviacion" name="abreviacion" class="text-based input" label="Abreviación" data-required="true">
+                            <input type="text" id="ciclo-acronimo" name="acronimo" class="text-based input" label="Abreviación" data-required="true">
                         </div>
                     </div>
                     <div class="instance form-input">
@@ -40,16 +55,13 @@
                             <input type="select" id="ciclo-nivel" name="nivel" class="text-based input" label="Nivel" data-required="true" data-options="BASICO:Básica;MEDIO:Medio;SUPERIOR:Superior" data-show-validity="true">
                         </div>
                         <div class="form-group form-input">
-                            <input type="number" id="ciclo-years" name="years" class="text-based input" label="Años" data-required="true" data-min="1" data-max="6" data-step="1" data-show-validity="true">
-                        </div>
-                        <div class="form-group form-input">
                             <input type="number" id="ciclo-practicas" name="practicas" class="text-based input" label="Horas de prácticas" data-required="true" data-min="0" data-max="1000" data-step="1" data-show-validity="true">
                         </div>
                     </div>
                 </div>
             </form>
         </section>
-        <section id="ciclo-lectivo-section" class="section">
+        <section id="ciclo-lectivo-section" class="section collapsed">
             <form id="ciclo-lectivo-form" method="POST" submit-text="Crear ciclo lectivo">
                 <div class="inputs form-container">
                     <div class="instance form-input grouped-inputs">
@@ -63,7 +75,7 @@
                 </div>
             </form>
         </section>
-        <section id="grupo-section" class="section">
+        <section id="grupo-section" class="section collapsed">
             <form id="grupo-form" method="POST" submit-text="Crear grupo para [ciclo] [ciclo-lectivo]">
                 <div class="inputs form-container">
                     <div class="instance form-input grouped-inputs">
