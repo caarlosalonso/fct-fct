@@ -692,7 +692,7 @@ function editGrupo(grupo) {
             horario: horario
         }
 
-        fetch(`/api/grupo/${grupo.id}`, {
+        fetch(`/api/grupos/${grupo.id}`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json'
@@ -742,7 +742,7 @@ function editCiclo(ciclo) {
             horasPracticas: horasPracticas
         }
 
-        fetch(`/api/grupo/${grupo.id}`, {
+        fetch(`/api/ciclos/${ciclo.id}`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json'
@@ -753,13 +753,13 @@ function editCiclo(ciclo) {
             if (response.ok || response.status === 201) {
                 promise();
             } else {
-                form.showError(`Error al actualizar el grupo: ${response.text()}`);
+                form.showError(`Error al actualizar el ciclo: ${response.text()}`);
                 console.log(response.text());
             }
         })
         .catch((error) => {
-            console.error('Error al actualizar el grupo:', error);
-            form.showError('Error al actualizar el grupo');
+            console.error('Error al actualizar el ciclo:', error);
+            form.showError('Error al actualizar el ciclo');
         });
     }
 
@@ -788,7 +788,7 @@ function editCicloLectivo(cicloLectivo) {
             inicio: inicio
         }
 
-        fetch(`/api/ciclo-lectivo/${cicloLectivo.id}`, {
+        fetch(`/api/ciclos-lectivos/${cicloLectivo.id}`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json'
