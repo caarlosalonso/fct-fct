@@ -72,6 +72,14 @@ function createCiclosLectivos() {
     const cicloLectivoSelection = document.getElementById('ciclo-lectivo-selection');
     cicloLectivoSelection.innerHTML = '';
 
+    if (info.length === 0) {
+        cicloLectivoSelection.classList.add('empty');
+        const emptyMessage = document.createElement('p');
+        emptyMessage.textContent = 'No hay ciclos lectivos disponibles';
+        cicloLectivoSelection.appendChild(emptyMessage);
+        return;
+    }
+
     const ul = document.createElement('ul');
     ul.classList.add('ciclos-lectivos', 'nav', 'nav-tabs');
     ul.id = 'ciclos-lectivos';
@@ -80,11 +88,10 @@ function createCiclosLectivos() {
     info.forEach((cicloLectivo) => {
         const li = document.createElement('li');
         li.classList.add('nav-item');
-        li.textContent = cicloLectivo.nombre;
         ul.appendChild(li);
 
         const cicloLectivoText = document.createElement('p');
-        cicloLectivoText.classList.add('curso', 'nav-link');
+        cicloLectivoText.classList.add('cicloLectivo', 'nav-link');
         cicloLectivoText.id = `ciclo-lectivo-${cicloLectivo.id}`;
         cicloLectivoText.textContent = cicloLectivo.nombre;
         li.appendChild(cicloLectivoText);
@@ -96,14 +103,13 @@ function createCiclosLectivos() {
         if (chosenCicloLectivo === null) {
             li.classList.add('active');
             chosenCicloLectivo = cicloLectivo;
-            createGruposCiclos(cicloLectivo);
+            createGruposCiclos(cicloLectivo.id);
         }
     });
 }
 
 function createGruposCiclos(cicloLectivoId) {
-    if (chosenGrupo) chosenGrupo.classList.remove('active');
-
+    console.log(`Creating grupos ciclos for cicloLectivoId: ${cicloLectivoId}`);
     const gruposCiclosSelection = document.getElementById('grupos-ciclos-selection');
     gruposCiclosSelection.innerHTML = '';
 
