@@ -45,5 +45,26 @@
     <section id="coordinadores-section">
         
     </section>
+    <section id="create-coordinador-section" class="section">
+        <form id="coordinador-form" method="POST" submit-text="Crear coordinador">
+            <div class="inputs form-container">
+                <div class="instance form-input grouped-inputs">
+                    <div class="form-group form-input">
+                        <input type="text" id="coordinador-nombre" name="nombre" class="text-based input" label="Nombre" data-required="true">
+                    </div>
+                </div>
+                <div class="instance form-input grouped-inputs">
+                    <div class="form-group form-input">
+                        <input type="email" id="coordinador-email" name="email" class="text-based input" label="Email" data-required="true" data-show-validity="true">
+                    </div>
+                </div>
+                <div class="instance form-input grouped-inputs">
+                    <div class="form-group form-input">
+                        <input type="password" id="coordinador-password" name="password" class="text-based input password" label="Contraseña" data-required="true">
+                    </div>
+                </div>
+            </div>
+        </form>
+    </section>
 </body>
 </html>

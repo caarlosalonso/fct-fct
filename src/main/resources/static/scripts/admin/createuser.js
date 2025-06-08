@@ -1,4 +1,4 @@
-import { Form } from './classes/Form.js';
+import { Form } from '../classes/Form.js';
 
     window.addEventListener('FormsCreated', (event) => {
         const form = Form.getForm('user-creation');
@@ -10,17 +10,15 @@ import { Form } from './classes/Form.js';
         form.onsubmit = () => {
             const nombre = form.getInput('nombre').getValue();
             const email = form.getInput('email').getValue();
-            const role = form.getInput('role').getValue();
             const password = form.getInput('password').getValue();
 
             const data = {
                 name: nombre,
                 email: email,
-                role: role,
                 password: password
             };
 
-            fetch('/api/coordinacion/create', {
+            fetch('/api/users/admin', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'

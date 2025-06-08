@@ -20,18 +20,18 @@ import jakarta.servlet.http.HttpSession;
 
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import es.daw2.fct_fct.dto.CoordinadorCreateDTO;
+import es.daw2.fct_fct.dto.CreateUserDTO;
 
 
 @RestController
 @RequestMapping("/api/coordinacion")
-public class ControladorCoordinacion extends CrudController<Long, Coordinacion, CoordinadorCreateDTO, Coordinacion, ServicioCoordinacion> {
+public class ControladorCoordinacion extends CrudController<Long, Coordinacion, CreateUserDTO, CreateUserDTO, ServicioCoordinacion> {
 
     @Autowired
     private ServicioUser servicioUser;
 
     @Override
-    public ResponseEntity<?> create(@RequestBody CoordinadorCreateDTO c, HttpServletRequest request) {
+    public ResponseEntity<?> create(@RequestBody CreateUserDTO c, HttpServletRequest request) {
         HttpSession session = request.getSession(false);
         if (session == null) return ResponseEntity.status(401).body("Unauthorized");
         Object role = session.getAttribute("role");
@@ -45,18 +45,13 @@ public class ControladorCoordinacion extends CrudController<Long, Coordinacion, 
         newUser.setPassword(
             PasswordUtils.hashPassword(c.password())
         );
-        newUser.setRole(c.role());
+        newUser.setRole(Role.COORDINADOR);
 
         if (servicioUser.checkEmailExists(newUser.getEmail())) {
             return ResponseEntity.status(409).body("Email already exists"); // Conflicto, ya existe un usuario con ese email
         }
 
         User saved = servicioUser.save(newUser);
-
-        if (! c.role().equals(Role.COORDINADOR)) {
-            URI location = URI.create("/api/users/" + saved.getId());
-            return ResponseEntity.created(location).body(saved);
-        }
 
         Coordinacion coordinacion = new Coordinacion();
         coordinacion.setUser(saved);
@@ -73,23 +68,34 @@ public class ControladorCoordinacion extends CrudController<Long, Coordinacion, 
     // getById ya existe en CrudController
 
     @Override
-    public ResponseEntity<?> update(@PathVariable Long id, @RequestBody Coordinacion c, HttpServletRequest request){
+    public ResponseEntity<?> update(@PathVariable Long id, @RequestBody CreateUserDTO c, HttpServletRequest request){
+        HttpSession session = request.getSession(false);
+        if (session == null) return ResponseEntity.status(401).body("Unauthorized");
+        Object role = session.getAttribute("role");
+        if (role == null || ! role.equals("ADMIN")) {
+            return ResponseEntity.status(403).body("Forbidden: Only admins can create coordinators");
+        }
+        
         Optional<Coordinacion> optional = service.getById(id);
-
         if(!optional.isPresent()){
             return ResponseEntity.notFound().build();
         }
 
-        c.setId(id);
-
-        Optional<Coordinacion> coordinacionActualizado = service.update(id, c);
-        if (!coordinacionActualizado.isPresent()) {
-            return ResponseEntity.badRequest().body("No se ha podido actualizar coordinación con el id: " + id);
+        if (servicioUser.checkEmailExists(c.email())) {
+            return ResponseEntity.status(409).body("Email already exists"); // Conflicto, ya existe un usuario con ese email
         }
 
-        URI location = URI.create("/api/coordinacion/" +c.getId());
+        Coordinacion coordinacion = optional.get();
+        User user = coordinacion.getUser();
+        user.setName(c.name());
+        user.setEmail(c.email());
+        user.setPassword(
+            PasswordUtils.hashPassword(c.password())
+        );
 
-        return ResponseEntity.ok().location(location).body(coordinacionActualizado);
+        servicioUser.update(user.getId(), user);
+
+        return ResponseEntity.ok().build();
     }
 
     // delete ya existe en CrudController
