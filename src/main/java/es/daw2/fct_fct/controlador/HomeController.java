@@ -23,6 +23,14 @@ public class HomeController {
         return "auth/login.html";
     }
 
+    @GetMapping("/logout")
+    public String logout(HttpServletRequest request) {
+        HttpSession session = request.getSession(false);
+        if (session == null) return REDIRECT_LOGIN;
+        session.invalidate();
+        return "auth/logout.html";
+    }
+
     @GetMapping("/error")
     public String error() {
         return "error.html";
