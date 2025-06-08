@@ -11,7 +11,7 @@
     <script type="module" src="/scripts/global.js"></script>
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Creación de usuarios - Admin</title>
+    <title>Creación de administradores - Admin</title>
 
     <link rel="stylesheet" href="/styles/navigation.css">
 </head>
@@ -40,7 +40,7 @@
             </ul>
         </nav>
     </header>
-    <form id="user-creation" method="POST" submit-text="Crear usuario">
+    <form id="user-creation" method="POST" submit-text="Crear Admin">
         <div id="inputs" class="form-container">
             <div class="instance form-input grouped-inputs">
                 <div class="form-group form-input">
@@ -50,9 +50,6 @@
             <div class="instance form-input grouped-inputs">
                 <div class="form-group form-input">
                     <input type="email" name="email" id="email" class="text-based input" label="Introduce su correo" data-show-validity="true" data-required="true">
-                </div>
-                <div class="form-group form-input">
-                    <input type="select" name="role" id="role" class="text-based input" label="Rol del usuario" data-show-validity="true" data-required="true" data-options="ADMIN:Administrador;COORDINADOR:Coordinador">
                 </div>
             </div>
             <div class="instance form-input grouped-inputs">
