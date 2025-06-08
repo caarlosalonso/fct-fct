@@ -94,11 +94,11 @@ function dibujarTabla(empresas) {
     if (estados.pendiente.length > 0) {
         wrapper.appendChild(crearBloqueEstado('Empresas pendientes', estados.pendiente));
     }
-    if (estados.denegado.length > 0) {
-        wrapper.appendChild(crearBloqueEstado('Empresas denegadas', estados.denegado));
-    }
     if (estados.aceptado.length > 0) {
         wrapper.appendChild(crearBloqueEstado('Empresas aceptadas', estados.aceptado));
+    }
+    if (estados.denegado.length > 0) {
+        wrapper.appendChild(crearBloqueEstado('Empresas denegadas', estados.denegado));
     }
 }
 
@@ -113,9 +113,11 @@ function crearGridEmpresas(empresas) {
     const columns = [
         { key: 'nombre', label: 'Nombre' },
         { key: 'cif', label: 'CIF' },
-        { key: 'direccion', label: 'Dirección' },
+        { key: 'sector', label: 'Sector' },
+        { key: 'address', label: 'Dirección' },
         { key: 'telefono', label: 'Teléfono' },
-        { key: 'email', label: 'Email' }
+        { key: 'email', label: 'Email' },
+        { key: 'persona_contacto', label: 'Persona de Contacto' }
     ];
 
     const gridData = document.createElement('div');
