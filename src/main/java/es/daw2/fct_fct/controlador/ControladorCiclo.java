@@ -15,6 +15,7 @@ import es.daw2.fct_fct.modelo.Ciclo;
 import es.daw2.fct_fct.modelo.Grupo;
 import es.daw2.fct_fct.servicio.ServicioCiclo;
 import es.daw2.fct_fct.servicio.ServicioGrupo;
+import jakarta.servlet.http.HttpServletRequest;
 
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -28,7 +29,7 @@ public class ControladorCiclo extends CrudController<Long, Ciclo, CicloCreateDTO
     private ServicioGrupo servicioGrupo;
 
     @Override
-    public ResponseEntity<?> create(@RequestBody CicloCreateDTO dto) {
+    public ResponseEntity<?> create(@RequestBody CicloCreateDTO dto, HttpServletRequest request) {
         Ciclo nuevoCiclo = new Ciclo();
 
         nuevoCiclo.setName(dto.name());
@@ -49,7 +50,7 @@ public class ControladorCiclo extends CrudController<Long, Ciclo, CicloCreateDTO
     // getById ya existe en CrudController
 
     @Override
-    public ResponseEntity<?> update(@PathVariable Long id, @RequestBody CicloCreateDTO dto) {
+    public ResponseEntity<?> update(@PathVariable Long id, @RequestBody CicloCreateDTO dto, HttpServletRequest request) {
         Optional<Ciclo> cicloOpt = service.getById(id);
         if (!cicloOpt.isPresent()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No se encontró el ciclo con el id: " + id);
@@ -72,7 +73,7 @@ public class ControladorCiclo extends CrudController<Long, Ciclo, CicloCreateDTO
     }
 
     @Override
-    ResponseEntity<?> delete(@PathVariable Long id) {
+    ResponseEntity<?> delete(@PathVariable Long id, HttpServletRequest request) {
         Optional<Ciclo> cicloOpt = service.getById(id);
         if (!cicloOpt.isPresent()) {
             return ResponseEntity.badRequest().body("No se encontró el ciclo con el id: " + id);

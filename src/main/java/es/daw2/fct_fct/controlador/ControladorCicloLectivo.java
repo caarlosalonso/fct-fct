@@ -16,6 +16,7 @@ import es.daw2.fct_fct.modelo.CicloLectivo;
 import es.daw2.fct_fct.modelo.Grupo;
 import es.daw2.fct_fct.servicio.ServicioCicloLectivo;
 import es.daw2.fct_fct.servicio.ServicioGrupo;
+import jakarta.servlet.http.HttpServletRequest;
 
 
 @RestController
@@ -26,7 +27,7 @@ public class ControladorCicloLectivo extends CrudController<Long, CicloLectivo, 
     private ServicioGrupo servicioGrupo;
 
     @Override
-    ResponseEntity<?> create(@RequestBody CicloLectivoCreateDTO dto) {
+    ResponseEntity<?> create(@RequestBody CicloLectivoCreateDTO dto, HttpServletRequest request) {
         CicloLectivo nuevoCicloLectivo = new CicloLectivo();
         nuevoCicloLectivo.setNombre(dto.nombre());
         nuevoCicloLectivo.setFechaInicio(dto.fechaInicio());
@@ -41,7 +42,7 @@ public class ControladorCicloLectivo extends CrudController<Long, CicloLectivo, 
     // getById ya existe en CrudController
 
     @Override
-    ResponseEntity<?> update(@PathVariable Long id, @RequestBody CicloLectivoCreateDTO dto) {
+    ResponseEntity<?> update(@PathVariable Long id, @RequestBody CicloLectivoCreateDTO dto, HttpServletRequest request) {
         System.out.println(dto);
         
         Optional<CicloLectivo> cicloLectivoOpt = service.getById(id);
@@ -63,7 +64,7 @@ public class ControladorCicloLectivo extends CrudController<Long, CicloLectivo, 
     }
 
     @Override
-    ResponseEntity<?> delete(@PathVariable Long id) {
+    ResponseEntity<?> delete(@PathVariable Long id, HttpServletRequest request) {
         Optional<CicloLectivo> cicloLectivoOpt = service.getById(id);
         if (!cicloLectivoOpt.isPresent()) {
             return ResponseEntity.badRequest().body("No se encontró el ciclo lectivo con el id: " + id);
