@@ -3,6 +3,14 @@
     margin-top: 20px;
 }
 
+.section {
+    background-color: var(--background-color);
+    border-radius: var(--border-radius);
+    width: 90%;
+    margin: 0 auto;
+    padding: 15px;
+}
+
 .logout {
     display: inline-block;
     padding: 10px 20px;
@@ -11,6 +19,7 @@
     text-decoration: none;
     border-radius: var(--border-radius);
     transition: 200ms ease-in-out;
+    font-size: 1.2rem;
 
     &:hover {
         cursor: pointer;
