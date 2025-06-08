@@ -92,32 +92,3 @@ window.addEventListener('FormsCreated', () => {
         return true;
     }
 });
-
-const alumnoId = document.getElementById('alumno-id').value;
-
-document.getElementById('alumno-profile-form').addEventListener('submit', async function(e) {
-    e.preventDefault();
-
-    const form = e.target;
-    const data = {
-        nombre: form.nombre.value,
-        email: form.email.value,
-        telefono: form.telefono.value,
-        nia: form.nia.value,
-        dni: form.dni.value,
-        nuss: form.nuss.value
-    };
-
-    // Cambia la URL por la de tu API REST
-    const response = await fetch('/api/alumnos/', {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(data)
-    });
-
-    if (response.ok) {
-        alert('Datos guardados correctamente');
-    } else {
-        alert('Error al guardar los datos');
-    }
-});
