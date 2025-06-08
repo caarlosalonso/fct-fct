@@ -137,7 +137,7 @@ public class HomeController {
         if (user == null || role == null) return REDIRECT_LOGIN;
 
         return switch(role) {
-            case User.Role.ADMIN        -> "admin/crear.html";
+            case User.Role.ADMIN        -> "admin/createuser.html";
             default                     -> REDIRECT_INDEX;
         };
     }
