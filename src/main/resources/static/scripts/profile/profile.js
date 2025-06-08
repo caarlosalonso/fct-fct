@@ -9,9 +9,9 @@ window.addEventListener('FormsCreated', () => {
         return;
     }
 
-    const currentPassword = Form.getInput('current-password');
-    const newPassword = Form.getInput('new-password');
-    const confirmPassword = Form.getInput('confirm-password');
+    const currentPassword = form.getInput('current-password');
+    const newPassword = form.getInput('new-password');
+    const confirmPassword = form.getInput('confirm-password');
 
     form.onsubmit = (event) => {
         if (newPassword.getValue() !== confirmPassword.getValue()) {
