@@ -135,8 +135,7 @@ public class ControladorUser extends CrudController<Long, User, UserCreateDTO, U
     /*  No se deberían crear 'users' así porque sí. Si se crea uno, debería ser
         un ADMIN. Así que se debe verificar si los crea un ADMIN. Por ahora,
         solo se permite la creación de ALUMNOS desde el controlador de Users.   */
-        newUser.setRole(User.Role.ALUMNO);
-        newUser.setUpdatedPasswordAt(null);
+        newUser.setRole(dto.role());
 
         if (service.checkEmailExists(newUser.getEmail())) {
             return ResponseEntity.status(409).body("Email already exists"); // Conflicto, ya existe un usuario con ese email
