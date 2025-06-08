@@ -1,0 +1,27 @@
+package es.daw2.fct_fct.controlador.vistas;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import es.daw2.fct_fct.modelo.vistas.VistaTutores;
+import es.daw2.fct_fct.servicio.vistas.VistaTutoresService;
+
+@RestController
+@RequestMapping("/api/vista-tutores")
+public class VistaTutoresController {
+
+    @Autowired
+    private VistaTutoresService servicio;
+
+    @GetMapping("/all")
+    public ResponseEntity<?> all() {
+        return ResponseEntity.ok(servicio.obtenerTodos());
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<?> getById(@PathVariable Long id) {
+        VistaTutores tutor = servicio.obtenerPorId(id);
+        return (tutor != null) ? ResponseEntity.ok(tutor) : ResponseEntity.notFound().build();
+    }
+}

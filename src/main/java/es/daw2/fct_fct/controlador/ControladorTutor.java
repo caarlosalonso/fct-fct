@@ -22,7 +22,6 @@ import es.daw2.fct_fct.utils.PasswordUtils;
 import jakarta.servlet.http.HttpServletRequest;
 
 
-
 @RestController
 @RequestMapping("/api/tutores")
 public class ControladorTutor extends CrudController<Long, Tutor, Tutor, Tutor, ServicioTutores> {
