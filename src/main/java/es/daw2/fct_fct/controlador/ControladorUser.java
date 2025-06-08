@@ -60,7 +60,10 @@ public class ControladorUser extends CrudController<Long, User, UserCreateDTO, U
         );
 
         HttpSession newSession = request.getSession(true);
-        newSession.setAttribute("user", userFound);
+        newSession.setAttribute("user", userFound.getId());
+        newSession.setAttribute("email", userFound.getEmail());
+        newSession.setAttribute("role", userFound.getRole());
+        newSession.setAttribute("nombre", userFound.getName());
         System.out.println(newSession.getId() + " - " + userFound.getEmail() + " - " + userFound.getName() + " - " + userFound.getRole());
 
         switch (userFound.getRole()) {
