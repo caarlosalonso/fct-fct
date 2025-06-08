@@ -23,6 +23,14 @@ public class HomeController {
         return "auth/login.html";
     }
 
+    @GetMapping("/logout")
+    public String logout(HttpServletRequest request) {
+        HttpSession session = request.getSession(false);
+        if (session == null) return REDIRECT_LOGIN;
+        session.invalidate();
+        return "auth/logout.html";
+    }
+
     @GetMapping("/error")
     public String error() {
         return "error.html";
@@ -68,6 +76,7 @@ public class HomeController {
         Object role = session.getAttribute("role");
         Object nombre = session.getAttribute("nombre");
         if (user == null || role == null || nombre == null) return REDIRECT_LOGIN;
+        System.out.println("Perfil de usuario: " + user + ", rol: " + role + ", nombre: " + nombre);
 
         Cookie cookie = new Cookie("nombre", nombre.toString());
         cookie.setMaxAge(-1);       // La cookie durará lo que dure la sesión.
