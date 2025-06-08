@@ -41,7 +41,7 @@ export function tableFail(tableId, TIMEOUT, promise) {
     TIMEOUT = setTimeout(() => {
         clearTimeout(TIMEOUT);
         
-        tableLoading();
+        tableLoading(tableId);
         TIMEOUT = setTimeout(() => {
             promise();
         }, 8000);
