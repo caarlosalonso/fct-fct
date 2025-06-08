@@ -5,8 +5,10 @@
     --border-radius: 12px;
     --margin-asterisk: 3px;
 
-    --primary-color: #2ad630;
-    --secondary-color: #6156fd;
+    --primary-color-rgb: 138, 132, 219;
+    --primary-color: rgb(var(--primary-color-rgb));
+    --secondary-color-rgb: 219, 132, 193;
+    --secondary-color: rgb(var(--secondary-color-rgb));
     --background-color: #303030;
     --text-color: #ffffff;
     --border-color: #eeeeee;
