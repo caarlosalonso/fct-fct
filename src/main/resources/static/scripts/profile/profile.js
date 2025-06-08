@@ -61,33 +61,28 @@ window.addEventListener('FormsCreated', () => {
 
     currentPassword.validate = () => {
         if (currentPassword.isEmpty()) return true;
-        if (currentPassword.getValue() === newPassword.getValue()) {
-            newPassword.showValidity();     //  Force revalidation of new password
-            return false;
-        }
-        return true;
+        return currentPassword.getValue() !== newPassword.getValue();
     }
 
     newPassword.validate = () => {
         if (newPassword.isEmpty()) return true;
         if (newPassword.getLength() < 8) return false;
-        if (newPassword.getValue() === currentPassword.getValue()) {
-            currentPassword.showValidity();     //  Force revalidation of current password
-            return false;
-        }
-        if (newPassword.getValue() !== confirmPassword.getValue()) {
-            confirmPassword.showValidity();     //  Force revalidation of confirm password
-            return false;
-        }
-        return true;
+        if (newPassword.getValue() === currentPassword.getValue()) return false;
+        return newPassword.getValue() === confirmPassword.getValue();
     }
 
     confirmPassword.validate = () => {
         if (confirmPassword.isEmpty()) return true;
-        if (confirmPassword.getValue() !== newPassword.getValue()) {
-            newPassword.showValidity();     //  Force revalidation of new password
-            return false;
-        }
-        return true;
+        return confirmPassword.getValue() === newPassword.getValue();
+    }
+
+    currentPassword.addEventListener('input', updateValidity);
+    newPassword.addEventListener('input', updateValidity);
+    confirmPassword.addEventListener('input', updateValidity);
+
+    function updateValidity() {
+        currentPassword.showValidity();
+        newPassword.showValidity();
+        confirmPassword.showValidity();
     }
 });
