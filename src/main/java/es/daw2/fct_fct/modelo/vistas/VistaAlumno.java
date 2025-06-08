@@ -13,29 +13,23 @@ import org.hibernate.annotations.Immutable;
 public class VistaAlumno {
 
     @Id
-    @Column(name = "ciclo_lectivo_id", nullable = false)
-    private Long cicloLectivoId;
+    @Column(name = "tutor_id", nullable = false)
+    private Long tutorId;
 
-    @Column(name = "curso_id", nullable = false)
-    private Long cursoId;
-
-    @Column(name = "nombre_ciclo_lectivo", nullable = false, length = 10)
-    private String nombreCicloLectivo;
-
-    @Column(name = "grupo_id", nullable = false)
-    private Long grupoId;
-
-    @Column(name = "grupo_nombre", nullable = false, length = 50)
-    private String grupoNombre;
-
-    @Column(name = "alumno_id", nullable = false)
-    private Long alumnoId;
+    @Column(name = "user_id", nullable = false)
+    private Long userId;
 
     @Column(name = "nombre_alumno", nullable = false, length = 255)
     private String nombreAlumno;
 
     @Column(name = "email", nullable = false, length = 255)
     private String email;
+
+    @Column(name = "alumno_id", nullable = false)
+    private Long alumnoId;
+
+    @Column(name = "convocatoria", nullable = false)
+    private Integer convocatoria;
 
     @Column(name = "dni", length = 9)
     private String dni;
@@ -46,13 +40,30 @@ public class VistaAlumno {
     @Column(name = "nuss", length = 11)
     private String nuss;
 
-    @Column(name = "telefono_alumno", length = 15)
-    private String telefonoAlumno;
+    @Column(name = "phone", length = 15)
+    private String phone;
 
-    @Column(name = "direccion_alumno", length = 255)
-    private String direccionAlumno;
+    @Column(name = "address", length = 255)
+    private String address;
 
-    @Column(name = "convocatoria", nullable = false)
-    private Integer convocatoria;
+    @Column(name = "curso_id", nullable = false)
+    private Long cursoId;
 
+    @Column(name = "observaciones", length = 2047)
+    private String observaciones;
+
+    @Column(name = "grupo_id", nullable = false)
+    private Long grupoId;
+    
+    @Column(name = "numero", nullable = false)
+    private Integer numero;
+
+    @Column(name = "ciclo_lectivo_id", nullable = false)
+    private Long cicloLectivoId;
+
+    @Column(name = "nombre_ciclo_lectivo", nullable = false, length = 10)
+    private String nombreCicloLectivo;
+
+    @Column(name = "grupo_nombre", nullable = false, length = 50)
+    private String grupoNombre;
 }
