@@ -202,13 +202,6 @@ function createSVG(viewBox, pathData, clickHandler, ...classList) {
 }
 
 // Funciones para editar/eliminar (puedes implementar la lógica real)
-function editarEmpresa(id) {
-    alert('Editar empresa ' + id);
-}
-function eliminarEmpresa(id) {
-    alert('Eliminar empresa ' + id);
-}
-
 function collapseAll() {
     const form = document.getElementById('empresa-form');
     if (form) form.parentNode.classList.add('collapsed');
@@ -223,6 +216,9 @@ function finish(form) {
 
 function editEmpresa(empresa) {
     collapseAll();
+
+    const section = document.getElementById('empresa-section');
+    section.classList.remove('collapsed');
 
     const form = Form.getForm('empresa-form');
     form.form.parentNode.classList.remove('collapsed');
