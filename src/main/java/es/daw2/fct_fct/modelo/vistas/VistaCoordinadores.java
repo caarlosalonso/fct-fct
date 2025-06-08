@@ -22,6 +22,6 @@ public class VistaCoordinadores {
     @Column(name = "email", nullable = false, length = 255)
     private String email;
 
-    @Column(name = "tutor_id", nullable = false)
-    private Long tutorId;
+    @Column(name = "coordinacion_id", nullable = false)
+    private Long coordinacionId;
 }

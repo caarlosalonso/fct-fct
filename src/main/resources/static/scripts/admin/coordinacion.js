@@ -2,12 +2,11 @@ import { Form } from '../classes/Form.js';
 import { tableLoading, tableFail, createSVG, createClickableSVG } from '../functions.js';
 
 let TIMEOUT;
-let SECTION;
-let FORM;
+const SECTION = 'coordinadores-section';
+const FORM = 'coordinador-form';
+let coordinacionId = null;
 
 document.addEventListener('DOMContentLoaded', () => {
-    SECTION = 'coordinadores-section';
-    FORM = 'coordinador-form';
     promise();
 });
 
@@ -45,7 +44,7 @@ function buildCoordinadoresTable(coordinadores) {
         noCoordinadoresMessage.textContent = 'No hay coordinadores disponibles.';
         coordinadoresSection.appendChild(noCoordinadoresMessage);
         coordinadorCard.onclick = () => {
-            id = null;
+            coordinacionId = null;
             const form = Form.getForm(FORM);
             form.onsubmit = createCoordinador;
         }
@@ -60,7 +59,7 @@ function buildCoordinadoresTable(coordinadores) {
             <p>${coordinador.email}</p>
         `;
         coordinadorCard.onclick = () => {
-            id = coordinador.id;
+            coordinacionId = coordinador.coordinacionId;
             const form = Form.getForm(FORM);
             form.onsubmit = updateCoordinador;
         }
@@ -116,8 +115,6 @@ function createCoordinador() {
     });
 }
 
-let id = null;
-
 function updateCoordinador() {
     const form = Form.getForm(FORM);
 
@@ -131,12 +128,12 @@ function updateCoordinador() {
         password: password
     }
 
-    if (id === null) {
+    if (coordinacionId === null) {
         form.showError('No se ha seleccionado un coordinador para actualizar.');
         return;
     }
 
-    fetch(`/api/coordinacion/${id}`, {
+    fetch(`/api/coordinacion/${coordinacionId}`, {
         method: 'PUT',
         headers: {
             'Content-Type': 'application/json'
