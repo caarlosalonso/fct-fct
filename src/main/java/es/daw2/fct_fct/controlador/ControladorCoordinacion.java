@@ -31,8 +31,8 @@ public class ControladorCoordinacion extends CrudController<Long, Coordinacion, 
     @Autowired
     private ServicioUser servicioUser;
 
-    @PostMapping("/create")
-    public ResponseEntity<?> create(@RequestBody CoordinadorCreateDTO c, HttpServletRequest request) {
+    @PostMapping("/create-user")
+    public ResponseEntity<?> createUser(@RequestBody CoordinadorCreateDTO c, HttpServletRequest request) {
         HttpSession session = request.getSession(false);
         if (session == null) return ResponseEntity.status(401).body("Unauthorized");
         Object role = session.getAttribute("role");
