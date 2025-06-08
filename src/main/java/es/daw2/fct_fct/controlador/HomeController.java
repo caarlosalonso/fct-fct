@@ -1,5 +1,8 @@
 package es.daw2.fct_fct.controlador;
 
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 
@@ -78,7 +81,15 @@ public class HomeController {
         if (user == null || role == null || nombre == null) return REDIRECT_LOGIN;
         System.out.println("Perfil de usuario: " + user + ", rol: " + role + ", nombre: " + nombre);
 
-        Cookie cookie = new Cookie("nombre", nombre.toString());
+        String cookieName;
+        try {
+            cookieName = URLEncoder.encode(nombre.toString(), StandardCharsets.UTF_8.toString());
+        } catch (Exception e) {
+            System.err.println("Error al codificar el nombre: " + e.getMessage());
+            return REDIRECT_LOGIN;
+        }
+
+        Cookie cookie = new Cookie("nombre", cookieName);
         cookie.setMaxAge(-1);       // La cookie durará lo que dure la sesión.
         response.addCookie(cookie);
 
