@@ -19,6 +19,7 @@ import es.daw2.fct_fct.modelo.Grupo;
 import es.daw2.fct_fct.servicio.ServicioCiclo;
 import es.daw2.fct_fct.servicio.ServicioCicloLectivo;
 import es.daw2.fct_fct.servicio.ServicioGrupo;
+import jakarta.servlet.http.HttpServletRequest;
 
 
 @RestController
@@ -32,7 +33,7 @@ public class ControladorGrupo extends CrudController<Long, Grupo, CreateGrupoDTO
     private ServicioCicloLectivo servicioCicloLectivo;
 
     @Override
-    public ResponseEntity<?> create(@RequestBody CreateGrupoDTO dto) {
+    public ResponseEntity<?> create(@RequestBody CreateGrupoDTO dto, HttpServletRequest request) {
         Grupo grupo = new Grupo();
 
         Optional<Ciclo> cicloOpt = servicioCiclo.getById(dto.ciclo());
@@ -58,7 +59,7 @@ public class ControladorGrupo extends CrudController<Long, Grupo, CreateGrupoDTO
     }
 
     @Override
-    ResponseEntity<?> all() {
+    ResponseEntity<?> all(HttpServletRequest request) {
         List<Grupo> items = service.list();
         if (items == null) return ResponseEntity.badRequest().build();
         if (items.isEmpty()) return ResponseEntity.noContent().build();
@@ -79,7 +80,7 @@ public class ControladorGrupo extends CrudController<Long, Grupo, CreateGrupoDTO
     // getById ya existe en CrudController
 
     @Override
-    public ResponseEntity<?> update(@PathVariable Long id, @RequestBody CreateGrupoDTO dto) {
+    public ResponseEntity<?> update(@PathVariable Long id, @RequestBody CreateGrupoDTO dto, HttpServletRequest request) {
         Optional<Grupo> gruposOpt = service.getById(id);
             System.out.println(dto);
 

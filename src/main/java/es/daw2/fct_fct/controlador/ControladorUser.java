@@ -124,7 +124,7 @@ public class ControladorUser extends CrudController<Long, User, UserCreateDTO, U
     }
 
     @Override
-    public ResponseEntity<?> create(@RequestBody UserCreateDTO dto) {
+    public ResponseEntity<?> create(@RequestBody UserCreateDTO dto, HttpServletRequest request) {
         // Map DTO to entity
         User newUser = new User();
         newUser.setName(dto.name());
@@ -158,7 +158,7 @@ public class ControladorUser extends CrudController<Long, User, UserCreateDTO, U
     // getById ya existe en CrudController
 
     @Override
-    public ResponseEntity<?> update(@PathVariable Long id, @RequestBody User u){
+    public ResponseEntity<?> update(@PathVariable Long id, @RequestBody User u, HttpServletRequest request){
         Optional<User> optional = service.getById(id);
 
         if(!optional.isPresent()){
