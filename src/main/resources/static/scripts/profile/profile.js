@@ -9,12 +9,11 @@ window.addEventListener('FormsCreated', () => {
         return;
     }
 
-    const currentPassword = Input.getInput('current-password');
-    const newPassword = Input.getInput('new-password');
-    const confirmPassword = Input.getInput('confirm-password');
+    const currentPassword = Form.getInput('current-password');
+    const newPassword = Form.getInput('new-password');
+    const confirmPassword = Form.getInput('confirm-password');
 
     form.onsubmit = (event) => {
-
         if (newPassword.getValue() !== confirmPassword.getValue()) {
             form.showError('New password and confirm password do not match.');
             return;
