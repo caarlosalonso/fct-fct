@@ -1,0 +1,19 @@
+#logout-section {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.logout {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: var(--secondary-color);
+    color: var(--text-color);
+    text-decoration: none;
+    border-radius: var(--border-radius);
+    transition: 200ms ease-in-out;
+
+    &:hover {
+        cursor: pointer;
+        background-color: color-mix(in srgb, var(--secondary-color), white 20%);
+    }
+}
