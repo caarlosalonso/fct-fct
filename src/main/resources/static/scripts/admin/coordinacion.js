@@ -1,5 +1,5 @@
 import { Form } from '../classes/Form.js';
-import { tableLoading, tableFail, createSVG, createClickableSVG } from './functions.js';
+import { tableLoading, tableFail, createSVG, createClickableSVG } from '../functions.js';
 
 let TIMEOUT;
 const SECTION = 'coordinadores-section';
