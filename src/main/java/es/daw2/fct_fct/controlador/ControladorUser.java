@@ -3,6 +3,7 @@ package es.daw2.fct_fct.controlador;
 import java.net.URI;
 import java.util.Optional;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -16,6 +17,9 @@ import es.daw2.fct_fct.dto.UserDTO;
 import es.daw2.fct_fct.dto.UserResetPasswordDTO;
 import es.daw2.fct_fct.dto.UserResetPasswordTutorDTO;
 import es.daw2.fct_fct.modelo.User;
+import es.daw2.fct_fct.servicio.ServicioAlumno;
+import es.daw2.fct_fct.servicio.ServicioCoordinacion;
+import es.daw2.fct_fct.servicio.ServicioTutores;
 import es.daw2.fct_fct.servicio.ServicioUser;
 import es.daw2.fct_fct.utils.PasswordUtils;
 import jakarta.servlet.http.HttpServletRequest;
@@ -25,6 +29,14 @@ import jakarta.servlet.http.HttpSession;
 @RestController
 @RequestMapping("/api/users")
 public class ControladorUser extends CrudController<Long, User, UserCreateDTO, User, ServicioUser> {
+
+    @Autowired
+    private ServicioCoordinacion servicioCoordinacion;
+    @Autowired
+    private ServicioAlumno servicioAlumno;
+    @Autowired
+    private ServicioTutores servicioTutores;
+    
 
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody LoginRequestDTO loginRequestDTO,
@@ -48,9 +60,20 @@ public class ControladorUser extends CrudController<Long, User, UserCreateDTO, U
         );
 
         HttpSession newSession = request.getSession(true);
+        newSession.setAttribute("user_id", userFound.getId());
         newSession.setAttribute("user", dto);
         newSession.setAttribute("role", userFound.getRole());
         newSession.setAttribute("nombre", userFound.getName());
+
+        switch (userFound.getRole()) {
+            case User.Role.ADMIN -> newSession.setAttribute("child_id", null);
+            case User.Role.COORDINADOR -> servicioCoordinacion.getByUserId(userFound.getId()).ifPresent(coordinacion -> newSession.setAttribute("child_id", coordinacion));
+            case User.Role.TUTOR -> servicioTutores.getByUserId(userFound.getId()).ifPresent(tutor -> newSession.setAttribute("child_id", tutor));
+            case User.Role.ALUMNO -> servicioAlumno.getByUserId(userFound.getId()).ifPresent(alumno -> newSession.setAttribute("child_id", alumno));
+            default -> {
+                return ResponseEntity.status(403).body("Forbidden: Invalid user role");
+            }
+        }
 
         return ResponseEntity.ok(dto);
     }
