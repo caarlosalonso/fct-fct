@@ -68,6 +68,7 @@ function buildCoordinadoresTable(coordinadores) {
 const FORM = 'coordinador-form';
 document.addEventListener('FormsCreated', (event) => {
     const form = Form.getForm(FORM);
+    console.log(form);
 
     if (!form) {
         console.error(`Form with ID "${FORM}" not found.`);
@@ -79,6 +80,7 @@ document.addEventListener('FormsCreated', (event) => {
 
 function createCoordinador() {
     const form = Form.getForm(FORM);
+    console.log(form);
 
     const nombre = form.getInput('coordinador-nombre').getValue();
     const email = form.getInput('coordinador-email').getValue();
@@ -90,6 +92,8 @@ function createCoordinador() {
         password: password
     }
 
+    console.log(data)
+
     fetch('/api/coordinacion/create', {
         method: 'POST',
         headers: {
@@ -98,6 +102,7 @@ function createCoordinador() {
         body: JSON.stringify(data)
     })
     .then((response) => {
+        console.log(response);
         if (response.status === 201 || response.ok) {
             form.showSuccess('Coordinador creado correctamente.');
             form.reset();
