@@ -57,6 +57,7 @@ function dibujarTabla(empresas) {
         aceptado: []
     };
     empresas.forEach(e => {
+        const estado = (e.estado || '').toLowerCase();
         if (e.estado === 'pendiente') estados.pendiente.push(e);
         else if (e.estado === 'denegado') estados.denegado.push(e);
         else if (e.estado === 'aceptado') estados.aceptado.push(e);
