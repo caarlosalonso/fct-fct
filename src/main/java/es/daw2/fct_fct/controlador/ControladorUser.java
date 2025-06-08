@@ -105,13 +105,15 @@ public class ControladorUser extends CrudController<Long, User, UserCreateDTO, U
         return ResponseEntity.notFound().build();
     }
 
-    @PostMapping("/password/{id}")
-    public ResponseEntity<?> changePassword(@PathVariable Long id, @RequestBody UserResetPasswordDTO entity, HttpServletRequest request) {
+    @PostMapping("/password")
+    public ResponseEntity<?> changePassword(@RequestBody UserResetPasswordDTO entity, HttpServletRequest request) {
         HttpSession session = request.getSession(false);
         if (session == null || session.getAttribute("user") == null) {
             return ResponseEntity.status(401).body("Unauthorized");
         }
 
+        Long id = (Long) session.getAttribute("user");
+        
         Object sessionId = session.getAttribute("id");
         if (sessionId == null || !(sessionId instanceof Long) || !((Long) sessionId).equals(id)) {
             return ResponseEntity.status(403).body("Forbidden: You can only change your own password");
