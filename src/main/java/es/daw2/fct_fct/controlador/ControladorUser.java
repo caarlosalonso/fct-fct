@@ -132,9 +132,6 @@ public class ControladorUser extends CrudController<Long, User, UserCreateDTO, U
         newUser.setPassword(
             PasswordUtils.hashPassword(dto.password())
         );
-    /*  No se deberían crear 'users' así porque sí. Si se crea uno, debería ser
-        un ADMIN. Así que se debe verificar si los crea un ADMIN. Por ahora,
-        solo se permite la creación de ALUMNOS desde el controlador de Users.   */
         newUser.setRole(dto.role());
 
         if (service.checkEmailExists(newUser.getEmail())) {
