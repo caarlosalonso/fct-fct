@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import es.daw2.fct_fct.modelo.Curso;
 import es.daw2.fct_fct.servicio.ServicioCurso;
+import jakarta.servlet.http.HttpServletRequest;
 
 
 @RestController
@@ -18,7 +19,7 @@ import es.daw2.fct_fct.servicio.ServicioCurso;
 public class ControladorCurso extends CrudController<Long, Curso, Curso, Curso, ServicioCurso> {
 
     @Override
-    public ResponseEntity<?> create(@RequestBody Curso c) {
+    public ResponseEntity<?> create(@RequestBody Curso c, HttpServletRequest request) {
         service.save(c);
         
         URI location = URI.create("/listarCursosId" +c.getId());
@@ -30,7 +31,7 @@ public class ControladorCurso extends CrudController<Long, Curso, Curso, Curso, 
     // getById ya existe en CrudController
 
     @Override
-    public ResponseEntity<?> update(@PathVariable Long id, @RequestBody Curso c) {
+    public ResponseEntity<?> update(@PathVariable Long id, @RequestBody Curso c, HttpServletRequest request) {
         Optional<Curso> optional = service.getById(id);
 
         if (!optional.isPresent()) {

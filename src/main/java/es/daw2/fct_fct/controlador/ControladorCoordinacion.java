@@ -6,7 +6,6 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -31,8 +30,8 @@ public class ControladorCoordinacion extends CrudController<Long, Coordinacion, 
     @Autowired
     private ServicioUser servicioUser;
 
-    @PostMapping("/create-user")
-    public ResponseEntity<?> createUser(@RequestBody CoordinadorCreateDTO c, HttpServletRequest request) {
+    @Override
+    public ResponseEntity<?> create(@RequestBody CoordinadorCreateDTO c, HttpServletRequest request) {
         HttpSession session = request.getSession(false);
         if (session == null) return ResponseEntity.status(401).body("Unauthorized");
         Object role = session.getAttribute("role");
@@ -74,7 +73,7 @@ public class ControladorCoordinacion extends CrudController<Long, Coordinacion, 
     // getById ya existe en CrudController
 
     @Override
-    public ResponseEntity<?> update(@PathVariable Long id, @RequestBody Coordinacion c){
+    public ResponseEntity<?> update(@PathVariable Long id, @RequestBody Coordinacion c, HttpServletRequest request){
         Optional<Coordinacion> optional = service.getById(id);
 
         if(!optional.isPresent()){

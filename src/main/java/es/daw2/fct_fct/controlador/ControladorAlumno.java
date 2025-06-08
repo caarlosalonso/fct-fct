@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import es.daw2.fct_fct.modelo.Alumno;
 import es.daw2.fct_fct.servicio.ServicioAlumno;
+import jakarta.servlet.http.HttpServletRequest;
 
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -19,7 +20,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class ControladorAlumno extends CrudController<Long, Alumno, Alumno, Alumno, ServicioAlumno> {
 
     @Override
-    public ResponseEntity<?> create(@RequestBody Alumno a) {
+    public ResponseEntity<?> create(@RequestBody Alumno a, HttpServletRequest request) {
         service.save(a);
 
         URI location = URI.create("/api/alumnos/" + a.getId());
@@ -32,7 +33,7 @@ public class ControladorAlumno extends CrudController<Long, Alumno, Alumno, Alum
     // getById ya existe en CrudController
 
     @Override
-    public ResponseEntity<?> update(@PathVariable Long id, @RequestBody Alumno a) {
+    public ResponseEntity<?> update(@PathVariable Long id, @RequestBody Alumno a, HttpServletRequest request) {
         Optional<Alumno> optional = service.getById(id);
 
         if(!optional.isPresent()){

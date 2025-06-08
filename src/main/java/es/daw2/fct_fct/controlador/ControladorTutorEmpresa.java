@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import es.daw2.fct_fct.modelo.TutorEmpresa;
 import es.daw2.fct_fct.servicio.ServicioTutorEmpresa;
+import jakarta.servlet.http.HttpServletRequest;
 
 
 @RestController
@@ -18,7 +19,7 @@ import es.daw2.fct_fct.servicio.ServicioTutorEmpresa;
 public class ControladorTutorEmpresa extends CrudController<Long, TutorEmpresa, TutorEmpresa, TutorEmpresa, ServicioTutorEmpresa> {
 
     @Override
-    public ResponseEntity<?> create(@RequestBody TutorEmpresa t) {
+    public ResponseEntity<?> create(@RequestBody TutorEmpresa t, HttpServletRequest request) {
         service.save(t);
 
         URI location = URI.create("/api/tutor-empresa/" + t.getId());
@@ -31,7 +32,7 @@ public class ControladorTutorEmpresa extends CrudController<Long, TutorEmpresa, 
     // getById ya existe en CrudController
 
     @Override
-    public ResponseEntity<?> update(@PathVariable Long id, @RequestBody TutorEmpresa t) {
+    public ResponseEntity<?> update(@PathVariable Long id, @RequestBody TutorEmpresa t, HttpServletRequest request) {
         Optional<TutorEmpresa> tutorEmpresa = service.getById(id);
 
         if (!tutorEmpresa.isPresent()) {
