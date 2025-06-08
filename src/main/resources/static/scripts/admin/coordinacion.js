@@ -6,7 +6,7 @@ const SECTION = 'coordinadores-section';
 const FORM = 'coordinador-form';
 let coordinacionId = null;
 
-document.addEventListener('DOMContentLoaded', () => {
+window.addEventListener('DOMContentLoaded', () => {
     promise();
 });
 
@@ -67,7 +67,7 @@ function buildCoordinadoresTable(coordinadores) {
     });
 }
 
-document.addEventListener('FormsCreated', (event) => {
+window.addEventListener('FormsCreated', (event) => {
     const form = Form.getForm(FORM);
     console.log(form);
 
