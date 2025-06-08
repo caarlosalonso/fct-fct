@@ -43,7 +43,7 @@ function buildCoordinadoresTable(coordinadores) {
         const noCoordinadoresMessage = document.createElement('p');
         noCoordinadoresMessage.textContent = 'No hay coordinadores disponibles.';
         coordinadoresSection.appendChild(noCoordinadoresMessage);
-        coordinadorCard.onclick = () => {
+        coordinadoresSection.onclick = () => {
             coordinacionId = null;
             const form = Form.getForm(FORM);
             form.onsubmit = createCoordinador;
