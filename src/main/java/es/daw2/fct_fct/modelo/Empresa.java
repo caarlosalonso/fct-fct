@@ -58,7 +58,7 @@ public class Empresa extends AbsBaseEntity {
     private String persona_contacto;
 
     @Column(name = "hay_convenio", nullable = true, columnDefinition = "TINYINT")
-    private Boolean hay_contacto;
+    private Boolean hay_convenio;
 
     @Column(name = "numero_convenio", nullable = true, columnDefinition = "VARCHAR(9)")
     private String numero_convenio;
