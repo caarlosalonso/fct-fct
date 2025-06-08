@@ -7,7 +7,9 @@ export class TextInput extends Input {
             return this.states.tracked && this.input.value !== this.states.trackedValue;
         }
         this.getValue = function() {
-            return this.input.value.trim();
+            let val = this.input.value;
+            if (val === null || val === undefined) return null;
+            return val.trim();
         }
     }
 

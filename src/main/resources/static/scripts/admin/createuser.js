@@ -1,4 +1,4 @@
-import { Form } from './classes/Form.js';
+import { Form } from '../classes/Form.js';
 
     window.addEventListener('FormsCreated', (event) => {
         const form = Form.getForm('user-creation');
