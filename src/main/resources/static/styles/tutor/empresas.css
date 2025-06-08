@@ -32,6 +32,15 @@ main {
     width: 100%;
 }
 
+.grid-wrapper {
+    width: 100%;
+    margin-bottom: 32px;
+    background: transparent;
+    border-radius: 12px;
+    box-shadow: none;
+    padding: 0;
+}
+
 .grid-data {
     display: grid;
     gap: 5px;

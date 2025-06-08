@@ -63,18 +63,24 @@ function dibujarTabla(empresas) {
         else if (estado === 'aceptado') estados.aceptado.push(e);
     });
 
+    // Helper para crear cada bloque
+    function crearBloqueEstado(titulo, lista) {
+        const gridWrapper = document.createElement('div');
+        gridWrapper.className = 'grid-wrapper';
+        gridWrapper.appendChild(crearTituloTabla(titulo));
+        gridWrapper.appendChild(crearGridEmpresas(lista));
+        return gridWrapper;
+    }
+
     // Tabla para cada estado
     if (estados.pendiente.length > 0) {
-        wrapper.appendChild(crearTituloTabla('Empresas pendientes'));
-        wrapper.appendChild(crearGridEmpresas(estados.pendiente));
+        wrapper.appendChild(crearBloqueEstado('Empresas pendientes', estados.pendiente));
     }
     if (estados.denegado.length > 0) {
-        wrapper.appendChild(crearTituloTabla('Empresas denegadas'));
-        wrapper.appendChild(crearGridEmpresas(estados.denegado));
+        wrapper.appendChild(crearBloqueEstado('Empresas denegadas', estados.denegado));
     }
     if (estados.aceptado.length > 0) {
-        wrapper.appendChild(crearTituloTabla('Empresas aceptadas'));
-        wrapper.appendChild(crearGridEmpresas(estados.aceptado));
+        wrapper.appendChild(crearBloqueEstado('Empresas aceptadas', estados.aceptado));
     }
 }
 
