@@ -194,12 +194,14 @@ main {
 }
 
 .collapsible-content {
+    margin: 0px 15px 0px 15px;
     max-height: 0;
     overflow: hidden;
-    transition: max-height 0.3s cubic-bezier(0.4,0,0.2,1);
+    transition: max-height 0.3s cubic-bezier(0.4,0,0.2,1), margin 0.1s 0.3s cubic-bezier(0.4,0,0.2,1)
 }
 
 .collapsible-content.active {
     max-height: 2000px; /* Suficiente para mostrar la tabla */
     transition: max-height 0.5s cubic-bezier(0.4,0,0.2,1);
+    margin: 15px;
 }
