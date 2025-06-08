@@ -1,0 +1,42 @@
+/* ---------------------------------------------------------------------------- */
+/*                                  NAVIGATION                                  */
+/* ---------------------------------------------------------------------------- */
+#navbar {
+    background-color: var(--background-color);
+    border-bottom: 1px solid #777777;
+    height: 70px;
+    margin-bottom: 15px;
+}
+
+.navigation.nav {
+    padding: 0px 15px;
+    display: flex;
+    justify-content: left;
+    align-items: center;
+    gap: 15px;
+    height: 100%;
+    width: 100%;
+}
+
+.navigation.nav-link {
+    color: var(--text-color);
+    background-color: rgba(var(--primary-color-rgb), 0.9);
+    border-radius: var(--border-radius);
+    text-decoration: none;
+    padding: 10px 15px;
+    font-size: 18px;
+    transition: 200ms ease-in-out;
+
+    &:hover {
+        background-color: rgba(var(--primary-color-rgb), 0.6);
+    }
+
+    &.active {
+        background-color: rgba(var(--secondary-color-rgb), 0.9);
+        font-weight: bold;
+
+        &:hover {
+            background-color: rgba(var(--secondary-color-rgb), 0.6);
+        }
+    }
+}

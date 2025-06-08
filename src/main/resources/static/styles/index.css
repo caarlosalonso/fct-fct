@@ -1,0 +1,9 @@
+section {
+    padding: 20px;
+}
+
+.special {
+    color: var(--secondary-color);
+    font-weight: bold;
+    font-style: italic;
+}
