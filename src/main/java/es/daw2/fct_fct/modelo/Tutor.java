@@ -27,7 +27,4 @@ public class Tutor extends AbsBaseEntity {
     @JsonIgnore
     @JoinColumn(name = "user_id")
     private User user;
-
-    @Column(name = "asignado", nullable = false, columnDefinition = "TINYINT DEFAULT 0")
-    private Boolean asignado;
 }

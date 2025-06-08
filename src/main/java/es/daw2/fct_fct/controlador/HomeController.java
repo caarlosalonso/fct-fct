@@ -151,6 +151,20 @@ public class HomeController {
         };
     }
 
+    @GetMapping("/tutores")
+    public String tutores(HttpServletRequest request) {
+        HttpSession session = request.getSession(false);
+        if (session == null) return REDIRECT_LOGIN;
+        Object user = session.getAttribute("user");
+        Object role = session.getAttribute("role");
+        if (user == null || role == null) return REDIRECT_LOGIN;
+
+        return switch(role) {
+            case User.Role.TUTOR        -> "admin/tutores.html";
+            default                     -> REDIRECT_INDEX;
+        };
+    }
+
     @GetMapping("/empresa")
     public String empresa() {
         return "tutor/empresas.html";
