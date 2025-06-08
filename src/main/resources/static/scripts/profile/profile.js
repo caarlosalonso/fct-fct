@@ -76,9 +76,9 @@ window.addEventListener('FormsCreated', () => {
         return confirmPassword.getValue() === newPassword.getValue();
     }
 
-    currentPassword.addEventListener('input', updateValidity);
-    newPassword.addEventListener('input', updateValidity);
-    confirmPassword.addEventListener('input', updateValidity);
+    currentPassword.input.addEventListener('input', updateValidity);
+    newPassword.input.addEventListener('input', updateValidity);
+    confirmPassword.input.addEventListener('input', updateValidity);
 
     function updateValidity() {
         currentPassword.showValidity();
