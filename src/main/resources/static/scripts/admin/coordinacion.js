@@ -2,9 +2,12 @@ import { Form } from '../classes/Form.js';
 import { tableLoading, tableFail, createSVG, createClickableSVG } from '../functions.js';
 
 let TIMEOUT;
-const SECTION = 'coordinadores-section';
+let SECTION;
+let FORM;
 
 document.addEventListener('DOMContentLoaded', () => {
+    SECTION = 'coordinadores-section';
+    FORM = 'coordinador-form';
     promise();
 });
 
@@ -65,7 +68,6 @@ function buildCoordinadoresTable(coordinadores) {
     });
 }
 
-const FORM = 'coordinador-form';
 document.addEventListener('FormsCreated', (event) => {
     const form = Form.getForm(FORM);
     console.log(form);
