@@ -66,9 +66,27 @@ function dibujarTabla(empresas) {
     // Helper para crear cada bloque
     function crearBloqueEstado(titulo, lista) {
         const gridWrapper = document.createElement('div');
-        gridWrapper.className = 'grid-wrapper';
-        gridWrapper.appendChild(crearTituloTabla(titulo));
-        gridWrapper.appendChild(crearGridEmpresas(lista));
+        gridWrapper.className = 'grid-wrapper collapsible-wrapper';
+
+        // Cabecera clickable
+        const header = document.createElement('div');
+        header.className = 'collapsible-header';
+        header.tabIndex = 0;
+        header.innerHTML = `<h4>${titulo} <span class="collapsible-arrow">&#9654;</span></h4>`;
+
+        // Contenido colapsable
+        const content = document.createElement('div');
+        content.className = 'collapsible-content';
+        content.appendChild(crearGridEmpresas(lista));
+
+        // Evento para expandir/colapsar
+        header.addEventListener('click', () => {
+            content.classList.toggle('active');
+            header.querySelector('.collapsible-arrow').classList.toggle('rotated');
+        });
+
+        gridWrapper.appendChild(header);
+        gridWrapper.appendChild(content);
         return gridWrapper;
     }
 
