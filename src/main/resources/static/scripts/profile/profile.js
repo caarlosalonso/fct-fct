@@ -4,8 +4,8 @@ import { Input } from './../classes/Input.js';
 window.addEventListener('FormsCreated', () => {
     const form = Form.getForm('password-form');
 
-    if (!! form) {
-        console.error('Password form found');
+    if (!form) {
+        console.error('Password form not found');
         return;
     }
 
