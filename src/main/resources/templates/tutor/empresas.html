@@ -42,6 +42,39 @@
                 <!-- Generated automatically -->
             </div>
         </section>
+
+        <!-- Añade esto dentro de <main> -->
+        <section id="empresa-section" class="section collapsed">
+            <form id="empresa-form" method="POST" submit-text="Actualizar empresa">
+                <div class="inputs form-container">
+                    <div class="instance form-input grouped-inputs">
+                        <div class="form-group form-input">
+                            <input type="text" id="empresa-nombre" name="nombre" class="text-based input" label="Nombre" data-required="true">
+                        </div>
+                        <div class="form-group form-input">
+                            <input type="text" id="empresa-cif" name="cif" class="text-based input" label="CIF" data-required="true">
+                        </div>
+                        <div class="form-group form-input">
+                            <input type="text" id="empresa-sector" name="sector" class="text-based input" label="Sector">
+                        </div>
+                        <div class="form-group form-input">
+                            <input type="text" id="empresa-address" name="address" class="text-based input" label="Dirección">
+                        </div>
+                        <div class="form-group form-input">
+                            <input type="text" id="empresa-telefono" name="telefono" class="text-based input" label="Teléfono">
+                        </div>
+                        <div class="form-group form-input">
+                            <input type="email" id="empresa-email" name="email" class="text-based input" label="Email">
+                        </div>
+                        <div class="form-group form-input">
+                            <input type="text" id="empresa-persona_contacto" name="persona_contacto" class="text-based input" label="Persona de Contacto">
+                        </div>
+                    </div>
+                </div>
+                <button type="submit">Actualizar empresa</button>
+                <div class="form-error"></div>
+            </form>
+        </section>
     </main>
 
     <script type="module" src="/scripts/tutor/empresas.js"></script>

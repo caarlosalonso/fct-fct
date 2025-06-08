@@ -1,3 +1,5 @@
+import { Form } from '../classes/Form.js';
+
 let TIMEOUT;
 
 window.addEventListener('DOMContentLoaded', () => {
