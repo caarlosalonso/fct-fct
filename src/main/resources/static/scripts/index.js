@@ -1,6 +1,6 @@
 window.addEventListener('DOMContentLoaded', (event) => {
     const welcome = document.getElementById('welcome');
-    welcome.textContent = `Bienvenido, ${getCookie('name') || 'Usuario'}`;
+    welcome.textContent = `Bienvenido, ${getCookie('nombre').split('+').join(' ') || 'Usuario'}`;
 });
 
 function getCookie(cname) {
