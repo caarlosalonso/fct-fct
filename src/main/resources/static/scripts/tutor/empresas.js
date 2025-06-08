@@ -50,11 +50,41 @@ function dibujarTabla(empresas) {
     const wrapper = document.getElementById('display-grid-wrapper');
     wrapper.innerHTML = "";
 
-    const gridData = document.createElement('div');
-    gridData.id = 'grid-data';
-    wrapper.appendChild(gridData);
+    // Agrupar empresas por estado
+    const estados = {
+        pendiente: [],
+        denegado: [],
+        aceptado: []
+    };
+    empresas.forEach(e => {
+        if (e.estado === 'pendiente') estados.pendiente.push(e);
+        else if (e.estado === 'denegado') estados.denegado.push(e);
+        else if (e.estado === 'aceptado') estados.aceptado.push(e);
+    });
 
-    // Definir columnas
+    // Tabla para cada estado
+    if (estados.pendiente.length > 0) {
+        wrapper.appendChild(crearTituloTabla('Empresas pendientes'));
+        wrapper.appendChild(crearGridEmpresas(estados.pendiente));
+    }
+    if (estados.denegado.length > 0) {
+        wrapper.appendChild(crearTituloTabla('Empresas denegadas'));
+        wrapper.appendChild(crearGridEmpresas(estados.denegado));
+    }
+    if (estados.aceptado.length > 0) {
+        wrapper.appendChild(crearTituloTabla('Empresas aceptadas'));
+        wrapper.appendChild(crearGridEmpresas(estados.aceptado));
+    }
+}
+
+function crearTituloTabla(texto) {
+    const h = document.createElement('h4');
+    h.textContent = texto;
+    h.style.margin = "20px 0 10px 0";
+    return h;
+}
+
+function crearGridEmpresas(empresas) {
     const columns = [
         { key: 'nombre', label: 'Nombre' },
         { key: 'cif', label: 'CIF' },
@@ -62,6 +92,10 @@ function dibujarTabla(empresas) {
         { key: 'telefono', label: 'Teléfono' },
         { key: 'email', label: 'Email' }
     ];
+
+    const gridData = document.createElement('div');
+    gridData.className = 'grid-data';
+    gridData.id = ''; // No id para evitar duplicados
 
     // Cabecera
     columns.forEach((col, idx) => {
@@ -109,10 +143,11 @@ function dibujarTabla(empresas) {
 
     // Ajustar grid
     gridData.style.display = 'grid';
-    gridData.style.gridTemplateRows = `repeat(${empresas.length + 1}, 1fr)`;
-    gridData.style.gridTemplateColumns = `repeat(${columns.length}, 1fr) 80px`;
-}
+    gridData.style.gridTemplateRows = `repeat(${empresas.length + 1}, auto)`;
+    gridData.style.gridTemplateColumns = `repeat(${columns.length}, minmax(80px, auto)) 80px`;
 
+    return gridData;
+}
 // Funciones para editar/eliminar (puedes implementar la lógica real)
 function editarEmpresa(id) {
     alert('Editar empresa ' + id);

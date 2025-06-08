@@ -47,9 +47,8 @@ main {
     justify-content: center;
     box-sizing: border-box;
     position: relative;
-    padding: 1px;
-    min-width: 150px;
-    min-height: 60px;
+    padding: 6px;
+    min-height: 50px;
     background-color: #3d3d3d;
     border-radius: 8px;
     transition: box-shadow 0.3s, transform 0.3s;
