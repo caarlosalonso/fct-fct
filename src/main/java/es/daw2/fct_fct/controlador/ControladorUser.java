@@ -11,12 +11,14 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import es.daw2.fct_fct.dto.CreateUserDTO;
 import es.daw2.fct_fct.dto.LoginRequestDTO;
 import es.daw2.fct_fct.dto.UserCreateDTO;
 import es.daw2.fct_fct.dto.UserDTO;
 import es.daw2.fct_fct.dto.UserResetPasswordDTO;
 import es.daw2.fct_fct.dto.UserResetPasswordTutorDTO;
 import es.daw2.fct_fct.modelo.User;
+import es.daw2.fct_fct.modelo.User.Role;
 import es.daw2.fct_fct.servicio.ServicioAlumno;
 import es.daw2.fct_fct.servicio.ServicioCoordinacion;
 import es.daw2.fct_fct.servicio.ServicioTutores;
@@ -201,4 +203,32 @@ public class ControladorUser extends CrudController<Long, User, UserCreateDTO, U
     }
 
     // delete ya existe en CrudController
+
+    @PostMapping("/admin")
+    public ResponseEntity<?> create(@RequestBody CreateUserDTO c, HttpServletRequest request) {
+        HttpSession session = request.getSession(false);
+        if (session == null) return ResponseEntity.status(401).body("Unauthorized");
+        Object role = session.getAttribute("role");
+        if (role == null || ! role.equals("ADMIN")) {
+            return ResponseEntity.status(403).body("Forbidden: Only admins can create coordinators");
+        }
+
+        User newUser = new User();
+        newUser.setName(c.name());
+        newUser.setEmail(c.email());
+        newUser.setPassword(
+            PasswordUtils.hashPassword(c.password())
+        );
+        newUser.setRole(Role.ADMIN);
+
+        if (service.checkEmailExists(newUser.getEmail())) {
+            return ResponseEntity.status(409).body("Email already exists"); // Conflicto, ya existe un usuario con ese email
+        }
+
+        User saved = service.save(newUser);
+
+        URI location = URI.create("/api/user/" + saved.getId());
+
+        return ResponseEntity.created(location).body(saved);
+    }
 }
