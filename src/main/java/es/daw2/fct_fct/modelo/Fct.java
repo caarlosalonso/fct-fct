@@ -27,13 +27,8 @@ public class Fct extends AbsBaseEntity {
 
     @ManyToOne
     @JsonIgnore
-    @JoinColumn(name = "alumno_id", nullable = false)
-    private Alumno alumno;
-
-    @ManyToOne
-    @JsonIgnore
-    @JoinColumn(name = "tutor_id")
-    private Tutor tutor;
+    @JoinColumn(name = "curso_id", nullable = false)
+    private Curso curso;
 
     @ManyToOne
     @JsonIgnore
@@ -42,13 +37,13 @@ public class Fct extends AbsBaseEntity {
 
     @ManyToOne
     @JsonIgnore
-    @JoinColumn(name = "grupo_id")
-    private Grupo grupo;
+    @JoinColumn(name = "tutor_empresa_id", nullable = true)
+    private TutorEmpresa tutorEmpresa;
 
-    @Column(name = "fecha_inicio", nullable = true)
+    @Column(name = "fecha_inicio", nullable = true, columnDefinition = "DATE")
     private LocalDate fechaInicio;
 
-    @Column(name = "fecha_fin", nullable = true)
+    @Column(name = "fecha_fin", nullable = true, columnDefinition = "DATE")
     private LocalDate fechaFin;
 
     @Column(name = "observaciones", nullable = true, columnDefinition = "VARCHAR(2047)")

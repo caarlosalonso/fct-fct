@@ -9,19 +9,19 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import es.daw2.fct_fct.modelo.Tutor_empresa;
-import es.daw2.fct_fct.servicio.ServicioTutor_Empresa;
+import es.daw2.fct_fct.modelo.TutorEmpresa;
+import es.daw2.fct_fct.servicio.ServicioTutorEmpresa;
 
 
 @RestController
-@RequestMapping("/api/tutor_empresa")
-public class ControladorTutor_Empresa extends CrudController<Long, Tutor_empresa, Tutor_empresa, Tutor_empresa, ServicioTutor_Empresa> {
+@RequestMapping("/api/tutor-empresa")
+public class ControladorTutorEmpresa extends CrudController<Long, TutorEmpresa, TutorEmpresa, TutorEmpresa, ServicioTutorEmpresa> {
 
     @Override
-    public ResponseEntity<?> create(@RequestBody Tutor_empresa t) {
+    public ResponseEntity<?> create(@RequestBody TutorEmpresa t) {
         service.save(t);
 
-        URI location = URI.create("/api/tutor_empresa/" + t.getId());
+        URI location = URI.create("/api/tutor-empresa/" + t.getId());
 
         return ResponseEntity.created(location).body(t);
     }
@@ -31,21 +31,21 @@ public class ControladorTutor_Empresa extends CrudController<Long, Tutor_empresa
     // getById ya existe en CrudController
 
     @Override
-    public ResponseEntity<?> update(@PathVariable Long id, @RequestBody Tutor_empresa t) {
-        Optional<Tutor_empresa> tutor_empresa = service.getById(id);
+    public ResponseEntity<?> update(@PathVariable Long id, @RequestBody TutorEmpresa t) {
+        Optional<TutorEmpresa> tutorEmpresa = service.getById(id);
 
-        if (!tutor_empresa.isPresent()) {
+        if (!tutorEmpresa.isPresent()) {
             return ResponseEntity.notFound().build();
         }
 
         t.setId(id);
 
-        Optional<Tutor_empresa> tutorActualizado = service.update(id, t);
+        Optional<TutorEmpresa> tutorActualizado = service.update(id, t);
         if (!tutorActualizado.isPresent()) {
             return ResponseEntity.badRequest().body("No se ha podido actualizar el tutor con el id: " + id);
         }
 
-        URI location = URI.create("/api/tutor_empresa/" + t.getId());
+        URI location = URI.create("/api/tutor-empresa/" + t.getId());
 
         return ResponseEntity.ok().location(location).body(tutorActualizado);
     }
