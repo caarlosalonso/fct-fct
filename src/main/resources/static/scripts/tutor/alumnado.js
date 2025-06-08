@@ -7,9 +7,17 @@ window.addEventListener('FormsCreated', (event) => {
         let nia = this.input.value.trim().toUpperCase();
         return /^\d{1,8}$/.test(nia);
     }
+    form.getInput('nia').getValue = function () {
+        let nia = this.input.value.trim().toUpperCase();
+        return nia.length === 0 ? null : nia;
+    }
     form.getInput('nuss').validate = function () {
         let nuss = this.input.value.trim().toUpperCase();
         return /^\d{11}$/.test(nuss);
+    }
+    form.getInput('nuss').getValue = function () {
+        let nuss = this.input.value.trim().toUpperCase();
+        return nuss.length === 0 ? null : nuss;
     }
 
     promise();
@@ -215,16 +223,12 @@ function setInputsToCreate(form) {
     deleteDeleteButton();
 
     form.onsubmit = function (event) {
-        const nombre = form.getInput('nombre').getValue().trim();
-        const email = form.getInput('email').getValue().trim().toLowerCase();
-        const phone = form.getInput('phone').getValue().trim();
-        const nia = form.getInput('nia').getValue().trim().toUpperCase();
-        const dni = form.getInput('dni').getValue().trim().toUpperCase();
-        const nuss = form.getInput('nuss').getValue().trim().toUpperCase();
-        const empresa = form.getInput('empresa').getValue().trim();
-        const tutorEmpresa = form.getInput('tutorEmpresa').getValue().trim();
-        const tutorEmpresaEmail = form.getInput('tutorEmpresaEmail').getValue().trim().toLowerCase();
-        const tutorEmpresaPhone = form.getInput('tutorEmpresaPhone').getValue().trim();
+        const nombre = form.getInput('nombre').getValue();
+        const email = form.getInput('email').getValue();
+        const phone = form.getInput('phone').getValue();
+        const nia = form.getInput('nia').getValue();
+        const dni = form.getInput('dni').getValue();
+        const nuss = form.getInput('nuss').getValue();
 
         let newAlumno = {
             name: nombre,
@@ -232,16 +236,12 @@ function setInputsToCreate(form) {
             phone: phone,
             nia: nia,
             dni: dni,
-            nuss: nuss,
-            empresa: empresa,
-            tutorEmpresa: tutorEmpresa,
-            tutorEmpresaEmail: tutorEmpresaEmail,
-            tutorEmpresaPhone: tutorEmpresaPhone
+            nuss: nuss
         };
 
         let success = true;
 
-        fetch('/alumnos', {
+        fetch('/api/tutores/alumno', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -249,25 +249,13 @@ function setInputsToCreate(form) {
             body: JSON.stringify(newAlumno)
         })
         .then(response => {
-            switch (response.status) {
-                case 200:
-                    return response.json();
-                case 400:
-                    form.showError('Error en los datos enviados');
-                    success = false;
-                    break;
-                case 500:
-                    form.showError('Error interno del servidor');
-                    success = false;
-                    break;
-                default:
-                    form.showError('Error desconocido al enviar los datos');
-                    success = false;
-                    break;
+            if (response.status === 201) {
+                promise();
+                form.submitFinish();
+            } else {
+                form.showError('Error al crear el alumno');
+                success = false;
             }
-        })
-        .then(data => {
-            newAlumno.id = data.id;
         })
         .catch(error => {
             form.showError('Error al enviar los datos: ' + error.message);
