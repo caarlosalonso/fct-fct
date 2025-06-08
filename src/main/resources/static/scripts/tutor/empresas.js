@@ -182,3 +182,65 @@ function editarEmpresa(id) {
 function eliminarEmpresa(id) {
     alert('Eliminar empresa ' + id);
 }
+
+function collapseAll() {
+    const form = document.getElementById('empresa-form');
+    if (form) form.parentNode.classList.add('collapsed');
+}
+
+function finish(form) {
+    form.reset();
+    if (typeof form.submitFinish === 'function') form.submitFinish();
+    collapseAll();
+    cargarEmpresas();
+}
+
+function editEmpresa(empresa) {
+    collapseAll();
+
+    const form = Form.getForm('empresa-form');
+    form.form.parentNode.classList.remove('collapsed');
+
+    // Rellenar campos
+    form.getInput('empresa-nombre').retrack(empresa.nombre);
+    form.getInput('empresa-cif').retrack(empresa.cif);
+    form.getInput('empresa-sector').retrack(empresa.sector);
+    form.getInput('empresa-address').retrack(empresa.address);
+    form.getInput('empresa-telefono').retrack(empresa.telefono);
+    form.getInput('empresa-email').retrack(empresa.email);
+    form.getInput('empresa-persona_contacto').retrack(empresa.persona_contacto);
+
+    form.form.setAttribute('submit-text', 'Actualizar empresa');
+    form.submit.textContent = 'Actualizar empresa';
+
+    form.onsubmit = (event) => {
+        const data = {
+            nombre: form.getInput('empresa-nombre').getValue(),
+            cif: form.getInput('empresa-cif').getValue(),
+            sector: form.getInput('empresa-sector').getValue(),
+            address: form.getInput('empresa-address').getValue(),
+            telefono: form.getInput('empresa-telefono').getValue(),
+            email: form.getInput('empresa-email').getValue(),
+            persona_contacto: form.getInput('empresa-persona_contacto').getValue()
+        };
+
+        fetch(`/api/empresa/${empresa.id}`, {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(data)
+        })
+        .then(response => {
+            if (response.ok) {
+                finish(form);
+            } else {
+                response.text().then(text => {
+                    form.showError(`Error al actualizar la empresa: ${text}`);
+                });
+            }
+        })
+        .catch(error => {
+            console.error('Error al actualizar la empresa:', error);
+            form.showError('Error al actualizar la empresa');
+        });
+    };
+}
