@@ -30,6 +30,9 @@ public abstract class AbsBaseEntity {
 
     @Column(name = "updated_at", nullable = true, columnDefinition = "DATETIME DEFAULT NULL")
     private LocalDateTime updatedAt;
+    
+    @Column(name = "deleted_at", nullable = true, columnDefinition = "DATETIME DEFAULT CURRENT_TIMESTAMP")
+    private LocalDateTime deletedAt;
 
     @PrePersist
     protected void onCreate() {
