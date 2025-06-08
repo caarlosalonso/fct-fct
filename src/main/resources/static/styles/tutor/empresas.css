@@ -32,7 +32,7 @@ main {
     width: 100%;
 }
 
-#grid-data {
+.grid-data {
     display: grid;
     gap: 5px;
     overflow-x: auto;
