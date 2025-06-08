@@ -11,18 +11,17 @@
     <script type="module" src="/scripts/global.js"></script>
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Coordinación - Perfil</title>
+    <title>Coordinación - Inicio</title>
 
-    <link rel="stylesheet" href="/styles/profile/profile.css">
-
+    <link rel="stylesheet" href="/styles/index.css">
     <link rel="stylesheet" href="/styles/navigation.css">
 </head>
 <body>
     <header>
         <nav id="navbar">
-            <ul class="navigation nav">
+            <ul class="navigation nav collapse">
                 <li class="navigation nav-item">
-                    <a href="/index" class="navigation nav-link">Inicio</a>
+                    <a href="/index" class="navigation nav-link active">Inicio</a>
                 </li>
                 <li class="navigation nav-item">
                     <a href="/ciclos" class="navigation nav-link">Ciclos</a>
@@ -34,31 +33,19 @@
                     <a href="/tutores" class="navigation nav-link">Tutores</a>
                 </li>
                 <li class="navigation nav-item">
-                    <a href="/perfil" class="navigation nav-link active">Perfil</a>
+                    <a href="/perfil" class="navigation nav-link">Perfil</a>
                 </li>
             </ul>
         </nav>
     </header>
-    <main>
-        <section id="password-section" class="section">
-            <form id="password-form" method="POST" submit-text="Cambiar contraseña">
-                <div class="inputs form-container">
-                    <div class="instance form-input grouped-inputs">
-                        <div class="form-group form-input">
-                            <input type="password" id="current-password" name="current-password" class="text-based input" label="Contraseña actual" data-required="true">
-                        </div>
-                        <div class="form-group form-input">
-                            <input type="password" id="new-password" name="new-password" class="text-based input" label="Nueva contraseña" data-required="true">
-                        </div>
-                        <div class="form-group form-input">
-                            <input type="password" id="confirm-password" name="confirm-password" class="text-based input" label="Confirmar contraseña" data-required="true">
-                        </div>
-                    </div>
-                </div>
-            </form>
-        </section>
-    </main>
+    <section>
+        <h1 id="welcome">Bienvenido!</h1>
+        <p>Bienvenido al panel de administración.</p>
+        <p>Desde aquí puedes gestionar los usuarios, ciclos y alumnado del sistema.</p>
+        <p>Utiliza el menú de navegación para acceder a las diferentes secciones.</p>
+        <p>Para crear un nuevo <span class="special">Admin</span> o <span class="special">Coordinador</span>, ve a la sección "Crear Usuario".</p>
+    </section>
 
-    <script type="module" src="/scripts/profile/profile.js"></script>
+    <script src="/scripts/index.js"></script>
 </body>
 </html>
