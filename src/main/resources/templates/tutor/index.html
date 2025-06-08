@@ -11,10 +11,9 @@
     <script type="module" src="/scripts/global.js"></script>
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Empresas - Tutor</title>
+    <title>Página principal - Tutor</title>
 
-    <link rel="stylesheet" href="/styles/tutor/empresas.css">
-
+    <link rel="stylesheet" href="/styles/index.css">
     <link rel="stylesheet" href="/styles/navigation.css">
 </head>
 <body>
@@ -22,13 +21,13 @@
         <nav id="navbar">
             <ul class="navigation nav">
                 <li class="navigation nav-item">
-                    <a href="/index" class="navigation nav-link">Inicio</a>
+                    <a href="/index" class="navigation nav-link active">Inicio</a>
                 </li>
                 <li class="navigation nav-item">
                     <a href="/alumnado" class="navigation nav-link">Alumnado</a>
                 </li>
                 <li class="navigation nav-item">
-                    <a href="/empresas" class="navigation nav-link active">Empresas</a>
+                    <a href="/empresas" class="navigation nav-link">Empresas</a>
                 </li>
                 <li class="navigation nav-item">
                     <a href="/perfil" class="navigation nav-link">Perfil</a>
@@ -36,14 +35,12 @@
             </ul>
         </nav>
     </header>
-    <main>
-        <section id="display-section">
-            <div id="display-grid-wrapper">
-                <!-- Generated automatically -->
-            </div>
-        </section>
-    </main>
+    <section>
+        <h1 id="welcome">Bienvenido!</h1>
+        <p>Bienvenido al panel de los tutores.</p>
+        <p>Desde aquí podrás gestionar a los alumnos de tu grupo, así como las empresas con las que se tiene convenio o fueron sugeridas.</p>
+    </section>
 
-    <script type="module" src="/scripts/tutor/empresas.js"></script>
+    <script src="/scripts/index.js"></script>
 </body>
 </html>
