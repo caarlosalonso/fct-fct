@@ -15,6 +15,8 @@ public class HomeController {
 
     private static final String LOGIN_URL = "/login";
     private static final String REDIRECT_LOGIN = "redirect:" + LOGIN_URL;
+    private static final String INDEX_URL = "/index";
+    private static final String REDIRECT_INDEX = "redirect:" + INDEX_URL;
 
     @GetMapping(LOGIN_URL)
     public String login() {
@@ -108,7 +110,35 @@ public class HomeController {
             case User.Role.ADMIN        -> "admin/alumnado.html";
             case User.Role.COORDINADOR  -> "coordinacion/alumnado.html";
             case User.Role.TUTOR        -> "tutor/alumnado.html";
-            default                     -> REDIRECT_LOGIN;
+            default                     -> REDIRECT_INDEX;
+        };
+    }
+
+    @GetMapping("/coordinacion")
+    public String coordinacion(HttpServletRequest request) {
+        HttpSession session = request.getSession(false);
+        if (session == null) return REDIRECT_LOGIN;
+        Object user = session.getAttribute("user");
+        Object role = session.getAttribute("role");
+        if (user == null || role == null) return REDIRECT_LOGIN;
+
+        return switch(role) {
+            case User.Role.ADMIN        -> "admin/coordinacion.html";
+            default                     -> REDIRECT_INDEX;
+        };
+    }
+
+    @GetMapping("/crear")
+    public String crear(HttpServletRequest request) {
+        HttpSession session = request.getSession(false);
+        if (session == null) return REDIRECT_LOGIN;
+        Object user = session.getAttribute("user");
+        Object role = session.getAttribute("role");
+        if (user == null || role == null) return REDIRECT_LOGIN;
+
+        return switch(role) {
+            case User.Role.ADMIN        -> "admin/crear.html";
+            default                     -> REDIRECT_INDEX;
         };
     }
 
