@@ -22,7 +22,7 @@ import lombok.NoArgsConstructor;
 @Entity
 @Table(name = "tutores_empresas")
 @AttributeOverride(name = "id", column = @Column(name = "tutor_empresa_id", nullable = false, columnDefinition = "BIGINT"))
-public class Tutor_empresa extends AbsBaseEntity {
+public class TutorEmpresa extends AbsBaseEntity {
 
     @ManyToOne
     @JsonIgnore
