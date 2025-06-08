@@ -1,77 +1,22 @@
 package es.daw2.fct_fct.controlador;
 
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
 
-import es.daw2.fct_fct.modelo.Alumno;
 import es.daw2.fct_fct.modelo.User;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
 
 @Controller
 public class HomeController {
 
-    private enum PAGES {
-    /*  Authentication                                                          */
-        LOGIN("/login"),
-        REDIRECT_LOGIN("redirect:/login"),
-    /*  Errors                                                                  */
-        ERROR("/error"),
-    /*  User Management                                                         */
-    /*  Admin                                                                   */
-        ADMIN("/admin"),
-    /*  Coordinación                                                            */
-        COORDINACION("/coordinacion"),
-    /*  Tutor                                                                   */
-        TUTOR("/tutor"),
-    /*  Alumno                                                                  */
-        ALUMNO("/alumno"),
+    private static final String LOGIN_URL = "/login";
+    private static final String REDIRECT_LOGIN = "redirect:" + LOGIN_URL;
 
-
-
-
-    /*
-Do not disturb the sacred semicolon's deep slumber.
-    *  \   |*  /     *
-      * \  |  /  *          *
- *   --- */;/* ---      *
-   *    /  |  \   *           *
-       / * |   \      *
-*/
-        private final String path;
-
-        PAGES(String path) {
-            this.path = path;
-        }
-
-        public String getPath() {
-            return path;
-        }
-    }
-
-    @GetMapping("/")
-    public String index(HttpServletRequest request) {
-        HttpSession session = request.getSession(false);    // No crea sesión.
-        if (session == null) return PAGES.REDIRECT_LOGIN.getPath();
-
-        Object user = session.getAttribute("user");
-        Object role = session.getAttribute("role");
-        if (user == null || role == null) return PAGES.REDIRECT_LOGIN.getPath();
-
-        return switch (role) {
-            case User.Role.ADMIN        -> PAGES.ADMIN.getPath();
-            case User.Role.COORDINADOR  -> PAGES.COORDINACION.getPath();
-            case User.Role.TUTOR        -> PAGES.TUTOR.getPath();
-            case User.Role.ALUMNO       -> PAGES.ALUMNO.getPath();
-            default                     -> PAGES.LOGIN.getPath();
-        };
-    }
-
-    @GetMapping("/login")
+    @GetMapping(LOGIN_URL)
     public String login() {
         return "auth/login.html";
     }
@@ -80,62 +25,91 @@ Do not disturb the sacred semicolon's deep slumber.
     public String error() {
         return "error.html";
     }
+/*
+    /index
+    /coordinacion
+    /crear
+    /ciclos
+    /alumnado
+    /profile
+*/
+
+    @GetMapping("/")
+    public String empty(HttpServletRequest request) {
+        return index(request);
+    }
+
+    @GetMapping("/index")
+    public String index(HttpServletRequest request) {
+        HttpSession session = request.getSession(false);    // No crea sesión.
+        if (session == null) return REDIRECT_LOGIN;
+
+        Object user = session.getAttribute("user");
+        Object role = session.getAttribute("role");
+        if (user == null || role == null) return REDIRECT_LOGIN;
+
+        return switch (role) {
+            case User.Role.ADMIN        -> "admin/index.html";
+            case User.Role.COORDINADOR  -> "coordinacion/index.html";
+            case User.Role.TUTOR        -> "tutor/index.html";
+            case User.Role.ALUMNO       -> "alumno/index.html";
+            default                     -> REDIRECT_LOGIN;
+        };
+    }
+
+    @GetMapping("/perfil")
+    public String perfil(HttpServletRequest request, HttpServletResponse response) {
+        HttpSession session = request.getSession(false);
+        if (session == null) return REDIRECT_LOGIN;
+
+        Object user = session.getAttribute("user");
+        Object role = session.getAttribute("role");
+        Object nombre = session.getAttribute("nombre");
+        if (user == null || role == null || nombre == null) return REDIRECT_LOGIN;
+
+        Cookie cookie = new Cookie("nombre", nombre.toString());
+        cookie.setMaxAge(-1);       // La cookie durará lo que dure la sesión.
+        response.addCookie(cookie);
+
+        return switch (role) {
+            case User.Role.ADMIN        -> "admin/profile.html";
+            case User.Role.COORDINADOR  -> "coordinacion/profile.html";
+            case User.Role.TUTOR        -> "tutor/profile.html";
+            case User.Role.ALUMNO       -> "alumno/profile.html";
+            default                     -> REDIRECT_LOGIN;
+        };
+    }
 
     @GetMapping("/ciclos")
     public String ciclos(HttpServletRequest request) {
         HttpSession session = request.getSession(false);
-        if (session == null) return PAGES.REDIRECT_LOGIN.getPath();
+        if (session == null) return REDIRECT_LOGIN;
         Object user = session.getAttribute("user");
         Object role = session.getAttribute("role");
-        if (user == null || role == null) return PAGES.REDIRECT_LOGIN.getPath();
+        if (user == null || role == null) return REDIRECT_LOGIN;
 
-        return switch(role.toString()) {
-            case "ADMIN", "COORDINADOR" -> "coordinacion/ciclos.html";
-            case "TUTOR" -> "tutor/ciclos.html";
-            default -> PAGES.REDIRECT_LOGIN.getPath();
+        return switch(role) {
+            case User.Role.ADMIN        -> "admin/ciclos.html";
+            case User.Role.COORDINADOR  -> "coordinacion/ciclos.html";
+            case User.Role.TUTOR        -> "tutor/ciclos.html";
+            default                     -> REDIRECT_LOGIN;
         };
     }
 
     @GetMapping("/alumnado")
     public String alumnado(HttpServletRequest request) {
         HttpSession session = request.getSession(false);
-        if (session == null) return PAGES.REDIRECT_LOGIN.getPath();
+        if (session == null) return REDIRECT_LOGIN;
         Object user = session.getAttribute("user");
         Object role = session.getAttribute("role");
-        if (user == null || role == null) return PAGES.REDIRECT_LOGIN.getPath();
+        if (user == null || role == null) return REDIRECT_LOGIN;
 
-        return switch(role.toString()) {
-            case "COORDINADOR" -> "coordinacion/alumnado.html";
-            case "ADMIN", "TUTOR" -> "tutor/alumnado.html";
-            default -> PAGES.REDIRECT_LOGIN.getPath();
+        return switch(role) {
+            case User.Role.ADMIN        -> "admin/alumnado.html";
+            case User.Role.COORDINADOR  -> "coordinacion/alumnado.html";
+            case User.Role.TUTOR        -> "tutor/alumnado.html";
+            default                     -> REDIRECT_LOGIN;
         };
-    }
-
-    @GetMapping("/index")
-    public String index() {
-        return "index.html";
-    }
-
-    @GetMapping("/admin")
-    public String admin(HttpServletRequest request) {
-        HttpSession session = request.getSession(false);
-        if (session == null) return PAGES.REDIRECT_LOGIN.getPath();
-        Object user = session.getAttribute("user");
-        Object role = session.getAttribute("role");
-        if (user == null || role == null || !role.equals(User.Role.ADMIN)) {
-            return PAGES.REDIRECT_LOGIN.getPath();
-        }
-        return "admin/admin.html";
-    }
-
-    @GetMapping("/tutor")
-    public String tutor(HttpServletRequest request) {
-        HttpSession session = request.getSession(false);
-        if (session == null) return PAGES.REDIRECT_LOGIN.getPath();
-        Object user = session.getAttribute("user");
-        Object role = session.getAttribute("role");
-        if (user == null || role == null) return PAGES.REDIRECT_LOGIN.getPath();
-        return "tutor/tutor.html";
     }
 
     @GetMapping("/empresa")
@@ -143,46 +117,8 @@ Do not disturb the sacred semicolon's deep slumber.
         return "tutor/empresas.html";
     }
 
-    @GetMapping("/alumno")
-    public String alumno(HttpServletRequest request) {
-        HttpSession session = request.getSession(false);
-        if (session == null) return PAGES.REDIRECT_LOGIN.getPath();
-        Object user = session.getAttribute("user");
-        Object role = session.getAttribute("role");
-        if (user == null || role == null) return PAGES.REDIRECT_LOGIN.getPath();
-        return "alumno/alumno.html";
-    }
-
     @GetMapping("/subir")
     public String subir() {
         return "subirarchivo.html";
-    }
-
-    @GetMapping("/perfil")
-    public String perfil(HttpServletRequest request, Model model) {
-        HttpSession session = request.getSession(false);
-        if (session == null) return PAGES.REDIRECT_LOGIN.getPath();
-
-        Object user = session.getAttribute("user");
-        Object role = session.getAttribute("role");
-        Object nombre = session.getAttribute("nombre");
-        if (user == null || role == null) return PAGES.REDIRECT_LOGIN.getPath();
-
-        model.addAttribute("alumno", nombre);
-
-        return switch (role) {
-            case User.Role.ADMIN        -> "admin/profile.html";
-            case User.Role.COORDINADOR  -> "coordinacion/profile.html";
-            case User.Role.TUTOR        -> "tutor/profile.html";
-            case User.Role.ALUMNO       -> "alumno/profile.html";
-            default                     -> PAGES.REDIRECT_LOGIN.getPath();
-        };
-    }
-
-    @PostMapping("/perfil")
-    public String actualizarPerfil(@ModelAttribute Alumno alumno, Model model, HttpServletRequest request) {
-        // Actualizar el perfil del alumno
-        model.addAttribute("alumno", alumno);
-        return "alumno/profile.html";
     }
 }

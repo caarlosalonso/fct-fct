@@ -34,7 +34,7 @@ public class Empresa extends AbsBaseEntity {
     @Column(name = "observaciones", nullable = true, columnDefinition = "VARCHAR(2047)")
     private String observaciones;
 
-    @Column(name = "estado", nullable = false, columnDefinition = "ENUM('PENDIENTE', 'ACEPTADO', 'DENEGADO')")
+    @Column(name = "estado", nullable = false, columnDefinition = "varchar(15)")
     public Estado estado;
 
     @Column(name = "nombre", nullable = false, columnDefinition = "VARCHAR(255)")
