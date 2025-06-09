@@ -28,6 +28,8 @@ public class ServicioTutores extends AbstractService<Long, Tutor, RepositorioTut
         Set<Long> idsAsignados = asignados.stream()
             .map(Tutor::getId)
             .collect(Collectors.toSet());
+        System.out.println("Asignados: " + idsAsignados);
+        System.out.println("Todos: " + todos);
 
         return todos.stream()
             .filter(t -> !idsAsignados.contains(t.getId()))
