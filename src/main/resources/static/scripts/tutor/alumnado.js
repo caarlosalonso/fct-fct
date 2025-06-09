@@ -40,7 +40,7 @@ function promise() {
         build(alumnos, cursoActual, grupoTutor);
     }).catch((error) => {
         console.error('Error al obtener los ciclos lectivos:', error);
-    })
+    });
 }
 
 async function fetchAlumnos() {
@@ -105,7 +105,7 @@ function build(alumnos, cursoActual, grupoTutor) {
     const agignar = document.getElementById('asignar')
     agignar.addEventListener('click', (event) => {
         event.preventDefault();
-        
+
 
     });
 
@@ -153,8 +153,6 @@ function setInputsToCreate(form) {
             address: address
         };
 
-        let success = true;
-
         fetch('/api/alumnos/create', {
             method: 'POST',
             headers: {
@@ -168,21 +166,10 @@ function setInputsToCreate(form) {
                 form.submitFinish();
             } else {
                 form.showError('Error al crear el alumno');
-                success = false;
             }
         })
         .catch(error => {
             form.showError('Error al enviar los datos: ' + error.message);
-            success = false;
-        })
-        .finally(() => {
-            if (success) {
-                listAlumnos.push(newAlumno);
-                createAlumnoCell(newAlumno);
-                form.submitFinish('Alumno creado correctamente');
-
-                form.reset();
-            }
         });
     };
 
