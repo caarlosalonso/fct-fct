@@ -1,7 +1,7 @@
 import { Form } from '../classes/Form.js';
 import { tableLoading, tableFail, createSVG, createClickableSVG } from '../functions.js';
 
-const SECTION = 'display-section';
+const SECTION = 'curso-actual';
 
 window.addEventListener('DOMContentLoaded', () => {
     promise();
@@ -59,7 +59,7 @@ async function fetchGrupoTutor() {
 }
 
 function build(cursoActual, grupoTutor) {
-    const displaySection = document.getElementById('display-section');
+    const displaySection = document.getElementById(SECTION);
     while( displaySection.firstChild) displaySection.removeChild(displaySection.firstChild);
 
     if (grupoTutor.length === 0) {
