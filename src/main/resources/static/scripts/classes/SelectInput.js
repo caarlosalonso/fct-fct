@@ -21,6 +21,7 @@ export class SelectInput extends TextInput {
         super.init();
         this.buildSelect();
         this.createDropdown();
+        this.createOptions();
     }
 
     buildSelect() {
@@ -42,6 +43,18 @@ export class SelectInput extends TextInput {
         this.dropdown.classList.add('dropdown', 'collapsed');
         this.parent.appendChild(this.dropdown);
 
+        // Show dropdown on focus
+        this.input.addEventListener('focus', () => {
+            this.showDropdown();
+        });
+
+        // Hide dropdown on blur
+        this.input.addEventListener('blur', () => {
+            this.hideDropdown();
+        });
+    }
+
+    createOptions() {
         this.options.forEach(({ value, label }) => {
             const optionElement = document.createElement('div');
             optionElement.classList.add('dropdown-option');
@@ -67,16 +80,6 @@ export class SelectInput extends TextInput {
                 }
             });
         });
-
-        // Show dropdown on focus
-        this.input.addEventListener('focus', () => {
-            this.showDropdown();
-        });
-
-        // Hide dropdown on blur
-        this.input.addEventListener('blur', () => {
-            this.hideDropdown();
-        });
     }
 
     showDropdown() {
@@ -100,7 +103,7 @@ export class SelectInput extends TextInput {
     updateDropdown(array, interacting = false) {
         while(this.dropdown && this.dropdown.firstChild) this.dropdown.removeChild(this.dropdown.firstChild);
         this.options = (!array || !Array.isArray(array)) ? [] : array;
-        this.createDropdown();
+        this.createOptions();
 
         if (interacting) {
             this.showDropdown();
