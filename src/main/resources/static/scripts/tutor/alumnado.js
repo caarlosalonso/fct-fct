@@ -213,7 +213,10 @@ function crearLista(alumnosCurso, grupoTutor, form) {
             createClickableSVG(
                 '-6 -6 60 60',
                 'M 42 3 H 28 A 2 2 0 0 0 26 1 H 22 A 2 2 0 0 0 20 3 H 6 A 2 2 0 0 0 6 7 H 42 A 2 2 0 0 0 42 3 Z M 37 11 V 43 H 31 V 19 A 1 1 0 0 0 27 19 V 43 H 21 V 19 A 1 1 0 0 0 17 19 V 43 H 11 V 11 A 2 2 0 0 0 7 11 V 45 A 2 2 0 0 0 9 47 H 39 A 2 2 0 0 0 41 45 V 11 A 2 2 0 0 0 37 11 Z',
-                (event) => removeAlumnoFromGrupo(event, form, alumno.alumnoId, grupoTutor.grupoId),
+                (event) => {
+                    event.preventDefault();
+                    removeAlumnoFromGrupo(form, alumno.alumnoId, grupoTutor.grupoId);
+                },
                 'delete-svg'
             )
         );
@@ -277,14 +280,8 @@ function setInputsToCreate(form) {
     submitButton.textContent = 'Crear alumno';
 }
 
-function setInputsToUpdate(form, id) {
-    let isCancelled = form.cancel();
-    if (! isCancelled) return;
-
+function setInputsToUpdate(form, alumnoId) {
     document.getElementById('titulo').textContent = `Información del alumno`;
-
-    const alumno = map.find(a => a.id === id);
-    if (!alumno) return;
 
     form.onsubmit = function (event) {
         const nombre = form.getInput('nombre').getValue();
@@ -305,7 +302,7 @@ function setInputsToUpdate(form, id) {
             address: address
         };
 
-        fetch(`/api/alumnos/${alumno.id}`, {
+        fetch(`/api/alumnos/${alumnoId}`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json'
@@ -341,8 +338,7 @@ function setInputsToUpdate(form, id) {
     submitButton.textContent = 'Actualizar alumno';
 }
 
-function removeAlumnoFromGrupo(event, form, alumnoId, grupoId) {
-    event.preventDefault();
+function removeAlumnoFromGrupo(form, alumnoId, grupoId) {
     if (confirm('¿Estás seguro de que quieres eliminar a este alumno del grupo?')) {
         fetch(`/api/cursos/delete`, {
             method: 'DELETE',
