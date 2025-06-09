@@ -6,12 +6,17 @@ export class SelectInput extends TextInput {
         this.options = [];
         this.dropdown = null;
         this.input.value = '';
+        this.hiddenValue = '';
         this.validate = () => {
             if (this.isEmpty()) return true;
 
             const selectedValue = this.input.value;
             return this.options.some(option => option.value === selectedValue);
         };
+
+        this.getValue = () => {
+            return this.hiddenValue.trim();
+        }
     }
 
     init() {
@@ -41,7 +46,8 @@ export class SelectInput extends TextInput {
             optionElement.textContent = label;
 
             optionElement.addEventListener('click', () => {
-                this.input.value = value;
+                this.input.value = label;
+                this.hiddenValue = value;
                 this.states.active = true;
                 this.states.focus = false;
                 this.updateState();

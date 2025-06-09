@@ -16,9 +16,11 @@ import es.daw2.fct_fct.dto.GrupoAllDTO;
 import es.daw2.fct_fct.modelo.Ciclo;
 import es.daw2.fct_fct.modelo.CicloLectivo;
 import es.daw2.fct_fct.modelo.Grupo;
+import es.daw2.fct_fct.modelo.Tutor;
 import es.daw2.fct_fct.servicio.ServicioCiclo;
 import es.daw2.fct_fct.servicio.ServicioCicloLectivo;
 import es.daw2.fct_fct.servicio.ServicioGrupo;
+import es.daw2.fct_fct.servicio.ServicioTutores;
 import jakarta.servlet.http.HttpServletRequest;
 
 
@@ -32,17 +34,20 @@ public class ControladorGrupo extends CrudController<Long, Grupo, CreateGrupoDTO
     @Autowired
     private ServicioCicloLectivo servicioCicloLectivo;
 
+    @Autowired
+    private ServicioTutores servicioTutores;
+
     @Override
     public ResponseEntity<?> create(@RequestBody CreateGrupoDTO dto, HttpServletRequest request) {
         Grupo grupo = new Grupo();
 
         Optional<Ciclo> cicloOpt = servicioCiclo.getById(dto.ciclo());
-        if (! cicloOpt.isPresent()) {
+        if (!cicloOpt.isPresent()) {
             return ResponseEntity.badRequest().body("No se encontró el ciclo con el id: " + dto.ciclo());
         }
 
         Optional<CicloLectivo> cicloLectivoOpt = servicioCicloLectivo.getById(dto.cicloLectivo());
-        if (! cicloLectivoOpt.isPresent()) {
+        if (!cicloLectivoOpt.isPresent()) {
             return ResponseEntity.badRequest().body("No se encontró el ciclo lectivo con el id: " + dto.cicloLectivo());
         }
     
@@ -50,6 +55,12 @@ public class ControladorGrupo extends CrudController<Long, Grupo, CreateGrupoDTO
         grupo.setCicloLectivo(cicloLectivoOpt.get());
         grupo.setHorario(dto.horario());
         grupo.setNumero(dto.numero());
+
+        Optional<Tutor> tutorOpt = servicioTutores.getById(dto.tutor_id());
+        if (!tutorOpt.isPresent()) {
+            return ResponseEntity.badRequest().body("No se encontró el tutor con el id: " + dto.tutor_id());
+        }
+        grupo.setTutor(tutorOpt.get());
 
         service.save(grupo);
 

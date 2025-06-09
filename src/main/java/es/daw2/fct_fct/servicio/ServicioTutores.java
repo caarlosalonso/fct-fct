@@ -2,8 +2,9 @@ package es.daw2.fct_fct.servicio;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import es.daw2.fct_fct.modelo.Tutor;
@@ -20,22 +21,16 @@ public class ServicioTutores extends AbstractService<Long, Tutor, RepositorioTut
             .findFirst();
     }
 
-    @Autowired
-    private ServicioGrupo servicioGrupos;
+    public List<Tutor> getTutoresSinGrupoEnCicloLectivo(Long cicloLectivoId) {
+        List<Tutor> todos = this.list();
+        List<Tutor> asignados = repository.findTutoresAsignadosEnCicloLectivo(cicloLectivoId);
 
-    @Autowired
-    private ServicioCicloLectivo servicioCicloLectivo;
+        Set<Long> idsAsignados = asignados.stream()
+            .map(Tutor::getId)
+            .collect(Collectors.toSet());
 
-    public List<?> getTutoresSinGrupo(Long cicloId) {
-        List<Tutor> tutores = this.list();
-
-
-
-        servicioGrupos.list()
-            .forEach((grupo) -> {
-                
-            });
-
-        return null;
+        return todos.stream()
+            .filter(t -> !idsAsignados.contains(t.getId()))
+            .collect(Collectors.toList());
     }
 }

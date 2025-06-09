@@ -1,6 +1,7 @@
 package es.daw2.fct_fct.controlador;
 
 import java.net.URI;
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -64,7 +65,7 @@ public class ControladorTutor extends CrudController<Long, Tutor, CreateUserDTO,
 
     // all ya existe en CrudController
 
-    @GetMapping("/grupoless/{cicloId}")
+    @GetMapping("/disponibles/{cicloId}")
     public ResponseEntity<?> obtenerTutoresSinGrupo(@PathVariable Long cicloId, HttpServletRequest request) {
         HttpSession session = request.getSession(false);
         if (session == null) return ResponseEntity.status(401).body("No autorizado");
@@ -73,7 +74,8 @@ public class ControladorTutor extends CrudController<Long, Tutor, CreateUserDTO,
             return ResponseEntity.status(403).body("Forbidden: Sólo los coordinadores pueden ver tutores sin grupo");
         }
 
-        return ResponseEntity.ok(service.getTutoresSinGrupo(cicloId));
+        List<Tutor> tutoresDisponibles = service.getTutoresSinGrupoEnCicloLectivo(cicloId);
+        return ResponseEntity.ok(tutoresDisponibles);
     }
 
     // getById ya existe en CrudController

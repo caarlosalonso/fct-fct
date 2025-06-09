@@ -380,17 +380,30 @@ function addGrupo(ciclo, cicloLectivo, numero) {
     const form = Form.getForm('grupo-form');
     form.form.parentNode.classList.remove('collapsed');
 
+    form.getInput('tutor').options = [];
+
+    fetch(`/api/tutores/disponibles/${cicloLectivo.id}`)
+    .then((response) => {
+        if (!response.ok) throw new Error('Error al obtener tutores disponibles');
+        console.log(response.json());
+    })
+    .catch((error) => {
+        throw new Error('Error al obtener los datos: ' + error);
+    });
+
     form.onsubmit = (event) => {
         const cicloLectivoId = cicloLectivo.id;
         const cicloId = ciclo.id;
         const numero = form.getInput('grupo-numero').getValue();
         const horario = form.getInput('grupo-horario').getValue();
+        const tutor = form.getInput('tutor').getValue();
 
         let grupo = {
             ciclo: cicloId,
             cicloLectivo: cicloLectivoId,
             numero: parseInt(numero),
-            horario: horario
+            horario: horario,
+            tutor_id: tutor
         };
 
         fetch('/api/grupos/create', {
