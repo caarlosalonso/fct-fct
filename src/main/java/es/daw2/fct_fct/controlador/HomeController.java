@@ -168,8 +168,8 @@ public class HomeController {
         };
     }
 
-    @GetMapping("/empresa")
-    public String empresa() {
+    @GetMapping("/empresas")
+    public String empresas() {
         return "tutor/empresas.html";
     }
 
