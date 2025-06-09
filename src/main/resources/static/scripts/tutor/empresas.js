@@ -138,6 +138,7 @@ function crearGridEmpresas(empresas) {
         { key: 'hay_convenio', label: 'Convenio' },
         { key: 'numero_convenio', label: 'Número Convenio' },
         { key: 'persona_contacto', label: 'Persona Contacto' },
+        { key: 'propuesta_por', label: 'Propuesta por' },
         { key: 'observaciones', label: 'Observaciones' }
     ];
 
