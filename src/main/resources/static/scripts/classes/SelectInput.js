@@ -13,7 +13,7 @@ export class SelectInput extends TextInput {
         };
 
         this.getValue = () => {
-            return this.hiddenValue.trim();
+            return this.hiddenValue;
         }
     }
 
