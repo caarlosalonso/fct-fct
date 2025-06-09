@@ -43,7 +43,7 @@ public class VistaGruposCiclosController {
         Optional<VistaGruposCiclos> grupoOpt = servicio.getByTutorId(tutorId);
 
         if (grupoOpt.isEmpty()) {
-            return ResponseEntity.notFound().build();
+            return ResponseEntity.noContent().build();
         }
         return ResponseEntity.ok(grupoOpt.get());
     }

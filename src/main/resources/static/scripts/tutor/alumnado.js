@@ -55,6 +55,13 @@ async function fetchGrupoTutor() {
 }
 
 function build(cursoActual, grupoTutor) {
+    if (grupoTutor.length === 0) {
+        document.getElementById('tutor').classList.add('empty');
+        document.getElementById('tutor').textContent = 'No tienes ningún grupo asignado como tutor';
+        return;
+    }
+
+
     console.log('Ciclo lectivo actual:', cursoActual);
     console.log('Grupo tutor:', grupoTutor);
 }

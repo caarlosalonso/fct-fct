@@ -9,9 +9,7 @@ export class SelectInput extends TextInput {
         this.hiddenValue = '';
         this.validate = () => {
             if (this.isEmpty()) return true;
-
-            const selectedValue = this.input.value;
-            return this.options.some(option => option.value === selectedValue);
+            return this.options.some(option => option.value === this.hiddenValue);
         };
 
         this.getValue = () => {
