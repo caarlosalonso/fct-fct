@@ -6,6 +6,7 @@ import java.util.Optional;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 
+import es.daw2.fct_fct.dto.AlumnoCreateDTO;
 import es.daw2.fct_fct.modelo.Alumno;
 import es.daw2.fct_fct.servicio.ServicioAlumno;
 import jakarta.servlet.http.HttpServletRequest;
@@ -17,15 +18,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 @RestController
 @RequestMapping("/api/alumnos")
-public class ControladorAlumno extends CrudController<Long, Alumno, Alumno, Alumno, ServicioAlumno> {
+public class ControladorAlumno extends CrudController<Long, Alumno, AlumnoCreateDTO, Alumno, ServicioAlumno> {
 
     @Override
-    public ResponseEntity<?> create(@RequestBody Alumno a, HttpServletRequest request) {
-        service.save(a);
-
-        URI location = URI.create("/api/alumnos/" + a.getId());
-
-        return ResponseEntity.created(location).body(a);
+    public ResponseEntity<?> create(@RequestBody AlumnoCreateDTO a, HttpServletRequest request) {
+        return ResponseEntity.badRequest().body("Unfinished");
     }
 
     // all ya existe en CrudController

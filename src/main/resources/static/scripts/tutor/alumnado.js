@@ -64,6 +64,9 @@ async function fetchAlumnos() {
 const info = [];
 let chosenCicloLectivo = null;
 let chosenGrupo = null;
+let cicloLectivoId = null;
+let grupoId = null;
+let numero = null;
 
 function build(ciclosLectivos, gruposCiclos, alumnos) {
     ciclosLectivos.forEach((cicloLectivo) => {
@@ -78,6 +81,7 @@ function build(ciclosLectivos, gruposCiclos, alumnos) {
                     cicloLectivoId: grupo.cicloLectivoId,
                     grupoId: grupo.grupoId,
                     grupo_nombre: grupo.grupo_nombre,
+                    numero: grupo.numero,
                     ciclo_id: grupo.cicloId,
                     alumnos: alumnos.filter(alumno => alumno.grupoCicloId === grupo.id)
                 };
@@ -127,6 +131,7 @@ function createCiclosLectivos() {
             if (chosenCicloLectivo) chosenCicloLectivo.classList.remove('active');
             li.classList.add('active');
             chosenCicloLectivo = li;
+            cicloLectivoId = cicloLectivo.id;
             createGruposCiclos(cicloLectivo.id);
         });
 
@@ -165,6 +170,8 @@ function createGruposCiclos(cicloLectivoId) {
                 if (chosenGrupo) chosenGrupo.classList.remove('active');
                 li.classList.add('active');
                 chosenGrupo = li;
+                grupoId = grupo.grupoId;
+                numero = grupo.numero;
                 createAlumnos(grupo.alumnos);
             });
 
@@ -229,19 +236,24 @@ function setInputsToCreate(form) {
         const nia = form.getInput('nia').getValue();
         const dni = form.getInput('dni').getValue();
         const nuss = form.getInput('nuss').getValue();
+        const address = form.getInput('address').getValue();
 
         let newAlumno = {
-            name: nombre,
+            nombreAlumno: nombre,
             email: email,
-            phone: phone,
-            nia: nia,
             dni: dni,
-            nuss: nuss
+            nia: nia,
+            nuss: nuss,
+            phone: phone,
+            address: address,
+            grupoId: grupoId,
+            numero: numero,
+            cicloLectivoId: cicloLectivoId,
         };
 
         let success = true;
 
-        fetch('/api/tutores/alumno', {
+        fetch('/api/alumnos/create', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -278,10 +290,7 @@ function setInputsToCreate(form) {
     form.getInput('nia').retrack('');
     form.getInput('dni').retrack('');
     form.getInput('nuss').retrack('');
-    form.getInput('empresa').retrack('');
-    form.getInput('tutorEmpresa').retrack('');
-    form.getInput('tutorEmpresaEmail').retrack('');
-    form.getInput('tutorEmpresaPhone').retrack('');
+    form.getInput('address').retrack('');
 
     const submitButton = document.getElementById('submit');
     submitButton.textContent = 'Crear alumno';
@@ -325,8 +334,8 @@ function setInputsToUpdate(form, id) {
 
         let success = true;
 
-        fetch(`/alumnos/${alumno.id}`, {
-            method: 'POST',
+        fetch(`/api/alumnos/${alumno.id}`, {
+            method: 'PUT',
             headers: {
                 'Content-Type': 'application/json'
             },

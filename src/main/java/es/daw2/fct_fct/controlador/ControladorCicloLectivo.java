@@ -32,6 +32,15 @@ public class ControladorCicloLectivo extends CrudController<Long, CicloLectivo, 
         nuevoCicloLectivo.setNombre(dto.nombre());
         nuevoCicloLectivo.setFechaInicio(dto.fechaInicio());
 
+        service.list()
+            .stream()
+            .forEach((cicloLectivo) -> cicloLectivo.setEsActual(false));
+
+        service.list()
+            .stream()
+            .max((c1, c2) -> c1.getFechaInicio().compareTo(c2.getFechaInicio()))
+            .ifPresent(cicloLectivo -> cicloLectivo.setEsActual(true));
+
         nuevoCicloLectivo = service.save(nuevoCicloLectivo);
         URI location = URI.create("/api/ciclos-lectivos/" + nuevoCicloLectivo.getId());
         return ResponseEntity.created(location).body(nuevoCicloLectivo);

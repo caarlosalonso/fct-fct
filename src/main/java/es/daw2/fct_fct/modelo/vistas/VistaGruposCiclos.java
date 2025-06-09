@@ -22,6 +22,9 @@ public class VistaGruposCiclos {
     @Column(name = "ciclo_id", nullable = false)
     private Long ciclo_id;
 
+    @Column(name = "numero", nullable = false)
+    private Integer numero;
+
     @Column(name = "grupo_nombre", nullable = false)
     private String grupo_nombre;
 }

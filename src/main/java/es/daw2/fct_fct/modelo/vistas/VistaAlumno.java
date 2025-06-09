@@ -49,6 +49,12 @@ public class VistaAlumno {
     @Column(name = "curso_id", nullable = false)
     private Long cursoId;
 
+    @Column(name = "horas_hechas")
+    private Integer horasHechas;
+
+    @Column(name = "rating")
+    private Integer rating;
+
     @Column(name = "observaciones", length = 2047)
     private String observaciones;
 
