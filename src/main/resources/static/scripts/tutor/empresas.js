@@ -217,9 +217,6 @@ function finish(form) {
 function editEmpresa(empresa) {
     collapseAll();
 
-    const section = document.getElementById('empresa-section');
-    section.classList.remove('collapsed');
-
     const form = Form.getForm('empresa-form');
     form.form.parentNode.classList.remove('collapsed');
 
