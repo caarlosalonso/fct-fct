@@ -323,16 +323,10 @@
 
 }
 
-
-
 .edit-svg {
-    max-width: 35px;
     background-color: #ddabdd;
     fill: #000000;
     border-radius: 10px;
-    grid-column: 2;
-    grid-row: 1 / span 99;
-    height: 100%;
     transition: 300ms ease-in-out;
 
     &:hover {
@@ -343,13 +337,9 @@
 }
 
 .delete-svg {
-    max-width: 35px;
     background-color: #ffbaba;
     fill: #000000;
     border-radius: 10px;
-    grid-column: 3;
-    grid-row: 1 / span 99;
-    height: 100%;
     transition: 300ms ease-in-out;
 
     &:hover {
@@ -360,13 +350,9 @@
 }
 
 .password-reset-svg {
-    max-width: 35px;
     background-color: #c0ffba;
     fill: #000000;
     border-radius: 10px;
-    grid-column: 3;
-    grid-row: 1 / span 99;
-    height: 100%;
     transition: 300ms ease-in-out;
 
     &:hover {
@@ -374,4 +360,22 @@
         background-color: #a8e0a1;
         fill: #ffffff;
     }
+}
+
+.svg {
+    width: 100%;
+    max-height: 35px;
+}
+
+.alumno-item {
+    display: grid;
+    grid-template-columns: auto auto auto;
+    width: 300px;
+    background-color: var(--background-color);
+    border-radius: var(--border-radius);
+    padding: var(--border-radius);
+}
+
+.cell-value {
+    grid-column: auto / span 3;
 }
