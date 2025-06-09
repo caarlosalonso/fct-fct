@@ -30,14 +30,16 @@ function promise() {
     Promise.all([
         fetchAlumnos(),
         fetchCursoActual(),
-        fetchGrupoTutor()
+        fetchGrupoTutor(),
+        fetchAlumnosCurso()
     ])
     .then(([
         alumnos,
         cursoActual,
-        grupoTutor
+        grupoTutor,
+        alumnosCurso
     ]) => {
-        build(alumnos, cursoActual, grupoTutor);
+        build(alumnos, cursoActual, grupoTutor, alumnosCurso);
     }).catch((error) => {
         console.error('Error al obtener los ciclos lectivos:', error);
     });
@@ -47,6 +49,13 @@ async function fetchAlumnos() {
     const response = await fetch('/api/vista-all-alumnos/all');
     if (response.status === 204) return [];
     if (!response.ok) throw new Error('Error al obtener los alumnos');
+    return await response.json();
+}
+
+async function fetchAlumnosCurso() {
+    const response = await fetch('/api/vista-alumnos-curso/all');
+    if (response.status === 204) return [];
+    if (!response.ok) throw new Error('Error al obtener los alumnos del curso');
     return await response.json();
 }
 
@@ -64,10 +73,12 @@ async function fetchGrupoTutor() {
     return await response.json();
 }
 
-function build(alumnos, cursoActual, grupoTutor) {
+function build(alumnos, cursoActual, grupoTutor, alumnosCurso) {
     console.log('Alumnos:', alumnos);
     console.log('Ciclo lectivo actual:', cursoActual);
     console.log('Grupo tutor:', grupoTutor);
+    console.log('Alumnos del curso:', alumnosCurso);
+    crearLista(alumnosCurso);
 
     const form = Form.getForm('alumno-form');
 
@@ -103,7 +114,7 @@ function build(alumnos, cursoActual, grupoTutor) {
     }
 
     const asignar = Form.getForm('alumno-search-form');
-    asignar.getInput('search').addEventListener('click', (event) => {
+    asignar.getInput('search').input.addEventListener('click', (event) => {
         const alumnoId = search.getInput('search').getValue();
         if (!alumnoId) {
             asignar.showError('Selecciona un alumno para asignar al grupo');
@@ -151,6 +162,25 @@ function build(alumnos, cursoActual, grupoTutor) {
     cicloInfo.classList.add('ciclo-info');
     cicloInfo.textContent = `${cursoActual.nombre} - ${grupoTutor.grupoNombre}`;
     displaySection.appendChild(cicloInfo);
+}
+
+function crearLista(alumnosCurso) {
+    const listar = document.getElementById('listar');
+    while(listar && listar.firstChild) listar.removeChild(listar.firstChild);
+
+    if (alumnosCurso.length === 0) {
+        const mensaje = document.createElement('p');
+        mensaje.textContent = 'No hay alumnos en este curso';
+        listar.appendChild(mensaje);
+        return;
+    }
+
+    alumnosCurso.forEach(alumno => {
+        const item = document.createElement('div');
+        item.classList.add('alumno-item');
+        item.textContent = `${alumno.nombreAlumno} (${alumno.nia}) - ${alumno.email} - ${alumno.dni}`;
+        listar.appendChild(item);
+    });
 }
 
 function setInputsToCreate(form) {
