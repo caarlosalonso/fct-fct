@@ -1,3 +1,9 @@
+if (!HTMLSelectElement.prototype.isEmpty) {
+    HTMLSelectElement.prototype.isEmpty = function() {
+        return !this.value || this.value.trim() === '';
+    };
+}
+
 import { Form } from '../classes/Form.js';
 
 let TIMEOUT;
@@ -119,7 +125,7 @@ function crearGridEmpresas(empresas) {
         { key: 'address', label: 'Dirección' },
         { key: 'telefono', label: 'Teléfono' },
         { key: 'email', label: 'Email' },
-        { key: 'persona_contacto', label: 'Persona de Contacto' }
+        { key: 'persona_contacto', label: 'Persona Contacto' }
     ];
 
     const gridData = document.createElement('div');
