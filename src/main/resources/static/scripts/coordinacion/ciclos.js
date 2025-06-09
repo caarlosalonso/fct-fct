@@ -384,7 +384,7 @@ function addGrupo(ciclo, cicloLectivo, numero) {
 
     let arr = [];
 
-    fetch(`/api/tutores/disponibles/${cicloLectivo.id}`)
+    fetch(`/api/vista-tutores/disponibles/${cicloLectivo.id}`)
     .then((response) => {
         if (!response.ok) throw new Error('Error al obtener tutores disponibles');
         return response.json();

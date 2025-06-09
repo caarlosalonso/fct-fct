@@ -2,8 +2,6 @@ package es.daw2.fct_fct.servicio;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 
@@ -19,20 +17,5 @@ public class ServicioTutores extends AbstractService<Long, Tutor, RepositorioTut
             .stream()
             .filter(tutor -> tutor.getUser().getId().equals(userId))
             .findFirst();
-    }
-
-    public List<Tutor> getTutoresSinGrupoEnCicloLectivo(Long cicloLectivoId) {
-        List<Tutor> todos = this.list();
-        List<Tutor> asignados = repository.findTutoresAsignadosEnCicloLectivo(cicloLectivoId);
-
-        Set<Long> idsAsignados = asignados.stream()
-            .map(Tutor::getId)
-            .collect(Collectors.toSet());
-        System.out.println("Asignados: " + idsAsignados);
-        System.out.println("Todos: " + todos);
-
-        return todos.stream()
-            .filter(t -> !idsAsignados.contains(t.getId()))
-            .collect(Collectors.toList());
     }
 }
