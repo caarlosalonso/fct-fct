@@ -127,10 +127,9 @@ function build(alumnos, cursoActual, grupoTutor) {
 
     const cicloInfo = document.createElement('p');
     cicloInfo.classList.add('ciclo-info');
-    cicloInfo.textContent = `${cursoActual.nombre} - ${grupoTutor[0].grupoNombre}`;
+    cicloInfo.textContent = `${cursoActual.nombre} - ${grupoTutor.grupoNombre}`;
+    displaySection.appendChild(cicloInfo);
 }
-
-
 
 function setInputsToCreate(form) {
     let isCancelled = form.cancel();
