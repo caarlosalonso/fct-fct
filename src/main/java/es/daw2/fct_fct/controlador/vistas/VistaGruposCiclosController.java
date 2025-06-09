@@ -39,7 +39,7 @@ public class VistaGruposCiclosController {
             return ResponseEntity.status(403).body("Forbidden: Sólo los tutores pueden ver el ciclo lectivo actual");
         }
 
-        Long tutorId = (Long) session.getAttribute("user");
+        Long tutorId = (Long) session.getAttribute("child_id");
         System.out.println("Session ID: " + tutorId);
         Optional<VistaGruposCiclos> grupoOpt = servicio.getByTutorId(tutorId);
 
