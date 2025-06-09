@@ -85,4 +85,10 @@ export class SelectInput extends TextInput {
             this.dropdown.style.display = "none";
         }, 200);
     }
+
+    updateDropdown(array) {
+        while(this.dropdown && this.dropdown.firstChild) this.dropdown.removeChild(this.dropdown.firstChild);
+        this.options = array;
+        this.createDropdown();
+    }
 }

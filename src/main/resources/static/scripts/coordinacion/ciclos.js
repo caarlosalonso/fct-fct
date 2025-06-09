@@ -398,10 +398,12 @@ async function addGrupo(ciclo, cicloLectivo, numero) {
             });
         }
 
+        let options = [];
         array.forEach(tutor => {
             const [value, label] = [tutor.tutorId, tutor.name];
-            form.getInput('tutor').options.push({value, label});
+            options.push({value, label});
         });
+        form.getInput('tutor').updateDropdown(options);
     } catch (error) {
         console.error(error);
     }

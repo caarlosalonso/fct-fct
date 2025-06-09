@@ -4,6 +4,7 @@ import { PasswordInput } from '../classes/PasswordInput.js';
 window.addEventListener('FormsCreated', (event) => {
     const form = Form.getForm('alumno-form');
     form.getInput('nia').validate = function () {
+        if (this.input.value.trim().length === 0) return true;
         let nia = this.input.value.trim().toUpperCase();
         return /^\d{1,8}$/.test(nia);
     }
@@ -12,6 +13,7 @@ window.addEventListener('FormsCreated', (event) => {
         return nia.length === 0 ? null : nia;
     }
     form.getInput('nuss').validate = function () {
+        if (this.input.value.trim().length === 0) return true;
         let nuss = this.input.value.trim().toUpperCase();
         return /^\d{11}$/.test(nuss);
     }
