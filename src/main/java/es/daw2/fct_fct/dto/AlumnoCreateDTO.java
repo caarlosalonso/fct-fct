@@ -7,8 +7,5 @@ public record AlumnoCreateDTO(
         String nia,
         String nuss,
         String phone,
-        String address,
-        Long grupoId,
-        Integer numero,
-        Long cicloLectivoId
+        String address
 ) {}

@@ -28,13 +28,5 @@ export class NumberInput extends TextInput {
 
     init() {
         super.init();
-        this.createEventListeners();
-    }
-
-    createEventListeners() {
-        this.input.addEventListener('input', () => {
-            this.states.active = true;
-            this.updateState();
-        });
     }
 }

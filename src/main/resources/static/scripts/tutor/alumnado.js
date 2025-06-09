@@ -65,6 +65,8 @@ async function fetchGrupoTutor() {
 }
 
 function build(alumnos, cursoActual, grupoTutor) {
+    const form = Form.getForm('alumno-form');
+
     const search = Form.getForm('alumno-search-form');
     const searchInput = search.getInput('search');
     if (searchInput) {
@@ -95,7 +97,10 @@ function build(alumnos, cursoActual, grupoTutor) {
     }
 
     const crearAlumno = document.getElementById('create-alumno');
-    
+    crearAlumno.addEventListener('click', (event) => {
+        event.preventDefault();
+        setInputsToCreate(form);
+    });
 
 
     const displaySection = document.getElementById(SECTION);
@@ -113,6 +118,76 @@ function build(alumnos, cursoActual, grupoTutor) {
 }
 
 
+
+function setInputsToCreate(form) {
+    let isCancelled = form.cancel();
+    if (! isCancelled) return;
+
+    document.getElementById('titulo').textContent = 'Creación de un nuevo alumno';
+
+    form.onsubmit = function (event) {
+        const nombre = form.getInput('nombre').getValue();
+        const email = form.getInput('email').getValue();
+        const phone = form.getInput('phone').getValue();
+        const nia = form.getInput('nia').getValue();
+        const dni = form.getInput('dni').getValue();
+        const nuss = form.getInput('nuss').getValue();
+        const address = form.getInput('address').getValue();
+
+        let newAlumno = {
+            nombreAlumno: nombre,
+            email: email,
+            dni: dni,
+            nia: nia,
+            nuss: nuss,
+            phone: phone,
+            address: address
+        };
+
+        let success = true;
+
+        fetch('/api/alumnos/create', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(newAlumno)
+        })
+        .then(response => {
+            if (response.status === 201) {
+                promise();
+                form.submitFinish();
+            } else {
+                form.showError('Error al crear el alumno');
+                success = false;
+            }
+        })
+        .catch(error => {
+            form.showError('Error al enviar los datos: ' + error.message);
+            success = false;
+        })
+        .finally(() => {
+            if (success) {
+                listAlumnos.push(newAlumno);
+                createAlumnoCell(newAlumno);
+                form.submitFinish('Alumno creado correctamente');
+
+                form.reset();
+            }
+        });
+    };
+
+    form.getInput('nombre').retrack('');
+    form.getInput('email').retrack('');
+    form.getInput('phone').retrack('');
+    form.getInput('nia').retrack('');
+    form.getInput('dni').retrack('');
+    form.getInput('nuss').retrack('');
+    form.getInput('address').retrack('');
+
+    const submitButton = document.getElementById('submit');
+    submitButton.textContent = 'Crear alumno';
+}
 
 
 
@@ -321,80 +396,6 @@ function createAlumnoCell(alumno, form) {
     alumnoElement.addEventListener('click', (event) => {
         setInputsToUpdate(form, alumno.id);
     });
-}
-
-function setInputsToCreate(form) {
-    let isCancelled = form.cancel();
-    if (! isCancelled) return;
-
-    document.getElementById('titulo').textContent = `Información del alumno de ${chosenGrupo.textContent} de ${chosenCicloLectivo.textContent}`;
-    deleteDeleteButton();
-
-    form.onsubmit = function (event) {
-        const nombre = form.getInput('nombre').getValue();
-        const email = form.getInput('email').getValue();
-        const phone = form.getInput('phone').getValue();
-        const nia = form.getInput('nia').getValue();
-        const dni = form.getInput('dni').getValue();
-        const nuss = form.getInput('nuss').getValue();
-        const address = form.getInput('address').getValue();
-
-        let newAlumno = {
-            nombreAlumno: nombre,
-            email: email,
-            dni: dni,
-            nia: nia,
-            nuss: nuss,
-            phone: phone,
-            address: address,
-            grupoId: grupoId,
-            numero: numero,
-            cicloLectivoId: cicloLectivoId,
-        };
-
-        let success = true;
-
-        fetch('/api/alumnos/create', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(newAlumno)
-        })
-        .then(response => {
-            if (response.status === 201) {
-                promise();
-                form.submitFinish();
-            } else {
-                form.showError('Error al crear el alumno');
-                success = false;
-            }
-        })
-        .catch(error => {
-            form.showError('Error al enviar los datos: ' + error.message);
-            success = false;
-        })
-        .finally(() => {
-            if (success) {
-                listAlumnos.push(newAlumno);
-                createAlumnoCell(newAlumno);
-                form.submitFinish('Alumno creado correctamente');
-
-                form.reset();
-            }
-        });
-    };
-
-    form.getInput('nombre').retrack('');
-    form.getInput('email').retrack('');
-    form.getInput('phone').retrack('');
-    form.getInput('nia').retrack('');
-    form.getInput('dni').retrack('');
-    form.getInput('nuss').retrack('');
-    form.getInput('address').retrack('');
-
-    const submitButton = document.getElementById('submit');
-    submitButton.textContent = 'Crear alumno';
 }
 
 function setInputsToUpdate(form, id) {
