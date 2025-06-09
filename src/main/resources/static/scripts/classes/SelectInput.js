@@ -40,7 +40,7 @@ export class SelectInput extends TextInput {
 
     createDropdown() {
         this.dropdown = document.createElement('div');
-        this.dropdown.classList.add('dropdown', 'collapsed');
+        this.dropdown.classList.add('dropdown');
         this.parent.appendChild(this.dropdown);
 
         // Show dropdown on focus
