@@ -144,4 +144,11 @@ export class Input {
     setValue(value) {
         this.input.value = value;
     }
+
+    forceActive() {
+        this.states.active = false;
+        this.updateState();
+        this.states.active = true;
+        this.updateState();
+    }
 }
