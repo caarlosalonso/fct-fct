@@ -176,7 +176,7 @@ function setInputsToUpdate(coordinadores, coordinacionId) {
         });
     }
 
-    coordinador = coordinadores.find(c => c.coordinacionId === coordinacionId);
+    const coordinador = coordinadores.find(c => c.coordinacionId === coordinacionId);
 
     form.getInput('coordinador-nombre').setValue(coordinador.name);
     form.getInput('coordinador-email').setValue(coordinador.email);
