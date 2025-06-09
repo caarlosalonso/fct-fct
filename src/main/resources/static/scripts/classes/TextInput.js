@@ -86,8 +86,8 @@ export class TextInput extends Input {
         this.input.value = value;
         this.states.changed = false;
         this.states.active = (value.length > 0);
-        this.updateState();
         this.forceActive();
+        this.updateState();
     }
 
     undoChanges() {
