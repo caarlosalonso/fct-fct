@@ -39,4 +39,11 @@ public class ServicioGrupo extends AbstractService<Long, Grupo, RepositorioGrupo
         repository.save(grupo.get());
         return true;
     }
+
+    public Optional<Grupo> getByTutorId(Long tutorId) {
+        return ((List<Grupo>) repository.findAll())
+            .stream()
+            .filter(grupo -> grupo.getTutor().getId().equals(tutorId))
+            .findFirst();
+    }
 }

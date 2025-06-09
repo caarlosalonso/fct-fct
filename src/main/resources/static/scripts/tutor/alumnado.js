@@ -26,11 +26,13 @@ window.addEventListener('FormsCreated', (event) => {
 function promise() {
     Promise.all([
         fetchCursoActual(),
+        fetchGrupoTutor()
     ])
     .then(([
-        cursoActual
+        cursoActual,
+        grupoTutor
     ]) => {
-        build(cursoActual);
+        build(cursoActual, grupoTutor);
     }).catch((error) => {
         console.error('Error al obtener los ciclos lectivos:', error);
     })
@@ -43,16 +45,17 @@ async function fetchCursoActual() {
     return await response.json();
 }
 
-
-function build(cursoActual) {
-    console.log('Ciclo lectivo actual:', cursoActual);
+async function fetchGrupoTutor() {
+    const response = await fetch('/api/grupo/tutor');
+    if (response.status === 204) return [];
+    if (!response.ok) throw new Error('Error al obtener los grupos');
+    return await response.json();
 }
 
-
-
-
-
-
+function build(cursoActual, grupoTutor) {
+    console.log('Ciclo lectivo actual:', cursoActual);
+    console.log('Grupo tutor:', grupoTutor);
+}
 
 
 

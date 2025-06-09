@@ -14,12 +14,12 @@ public interface VistaTutoresRepository extends CrudRepository<VistaTutores, Lon
     @Query("""
         SELECT v
         FROM VistaTutores v
-        WHERE v.tutorId NOT IN (
+        WHERE v.tutorId IN (
             SELECT g.tutor.id
             FROM Grupo g
             WHERE g.cicloLectivo.id = :cicloLectivoId
         )
     """)
-    List<VistaTutores> findTutoresNoAsignadosACiclo(@Param("cicloLectivoId") Long cicloLectivoId);
+    List<VistaTutores> findTutoresAsignadosACiclo(@Param("cicloLectivoId") Long cicloLectivoId);
 
 }

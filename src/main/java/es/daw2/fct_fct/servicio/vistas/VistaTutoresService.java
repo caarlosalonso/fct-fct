@@ -26,12 +26,12 @@ public class VistaTutoresService {
 
     public List<VistaTutores> getTutoresSinGrupoEnCicloLectivo(Long cicloLectivoId) {
         List<VistaTutores> todos = this.obtenerTodos();
-        List<VistaTutores> asignados = repository.findTutoresNoAsignadosACiclo(cicloLectivoId);
+        List<VistaTutores> asignados = repository.findTutoresAsignadosACiclo(cicloLectivoId);
 
         Set<Long> idsAsignados = asignados.stream()
             .map(VistaTutores::getTutorId)
             .collect(Collectors.toSet());
-        System.out.println("Asignados: " + asignados);
+        System.out.println("No Asignados: " + asignados);
         System.out.println("Todos: " + todos);
 
         return todos.stream()
