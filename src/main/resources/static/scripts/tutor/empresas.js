@@ -240,7 +240,8 @@ function editEmpresa(empresa) {
             address: form.getInput('empresa-address').getValue(),
             phone: form.getInput('empresa-telefono').getValue(),
             email: form.getInput('empresa-email').getValue(),
-            persona_contacto: form.getInput('empresa-persona_contacto').getValue()
+            persona_contacto: form.getInput('empresa-persona_contacto').getValue(),
+            estado: empresa.estado
         };
 
         fetch(`/api/empresa/${empresa.id}`, {
