@@ -39,18 +39,30 @@
             </ul>
         </nav>
     </header>
-    <main id="main-content">
-        <section id="tutores-section">
-            <div class="spinner spinner-border color-primary">
-                <span class="visually-hidden">Cargando...</span>
+    <section id="tutores-section">
+        
+    </section>
+    <section id="create-tutor-section" class="section">
+        <form id="tutor-form" method="POST" submit-text="Crear Tutor">
+            <div class="inputs form-container">
+                <div class="instance form-input grouped-inputs">
+                    <div class="form-group form-input">
+                        <input type="text" id="tutor-nombre" name="nombre" class="text-based input" label="Nombre" data-required="true">
+                    </div>
+                </div>
+                <div class="instance form-input grouped-inputs">
+                    <div class="form-group form-input">
+                        <input type="email" id="tutor-email" name="email" class="text-based input" label="Email" data-required="true" data-show-validity="true">
+                    </div>
+                </div>
+                <div class="instance form-input grouped-inputs">
+                    <div class="form-group form-input">
+                        <input type="password" id="tutor-password" name="password" class="text-based input password" label="Contraseña" data-required="true">
+                    </div>
+                </div>
             </div>
-        </section>
-        <section id="tutores-creation-section">
-            <form>
-
-            </form>
-        </section>
-    </main>
+        </form>
+    </section>
     <script type="module" src="/scripts/coordinacion/tutores.js"></script>
 </body>
 </html>
