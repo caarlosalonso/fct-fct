@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 
+import es.daw2.fct_fct.dto.AlumnoActualizarDTO;
 import es.daw2.fct_fct.dto.AlumnoCreateDTO;
 import es.daw2.fct_fct.modelo.Alumno;
 import es.daw2.fct_fct.modelo.User;
@@ -24,7 +25,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 @RestController
 @RequestMapping("/api/alumnos")
-public class ControladorAlumno extends CrudController<Long, Alumno, AlumnoCreateDTO, Alumno, ServicioAlumno> {
+public class ControladorAlumno extends CrudController<Long, Alumno, AlumnoCreateDTO, AlumnoActualizarDTO, ServicioAlumno> {
 
     @Autowired
     private ServicioUser servicioUser;
@@ -71,21 +72,32 @@ public class ControladorAlumno extends CrudController<Long, Alumno, AlumnoCreate
     // getById ya existe en CrudController
 
     @Override
-    public ResponseEntity<?> update(@PathVariable Long id, @RequestBody Alumno a, HttpServletRequest request) {
+    public ResponseEntity<?> update(@PathVariable Long id, @RequestBody AlumnoActualizarDTO a, HttpServletRequest request) {
         Optional<Alumno> optional = service.getById(id);
 
         if(!optional.isPresent()){
             return ResponseEntity.notFound().build();
         }
 
-        a.setId(id);
+        Alumno alumno = optional.get();
 
-        Optional<Alumno> alumnoActualizado = service.update(id, a);
+        alumno.getUser().setName(a.name());
+        alumno.getUser().setEmail(a.email());
+        servicioUser.update(alumno.getUser().getId(), alumno.getUser());
+
+        alumno.setPhone(a.phone());
+        alumno.setNia(a.nia());
+        alumno.setDni(a.dni());
+        alumno.setNuss(a.nuss());
+        alumno.setAddress(a.address());
+
+
+        Optional<Alumno> alumnoActualizado = service.update(id, alumno);
         if (!alumnoActualizado.isPresent()) {
             return ResponseEntity.badRequest().body("No se ha podido actualizar el alumno con el id: " + id);
         }
 
-        URI location = URI.create("/api/alumnos/" + a.getId());
+        URI location = URI.create("/api/alumnos/" + id);
 
         return ResponseEntity.ok().location(location).body(alumnoActualizado);
     }

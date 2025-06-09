@@ -78,7 +78,9 @@ function build(alumnos, cursoActual, grupoTutor, alumnosCurso) {
     console.log('Ciclo lectivo actual:', cursoActual);
     console.log('Grupo tutor:', grupoTutor);
     console.log('Alumnos del curso:', alumnosCurso);
-    crearLista(alumnosCurso);
+    
+    const form = Form.getForm('alumno-form');
+    crearLista(alumnosCurso, form);
 
     const asignar = Form.getForm('alumno-search-form');
     const searchInput = asignar.getInput('search');
@@ -142,8 +144,6 @@ function build(alumnos, cursoActual, grupoTutor, alumnosCurso) {
         });
     };
 
-    const form = Form.getForm('alumno-form');
-
     const crearAlumno = document.getElementById('create-alumno');
     crearAlumno.addEventListener('click', (event) => {
         event.preventDefault();
@@ -165,7 +165,7 @@ function build(alumnos, cursoActual, grupoTutor, alumnosCurso) {
     displaySection.appendChild(cicloInfo);
 }
 
-function crearLista(alumnosCurso) {
+function crearLista(alumnosCurso, form) {
     const listar = document.getElementById('listar');
     while(listar && listar.firstChild) listar.removeChild(listar.firstChild);
 
@@ -179,8 +179,44 @@ function crearLista(alumnosCurso) {
     alumnosCurso.forEach(alumno => {
         const item = document.createElement('div');
         item.classList.add('alumno-item');
-        item.textContent = `${alumno.nombreAlumno} (${alumno.nia}) - ${alumno.email} - ${alumno.dni}`;
         listar.appendChild(item);
+
+        const titleSpan = document.createElement('span');
+        titleSpan.classList.add('cell-title');
+        titleSpan.textContent = alumno.nombreAlumno;
+        item.appendChild(titleSpan);
+
+        const niaSpan = document.createElement('span');
+        niaSpan.classList.add('cell-subtitle');
+        niaSpan.textContent = `NIA: ${alumno.nia}`;
+        item.appendChild(niaSpan);
+
+        const dniSpan = document.createElement('span');
+        dniSpan.classList.add('cell-subtitle');
+        dniSpan.textContent = `DNI: ${alumno.dni}`;
+        item.appendChild(dniSpan);
+
+        const emailSpan = document.createElement('span');
+        emailSpan.classList.add('cell-subtitle');
+        emailSpan.textContent = `Email: ${alumno.email}`;
+        item.appendChild(emailSpan);
+
+        item.appendChild(
+            createClickableSVG(
+                '0 -0.5 25 25',
+                'M 20.848 1.879 C 19.676 0.707 17.777 0.707 16.605 1.879 L 2.447 16.036 C 2.029 16.455 1.743 16.988 1.627 17.569 L 1.04 20.505 C 0.76 21.904 1.994 23.138 3.393 22.858 L 6.329 22.271 C 6.909 22.155 7.443 21.869 7.862 21.451 L 22.019 7.293 C 23.191 6.121 23.191 4.222 22.019 3.05 L 20.848 1.879 Z M 18.019 3.293 C 18.41 2.902 19.043 2.902 19.433 3.293 L 20.605 4.465 C 20.996 4.855 20.996 5.488 20.605 5.879 L 6.447 20.036 C 6.308 20.176 6.13 20.271 5.936 20.31 L 3.001 20.897 L 3.588 17.962 C 3.627 17.768 3.722 17.59 3.862 17.451 L 13.933 7.379 L 16.52 9.965 L 17.934 8.56 L 15.348 5.965 L 18.019 3.293 Z',
+                () => setInputsToUpdate(form, alumno.alumnoId),
+                'edit-svg'
+            )
+        );
+        item.appendChild(
+            createClickableSVG(
+                '-6 -6 60 60',
+                'M 42 3 H 28 A 2 2 0 0 0 26 1 H 22 A 2 2 0 0 0 20 3 H 6 A 2 2 0 0 0 6 7 H 42 A 2 2 0 0 0 42 3 Z M 37 11 V 43 H 31 V 19 A 1 1 0 0 0 27 19 V 43 H 21 V 19 A 1 1 0 0 0 17 19 V 43 H 11 V 11 A 2 2 0 0 0 7 11 V 45 A 2 2 0 0 0 9 47 H 39 A 2 2 0 0 0 41 45 V 11 A 2 2 0 0 0 37 11 Z',
+                (event) => removeAlumnoFromGrupo(event, form, alumno.alumnoId, grupoTutor.grupoId),
+                'delete-svg'
+            )
+        );
     });
 }
 
@@ -241,237 +277,23 @@ function setInputsToCreate(form) {
     submitButton.textContent = 'Crear alumno';
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-async function fetchCiclosLectivos() {
-    const response = await fetch('/api/ciclos-lectivos/all');
-    if (response.status === 204) return [];
-    if (!response.ok) throw new Error('Error al obtener los ciclos lectivos');
-    return await response.json();
-}
-
-async function fetchGruposCiclos() {
-    const response = await fetch('/api/vista-grupos-ciclos/all');
-    if (response.status === 204) return [];
-    if (!response.ok) throw new Error('Error al obtener los grupos');
-    return await response.json();
-}
-
-const info = [];
-let chosenCicloLectivo = null;
-let chosenGrupo = null;
-let cicloLectivoId = null;
-let grupoId = null;
-let numero = null;
-/*
-function build(ciclosLectivos, gruposCiclos, alumnos) {
-    ciclosLectivos.forEach((cicloLectivo) => {
-        info.push({
-            id: cicloLectivo.id,
-            createdAt: cicloLectivo.createdAt,
-            updatedAt: cicloLectivo.updatedAt,
-            nombre: cicloLectivo.nombre,
-            fechaInicio: cicloLectivo.fechaInicio,
-            grupos: gruposCiclos.filter(grupo => grupo.cicloLectivoId === cicloLectivo.id).map(grupo => {
-                return {
-                    cicloLectivoId: grupo.cicloLectivoId,
-                    grupoId: grupo.grupoId,
-                    grupo_nombre: grupo.grupo_nombre,
-                    numero: grupo.numero,
-                    ciclo_id: grupo.cicloId,
-                    alumnos: alumnos.filter(alumno => alumno.grupoCicloId === grupo.id)
-                };
-            })
-        })
-    });
-    console.log(info);
-
-    createCiclosLectivos();
-
-    const form = Form.getForm('alumno-form');
-    setInputsToCreate(form);
-    document.getElementById('add').addEventListener('click', () => {
-        setInputsToCreate(form);
-    });
-}
-    */
-
-function createCiclosLectivos() {
-    const cicloLectivoSelection = document.getElementById('ciclo-lectivo-selection');
-    cicloLectivoSelection.innerHTML = '';
-
-    if (info.length === 0) {
-        cicloLectivoSelection.classList.add('empty');
-        const emptyMessage = document.createElement('p');
-        emptyMessage.textContent = 'No hay ciclos lectivos disponibles';
-        cicloLectivoSelection.appendChild(emptyMessage);
-        return;
-    }
-
-    const ul = document.createElement('ul');
-    ul.classList.add('ciclos-lectivos', 'nav', 'nav-tabs');
-    ul.id = 'ciclos-lectivos';
-    cicloLectivoSelection.appendChild(ul);
-
-    info.forEach((cicloLectivo) => {
-        const li = document.createElement('li');
-        li.classList.add('nav-item');
-        ul.appendChild(li);
-
-        const cicloLectivoText = document.createElement('p');
-        cicloLectivoText.classList.add('cicloLectivo', 'nav-link');
-        cicloLectivoText.id = `ciclo-lectivo-${cicloLectivo.id}`;
-        cicloLectivoText.textContent = cicloLectivo.nombre;
-        li.appendChild(cicloLectivoText);
-
-        li.addEventListener('click', () => {
-            if (chosenCicloLectivo) chosenCicloLectivo.classList.remove('active');
-            li.classList.add('active');
-            chosenCicloLectivo = li;
-            cicloLectivoId = cicloLectivo.id;
-            createGruposCiclos(cicloLectivo.id);
-        });
-
-        if (chosenCicloLectivo === null) {
-            li.classList.add('active');
-            chosenCicloLectivo = li;
-            createGruposCiclos(cicloLectivo.id);
-        }
-    });
-}
-
-function createGruposCiclos(cicloLectivoId) {
-    console.log(`Creating grupos ciclos for cicloLectivoId: ${cicloLectivoId}`);
-    const gruposCiclosSelection = document.getElementById('grupos-ciclos-selection');
-    gruposCiclosSelection.innerHTML = '';
-
-    const ul = document.createElement('ul');
-    ul.classList.add('grupos-ciclos', 'nav', 'nav-tabs');
-    ul.id = 'grupos-ciclos';
-    gruposCiclosSelection.appendChild(ul);
-
-    const cicloLectivo = info.find(ciclo => ciclo.id === cicloLectivoId);
-    if (cicloLectivo) {
-        cicloLectivo.grupos.forEach((grupo) => {
-            const li = document.createElement('li');
-            li.classList.add('grupo', 'nav-item');
-            ul.appendChild(li);
-
-            const grupoText = document.createElement('p');
-            grupoText.classList.add('curso', 'nav-link');
-            grupoText.id = `grupo-${grupo.grupoId}`;
-            grupoText.textContent = grupo.grupo_nombre;
-            li.appendChild(grupoText);
-
-            li.addEventListener('click', () => {
-                if (chosenGrupo) chosenGrupo.classList.remove('active');
-                li.classList.add('active');
-                chosenGrupo = li;
-                grupoId = grupo.grupoId;
-                numero = grupo.numero;
-                createAlumnos(grupo.alumnos);
-            });
-
-            if (chosenGrupo === null) {
-                li.classList.add('active');
-                chosenGrupo = li;
-                createAlumnos(grupo.alumnos);
-            }
-        });
-    }
-}
-
-function createAlumnos(alumnos) {
-    const alumnosSelection = document.getElementById('alumnos-list-scroll');
-    alumnosSelection.innerHTML = '';
-
-    if (alumnos.length === 0) {
-        document.getElementById('add').classList.add('empty');
-        document.getElementById('alumnos-list-container').classList.add('empty');
-        return;
-    }
-    document.getElementById('add').classList.remove('empty');
-    document.getElementById('alumnos-list-container').classList.remove('empty');
-
-    alumnos.forEach(alumno => {
-        createAlumnoCell(alumno, Form.getForm('alumno-form'));
-    });
-}
-
-const map = [];
-
-function createAlumnoCell(alumno, form) {
-    const alumnosList = document.getElementById('alumnos-list-scroll');
-    const alumnoElement = document.createElement('div');
-    alumnoElement.classList.add('alumno', 'cell');
-    alumnoElement.id = `alumno-${alumno.id}`;
-    alumnoElement.textContent = alumno.name;
-    alumnosList.appendChild(alumnoElement);
-
-    map.push({
-        id: alumno.id,
-        element: alumnoElement,
-        data: alumno
-    });
-
-    alumnoElement.addEventListener('click', (event) => {
-        setInputsToUpdate(form, alumno.id);
-    });
-}
-
 function setInputsToUpdate(form, id) {
     let isCancelled = form.cancel();
     if (! isCancelled) return;
 
     document.getElementById('titulo').textContent = `Información del alumno de ${chosenCurso.textContent}`;
-    addDeleteButton(form, id);
-    addForgotPasswordButton(form, id);
 
     const alumno = map.find(a => a.id === id);
     if (!alumno) return;
 
     form.onsubmit = function (event) {
-        const nombre = form.getInput('nombre').getValue().trim();
-        const email = form.getInput('email').getValue().trim().toLowerCase();
-        const phone = form.getInput('phone').getValue().trim();
-        const nia = form.getInput('nia').getValue().trim().toUpperCase();
-        const dni = form.getInput('dni').getValue().trim().toUpperCase();
-        const nuss = form.getInput('nuss').getValue().trim().toUpperCase();
-        const empresa = form.getInput('empresa').getValue().trim();
-        const tutorEmpresa = form.getInput('tutorEmpresa').getValue().trim();
-        const tutorEmpresaEmail = form.getInput('tutorEmpresaEmail').getValue().trim().toLowerCase();
-        const tutorEmpresaPhone = form.getInput('tutorEmpresaPhone').getValue().trim();
+        const nombre = form.getInput('nombre').getValue();
+        const email = form.getInput('email').getValue();
+        const phone = form.getInput('phone').getValue();
+        const nia = form.getInput('nia').getValue();
+        const dni = form.getInput('dni').getValue();
+        const nuss = form.getInput('nuss').getValue();
+        const address = form.getInput('address').getInput();
 
         let newAlumno = {
             name: nombre,
@@ -480,13 +302,8 @@ function setInputsToUpdate(form, id) {
             nia: nia,
             dni: dni,
             nuss: nuss,
-            empresa: empresa,
-            tutorEmpresa: tutorEmpresa,
-            tutorEmpresaEmail: tutorEmpresaEmail,
-            tutorEmpresaPhone: tutorEmpresaPhone
+            address: address
         };
-
-        let success = true;
 
         fetch(`/api/alumnos/${alumno.id}`, {
             method: 'PUT',
@@ -496,38 +313,19 @@ function setInputsToUpdate(form, id) {
             body: JSON.stringify(newAlumno)
         })
         .then(response => {
-            switch (response.status) {
-                case 200:
-                    return response.json();
-                case 400:
-                    form.showError('Error en los datos enviados');
-                    success = false;
-                    break;
-                case 500:
-                    form.showError('Error interno del servidor');
-                    success = false;
-                    break;
-                default:
-                    form.showError('Error desconocido al enviar los datos');
-                    success = false;
-                    break;
+            if (response.ok) {
+                form.showSuccess('Alumno actualizado correctamente');
+                form.submitFinish();
+                form.reset();
+                promise();
+            } else {
+                form.showError('Error al actualizar el alumno');
+                form.submitFinish();
             }
-        })
-        .then(data => {
-            newAlumno.id = data.id;
         })
         .catch(error => {
             form.showError('Error al enviar los datos: ' + error.message);
-            success = false;
-        })
-        .finally(() => {
-            if (success) {
-                listAlumnos.push(newAlumno);
-                createAlumnoCell(newAlumno);
-                form.submitFinish('Alumno creado correctamente');
-
-                form.reset();
-            }
+            form.submitFinish();
         });
     };
 
@@ -537,183 +335,78 @@ function setInputsToUpdate(form, id) {
     form.getInput('nia').retrack(alumno.data.nia);
     form.getInput('dni').retrack(alumno.data.dni);
     form.getInput('nuss').retrack(alumno.data.nuss);
-    form.getInput('empresa').retrack(alumno.data.empresa);
-    form.getInput('tutorEmpresa').retrack(alumno.data.tutorEmpresa);
-    form.getInput('tutorEmpresaEmail').retrack(alumno.data.tutorEmpresaEmail);
-    form.getInput('tutorEmpresaPhone').retrack(alumno.data.tutorEmpresaPhone);
+    form.getInput('address').retrack(alumno.data.address);
 
     const submitButton = document.getElementById('submit');
     submitButton.textContent = 'Actualizar alumno';
 }
 
-function addDeleteButton(form, id) {
-    deleteDeleteButton();
+function removeAlumnoFromGrupo(event, form, alumnoId, grupoId) {
+    event.preventDefault();
+    if (confirm('¿Estás seguro de que quieres eliminar a este alumno del grupo?')) {
+        fetch(`/api/cursos/delete`, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                idAlumno: alumnoId,
+                idGrupo: grupoId
+            })
+        })
+        .then(response => {
+            if (response.ok) {
+                promise();
+            } else {
+                form.showError('Error al eliminar el alumno');
+            }
+        })
+        .catch(error => {
+            form.showError('Error al eliminar el alumno: ' + error.message);
+        });
+    }
+}
 
-    const deleteButton = document.createElement('button');
-    deleteButton.id = 'delete';
-    deleteButton.classList.add('form-buttons');
-    deleteButton.textContent = 'Eliminar alumno';
-    document.getElementById('buttons-wrapper').appendChild(deleteButton);
+function addResetPasswordButton(form, id) {
+    deleteResetPasswordButton();
 
-    deleteButton.addEventListener('click', (event) => {
+    const resetButton = document.createElement('button');
+    resetButton.id = 'reset-password';
+    resetButton.classList.add('form-buttons');
+    resetButton.textContent = 'Restablecer contraseña';
+    document.getElementById('buttons-wrapper').appendChild(resetButton);
+
+    resetButton.addEventListener('click', (event) => {
         event.preventDefault();
-        deleteLoading(deleteButton);
-        if (confirm('¿Estás seguro de que quieres eliminar este alumno?')) {
-            fetch(`/alumnos/${id}`, {
-                method: 'DELETE'
+        if (confirm('¿Estás seguro de que quieres restablecer la contraseña de este alumno?')) {
+            fetch(`/alumnos/${id}/reset-password`, {
+                method: 'POST'
             })
             .then(response => {
                 if (response.ok) {
-                    deleteFinish(deleteButton);
+                    deleteFinish(resetButton);
 
                     const alumnoElement = document.getElementById(`alumno-${id}`);
                     if (alumnoElement) {
                         alumnoElement.remove();
                     }
                 } else {
-                    form.showError('Error al eliminar el alumno');
+                    form.showError('Error al restablecer la contraseña del alumno');
                 }
             })
             .catch(error => {
-                form.showError('Error al eliminar el alumno: ' + error.message);
+                form.showError('Error al restablecer la contraseña del alumno: ' + error.message);
             })
             .finally(() => {
-                deleteFinish(deleteButton);
+                deleteFinish(resetButton);
             });
         } else {
-            deleteFinish(deleteButton);
+            deleteFinish(resetButton);
         }
     });
-}
-
-function deleteLoading(deleteButton) {
-    deleteButton.disabled = true;
-    deleteButton.classList.add('loading');
-    deleteButton.textContent = '';
-    const spinner = document.createElement('span');
-    spinner.classList.add('spinner-border', 'spinner-border-sm');
-    deleteButton.appendChild(spinner);
-}
-
-function deleteFinish(deleteButton) {
-    deleteButton.disabled = false;
-    deleteButton.classList.remove('loading');
-    deleteButton.textContent = 'Eliminar alumno';
-    const spinner = deleteButton.querySelector('.spinner-border');
-    if (spinner) {
-        spinner.remove();
-    }
 }
 
 function deleteForgotPasswordButton() {
     const forgotPasswordButtonDiv = document.getElementById('forgot-password-div');
     if (forgotPasswordButtonDiv) document.getElementById('buttons-wrapper').removeChild(forgotPasswordButtonDiv);
-}
-
-function addForgotPasswordButton(form, id) {
-    deleteForgotPasswordButton();
-
-    const forgotPasswordButtonDiv = document.createElement('div');
-    forgotPasswordButtonDiv.id = 'forgot-password-div';
-    forgotPasswordButtonDiv.style.display = 'flex';
-    forgotPasswordButtonDiv.style.alignItems = 'center';
-    document.getElementById('buttons-wrapper').appendChild(forgotPasswordButtonDiv);
-
-    const forgotPasswordButton = document.createElement('button');
-    forgotPasswordButton.id = 'forgot-password';
-    forgotPasswordButton.classList.add('form-buttons');
-    forgotPasswordButton.textContent = 'Restablecer contraseña';
-    forgotPasswordButtonDiv.appendChild(forgotPasswordButton);
-
-    const forgotPasswordField = document.createElement('input');
-    forgotPasswordField.id = 'forgot-password-field';
-    forgotPasswordField.classList.add('collapsed', 'text-based', 'input');
-    forgotPasswordField.type = 'password';
-    forgotPasswordField.setAttribute('label', "Nueva contraseña");
-    forgotPasswordField.setAttribute('data-required', 'true');
-    forgotPasswordButtonDiv.appendChild(forgotPasswordField);
-
-    new PasswordInput(forgotPasswordField);
-
-    let confirmMode = false;
-    let escapeHandler = null;
-
-    function cancelPasswordReset() {
-        forgotPasswordField.value = '';
-        forgotPasswordField.classList.add('collapsed');
-        forgotPasswordButton.textContent = 'Restablecer contraseña';
-        confirmMode = false;
-        if (escapeHandler) {
-            forgotPasswordField.removeEventListener('keydown', escapeHandler);
-            escapeHandler = null;
-        }
-    }
-
-    forgotPasswordButton.addEventListener('click', async (event) => {
-        event.preventDefault();
-        if (!confirmMode) {
-            forgotPasswordField.classList.remove('collapsed');
-            forgotPasswordField.focus();
-            forgotPasswordButton.textContent = 'Confirmar';
-            confirmMode = true;
-
-            // Add escape handler
-            escapeHandler = (event) => {
-                if (event.key === 'Escape') {
-                    cancelPasswordReset();
-                }
-            };
-            forgotPasswordField.addEventListener('keydown', escapeHandler);
-        } else {
-            const newPassword = forgotPasswordField.value.trim();
-            if (!newPassword) {
-                form.showError('Introduce una nueva contraseña');
-                return;
-            }
-            passwordResetLoading(forgotPasswordButton);
-            try {
-                const response = await fetch(`/api/users/reset-password/${id}`, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({ newPassword })
-                });
-                if (response.ok) {
-                    form.submitFinish('Contraseña restablecida correctamente');
-                    cancelPasswordReset();
-                } else {
-                    form.showError('Error al restablecer la contraseña');
-                }
-            } catch (error) {
-                form.showError('Error al restablecer la contraseña: ' + error.message);
-            } finally {
-                passwordResetFinish(forgotPasswordButton);
-            }
-        }
-    });
-}
-
-function passwordResetLoading(forgotPasswordButton) {
-    forgotPasswordButton.disabled = true;
-    forgotPasswordButton.classList.add('loading');
-    forgotPasswordButton.textContent = '';
-    const spinner = document.createElement('span');
-    spinner.classList.add('spinner-border', 'spinner-border-sm');
-    forgotPasswordButton.appendChild(spinner);
-}
-
-function passwordResetFinish(forgotPasswordButton) {
-    forgotPasswordButton.disabled = false;
-    forgotPasswordButton.classList.remove('loading');
-    forgotPasswordButton.textContent = 'Restablecer contraseña';
-    const spinner = forgotPasswordButton.querySelector('.spinner-border');
-    if (spinner) {
-        spinner.remove();
-    }
-}
-
-function deleteDeleteButton() {
-    const deleteButton = document.getElementById('delete');
-    if (deleteButton) document.getElementById('buttons-wrapper').removeChild(deleteButton);
 }

@@ -5,6 +5,7 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -91,4 +92,23 @@ public class ControladorCurso extends CrudController<Long, Curso, Curso, Curso, 
     }
 
     // delete ya existe en CrudController
+
+    @DeleteMapping("/delete")
+    ResponseEntity<?> delete(@RequestBody AlumnoGrupoDTO dto, HttpServletRequest request) {
+        Optional<Grupo> grupoOpt = servicioGrupo.getById(dto.idGrupo());
+        if (grupoOpt.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+
+        Optional<Alumno> alumnoOpt = servicioAlumno.getById(dto.idAlumno());
+        if (alumnoOpt.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+
+        Long id = service.getIdByGrupoAndAlumno(dto.idGrupo(), dto.idAlumno());
+
+        boolean deleted = service.delete(id);
+        if (!deleted) return ResponseEntity.badRequest().body("No se ha podido eliminar el recurso con el id: " + id);
+        return ResponseEntity.noContent().build();
+    }
 }
