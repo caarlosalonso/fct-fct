@@ -202,7 +202,7 @@ public class ControladorUser extends CrudController<Long, User, UserCreateDTO, U
         HttpSession session = request.getSession(false);
         if (session == null) return ResponseEntity.status(401).body("Unauthorized");
         Object role = session.getAttribute("role");
-        if (role == null || ! role.equals("ADMIN")) {
+        if (role == null || ! role.equals(Role.ADMIN)) {
             return ResponseEntity.status(403).body("Forbidden: Only admins can create coordinators");
         }
 
