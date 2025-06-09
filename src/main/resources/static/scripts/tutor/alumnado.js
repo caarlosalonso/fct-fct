@@ -124,6 +124,10 @@ function build(alumnos, cursoActual, grupoTutor) {
         displaySection.textContent = 'No tienes ningún grupo asignado como tutor';
         return;
     }
+
+    const cicloInfo = document.createElement('p');
+    cicloInfo.classList.add('ciclo-info');
+    cicloInfo.textContent = `${cursoActual.nombre} - ${grupoTutor[0].grupoNombre}`;
 }
 
 
