@@ -32,6 +32,7 @@ export class SelectInput extends TextInput {
         options.split(';').forEach(option => {
             const [value, label] = option.split(':');
             this.options.push({ value, label });
+            console.log(this.options);
         });
     }
 

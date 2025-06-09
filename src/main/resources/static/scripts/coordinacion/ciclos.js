@@ -389,10 +389,17 @@ async function addGrupo(ciclo, cicloLectivo, numero) {
     form.getInput('tutor').options = [];
 
     try {
-        arr = await fetchTutoresDisponibles(cicloLectivo);
+        const array = await fetchTutoresDisponibles(cicloLectivo);
+
+        array.forEach(tutor => {
+            const [value, label] = [tutor.id, tutor.name];
+            form.getInput('tutor').options.push({value, label});
+        });
     } catch (error) {
         console.error(error);
     }
+
+    console.log(form.getInput('tutor').options);
 
     form.onsubmit = (event) => {
         const cicloLectivoId = cicloLectivo.id;
