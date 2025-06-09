@@ -549,3 +549,8 @@ function passwordResetFinish(forgotPasswordButton) {
         spinner.remove();
     }
 }
+
+function deleteDeleteButton() {
+    const deleteButton = document.getElementById('delete');
+    if (deleteButton) document.getElementById('buttons-wrapper').removeChild(deleteButton);
+}
