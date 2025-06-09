@@ -51,14 +51,10 @@
                         <div class="form-group form-input">
                             <input type="text" id="empresa-nombre" name="nombre" class="text-based input" label="Nombre" data-required="true">
                         </div>
+                    </div>
+                    <div class="instance form-input grouped-inputs">
                         <div class="form-group form-input">
                             <input type="text" id="empresa-cif" name="cif" class="text-based input" label="CIF" data-required="true">
-                        </div>
-                        <div class="form-group form-input">
-                            <input type="text" id="empresa-sector" name="sector" class="text-based input" label="Sector">
-                        </div>
-                        <div class="form-group form-input">
-                            <input type="text" id="empresa-address" name="address" class="text-based input" label="Dirección">
                         </div>
                         <div class="form-group form-input">
                             <input type="text" id="empresa-telefono" name="telefono" class="text-based input" label="Teléfono">
@@ -66,16 +62,23 @@
                         <div class="form-group form-input">
                             <input type="email" id="empresa-email" name="email" class="text-based input" label="Email">
                         </div>
+                    </div>
+                    <div class="instance form-input grouped-inputs">
+                        <div class="form-group form-input">
+                            <input type="text" id="empresa-sector" name="sector" class="text-based input" label="Sector">
+                        </div>
+                        <div class="form-group form-input">
+                            <input type="text" id="empresa-address" name="address" class="text-based input" label="Dirección">
+                        </div>
+                    </div>
+                    <div class="instance form-input grouped-inputs">
                         <div class="form-group form-input">
                             <input type="text" id="empresa-persona_contacto" name="persona_contacto" class="text-based input" label="Persona de Contacto">
                         </div>
+                    </div>
+                    <div class="instance form-input grouped-inputs">
                         <div class="form-group form-input">
-                            <label for="empresa-estado">Estado</label>
-                            <select id="empresa-estado" name="estado" class="text-based input" data-required="true">
-                                <option value="pendiente">Pendiente</option>
-                                <option value="aceptado">Aprobado</option>
-                                <option value="denegado">Denegado</option>
-                            </select>
+                            <input type="select" id="empresa-estado" name="empresa-estado" class="text-based input" label="Estado" data-required="true" data-options="PENDIENTE:Pendiente;ACEPTADO:Aprobado;DENEGADO:Denegado" data-show-validity="true">
                         </div>
                     </div>
                 </div>

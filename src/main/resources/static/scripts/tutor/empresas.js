@@ -266,7 +266,7 @@ function editEmpresa(empresa) {
             phone: form.getInput('empresa-telefono').getValue(),
             email: form.getInput('empresa-email').getValue(),
             persona_contacto: form.getInput('empresa-persona_contacto').getValue(),
-            estado: estadoSelect ? estadoSelect.value : empresa.estado
+            estado: form.getInput('empresa-estado').getValue()
         };
 
         fetch(`/api/empresa/${empresa.id}`, {
