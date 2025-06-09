@@ -33,10 +33,10 @@ public class ControladorCoordinacion extends CrudController<Long, Coordinacion, 
     @Override
     public ResponseEntity<?> create(@RequestBody CreateUserDTO c, HttpServletRequest request) {
         HttpSession session = request.getSession(false);
-        if (session == null) return ResponseEntity.status(401).body("Unauthorized");
+        if (session == null) return ResponseEntity.status(401).body("No autorizado");
         Object role = session.getAttribute("role");
         if (role == null || ! role.equals(Role.ADMIN)) {
-            return ResponseEntity.status(403).body("Forbidden: Only admins can create coordinators");
+            return ResponseEntity.status(403).body("Prohibido: Solo los administradores pueden crear coordinadores");
         }
 
         User newUser = new User();
@@ -48,7 +48,7 @@ public class ControladorCoordinacion extends CrudController<Long, Coordinacion, 
         newUser.setRole(Role.COORDINADOR);
 
         if (servicioUser.checkEmailExists(newUser.getEmail())) {
-            return ResponseEntity.status(409).body("Email already exists"); // Conflicto, ya existe un usuario con ese email
+            return ResponseEntity.status(409).body("El email ya existe"); // Conflicto, ya existe un usuario con ese email
         }
 
         User saved = servicioUser.save(newUser);
