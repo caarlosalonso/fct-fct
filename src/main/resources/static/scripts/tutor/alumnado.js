@@ -289,7 +289,7 @@ function setInputsToCreate(form) {
     form.getInput('address').retrack('');
     form.getInput('convocatoria').retrack('');
 
-    form.form.querySelector('#submit').textContent = 'Actualizar alumno';
+    form.form.querySelector('#submit').textContent = 'Crear alumno';
 }
 
 function setInputsToUpdate(form, alumno) {

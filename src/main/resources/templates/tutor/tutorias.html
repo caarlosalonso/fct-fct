@@ -11,7 +11,7 @@
     <script type="module" src="/scripts/global.js"></script>
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FCTs - Tutor</title>
+    <title>Tutorías - Tutor</title>
 
     <link rel="stylesheet" href="/styles/tutor/fcts.css">
 
@@ -28,10 +28,10 @@
                     <a href="/alumnado" class="navigation nav-link">Alumnado</a>
                 </li>
                 <li class="navigation nav-item">
-                    <a href="/fcts" class="navigation nav-link active">FCTs</a>
+                    <a href="/fcts" class="navigation nav-link">FCTs</a>
                 </li>
                 <li class="navigation nav-item">
-                    <a href="/tutorias" class="navigation nav-link">Tutorías</a>
+                    <a href="/tutorias" class="navigation nav-link active">Tutorías</a>
                 </li>
                 <li class="navigation nav-item">
                     <a href="/empresas" class="navigation nav-link">Empresas</a>
@@ -42,8 +42,34 @@
             </ul>
         </nav>
     </header>
-
-
-    <script type="module" src="/scripts/tutor/fcts.js"></script>
+    <main id="main-content">
+        <section id="curso-actual">
+            <div class="spinner spinner-border color-primary">
+                <span class="visually-hidden">Cargando...</span>
+            </div>
+        </section>
+        <section id="listar">
+            <div class="spinner spinner-border color-primary">
+                <span class="visually-hidden">Cargando...</span>
+            </div>
+        </section>
+        <section id="crear-section">
+            <form id="crear-form" method="POST" submit-text="Crear Tutoría">
+                <div id="inputs" class="form-container">
+                    <div class="instance form-input grouped-inputs">
+                        <div class="form-group form-input">
+                            <input type="date" id="fecha" name="fecha" class="text-based input" label="Fecha de la tutoría" data-show-validity="true" data-required="true">
+                        </div>
+                    </div>
+                    <div class="instance form-input grouped-inputs">
+                        <div id="nuevo-tutoria">
+                            <button id="create-tutoria" class="btn btn-primary">Nueva tutoría</button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </section>
+    </main>
+    <script type="module" src="/scripts/tutor/tutorias.js"></script>
 </body>
 </html>

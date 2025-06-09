@@ -198,6 +198,21 @@ public class HomeController {
         };
     }
 
+    @GetMapping("/tutorias")
+    public String tutorias(HttpServletRequest request) {
+        HttpSession session = request.getSession(false);
+        if (session == null) return REDIRECT_LOGIN;
+        Object user = session.getAttribute("user");
+        Object role = session.getAttribute("role");
+        if (user == null || role == null) return REDIRECT_LOGIN;
+
+        return switch(role) {
+            case User.Role.TUTOR        -> "tutor/tutorias.html";
+            case User.Role.ALUMNO       -> "alumno/tutorias.html";
+            default                     -> REDIRECT_INDEX;
+        };
+    }
+
     @GetMapping("/subir")
     public String subir() {
         return "subirarchivo.html";
