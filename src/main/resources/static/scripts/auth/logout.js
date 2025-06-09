@@ -5,7 +5,9 @@ window.addEventListener('DOMContentLoaded', (event) => {
         countdown--;
         countdownElement.textContent = `${countdown} segundo${countdown > 1 ? 's' : ''}.`;
         if (countdown === 0) {
-            document.getElementById('countdown-container').textContent = '¡Adios!';
+            const countdownContainer = document.getElementById('countdown-container');
+            countdownContainer.style.textAlign = 'center';
+            countdownContainer.textContent = '¡Adios!';
         }
     }, 1000);
 });
