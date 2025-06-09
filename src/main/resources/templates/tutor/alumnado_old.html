@@ -46,15 +46,23 @@
             </div>
         </section>
         <section id="alumnos-section">
-            <form id="alumno-search-form" method="GET" submit-text="Buscar alumno" form-only-input="true">
-                <div id="inputs" class="form-container">
-                    <div class="instance form-input grouped-inputs">
-                        <div class="form-group form-input">
-                            <input type="text" id="search" name="busqueda" class="text-based input" label="Buscar por nombre, email, NIA o DNI">
-                        </div>
+            <div id="alumnos-list">
+                <div id="add" class="cell">
+                    <svg id="svg-add" fill="#ffffff" viewBox="0 0 48 48" width="40px">
+                        <path d="M 44 20 L 28 20 L 28 4 C 28 2 26 0 24 0 S 20 2 20 4 L 20 20 L 4 20 C 2 20 0 22 0 24 S 2 28 4 28 L 20 28 L 20 44 C 20 46 22 48 24 48 S 28 46 28 44 L 28 28 L 44 28 C 46 28 48 26 48 24 S 46 20 44 20 Z"/>
+                    </svg>
+                </div>
+                <div id="alumnos-list-container">
+                    <div id="alumnos-list-scroll">
+                        <!-- Aquí se añadirán los alumnos dinámicamente -->
                     </div>
                 </div>
-            </form>
+            </div>
+            
+                <div id="alumnos-search" style="margin-bottom: 15px;">
+                    <input type="text" id="alumno-search-input" class="form-control" placeholder="Buscar por nombre, email, NIA o DNI">
+                </div>
+
 
             <div id="set-info">
                 <h1 id="titulo">Información del alumno</h1>

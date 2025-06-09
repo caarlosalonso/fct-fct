@@ -27,21 +27,62 @@ window.addEventListener('FormsCreated', (event) => {
         let nuss = this.input.value.trim().toUpperCase();
         return nuss.length === 0 ? null : nuss;
     }
+
+
+    const search = Form.getForm('alumno-search-form');
+    const searchInput = form.getInput('search');
+    if (searchInput) {
+        searchInput.input.addEventListener('input', () => {
+            filterAlumnosList(searchInput.input.value);
+        })
+    }
 });
+
+function filterAlumnosList(query) {
+    query = (query || '').toLowerCase().trim();
+    const alumnosList = document.getElementById('alumnos-list-scroll');
+    if (!alumnosList) return;
+    const cells = alumnosList.querySelectorAll('.alumno.cell');
+    cells.forEach(cell => {
+        const alumno = map.find(a => a.element === cell);
+        if (!alumno) {
+            cell.style.display = '';
+            return;
+        }
+        const { name, email, nia, dni } = alumno.data;
+        const values = [
+            (name || '').toLowerCase(),
+            (email || '').toLowerCase(),
+            (nia || '').toLowerCase(),
+            (dni || '').toLowerCase()
+        ];
+        const match = values.some(val => val.includes(query));
+        cell.style.display = match ? '' : 'none';
+    });
+}
 
 function promise() {
     Promise.all([
+        fetchAlumnos(),
         fetchCursoActual(),
         fetchGrupoTutor()
     ])
     .then(([
+        alumnos,
         cursoActual,
         grupoTutor
     ]) => {
-        build(cursoActual, grupoTutor);
+        build(alumnos, cursoActual, grupoTutor);
     }).catch((error) => {
         console.error('Error al obtener los ciclos lectivos:', error);
     })
+}
+
+async function fetchAlumnos() {
+    const response = await fetch('/api/vista-alumnos/all');
+    if (response.status === 204) return [];
+    if (!response.ok) throw new Error('Error al obtener los alumnos');
+    return await response.json();
 }
 
 async function fetchCursoActual() {
@@ -58,7 +99,7 @@ async function fetchGrupoTutor() {
     return await response.json();
 }
 
-function build(cursoActual, grupoTutor) {
+function build(alumnos, cursoActual, grupoTutor) {
     const displaySection = document.getElementById(SECTION);
     while( displaySection.firstChild) displaySection.removeChild(displaySection.firstChild);
 
@@ -68,6 +109,7 @@ function build(cursoActual, grupoTutor) {
         return;
     }
 
+    console.log('Alumnos:', alumnos);
     console.log('Ciclo lectivo actual:', cursoActual);
     console.log('Grupo tutor:', grupoTutor);
 }
