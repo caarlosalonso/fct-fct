@@ -54,7 +54,7 @@ public class Empresa extends AbsBaseEntity {
     private String address;
 
     @Column(name = "phone", nullable = true, columnDefinition = "varchar(15)")
-    private String telefono;
+    private String phone;
 
     @Column(name = "persona_contacto", nullable = true, columnDefinition = "varchar(255)")
     private String persona_contacto;

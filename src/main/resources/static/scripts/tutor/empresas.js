@@ -131,7 +131,7 @@ function crearGridEmpresas(empresas) {
     const columns = [
         { key: 'nombre', label: 'Nombre' },
         { key: 'cif', label: 'CIF' },
-        { key: 'telefono', label: 'Teléfono' },
+        { key: 'phone', label: 'Teléfono' },
         { key: 'email', label: 'Email' },
         { key: 'sector', label: 'Sector' },
         { key: 'address', label: 'Dirección' },
