@@ -16,7 +16,7 @@ const HORARIOS = {
 let TIMEOUT;
 const SECTION = 'tutores-section';
 
-widnow.addEventListener('DOMContentLoaded', (event) => {
+window.addEventListener('DOMContentLoaded', (event) => {
     promise();
 })
 
