@@ -264,3 +264,24 @@ function editEmpresa(empresa) {
         });
     };
 }
+
+function removeEmpresa(empresa) {
+    if (!confirm(`¿Estás seguro de que quieres eliminar la empresa "${empresa.nombre}"?`)) {
+        return;
+    }
+
+    fetch(`/api/empresa/${empresa.id}`, {
+        method: 'DELETE'
+    }).then(response => {
+        if (response.ok) {
+            cargarEmpresas();
+        } else {
+            response.text().then((text) => {
+                alert(`Error al eliminar la empresa: ${text}`);
+            });
+        }
+    }).catch(error => {
+        console.error('Error al eliminar la empresa:', error);
+        alert('Error al eliminar la empresa');
+    });
+}
