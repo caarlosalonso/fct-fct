@@ -71,9 +71,10 @@ export class DNIInput extends TextInput {
         console.log("Computing control letter for:", digits);
         const num = parseInt(digits, 10);
         console.log("Parsed number:", num);
-        console.log("Control letter index:", num % 23);
-        console.log("Control letter:", this.letters[num % 23]);
-        return this.letters[num % 23];
+        console.log("Control letter index:", parseInt(num % 23));
+        console.log("Letters:", this.letters);
+        console.log("Control letter:", this.letters[parseInt(num % 23)]);
+        return this.letters[parseInt(num % 23)];
     }
 
     static nIEPrefixToNumber(prefix) {

@@ -25,7 +25,10 @@ export class SelectInput extends TextInput {
 
     buildSelect() {
         const options = this.input.getAttribute('data-options');
-        if (!options) return;
+        if (!options) {
+            this.options = [];
+            return;
+        }
 
         options.split(';').forEach(option => {
             const [value, label] = option.split(':');
