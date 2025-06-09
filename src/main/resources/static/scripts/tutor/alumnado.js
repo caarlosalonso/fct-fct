@@ -80,10 +80,8 @@ function build(alumnos, cursoActual, grupoTutor, alumnosCurso) {
     console.log('Alumnos del curso:', alumnosCurso);
     crearLista(alumnosCurso);
 
-    const form = Form.getForm('alumno-form');
-
-    const search = Form.getForm('alumno-search-form');
-    const searchInput = search.getInput('search');
+    const asignar = Form.getForm('alumno-search-form');
+    const searchInput = asignar.getInput('search');
     if (searchInput) {
         searchInput.input.addEventListener('input', () => {
             let query = searchInput.input.value;
@@ -113,8 +111,7 @@ function build(alumnos, cursoActual, grupoTutor, alumnosCurso) {
         })
     }
 
-    const asignar = Form.getForm('alumno-search-form');
-    asignar.getInput('search').input.addEventListener('click', (event) => {
+    asignar.onsubmit = () => {
         const alumnoId = search.getInput('search').getValue();
         if (!alumnoId) {
             asignar.showError('Selecciona un alumno para asignar al grupo');
@@ -141,7 +138,9 @@ function build(alumnos, cursoActual, grupoTutor, alumnosCurso) {
         .catch(error => {
             asignar.showError('Error al enviar los datos: ' + error.message);
         });
-    });
+    };
+
+    const form = Form.getForm('alumno-form');
 
     const crearAlumno = document.getElementById('create-alumno');
     crearAlumno.addEventListener('click', (event) => {

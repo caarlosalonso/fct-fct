@@ -25,12 +25,6 @@ import jakarta.servlet.http.HttpServletRequest;
 @RequestMapping("/api/cursos")
 public class ControladorCurso extends CrudController<Long, Curso, Curso, Curso, ServicioCurso> {
 
-    private final ServicioCurso servicioCurso;
-
-    ControladorCurso(ServicioCurso servicioCurso) {
-        this.servicioCurso = servicioCurso;
-    }
-
     @Override
     public ResponseEntity<?> create(@RequestBody Curso c, HttpServletRequest request) {
         service.save(c);
@@ -58,6 +52,10 @@ public class ControladorCurso extends CrudController<Long, Curso, Curso, Curso, 
         }
         Alumno alumno = alumnoOpt.get();
 
+        if (service.checkIfExistsByGrupoAndAlumno(dto.idGrupo(), dto.idAlumno())) {
+            return ResponseEntity.badRequest().body("El alumno ya está asignado a este grupo.");
+        }
+
         Curso curso = new Curso();
         curso.setGrupo(grupo);
         curso.setAlumno(alumno);
@@ -65,7 +63,7 @@ public class ControladorCurso extends CrudController<Long, Curso, Curso, Curso, 
         curso.setRating("Verde");
         curso.setObservaciones("");
 
-        servicioCurso.save(curso);
+        service.save(curso);
         return ResponseEntity.ok(grupo);
     }
 
