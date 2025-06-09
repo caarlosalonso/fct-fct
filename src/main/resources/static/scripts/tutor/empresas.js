@@ -254,8 +254,7 @@ function editEmpresa(empresa) {
     form.form.setAttribute('submit-text', 'Actualizar empresa');
     form.submit.textContent = 'Actualizar empresa';
 
-    form.onsubmit = (event) => {
-        event.preventDefault();
+    form.onsubmit = () => {
 
         const estadoSelect = document.getElementById('empresa-estado');
         const data = {
