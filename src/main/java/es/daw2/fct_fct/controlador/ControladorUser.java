@@ -115,6 +115,8 @@ public class ControladorUser extends CrudController<Long, User, UserCreateDTO, U
         }
 
         Long id = (Long) session.getAttribute("user");
+
+        System.out.println("Session ID: " + id);
         
         Object sessionId = session.getAttribute("id");
         if (sessionId == null || !(sessionId instanceof Long) || !((Long) sessionId).equals(id)) {
