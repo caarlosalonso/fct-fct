@@ -304,7 +304,6 @@ propuesta_por: parseInt(form.getInput('propuesta_por').getValue(), 10),         
             form.showError('Error al actualizar la empresa');
         });
     };
-}
 
 function removeEmpresa(empresa) {
     if (!confirm(`¿Estás seguro de que quieres eliminar la empresa "${empresa.nombre}"?`)) {
