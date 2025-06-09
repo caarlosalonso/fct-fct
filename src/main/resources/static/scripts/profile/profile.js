@@ -35,7 +35,7 @@ window.addEventListener('FormsCreated', () => {
             confirmPassword: confirmPassword.getValue()
         };
 
-        fetch(`/api/user/password`, {
+        fetch(`/api/users/password`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
