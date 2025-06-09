@@ -60,6 +60,7 @@ public class ControladorAlumno extends CrudController<Long, Alumno, AlumnoCreate
         nuevoAlumno.setNuss(a.nuss());
         nuevoAlumno.setPhone(a.phone());
         nuevoAlumno.setAddress(a.address());
+        nuevoAlumno.setConvocatoria(a.convocatoria() == null ? 3 : a.convocatoria());
         nuevoAlumno.setUser(saved);
 
         nuevoAlumno = service.save(nuevoAlumno);
@@ -90,7 +91,7 @@ public class ControladorAlumno extends CrudController<Long, Alumno, AlumnoCreate
         alumno.setDni(a.dni());
         alumno.setNuss(a.nuss());
         alumno.setAddress(a.address());
-
+        alumno.setConvocatoria(a.convocatoria() == null ? 3 : a.convocatoria());
 
         Optional<Alumno> alumnoActualizado = service.update(id, alumno);
         if (!alumnoActualizado.isPresent()) {

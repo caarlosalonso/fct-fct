@@ -7,5 +7,6 @@ public record AlumnoActualizarDTO(
     String nia,
     String dni,
     String nuss,
-    String address
+    String address,
+    Integer convocatoria
 ) {}

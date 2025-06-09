@@ -205,7 +205,7 @@ function crearLista(alumnosCurso, grupoTutor, form) {
             createClickableSVG(
                 '0 -0.5 25 25',
                 'M 20.848 1.879 C 19.676 0.707 17.777 0.707 16.605 1.879 L 2.447 16.036 C 2.029 16.455 1.743 16.988 1.627 17.569 L 1.04 20.505 C 0.76 21.904 1.994 23.138 3.393 22.858 L 6.329 22.271 C 6.909 22.155 7.443 21.869 7.862 21.451 L 22.019 7.293 C 23.191 6.121 23.191 4.222 22.019 3.05 L 20.848 1.879 Z M 18.019 3.293 C 18.41 2.902 19.043 2.902 19.433 3.293 L 20.605 4.465 C 20.996 4.855 20.996 5.488 20.605 5.879 L 6.447 20.036 C 6.308 20.176 6.13 20.271 5.936 20.31 L 3.001 20.897 L 3.588 17.962 C 3.627 17.768 3.722 17.59 3.862 17.451 L 13.933 7.379 L 16.52 9.965 L 17.934 8.56 L 15.348 5.965 L 18.019 3.293 Z',
-                () => setInputsToUpdate(form, alumno.alumnoId),
+                () => setInputsToUpdate(form, alumno),
                 'edit-svg'
             )
         );
@@ -237,6 +237,7 @@ function setInputsToCreate(form) {
         const dni = form.getInput('dni').getValue();
         const nuss = form.getInput('nuss').getValue();
         const address = form.getInput('address').getValue();
+        const convocatoria = form.getInput('convocatoria').getValue();
 
         let newAlumno = {
             nombreAlumno: nombre,
@@ -245,7 +246,8 @@ function setInputsToCreate(form) {
             nia: nia,
             nuss: nuss,
             phone: phone,
-            address: address
+            address: address,
+            convocatoria: convocatoria
         };
 
         fetch('/api/alumnos/create', {
@@ -258,7 +260,9 @@ function setInputsToCreate(form) {
         .then(response => {
             if (response.status === 201) {
                 promise();
+                form.reset();
                 form.submitFinish();
+                form.showSuccess('Alumno creado correctamente');
             } else {
                 form.showError('Error al crear el alumno');
             }
@@ -275,12 +279,13 @@ function setInputsToCreate(form) {
     form.getInput('dni').retrack('');
     form.getInput('nuss').retrack('');
     form.getInput('address').retrack('');
+    form.getInput('convocatoria').retrack('');
 
     const submitButton = document.getElementById('submit');
     submitButton.textContent = 'Crear alumno';
 }
 
-function setInputsToUpdate(form, alumnoId) {
+function setInputsToUpdate(form, alumno) {
     document.getElementById('titulo').textContent = `Información del alumno`;
 
     form.onsubmit = function (event) {
@@ -290,7 +295,8 @@ function setInputsToUpdate(form, alumnoId) {
         const nia = form.getInput('nia').getValue();
         const dni = form.getInput('dni').getValue();
         const nuss = form.getInput('nuss').getValue();
-        const address = form.getInput('address').getInput();
+        const address = form.getInput('address').getValue();
+        const convocatoria = form.getInput('convocatoria').getValue();
 
         let newAlumno = {
             name: nombre,
@@ -299,10 +305,11 @@ function setInputsToUpdate(form, alumnoId) {
             nia: nia,
             dni: dni,
             nuss: nuss,
-            address: address
+            address: address,
+            convocatoria: convocatoria
         };
 
-        fetch(`/api/alumnos/${alumnoId}`, {
+        fetch(`/api/alumnos/${alumno.alumnoId}`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json'
@@ -326,13 +333,14 @@ function setInputsToUpdate(form, alumnoId) {
         });
     };
 
-    form.getInput('nombre').retrack(alumno.data.name);
-    form.getInput('email').retrack(alumno.data.email);
-    form.getInput('phone').retrack(alumno.data.phone);
-    form.getInput('nia').retrack(alumno.data.nia);
-    form.getInput('dni').retrack(alumno.data.dni);
-    form.getInput('nuss').retrack(alumno.data.nuss);
-    form.getInput('address').retrack(alumno.data.address);
+    form.getInput('nombre').retrack(alumno.nombreAlumno);
+    form.getInput('email').retrack(alumno.email);
+    form.getInput('phone').retrack(alumno.phone);
+    form.getInput('nia').retrack(alumno.nia);
+    form.getInput('dni').retrack(alumno.dni);
+    form.getInput('nuss').retrack(alumno.nuss);
+    form.getInput('address').retrack(alumno.address);
+    form.getInput('convocatoria').retrack(alumno.convocatoria);
 
     const submitButton = document.getElementById('submit');
     submitButton.textContent = 'Actualizar alumno';
