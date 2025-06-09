@@ -48,6 +48,7 @@ window.addEventListener('FormsCreated', () => {
                 currentPassword.setValue('');
                 newPassword.setValue('');
                 confirmPassword.setValue('');
+                form.submitFinish();
             } else {
                 return response.json().then((error) => {
                     form.showError(error.message || 'An error occurred while changing the password.');
