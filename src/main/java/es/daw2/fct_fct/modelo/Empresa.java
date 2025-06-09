@@ -1,5 +1,7 @@
 package es.daw2.fct_fct.modelo;
 
+import java.time.LocalDate;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.AttributeOverride;
@@ -62,4 +64,10 @@ public class Empresa extends AbsBaseEntity {
 
     @Column(name = "numero_convenio", nullable = true, columnDefinition = "VARCHAR(9)")
     private String numero_convenio;
+
+    @Column(name = "fecha_contacto", nullable = true, columnDefinition = "DATE")
+    private LocalDate fecha_contacto;
+
+    @Column(name = "propuesta_por", nullable = true, columnDefinition = "BIGINT")
+    private Long propuestaPorId;
 }

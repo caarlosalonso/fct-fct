@@ -131,11 +131,14 @@ function crearGridEmpresas(empresas) {
     const columns = [
         { key: 'nombre', label: 'Nombre' },
         { key: 'cif', label: 'CIF' },
-        { key: 'sector', label: 'Sector' },
-        { key: 'address', label: 'Dirección' },
         { key: 'telefono', label: 'Teléfono' },
         { key: 'email', label: 'Email' },
-        { key: 'persona_contacto', label: 'Persona Contacto' }
+        { key: 'sector', label: 'Sector' },
+        { key: 'address', label: 'Dirección' },
+        { key: 'hay_convenio', label: 'Convenio' },
+        { key: 'numero_convenio', label: 'Número Convenio' },
+        { key: 'persona_contacto', label: 'Persona Contacto' },
+        { key: 'observaciones', label: 'Observaciones' }
     ];
 
     const gridData = document.createElement('div');
@@ -167,6 +170,14 @@ function crearGridEmpresas(empresas) {
             cell.style.gridRow = `${rowIdx + 2}`;
             cell.style.gridColumn = `${colIdx + 1}`;
             cell.textContent = empresa[col.key] || '';
+
+            if (col.key === 'hay_convenio') {
+                // Si hay número de convenio, muestra un check
+                cell.textContent = empresa.numero_convenio && empresa.numero_convenio.trim() !== '' ? '✔️' : '';
+            } else {
+                cell.textContent = empresa[col.key] || '';
+            }
+
             gridData.appendChild(cell);
         });
 
@@ -244,6 +255,8 @@ function editEmpresa(empresa) {
     form.getInput('empresa-telefono').retrack(empresa.phone);
     form.getInput('empresa-email').retrack(empresa.email);
     form.getInput('empresa-persona_contacto').retrack(empresa.persona_contacto);
+    form.getInput('observaciones').retrack(empresa.observaciones);
+    form.getInput('propuesta-por').retrack(empresa.propuesta_por || '');
 
     // Selector de estado
     const estadoSelect = document.getElementById('empresa-estado');
@@ -265,6 +278,9 @@ function editEmpresa(empresa) {
             phone: form.getInput('empresa-telefono').getValue(),
             email: form.getInput('empresa-email').getValue(),
             persona_contacto: form.getInput('empresa-persona_contacto').getValue(),
+            propuesta_por: form.getInput('propuesta-por').getValue(),
+            observaciones: form.getInput('observaciones').getValue(),
+            numero_convenio: form.getInput('numero-convenio').getValue(),
             estado: form.getInput('empresa-estado').getValue()
         };
 
