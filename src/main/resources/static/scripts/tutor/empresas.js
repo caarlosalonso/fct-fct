@@ -256,7 +256,7 @@ function editEmpresa(empresa) {
     form.getInput('empresa-telefono').retrack(empresa.phone);
     form.getInput('empresa-email').retrack(empresa.email);
     form.getInput('empresa-persona_contacto').retrack(empresa.persona_contacto);
-    form.getInput('convenio').retrack(empresa.convenio);
+    form.getInput('numero_convenio').retrack(empresa.convenio);
     form.getInput('observaciones').retrack(empresa.observaciones);
     form.getInput('propuesta_por').retrack(empresa.propuesta_por);
 
@@ -282,7 +282,7 @@ function editEmpresa(empresa) {
             persona_contacto: form.getInput('empresa-persona_contacto').getValue(),
             propuesta_por: form.getInput('propuesta_por').getValue(),
             observaciones: form.getInput('observaciones').getValue(),
-            numero_convenio: form.getInput('convenio').getValue(),
+            numero_convenio: form.getInput('numero_convenio').getValue(),
             estado: form.getInput('empresa-estado').getValue()
         };
 
