@@ -46,7 +46,7 @@ async function fetchCursoActual() {
 }
 
 async function fetchGrupoTutor() {
-    const response = await fetch('/api/grupo/tutor');
+    const response = await fetch('/api/vista-grupos-ciclos/tutor');
     if (response.status === 204) return [];
     if (!response.ok) throw new Error('Error al obtener los grupos');
     return await response.json();
