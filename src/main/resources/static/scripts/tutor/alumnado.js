@@ -112,7 +112,7 @@ function build(alumnos, cursoActual, grupoTutor, alumnosCurso) {
     }
 
     asignar.onsubmit = () => {
-        const alumnoId = search.getInput('search').getValue();
+        const alumnoId = asignar.getInput('search').getValue();
         if (!alumnoId) {
             asignar.showError('Selecciona un alumno para asignar al grupo');
             return;
