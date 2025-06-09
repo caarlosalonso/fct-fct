@@ -11,23 +11,29 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import es.daw2.fct_fct.dto.EmpresaDTO;
 import es.daw2.fct_fct.modelo.Empresa;
+import es.daw2.fct_fct.modelo.User;
+import es.daw2.fct_fct.repositorio.RepositorioUser;
 import es.daw2.fct_fct.servicio.ServicioEmpresa;
 import jakarta.servlet.http.HttpServletRequest;
 
 @RestController
 @RequestMapping("/api/empresa")
-public class ControladorEmpresa extends CrudController<Long, Empresa, Empresa, Empresa, ServicioEmpresa> {
+public class ControladorEmpresa extends CrudController<Long, Empresa, EmpresaDTO, EmpresaDTO, ServicioEmpresa> {
 
     @Autowired
     private ServicioEmpresa servicioEmpresa;
+
+    @Autowired
+    private RepositorioUser userRepository;
     
     // all ya existe en CrudController
 
     // getById ya existe en CrudController
 
     @Override
-    public ResponseEntity<?> create(@RequestBody Empresa dto, HttpServletRequest request) {
+    public ResponseEntity<?> create(@RequestBody EmpresaDTO dto, HttpServletRequest request) {
         Empresa nuevaEmpresa = new Empresa();
 
         nuevaEmpresa.setNombre(dto.getNombre());
@@ -39,7 +45,9 @@ public class ControladorEmpresa extends CrudController<Long, Empresa, Empresa, E
         nuevaEmpresa.setPersona_contacto(dto.getPersona_contacto());
         nuevaEmpresa.setEstado(dto.getEstado());
         nuevaEmpresa.setObservaciones(dto.getObservaciones());
-        nuevaEmpresa.setPropuesta_por(dto.getPropuesta_por());
+        if (dto.getPropuesta_por() != null) {
+            userRepository.findById(dto.getPropuesta_por()).ifPresent(nuevaEmpresa::setPropuesta_por);
+        }
         nuevaEmpresa.setNumero_convenio(dto.getNumero_convenio());
 
 
@@ -51,7 +59,7 @@ public class ControladorEmpresa extends CrudController<Long, Empresa, Empresa, E
     }
 
     @Override
-    public ResponseEntity<?> update(@PathVariable Long id, @RequestBody Empresa dto, HttpServletRequest request) {
+    public ResponseEntity<?> update(@PathVariable Long id, @RequestBody EmpresaDTO dto, HttpServletRequest request) {
         Optional<Empresa> empresaOpt = service.getById(id);
         if (!empresaOpt.isPresent()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No se encontró la empresa con el id: " + id);
@@ -67,9 +75,15 @@ public class ControladorEmpresa extends CrudController<Long, Empresa, Empresa, E
         empresa.setPersona_contacto(dto.getPersona_contacto());
         empresa.setEstado(dto.getEstado());
         empresa.setObservaciones(dto.getObservaciones());
-        empresa.setPropuesta_por(dto.getPropuesta_por());
+        if (dto.getPropuesta_por() != null) {
+            userRepository.findById(dto.getPropuesta_por()).ifPresent(empresa::setPropuesta_por);
+        }
         empresa.setNumero_convenio(dto.getNumero_convenio());
-        empresa.setPhone(dto.getPhone());
+
+        // Actualizar propuesta_por si viene en el JSON
+        if (dto.getPropuesta_por() != null) {
+            userRepository.findById(dto.getPropuesta_por()).ifPresent(empresa::setPropuesta_por);
+        }
 
         Optional<Empresa> empresaActualizada = service.update(id, empresa);
         if (!empresaActualizada.isPresent()) {
