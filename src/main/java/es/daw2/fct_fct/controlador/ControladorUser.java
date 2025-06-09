@@ -113,18 +113,9 @@ public class ControladorUser extends CrudController<Long, User, UserCreateDTO, U
         if (session == null || session.getAttribute("user") == null) {
             return ResponseEntity.status(401).body("Unauthorized");
         }
-
         Long id = (Long) session.getAttribute("user");
-
-        System.out.println("Session ID: " + id);
         
-        Object sessionId = session.getAttribute("id");
-        if (sessionId == null || !(sessionId instanceof Long) || !((Long) sessionId).equals(id)) {
-            return ResponseEntity.status(403).body("Forbidden: You can only change your own password");
-        }
-
         Optional<User> userOptional = service.getById(id);
-
         if (userOptional.isEmpty()) {
             return ResponseEntity.notFound().build();
         }
