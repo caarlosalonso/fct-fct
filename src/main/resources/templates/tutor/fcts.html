@@ -11,9 +11,9 @@
     <script type="module" src="/scripts/global.js"></script>
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Perfil - Tutor</title>
+    <title>FCTs - Tutor</title>
 
-    <link rel="stylesheet" href="/styles/profile/profile.css">
+    <link rel="stylesheet" href="/styles/tutor/fcts.css">
 
     <link rel="stylesheet" href="/styles/navigation.css">
 </head>
@@ -28,40 +28,16 @@
                     <a href="/alumnado" class="navigation nav-link">Alumnado</a>
                 </li>
                 <li class="navigation nav-item">
-                    <a href="/fcts" class="navigation nav-link">FCTs</a>
+                    <a href="/fcts" class="navigation nav-link active">FCTs</a>
                 </li>
                 <li class="navigation nav-item">
                     <a href="/empresas" class="navigation nav-link">Empresas</a>
                 </li>
                 <li class="navigation nav-item">
-                    <a href="/perfil" class="navigation nav-link active">Perfil</a>
+                    <a href="/perfil" class="navigation nav-link">Perfil</a>
                 </li>
             </ul>
         </nav>
     </header>
-    <main>
-        <section id="password-section" class="section">
-            <form id="password-form" method="POST" submit-text="Cambiar contraseña">
-                <div class="inputs form-container">
-                    <div class="instance form-input grouped-inputs">
-                        <div class="form-group form-input">
-                            <input type="password" id="current-password" name="current-password" class="text-based input" label="Contraseña actual" data-required="true">
-                        </div>
-                        <div class="form-group form-input">
-                            <input type="password" id="new-password" name="new-password" class="text-based input" label="Nueva contraseña" data-required="true">
-                        </div>
-                        <div class="form-group form-input">
-                            <input type="password" id="confirm-password" name="confirm-password" class="text-based input" label="Confirmar contraseña" data-required="true">
-                        </div>
-                    </div>
-                </div>
-            </form>
-        </section>
-        <section id="logout-section" class="section">
-            <a href="/logout" class="logout">Cerrar sesión</a>
-        </section>
-    </main>
-
-    <script type="module" src="/scripts/profile/profile.js"></script>
 </body>
 </html>
