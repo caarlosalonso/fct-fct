@@ -4,7 +4,6 @@ import { tableLoading, tableFail, createSVG, createClickableSVG } from '../funct
 let TIMEOUT;
 const SECTION = 'coordinadores-section';
 const FORM = 'coordinador-form';
-let coordinacionId = null;
 
 window.addEventListener('DOMContentLoaded', () => {
     promise();
@@ -40,14 +39,20 @@ function buildCoordinadoresTable(coordinadores) {
     }
 
     if (coordinadores.length === 0) {
-        const noCoordinadoresMessage = document.createElement('p');
-        noCoordinadoresMessage.textContent = 'No hay coordinadores disponibles.';
-        coordinadoresSection.appendChild(noCoordinadoresMessage);
-        coordinadoresSection.onclick = () => {
-            coordinacionId = null;
-            const form = Form.getForm(FORM);
-            form.onsubmit = createCoordinador;
-        }
+        const parent = document.createElement('div');
+        parent.classList.add('cell', 'hoverable');
+        coordinadoresSection.appendChild(parent);
+
+        parent.appendChild(createClickableSVG(
+            "0 0 48 48",
+            "M 44 20 L 28 20 L 28 4 C 28 2 26 0 24 0 S 20 2 20 4 L 20 20 L 4 20 C 2 20 0 22 0 24 S 2 28 4 28 L 20 28 L 20 44 C 20 46 22 48 24 48 S 28 46 28 44 L 28 28 L 44 28 C 46 28 48 26 48 24 S 46 20 44 20 Z",
+            () => {
+                const form = Form.getForm(FORM);
+                setInputsToCreate();
+            },
+            'add-svg',
+            'cell-column'
+        ));
         return;
     }
 
@@ -55,19 +60,22 @@ function buildCoordinadoresTable(coordinadores) {
         const coordinadorCard = document.createElement('div');
         coordinadorCard.className = 'coordinador-card';
         coordinadorCard.innerHTML = `
-            <h3>${coordinador.name}</h3>
-            <p>${coordinador.email}</p>
+            <p class="cell-title">${coordinador.name}</p>
+            <p class="cell-subtitle">${coordinador.email}</p>
         `;
         coordinadorCard.onclick = () => {
-            coordinacionId = coordinador.coordinacionId;
             const form = Form.getForm(FORM);
-            form.onsubmit = updateCoordinador;
+            setInputsToUpdate(coordinadores, coordinador.coordinacionId);
         }
         coordinadoresSection.appendChild(coordinadorCard);
     });
 }
 
 window.addEventListener('FormsCreated', (event) => {
+    setInputsToCreate();
+});
+
+function setInputsToCreate() {
     const form = Form.getForm(FORM);
     console.log(form);
 
@@ -76,78 +84,98 @@ window.addEventListener('FormsCreated', (event) => {
         return;
     }
 
-    form.onsubmit = createCoordinador;
-});
+    form.onsubmit = () => {
+        const nombre = form.getInput('coordinador-nombre').getValue();
+        const email = form.getInput('coordinador-email').getValue();
+        const password = form.getInput('coordinador-password').getValue();
 
-function createCoordinador() {
+        const data = {
+            name: nombre,
+            email: email,
+            password: password
+        }
+
+        console.log(data)
+
+        fetch('/api/coordinacion/create', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
+        })
+        .then((response) => {
+            console.log(response);
+            if (response.status === 201 || response.ok) {
+                form.showSuccess('Coordinador creado correctamente.');
+                form.reset();
+                promise();
+            }
+        })
+        .catch((error) => {
+            form.showError(`Error al crear el coordinador: ${error.message}`);
+        });
+    }
+
+    form.getInput('coordinador-nombre').setValue('');
+    form.getInput('coordinador-email').setValue('');
+    form.getInput('coordinador-password').setValue('');
+    
+    form.form.setAttribute('submit-text', 'Crear coordinador');
+    form.submit.textContent = 'Crear coordinador';
+}
+
+function setInputsToUpdate(coordinadores, coordinacionId) {
     const form = Form.getForm(FORM);
     console.log(form);
 
-    const nombre = form.getInput('coordinador-nombre').getValue();
-    const email = form.getInput('coordinador-email').getValue();
-    const password = form.getInput('coordinador-password').getValue();
-
-    const data = {
-        name: nombre,
-        email: email,
-        password: password
-    }
-
-    console.log(data)
-
-    fetch('/api/coordinacion/create', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(data)
-    })
-    .then((response) => {
-        console.log(response);
-        if (response.status === 201 || response.ok) {
-            form.showSuccess('Coordinador creado correctamente.');
-            form.reset();
-            promise();
-        }
-    })
-    .catch((error) => {
-        form.showError(`Error al crear el coordinador: ${error.message}`);
-    });
-}
-
-function updateCoordinador() {
-    const form = Form.getForm(FORM);
-
-    const nombre = form.getInput('coordinador-nombre').getValue();
-    const email = form.getInput('coordinador-email').getValue();
-    const password = form.getInput('coordinador-password').getValue();
-
-    const data = {
-        name: nombre,
-        email: email,
-        password: password
-    }
-
-    if (coordinacionId === null) {
-        form.showError('No se ha seleccionado un coordinador para actualizar.');
+    if (!form) {
+        console.error(`Form with ID "${FORM}" not found.`);
         return;
     }
 
-    fetch(`/api/coordinacion/${coordinacionId}`, {
-        method: 'PUT',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(data)
-    })
-    .then((response) => {
-        if (response.ok) {
-            form.showSuccess('Coordinador actualizado correctamente.');
-            form.reset();
-            promise();
+    form.onsubmit = () => {
+        const nombre = form.getInput('coordinador-nombre').getValue();
+        const email = form.getInput('coordinador-email').getValue();
+        const password = form.getInput('coordinador-password').getValue();
+
+        const data = {
+            name: nombre,
+            email: email,
+            password: password
         }
-    })
-    .catch((error) => {
-        form.showError(`Error al actualizar el coordinador: ${error.message}`);
-    });
+
+        if (coordinacionId === null) {
+            form.showError('No se ha seleccionado un coordinador para actualizar.');
+            return;
+        }
+
+        fetch(`/api/coordinacion/${coordinacionId}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
+        })
+        .then((response) => {
+            if (response.ok) {
+                form.showSuccess('Coordinador actualizado correctamente.');
+                form.reset();
+                form.submitFinish();
+                promise();
+            }
+        })
+        .catch((error) => {
+            form.showError(`Error al actualizar el coordinador: ${error.message}`);
+        });
+    }
+
+    coordinador = coordinadores.find(c => c.coordinacionId === coordinacionId);
+
+    form.getInput('coordinador-nombre').setValue(coordinador.name);
+    form.getInput('coordinador-email').setValue(coordinador.email);
+    form.getInput('coordinador-password').setValue('');
+
+    form.form.setAttribute('submit-text', 'Actualizar coordinador');
+    form.submit.textContent = 'Actualizar coordinador';
 }
