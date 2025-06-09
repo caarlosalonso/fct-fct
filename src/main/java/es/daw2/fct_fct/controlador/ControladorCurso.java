@@ -3,14 +3,21 @@ package es.daw2.fct_fct.controlador;
 import java.net.URI;
 import java.util.Optional;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import es.daw2.fct_fct.dto.AlumnoGrupoDTO;
+import es.daw2.fct_fct.modelo.Alumno;
 import es.daw2.fct_fct.modelo.Curso;
+import es.daw2.fct_fct.modelo.Grupo;
+import es.daw2.fct_fct.servicio.ServicioAlumno;
 import es.daw2.fct_fct.servicio.ServicioCurso;
+import es.daw2.fct_fct.servicio.ServicioGrupo;
 import jakarta.servlet.http.HttpServletRequest;
 
 
@@ -18,12 +25,48 @@ import jakarta.servlet.http.HttpServletRequest;
 @RequestMapping("/api/cursos")
 public class ControladorCurso extends CrudController<Long, Curso, Curso, Curso, ServicioCurso> {
 
+    private final ServicioCurso servicioCurso;
+
+    ControladorCurso(ServicioCurso servicioCurso) {
+        this.servicioCurso = servicioCurso;
+    }
+
     @Override
     public ResponseEntity<?> create(@RequestBody Curso c, HttpServletRequest request) {
         service.save(c);
         
         URI location = URI.create("/listarCursosId" +c.getId());
         return ResponseEntity.created(location).body(c);
+    }
+
+    @Autowired
+    private ServicioGrupo servicioGrupo;
+    @Autowired
+    private ServicioAlumno servicioAlumno;
+
+    @PostMapping("/alumno")
+    public ResponseEntity<?> addAlumnoToGrupo(@RequestBody AlumnoGrupoDTO dto, HttpServletRequest request) {
+        Optional<Grupo> grupoOpt = servicioGrupo.getById(dto.idGrupo());
+        if (grupoOpt.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+        Grupo grupo = grupoOpt.get();
+
+        Optional<Alumno> alumnoOpt = servicioAlumno.getById(dto.idAlumno());
+        if (alumnoOpt.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+        Alumno alumno = alumnoOpt.get();
+
+        Curso curso = new Curso();
+        curso.setGrupo(grupo);
+        curso.setAlumno(alumno);
+        curso.setHorasHechas((short) 0);
+        curso.setRating("Verde");
+        curso.setObservaciones("");
+
+        servicioCurso.save(curso);
+        return ResponseEntity.ok(grupo);
     }
 
     // all ya existe en CrudController

@@ -36,8 +36,8 @@ public class Curso extends AbsBaseEntity {
     @Column(name = "horas_hechas", nullable = false, columnDefinition = "TINYINT UNSIGNED")
     private Short horasHechas;
 
-    @Column(name = "apto", nullable = true, columnDefinition = "TINYINT")
-    private Boolean apto;
+    @Column(name = "rating", nullable = true, columnDefinition = "VARCHAR(15) DEFAULT 'Verde'")
+    private String rating;
 
     @Column(name = "observaciones", nullable = true, columnDefinition = "VARCHAR(2047)")
     private String observaciones;

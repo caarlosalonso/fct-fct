@@ -106,6 +106,32 @@ function build(alumnos, cursoActual, grupoTutor) {
     agignar.addEventListener('click', (event) => {
         event.preventDefault();
 
+        const alumnoId = search.getInput('search').getValue();
+        if (!alumnoId) {
+            form.showError('Selecciona un alumno para asignar al grupo');
+            return;
+        }
+
+        fetch(`/api/cursos/alumno`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                idAlumno: alumnoId,
+                idGrupo: grupoTutor.grupoId
+            })
+        })
+        .then(response => {
+            if (response.ok) {
+                form.submitFinish();
+            } else {
+                form.showError('Error al asignar el alumno al grupo');
+            }
+        })
+        .catch(error => {
+            form.showError('Error al enviar los datos: ' + error.message);
+        });
 
     });
 
