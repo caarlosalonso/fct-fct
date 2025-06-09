@@ -75,7 +75,7 @@ export class TextInput extends Input {
      *
      * @param {string} value New value to track changes
      */
-    retrack(value, override = true) {
+    retrack(value) {
         if (value === null || value === undefined)
             value = '';
 
@@ -83,13 +83,10 @@ export class TextInput extends Input {
 
         this.states.tracked = true;
         this.states.trackedValue = value;
-        if (override) {
-            this.input.value = value;
-            this.states.changed = false;
-        }
-        this.states.active = !this.isEmpty();
-
-        this.checkChange();
+        this.input.value = value;
+        this.states.changed = false;
+        this.states.active = (value.length > 0);
+        this.updateState();
     }
 
     undoChanges() {

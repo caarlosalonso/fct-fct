@@ -42,7 +42,9 @@ export class SelectInput extends TextInput {
 
             optionElement.addEventListener('click', () => {
                 this.input.value = value;
-                this.input.dispatchEvent(new Event('input'));
+                this.states.active = true;
+                this.states.focus = false;
+                this.updateState();
                 this.hideDropdown();
             });
 
