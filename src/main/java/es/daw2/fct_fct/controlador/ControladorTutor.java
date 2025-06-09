@@ -12,27 +12,53 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import es.daw2.fct_fct.dto.CreateAlumnoDTO;
+import es.daw2.fct_fct.dto.CreateUserDTO;
 import es.daw2.fct_fct.modelo.Alumno;
 import es.daw2.fct_fct.modelo.Tutor;
 import es.daw2.fct_fct.modelo.User;
+import es.daw2.fct_fct.modelo.User.Role;
 import es.daw2.fct_fct.servicio.ServicioAlumno;
 import es.daw2.fct_fct.servicio.ServicioTutores;
 import es.daw2.fct_fct.servicio.ServicioUser;
 import es.daw2.fct_fct.utils.PasswordUtils;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 
 
 @RestController
 @RequestMapping("/api/tutores")
-public class ControladorTutor extends CrudController<Long, Tutor, Tutor, Tutor, ServicioTutores> {
+public class ControladorTutor extends CrudController<Long, Tutor, CreateUserDTO, Tutor, ServicioTutores> {
 
     @Override
-    public ResponseEntity<?> create(@RequestBody Tutor t, HttpServletRequest request) {
-        service.save(t);
+    public ResponseEntity<?> create(@RequestBody CreateUserDTO t, HttpServletRequest request) {
+        HttpSession session = request.getSession(false);
+        if (session == null) return ResponseEntity.status(401).body("No autorizado");
+        Object role = session.getAttribute("role");
+        if (role == null || ! role.equals(Role.COORDINADOR)) {
+            return ResponseEntity.status(403).body("Forbidden: Sólo los coordinadores pueden crear tutores");
+        }
 
-        URI location = URI.create("/api/tutores/" + t.getId());
+        User newUser = new User();
+        newUser.setName(t.name());
+        newUser.setEmail(t.email());
+        newUser.setPassword(
+            PasswordUtils.hashPassword(t.password())
+        );
+        newUser.setRole(Role.TUTOR);
 
-        return ResponseEntity.created(location).body(t);
+        if (servicioUser.checkEmailExists(newUser.getEmail())) {
+            return ResponseEntity.status(409).body("El email ya existe"); // Conflicto, ya existe un usuario con ese email
+        }
+
+        User saved = servicioUser.save(newUser);
+
+        Tutor tutor = new Tutor();
+        tutor.setUser(saved);
+        service.save(tutor);
+
+        URI location = URI.create("/api/tutores/" + tutor.getId());
+
+        return ResponseEntity.created(location).body(tutor);
     }
 
     // all ya existe en CrudController
