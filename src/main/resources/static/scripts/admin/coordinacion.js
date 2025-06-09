@@ -38,27 +38,30 @@ function buildCoordinadoresTable(coordinadores) {
         coordinadoresSection.removeChild(coordinadoresSection.firstChild);
     }
 
-    if (coordinadores.length === 0) {
-        const parent = document.createElement('div');
-        parent.classList.add('cell', 'hoverable');
-        coordinadoresSection.appendChild(parent);
+    const parent = document.createElement('div');
+    parent.classList.add('cell', 'hoverable');
+    coordinadoresSection.appendChild(parent);
 
-        parent.appendChild(createClickableSVG(
-            "0 0 48 48",
-            "M 44 20 L 28 20 L 28 4 C 28 2 26 0 24 0 S 20 2 20 4 L 20 20 L 4 20 C 2 20 0 22 0 24 S 2 28 4 28 L 20 28 L 20 44 C 20 46 22 48 24 48 S 28 46 28 44 L 28 28 L 44 28 C 46 28 48 26 48 24 S 46 20 44 20 Z",
-            () => {
-                const form = Form.getForm(FORM);
-                setInputsToCreate();
-            },
-            'add-svg',
-            'cell-column'
-        ));
-        return;
-    }
+    parent.appendChild(createClickableSVG(
+        "0 0 48 48",
+        "M 44 20 L 28 20 L 28 4 C 28 2 26 0 24 0 S 20 2 20 4 L 20 20 L 4 20 C 2 20 0 22 0 24 S 2 28 4 28 L 20 28 L 20 44 C 20 46 22 48 24 48 S 28 46 28 44 L 28 28 L 44 28 C 46 28 48 26 48 24 S 46 20 44 20 Z",
+        () => {
+            const form = Form.getForm(FORM);
+            setInputsToCreate();
+        },
+        'add-svg',
+        'cell-column'
+    ));
+
+    if (coordinadores.length === 0) return;
 
     coordinadores.forEach((coordinador) => {
+        const cell = document.createElement('div');
+        cell.classList.add('cell', 'hoverable');
+        coordinadoresSection.appendChild(cell);
+
         const coordinadorCard = document.createElement('div');
-        coordinadorCard.className = 'coordinador-card';
+        coordinadorCard.classList.add('coordinador-card', 'cell-content', 'filled-cell');
         coordinadorCard.innerHTML = `
             <p class="cell-title">${coordinador.name}</p>
             <p class="cell-subtitle">${coordinador.email}</p>
@@ -67,7 +70,7 @@ function buildCoordinadoresTable(coordinadores) {
             const form = Form.getForm(FORM);
             setInputsToUpdate(coordinadores, coordinador.coordinacionId);
         }
-        coordinadoresSection.appendChild(coordinadorCard);
+        cell.appendChild(coordinadorCard);
     });
 }
 
