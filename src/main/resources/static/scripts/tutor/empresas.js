@@ -225,7 +225,7 @@ function editEmpresa(empresa) {
     form.getInput('empresa-cif').retrack(empresa.cif);
     form.getInput('empresa-sector').retrack(empresa.sector);
     form.getInput('empresa-address').retrack(empresa.address);
-    form.getInput('empresa-telefono').retrack(empresa.telefono);
+    form.getInput('empresa-telefono').retrack(empresa.phone);
     form.getInput('empresa-email').retrack(empresa.email);
     form.getInput('empresa-persona_contacto').retrack(empresa.persona_contacto);
 
