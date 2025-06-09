@@ -382,14 +382,21 @@ function addGrupo(ciclo, cicloLectivo, numero) {
 
     form.getInput('tutor').options = [];
 
+    let arr = [];
+
     fetch(`/api/tutores/disponibles/${cicloLectivo.id}`)
     .then((response) => {
         if (!response.ok) throw new Error('Error al obtener tutores disponibles');
-        console.log(response.json());
+        return response.json();
+    })
+    .then((data) => {
+        arr = data;
     })
     .catch((error) => {
         throw new Error('Error al obtener los datos: ' + error);
     });
+
+    console.log(arr);
 
     form.onsubmit = (event) => {
         const cicloLectivoId = cicloLectivo.id;
