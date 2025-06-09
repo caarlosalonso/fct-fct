@@ -16,6 +16,7 @@ public class VistaAlumnoController {
 
     @GetMapping("/all")
     public ResponseEntity<?> all() {
+        System.out.println(servicio.obtenerTodos());
         return ResponseEntity.ok(servicio.obtenerTodos());
     }
 

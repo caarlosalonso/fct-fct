@@ -102,6 +102,13 @@ function build(alumnos, cursoActual, grupoTutor) {
         })
     }
 
+    const agignar = document.getElementById('asignar')
+    agignar.addEventListener('click', (event) => {
+        event.preventDefault();
+        
+
+    });
+
     const crearAlumno = document.getElementById('create-alumno');
     crearAlumno.addEventListener('click', (event) => {
         event.preventDefault();
