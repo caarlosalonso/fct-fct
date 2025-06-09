@@ -40,38 +40,19 @@ public class HomeController {
     }
 
     @GetMapping("/")
-    public String empty(HttpServletRequest request) {
-        return index(request);
+    public String empty(HttpServletRequest request, HttpServletResponse response) {
+        return index(request, response);
     }
 
     @GetMapping("/index")
-    public String index(HttpServletRequest request) {
+    public String index(HttpServletRequest request, HttpServletResponse response) {
         HttpSession session = request.getSession(false);    // No crea sesión.
-        if (session == null) return REDIRECT_LOGIN;
-
-        Object user = session.getAttribute("user");
-        Object role = session.getAttribute("role");
-        if (user == null || role == null) return REDIRECT_LOGIN;
-
-        return switch (role) {
-            case User.Role.ADMIN        -> "admin/index.html";
-            case User.Role.COORDINADOR  -> "coordinacion/index.html";
-            case User.Role.TUTOR        -> "tutor/index.html";
-            case User.Role.ALUMNO       -> "alumno/index.html";
-            default                     -> REDIRECT_LOGIN;
-        };
-    }
-
-    @GetMapping("/perfil")
-    public String perfil(HttpServletRequest request, HttpServletResponse response) {
-        HttpSession session = request.getSession(false);
         if (session == null) return REDIRECT_LOGIN;
 
         Object user = session.getAttribute("user");
         Object role = session.getAttribute("role");
         Object nombre = session.getAttribute("nombre");
         if (user == null || role == null || nombre == null) return REDIRECT_LOGIN;
-        System.out.println("Perfil de usuario: " + user + ", rol: " + role + ", nombre: " + nombre);
 
         String cookieName;
         try {
@@ -84,6 +65,25 @@ public class HomeController {
         Cookie cookie = new Cookie("nombre", cookieName);
         cookie.setMaxAge(-1);       // La cookie durará lo que dure la sesión.
         response.addCookie(cookie);
+
+        return switch (role) {
+            case User.Role.ADMIN        -> "admin/index.html";
+            case User.Role.COORDINADOR  -> "coordinacion/index.html";
+            case User.Role.TUTOR        -> "tutor/index.html";
+            case User.Role.ALUMNO       -> "alumno/index.html";
+            default                     -> REDIRECT_LOGIN;
+        };
+    }
+
+    @GetMapping("/perfil")
+    public String perfil(HttpServletRequest request) {
+        HttpSession session = request.getSession(false);
+        if (session == null) return REDIRECT_LOGIN;
+
+        Object user = session.getAttribute("user");
+        Object role = session.getAttribute("role");
+        Object nombre = session.getAttribute("nombre");
+        if (user == null || role == null || nombre == null) return REDIRECT_LOGIN;
 
         return switch (role) {
             case User.Role.ADMIN        -> "admin/profile.html";
