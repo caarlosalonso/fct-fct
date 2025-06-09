@@ -25,30 +25,28 @@ window.addEventListener('FormsCreated', (event) => {
 
 function promise() {
     Promise.all([
-        fetchCiclosLectivos(),
-        fetchGruposCiclos(),
-        fetchAlumnos()
+        fetchCursoActual(),
     ])
     .then(([
-        ciclosLectivos,
-        gruposCiclos,
-        alumnos
+        cursoActual
     ]) => {
-        build(ciclosLectivos, gruposCiclos, alumnos);
+        build(cursoActual);
     }).catch((error) => {
         console.error('Error al obtener los ciclos lectivos:', error);
     })
 }
 
 async function fetchCursoActual() {
-    const response = await fetch('/api/ciclos-lectivos/all');
+    const response = await fetch('/api/ciclos-lectivos/actual');
     if (response.status === 204) return [];
     if (!response.ok) throw new Error('Error al obtener los ciclos lectivos');
     return await response.json();
 }
 
 
-
+function build(cursoActual) {
+    console.log('Ciclo lectivo actual:', cursoActual);
+}
 
 
 
@@ -118,7 +116,7 @@ let chosenGrupo = null;
 let cicloLectivoId = null;
 let grupoId = null;
 let numero = null;
-
+/*
 function build(ciclosLectivos, gruposCiclos, alumnos) {
     ciclosLectivos.forEach((cicloLectivo) => {
         info.push({
@@ -149,6 +147,7 @@ function build(ciclosLectivos, gruposCiclos, alumnos) {
         setInputsToCreate(form);
     });
 }
+    */
 
 function createCiclosLectivos() {
     const cicloLectivoSelection = document.getElementById('ciclo-lectivo-selection');

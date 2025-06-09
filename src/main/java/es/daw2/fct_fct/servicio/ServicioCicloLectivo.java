@@ -37,4 +37,11 @@ public class ServicioCicloLectivo extends AbstractService<Long, CicloLectivo, Re
         repository.save(cicloLectivo.get());
         return true;
     }
+
+    public Optional<CicloLectivo> getCicloLectivoActual() {
+        List<CicloLectivo> ciclosLectivos = (List<CicloLectivo>) repository.findAll();
+        return ciclosLectivos.stream()
+            .filter(ciclo -> ciclo.getFechaFin() == null)
+            .findFirst();
+    }
 }

@@ -31,7 +31,7 @@ public class VistaTutoresService {
         Set<Long> idsAsignados = asignados.stream()
             .map(VistaTutores::getTutorId)
             .collect(Collectors.toSet());
-        System.out.println("Asignados: " + idsAsignados);
+        System.out.println("Asignados: " + asignados);
         System.out.println("Todos: " + todos);
 
         return todos.stream()
