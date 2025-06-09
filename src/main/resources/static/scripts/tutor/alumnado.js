@@ -65,6 +65,10 @@ async function fetchGrupoTutor() {
 }
 
 function build(alumnos, cursoActual, grupoTutor) {
+    console.log('Alumnos:', alumnos);
+    console.log('Ciclo lectivo actual:', cursoActual);
+    console.log('Grupo tutor:', grupoTutor);
+
     const form = Form.getForm('alumno-form');
 
     const search = Form.getForm('alumno-search-form');
@@ -73,7 +77,7 @@ function build(alumnos, cursoActual, grupoTutor) {
         searchInput.input.addEventListener('input', () => {
             let query = searchInput.input.value;
             query = (query || '').toLowerCase().trim();
-
+            console.log(query);
             searchInput.options = [];
             
             alumnos.forEach(alumno => {
@@ -85,6 +89,8 @@ function build(alumnos, cursoActual, grupoTutor) {
                     (dni || '').toLowerCase()
                 ];
                 const match = values.some(val => val.includes(query));
+                console.log(match, values);
+                console.log(searchInput.options);
                 if (match) {
                     searchInput.options.push({
                         value: alumno.alumnoId,
@@ -111,10 +117,6 @@ function build(alumnos, cursoActual, grupoTutor) {
         displaySection.textContent = 'No tienes ningún grupo asignado como tutor';
         return;
     }
-
-    console.log('Alumnos:', alumnos);
-    console.log('Ciclo lectivo actual:', cursoActual);
-    console.log('Grupo tutor:', grupoTutor);
 }
 
 

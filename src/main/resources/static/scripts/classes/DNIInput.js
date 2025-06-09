@@ -68,7 +68,11 @@ export class DNIInput extends TextInput {
     }
 
     static computeLetraControl(digits) {
+        console.log("Computing control letter for:", digits);
         const num = parseInt(digits, 10);
+        console.log("Parsed number:", num);
+        console.log("Control letter index:", num % 23);
+        console.log("Control letter:", this.letters[num % 23]);
         return this.letters[num % 23];
     }
 
