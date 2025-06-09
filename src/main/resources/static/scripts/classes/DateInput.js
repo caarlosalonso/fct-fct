@@ -4,6 +4,7 @@ export class DateInput extends TextInput {
     constructor(input) {
         super(input);
         this.getValue = () => {
+            if (this.isEmpty()) return '';
             const date = new Date(this.input.value);
             return date.toISOString().split('T')[0];
         }

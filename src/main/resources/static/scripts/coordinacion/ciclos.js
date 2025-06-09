@@ -14,7 +14,7 @@ const HORARIOS = {
 }
 
 let TIMEOUT;
-const SECTION = 'tutores-section';
+const SECTION = 'display-grid-wrapper';
 
 window.addEventListener('DOMContentLoaded', (event) => {
     promise();
