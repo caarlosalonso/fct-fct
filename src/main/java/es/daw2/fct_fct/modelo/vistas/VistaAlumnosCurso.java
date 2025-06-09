@@ -48,7 +48,7 @@ public class VistaAlumnosCurso {
     private Integer horasHechas;
 
     @Column(name = "rating")
-    private Integer rating;
+    private String rating;
 
     @Column(name = "observaciones")
     private String observaciones;
