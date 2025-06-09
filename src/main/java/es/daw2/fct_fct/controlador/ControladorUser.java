@@ -69,10 +69,10 @@ public class ControladorUser extends CrudController<Long, User, UserCreateDTO, U
         System.out.println(newSession.getId() + " - " + userFound.getEmail() + " - " + userFound.getName() + " - " + userFound.getRole());
 
         switch (userFound.getRole()) {
-            case User.Role.ADMIN -> newSession.setAttribute("child_id", null);
-            case User.Role.COORDINADOR -> servicioCoordinacion.getByUserId(userFound.getId()).ifPresent(coordinacion -> newSession.setAttribute("child_id", coordinacion));
-            case User.Role.TUTOR -> servicioTutores.getByUserId(userFound.getId()).ifPresent(tutor -> newSession.setAttribute("child_id", tutor));
-            case User.Role.ALUMNO -> servicioAlumno.getByUserId(userFound.getId()).ifPresent(alumno -> newSession.setAttribute("child_id", alumno));
+            case User.Role.ADMIN -> newSession.setAttribute("child_id", userFound.getId());
+            case User.Role.COORDINADOR -> servicioCoordinacion.getByUserId(userFound.getId()).ifPresent(coordinacion -> newSession.setAttribute("child_id", coordinacion.getId()));
+            case User.Role.TUTOR -> servicioTutores.getByUserId(userFound.getId()).ifPresent(tutor -> newSession.setAttribute("child_id", tutor.getId()));
+            case User.Role.ALUMNO -> servicioAlumno.getByUserId(userFound.getId()).ifPresent(alumno -> newSession.setAttribute("child_id", alumno.getId()));
             default -> {
                 return ResponseEntity.status(403).body("Forbidden: Invalid user role");
             }
