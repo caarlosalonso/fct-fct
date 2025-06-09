@@ -40,6 +40,57 @@ function promise() {
     })
 }
 
+async function fetchCursoActual() {
+    const response = await fetch('/api/ciclos-lectivos/all');
+    if (response.status === 204) return [];
+    if (!response.ok) throw new Error('Error al obtener los ciclos lectivos');
+    return await response.json();
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 async function fetchCiclosLectivos() {
     const response = await fetch('/api/ciclos-lectivos/all');
     if (response.status === 204) return [];

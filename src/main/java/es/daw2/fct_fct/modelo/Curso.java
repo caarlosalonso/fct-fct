@@ -33,11 +33,6 @@ public class Curso extends AbsBaseEntity {
     @JoinColumn(name = "grupo_id", nullable = false)
     private Grupo grupo;
 
-    @ManyToOne
-    @JsonIgnore
-    @JoinColumn(name = "tutor_id", nullable = false)
-    private Tutor tutor;
-    
     @Column(name = "horas_hechas", nullable = false, columnDefinition = "TINYINT UNSIGNED")
     private Short horasHechas;
 

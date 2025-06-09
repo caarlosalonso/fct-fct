@@ -26,9 +26,6 @@ public class CicloLectivo extends AbsBaseEntity {
     @Column(name = "fecha_inicio", nullable = false, columnDefinition = "DATE")
     private LocalDate fechaInicio;
 
-    @Column(name = "fecha_fin", nullable = false, columnDefinition = "DATE")
+    @Column(name = "fecha_fin", nullable = true, columnDefinition = "DATE")
     private LocalDate fechaFin;
-
-    @Column(name = "es_actual", nullable = false, columnDefinition = "TINYINT DEFAULT 0")
-    private Boolean esActual;
 }

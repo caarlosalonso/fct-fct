@@ -1,4 +1,5 @@
 import { Form } from '../classes/Form.js';
+import { tableLoading, tableFail, createSVG, createClickableSVG } from '../functions.js';
 
 const NIVELES = {
     'BASICA': 'Básica',
@@ -13,10 +14,14 @@ const HORARIOS = {
 }
 
 let TIMEOUT;
+const SECTION = 'tutores-section';
+
+widnow.addEventListener('DOMContentLoaded', (event) => {
+    promise();
+})
 
 window.addEventListener('FormsCreated', (event) => {
     createAbreviatedNameEventListener();
-    promise();
 });
 
 function createAbreviatedNameEventListener() {
@@ -41,7 +46,7 @@ function createAbreviatedNameEventListener() {
 }
 
 function promise() {
-    tableLoading();
+    tableLoading(SECTION);
 
     Promise.all([
         fetchCiclos(),
@@ -56,7 +61,7 @@ function promise() {
             drawTable(ciclos, ciclosLectivos, grupos);
         }
     ).catch((error) => {
-        tableFail();
+        tableFail(SECTION, TIMEOUT, promise);
         console.error(error);
     });
 }
@@ -80,41 +85,6 @@ async function fetchGrupos() {
     if (response.status === 204) return [];
     if (!response.ok) throw new Error('No se encontraron grupos');
     return await response.json();
-}
-
-function tableLoading() {
-    const ciclosGridWrapper = document.getElementById('display-grid-wrapper');
-    ciclosGridWrapper.innerHTML = "";
-
-    const spinner = document.createElement('div');
-    spinner.classList.add('spinner', 'spinner-border', 'text-primary');
-    spinner.setAttribute('role', 'status');
-    spinner.innerHTML = '<span class="visually-hidden">Loading...</span>';
-    ciclosGridWrapper.appendChild(spinner);
-}
-
-function tableFail() {
-    const ciclosGridWrapper = document.getElementById('display-grid-wrapper');
-    ciclosGridWrapper.innerHTML = "";
-
-    const errorMessageSection = document.createElement('div');
-    errorMessageSection.id = 'error-message-section';
-    errorMessageSection.innerHTML = `
-        <svg class="cross-svg" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 48 48" xml:space="preserve">
-            <path d="M 40.9706 35.3137 L 29.6569 24 L 40.9706 12.6863 C 42.3848 11.2721 42.3848 8.4437 40.9706 7.0294 S 36.7279 5.6152 35.3137 7.0294 L 24 18.3431 L 12.6863 7.0294 C 11.2721 5.6152 8.4437 5.6152 7.0294 7.0294 S 5.6152 11.2721 7.0294 12.6863 L 18.3431 24 L 7.0294 35.3137 C 5.6152 36.7279 5.6152 39.5563 7.0294 40.9706 S 11.2721 42.3848 12.6863 40.9706 L 24 29.6569 L 35.3137 40.9706 C 36.7279 42.3848 39.5563 42.3848 40.9706 40.9706 S 42.3848 36.7279 40.9706 35.3137 Z"/>
-        </svg>
-    `;
-    ciclosGridWrapper.appendChild(errorMessageSection);
-
-    clearTimeout(TIMEOUT);
-    TIMEOUT = setTimeout(() => {
-        clearTimeout(TIMEOUT);
-        
-        tableLoading();
-        TIMEOUT = setTimeout(() => {
-            promise();
-        }, 8000);
-    }, 2000);
 }
 
 function drawTable(ciclos, ciclosLectivos, grupos) {
@@ -244,8 +214,13 @@ function createCicloLectivoCell(cicloLectivo) {
     subtitleSpan.textContent = cicloLectivo.fechaInicio;
     cellContent.appendChild(subtitleSpan);
 
+    const finSpan = document.createElement('span');
+    finSpan.classList.add('cell-subtitle');
+    finSpan.textContent = cicloLectivo.fechaFin || 'En curso';
+    cellContent.appendChild(finSpan);
+
     cellContent.appendChild(
-        createSVG(
+        createClickableSVG(
             '0 -0.5 25 25',
             'M 20.848 1.879 C 19.676 0.707 17.777 0.707 16.605 1.879 L 2.447 16.036 C 2.029 16.455 1.743 16.988 1.627 17.569 L 1.04 20.505 C 0.76 21.904 1.994 23.138 3.393 22.858 L 6.329 22.271 C 6.909 22.155 7.443 21.869 7.862 21.451 L 22.019 7.293 C 23.191 6.121 23.191 4.222 22.019 3.05 L 20.848 1.879 Z M 18.019 3.293 C 18.41 2.902 19.043 2.902 19.433 3.293 L 20.605 4.465 C 20.996 4.855 20.996 5.488 20.605 5.879 L 6.447 20.036 C 6.308 20.176 6.13 20.271 5.936 20.31 L 3.001 20.897 L 3.588 17.962 C 3.627 17.768 3.722 17.59 3.862 17.451 L 13.933 7.379 L 16.52 9.965 L 17.934 8.56 L 15.348 5.965 L 18.019 3.293 Z',
             () => editCicloLectivo(cicloLectivo),
@@ -253,7 +228,7 @@ function createCicloLectivoCell(cicloLectivo) {
         )
     );
     cellContent.appendChild(
-        createSVG(
+        createClickableSVG(
             '-6 -6 60 60',
             'M 42 3 H 28 A 2 2 0 0 0 26 1 H 22 A 2 2 0 0 0 20 3 H 6 A 2 2 0 0 0 6 7 H 42 A 2 2 0 0 0 42 3 Z M 37 11 V 43 H 31 V 19 A 1 1 0 0 0 27 19 V 43 H 21 V 19 A 1 1 0 0 0 17 19 V 43 H 11 V 11 A 2 2 0 0 0 7 11 V 45 A 2 2 0 0 0 9 47 H 39 A 2 2 0 0 0 41 45 V 11 A 2 2 0 0 0 37 11 Z',
             () => removeCicloLectivo(cicloLectivo),
@@ -302,7 +277,7 @@ function createCicloCell(ciclo, rowIdx) {
     cellContent.appendChild(horasSubtitleSpan);
 
     cellContent.appendChild(
-        createSVG(
+        createClickableSVG(
             '0 -0.5 25 25',
             'M 20.848 1.879 C 19.676 0.707 17.777 0.707 16.605 1.879 L 2.447 16.036 C 2.029 16.455 1.743 16.988 1.627 17.569 L 1.04 20.505 C 0.76 21.904 1.994 23.138 3.393 22.858 L 6.329 22.271 C 6.909 22.155 7.443 21.869 7.862 21.451 L 22.019 7.293 C 23.191 6.121 23.191 4.222 22.019 3.05 L 20.848 1.879 Z M 18.019 3.293 C 18.41 2.902 19.043 2.902 19.433 3.293 L 20.605 4.465 C 20.996 4.855 20.996 5.488 20.605 5.879 L 6.447 20.036 C 6.308 20.176 6.13 20.271 5.936 20.31 L 3.001 20.897 L 3.588 17.962 C 3.627 17.768 3.722 17.59 3.862 17.451 L 13.933 7.379 L 16.52 9.965 L 17.934 8.56 L 15.348 5.965 L 18.019 3.293 Z',
             () => editCiclo(ciclo),
@@ -311,7 +286,7 @@ function createCicloCell(ciclo, rowIdx) {
         )
     );
     cellContent.appendChild(
-        createSVG(
+        createClickableSVG(
             '-6 -6 60 60',
             'M 42 3 H 28 A 2 2 0 0 0 26 1 H 22 A 2 2 0 0 0 20 3 H 6 A 2 2 0 0 0 6 7 H 42 A 2 2 0 0 0 42 3 Z M 37 11 V 43 H 31 V 19 A 1 1 0 0 0 27 19 V 43 H 21 V 19 A 1 1 0 0 0 17 19 V 43 H 11 V 11 A 2 2 0 0 0 7 11 V 45 A 2 2 0 0 0 9 47 H 39 A 2 2 0 0 0 41 45 V 11 A 2 2 0 0 0 37 11 Z',
             () => removeCiclo(ciclo),
@@ -335,6 +310,11 @@ function createFilledCell(year, ciclo, grupo) {
     titleSpan.textContent = `${year}º ${ciclo.acronimo}`;
     cell.appendChild(titleSpan);
 
+    const tutorSpan = document.createElement('span');
+    tutorSpan.classList.add('cell-subtitle');
+    tutorSpan.textContent = tutor || 'Falta tutor';
+    cell.appendChild(tutorSpan);
+
     // Create subtitle span
     const subtitleSpan = document.createElement('span');
     subtitleSpan.classList.add('cell-subtitle');
@@ -342,7 +322,7 @@ function createFilledCell(year, ciclo, grupo) {
     cell.appendChild(subtitleSpan);
 
     cell.appendChild(
-        createSVG(
+        createClickableSVG(
             '0 -0.5 25 25',
             'M 20.848 1.879 C 19.676 0.707 17.777 0.707 16.605 1.879 L 2.447 16.036 C 2.029 16.455 1.743 16.988 1.627 17.569 L 1.04 20.505 C 0.76 21.904 1.994 23.138 3.393 22.858 L 6.329 22.271 C 6.909 22.155 7.443 21.869 7.862 21.451 L 22.019 7.293 C 23.191 6.121 23.191 4.222 22.019 3.05 L 20.848 1.879 Z M 18.019 3.293 C 18.41 2.902 19.043 2.902 19.433 3.293 L 20.605 4.465 C 20.996 4.855 20.996 5.488 20.605 5.879 L 6.447 20.036 C 6.308 20.176 6.13 20.271 5.936 20.31 L 3.001 20.897 L 3.588 17.962 C 3.627 17.768 3.722 17.59 3.862 17.451 L 13.933 7.379 L 16.52 9.965 L 17.934 8.56 L 15.348 5.965 L 18.019 3.293 Z',
             () => editGrupo(grupo),
@@ -350,7 +330,7 @@ function createFilledCell(year, ciclo, grupo) {
         )
     );
     cell.appendChild(
-        createSVG(
+        createClickableSVG(
             '-6 -6 60 60',
             'M 42 3 H 28 A 2 2 0 0 0 26 1 H 22 A 2 2 0 0 0 20 3 H 6 A 2 2 0 0 0 6 7 H 42 A 2 2 0 0 0 42 3 Z M 37 11 V 43 H 31 V 19 A 1 1 0 0 0 27 19 V 43 H 21 V 19 A 1 1 0 0 0 17 19 V 43 H 11 V 11 A 2 2 0 0 0 7 11 V 45 A 2 2 0 0 0 9 47 H 39 A 2 2 0 0 0 41 45 V 11 A 2 2 0 0 0 37 11 Z',
             () => removeGrupo(grupo, ciclo),
@@ -368,26 +348,10 @@ function createEmptyCell(ciclo, cicloLectivo, numero) {
     return cell;
 }
 
-function createSVG(viewBox, pathData, clickHandler, ...classList) {
-    const SVG_NS = 'http://www.w3.org/2000/svg';
-    const svg = document.createElementNS(SVG_NS, 'svg');
-    classList.forEach(cls => svg.classList.add(cls));
-    svg.setAttribute('viewBox', viewBox);
-    svg.setAttribute('xmlns', SVG_NS);
-    svg.onclick = clickHandler;
-
-    const path = document.createElementNS(SVG_NS, 'path');
-    path.setAttribute('d', pathData);
-    svg.appendChild(path);
-
-    return svg;
-}
-
 function createAddSVG() {
     return createSVG(
             '0 0 48 48',
             'M 44 20 L 28 20 L 28 4 C 28 2 26 0 24 0 S 20 2 20 4 L 20 20 L 4 20 C 2 20 0 22 0 24 S 2 28 4 28 L 20 28 L 20 44 C 20 46 22 48 24 48 S 28 46 28 44 L 28 28 L 44 28 C 46 28 48 26 48 24 S 46 20 44 20 Z',
-            () => {},
             'plus-svg'
     );
 }
@@ -516,10 +480,12 @@ function addCicloLectivo() {
     form.onsubmit = (event) => {
         const name = form.getInput('ciclo-lectivo-nombre').getValue();
         const fechaInicio = form.getInput('ciclo-lectivo-inicio').getValue();
+        const fechaFin = form.getInput('ciclo-lectivo-fin').getValue();
 
         let cicloLectivo = {
             nombre: name,
-            fechaInicio: fechaInicio
+            fechaInicio: fechaInicio,
+            fechaFin: fechaFin
         };
 
         fetch('/api/ciclos-lectivos/create', {
@@ -544,6 +510,7 @@ function addCicloLectivo() {
     
     form.getInput('ciclo-lectivo-nombre').retrack('');
     form.getInput('ciclo-lectivo-inicio').retrack('');
+    form.getInput('ciclo-lectivo-fin').retrack('');
 
     form.form.setAttribute('submit-text', 'Crear ciclo lectivo');
     form.submit.textContent = 'Crear ciclo lectivo';

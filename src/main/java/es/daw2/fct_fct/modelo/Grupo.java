@@ -32,6 +32,11 @@ public class Grupo extends AbsBaseEntity {
     @JoinColumn(name = "ciclo_lectivo_id")
     private CicloLectivo cicloLectivo;
 
+    @ManyToOne
+    @JsonIgnore
+    @JoinColumn(name = "tutor_id")
+    private Tutor tutor;
+
     @Column(name = "numero", nullable = false, columnDefinition = "TINYINT UNSIGNED")
     private Short numero;
 
