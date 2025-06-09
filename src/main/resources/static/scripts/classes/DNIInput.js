@@ -11,7 +11,7 @@ export class DNIInput extends TextInput {
 
         this.input.type = "text";
 
-        this.letters = "TRWAGMYFPDXBNJZSQVHLCKE";
+        DNIInput.letters = "TRWAGMYFPDXBNJZSQVHLCKE";
         this.regex = /^[X-Z\d]\d{0,7}[A-Z]$/;
 
         this.validate = () => {
@@ -68,13 +68,8 @@ export class DNIInput extends TextInput {
     }
 
     static computeLetraControl(digits) {
-        console.log("Computing control letter for:", digits);
         const num = parseInt(digits, 10);
-        console.log("Parsed number:", num);
-        console.log("Control letter index:", parseInt(num % 23));
-        console.log("Letters:", this.letters);
-        console.log("Control letter:", this.letters[parseInt(num % 23)]);
-        return this.letters[parseInt(num % 23)];
+        return DNIInput.letters[parseInt(num % 23)];
     }
 
     static nIEPrefixToNumber(prefix) {
