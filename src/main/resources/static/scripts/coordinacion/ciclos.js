@@ -374,7 +374,13 @@ function finish(form) {
     promise();
 }
 
-function addGrupo(ciclo, cicloLectivo, numero) {
+async function fetchTutoresDisponibles(cicloLectivo) {
+    const response = await fetch(`/api/vista-tutores/disponibles/${cicloLectivo.id}`);
+    if (!response.ok) throw new Error('Error al obtener tutores disponibles');
+    return await response.json();
+}
+
+async function addGrupo(ciclo, cicloLectivo, numero) {
     collapseAll();
 
     const form = Form.getForm('grupo-form');
@@ -382,21 +388,11 @@ function addGrupo(ciclo, cicloLectivo, numero) {
 
     form.getInput('tutor').options = [];
 
-    let arr = [];
-
-    fetch(`/api/vista-tutores/disponibles/${cicloLectivo.id}`)
-    .then((response) => {
-        if (!response.ok) throw new Error('Error al obtener tutores disponibles');
-        return response.json();
-    })
-    .then((data) => {
-        arr = data;
-    })
-    .catch((error) => {
-        throw new Error('Error al obtener los datos: ' + error);
-    });
-
-    console.log(arr);
+    try {
+        arr = await fetchTutoresDisponibles(cicloLectivo);
+    } catch (error) {
+        console.error(error);
+    }
 
     form.onsubmit = (event) => {
         const cicloLectivoId = cicloLectivo.id;
