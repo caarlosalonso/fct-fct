@@ -103,7 +103,7 @@ function build(alumnos, cursoActual, grupoTutor) {
     }
 
     const asignar = Form.getForm('alumno-search-form');
-    asignar.getInput('asignar').addEventListener('click', (event) => {
+    asignar.getInput('search').addEventListener('click', (event) => {
         const alumnoId = search.getInput('search').getValue();
         if (!alumnoId) {
             asignar.showError('Selecciona un alumno para asignar al grupo');
@@ -137,7 +137,6 @@ function build(alumnos, cursoActual, grupoTutor) {
         event.preventDefault();
         setInputsToCreate(form);
     });
-
 
     const displaySection = document.getElementById(SECTION);
     while( displaySection.firstChild) displaySection.removeChild(displaySection.firstChild);
