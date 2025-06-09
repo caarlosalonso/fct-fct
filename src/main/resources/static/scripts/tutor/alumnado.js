@@ -220,13 +220,21 @@ function crearLista(alumnosCurso, grupoTutor, form) {
                 'delete-svg'
             )
         );
+        item.appendChild(
+            createClickableSVG(
+                '0 0 24 24',
+                'M 12.75 14 C 12.75 13.5858 12.4142 13.25 12 13.25 C 11.5858 13.25 11.25 13.5858 11.25 14 V 18 C 11.25 18.4142 11.5858 18.75 12 18.75 C 12.4142 18.75 12.75 18.4142 12.75 18 V 14 Z M 12 2.75 C 9.1005 2.75 6.75 5.1005 6.75 8 V 9.2534 C 7.1235 9.25 7.5215 9.25 7.945 9.25 H 16.0549 C 17.4225 9.25 18.5248 9.25 19.3918 9.3665 C 20.2919 9.4875 21.0497 9.7464 21.6517 10.3483 C 22.2536 10.9503 22.5125 11.7081 22.6335 12.6082 C 22.75 13.4752 22.75 14.5775 22.75 15.9451 V 16.0549 C 22.75 17.4225 22.75 18.5248 22.6335 19.3918 C 22.5125 20.2919 22.2536 21.0497 21.6517 21.6516 C 21.0497 22.2536 20.2919 22.5125 19.3918 22.6335 C 18.5248 22.75 17.4225 22.75 16.0549 22.75 H 7.9451 C 6.5775 22.75 5.4752 22.75 4.6082 22.6335 C 3.7081 22.5125 2.9503 22.2536 2.3483 21.6516 C 1.7464 21.0497 1.4875 20.2919 1.3665 19.3918 C 1.25 18.5248 1.25 17.4225 1.25 16.0549 V 15.9451 C 1.25 14.5775 1.25 13.4752 1.3665 12.6082 C 1.4875 11.7081 1.7464 10.9503 2.3483 10.3483 C 2.9503 9.7464 3.7081 9.4875 4.6082 9.3665 C 4.8094 9.3395 5.0232 9.3187 5.25 9.3028 V 8 C 5.25 4.2721 8.2721 1.25 12 1.25 C 15.1463 1.25 17.788 3.4019 18.5373 6.3131 C 18.6405 6.7142 18.3991 7.1231 17.9979 7.2263 C 17.5968 7.3296 17.1879 7.0881 17.0846 6.6869 C 16.5018 4.4224 14.4453 2.75 12 2.75 Z M 4.8081 10.8531 C 4.0743 10.9518 3.6858 11.1322 3.409 11.409 C 3.1322 11.6858 2.9518 12.0743 2.8531 12.8081 C 2.7516 13.5635 2.75 14.5646 2.75 16 C 2.75 17.4354 2.7516 18.4365 2.8531 19.1919 C 2.9518 19.9257 3.1322 20.3142 3.409 20.591 C 3.6858 20.8678 4.0743 21.0482 4.8081 21.1469 C 5.5635 21.2484 6.5646 21.25 8 21.25 H 16 C 17.4354 21.25 18.4365 21.2484 19.1919 21.1469 C 19.9257 21.0482 20.3142 20.8678 20.591 20.591 C 20.8678 20.3142 21.0482 19.9257 21.1469 19.1919 C 21.2484 18.4365 21.25 17.4354 21.25 16 C 21.25 14.5646 21.2484 13.5635 21.1469 12.8081 C 21.0482 12.0743 20.8678 11.6858 20.591 11.409 C 20.3142 11.1322 19.9257 10.9518 19.1919 10.8531 C 18.4365 10.7516 17.4354 10.75 16 10.75 H 8 C 6.5646 10.75 5.5635 10.7516 4.8081 10.8531 Z',
+                (event) => {
+                    event.preventDefault();
+                    resetPassword(form, alumno.alumnoId);
+                },
+                'password-reset-svg'
+            )
+        );
     });
 }
 
 function setInputsToCreate(form) {
-    let isCancelled = form.cancel();
-    if (! isCancelled) return;
-
     document.getElementById('titulo').textContent = 'Creación de un nuevo alumno';
 
     form.onsubmit = function (event) {
@@ -281,8 +289,7 @@ function setInputsToCreate(form) {
     form.getInput('address').retrack('');
     form.getInput('convocatoria').retrack('');
 
-    const submitButton = document.getElementById('submit');
-    submitButton.textContent = 'Crear alumno';
+    form.form.querySelector('#submit').textContent = 'Actualizar alumno';
 }
 
 function setInputsToUpdate(form, alumno) {
@@ -342,8 +349,7 @@ function setInputsToUpdate(form, alumno) {
     form.getInput('address').retrack(alumno.address);
     form.getInput('convocatoria').retrack(alumno.convocatoria);
 
-    const submitButton = document.getElementById('submit');
-    submitButton.textContent = 'Actualizar alumno';
+    form.form.querySelector('#submit').textContent = 'Actualizar alumno';
 }
 
 function removeAlumnoFromGrupo(form, alumnoId, grupoId) {
@@ -371,46 +377,23 @@ function removeAlumnoFromGrupo(form, alumnoId, grupoId) {
     }
 }
 
-function addResetPasswordButton(form, id) {
-    deleteResetPasswordButton();
-
-    const resetButton = document.createElement('button');
-    resetButton.id = 'reset-password';
-    resetButton.classList.add('form-buttons');
-    resetButton.textContent = 'Restablecer contraseña';
-    document.getElementById('buttons-wrapper').appendChild(resetButton);
-
-    resetButton.addEventListener('click', (event) => {
-        event.preventDefault();
-        if (confirm('¿Estás seguro de que quieres restablecer la contraseña de este alumno?')) {
-            fetch(`/alumnos/${id}/reset-password`, {
-                method: 'POST'
-            })
-            .then(response => {
-                if (response.ok) {
-                    deleteFinish(resetButton);
-
-                    const alumnoElement = document.getElementById(`alumno-${id}`);
-                    if (alumnoElement) {
-                        alumnoElement.remove();
-                    }
-                } else {
-                    form.showError('Error al restablecer la contraseña del alumno');
-                }
-            })
-            .catch(error => {
-                form.showError('Error al restablecer la contraseña del alumno: ' + error.message);
-            })
-            .finally(() => {
-                deleteFinish(resetButton);
-            });
-        } else {
-            deleteFinish(resetButton);
-        }
-    });
-}
-
-function deleteForgotPasswordButton() {
-    const forgotPasswordButtonDiv = document.getElementById('forgot-password-div');
-    if (forgotPasswordButtonDiv) document.getElementById('buttons-wrapper').removeChild(forgotPasswordButtonDiv);
+function resetPassword(form, id) {
+    if (confirm('¿Estás seguro de que quieres restablecer la contraseña de este alumno?')) {
+        fetch(`/api/tutores/resetPassword/${id}`, {
+            method: 'PUT'
+        })
+        .then(response => {
+            if (response.ok) {
+                alert('La contraseña ha sido cambiada a su NIA.');
+                form.showSuccess('Contraseña restablecida correctamente');
+                form.submitFinish();
+                promise();
+            } else {
+                form.showError('Error al restablecer la contraseña del alumno');
+            }
+        })
+        .catch(error => {
+            form.showError('Error al restablecer la contraseña del alumno: ' + error.message);
+        })
+    }
 }

@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -114,5 +115,22 @@ public class ControladorTutor extends CrudController<Long, Tutor, CreateUserDTO,
 
         URI location = URI.create("/api/alumnos/" + nuevoAlumno.getId());
         return ResponseEntity.created(location).body(nuevoAlumno);
+    }
+
+    @PutMapping("/resetPassword/{id}")
+    public ResponseEntity<?> resetPassword(@PathVariable Long id) {
+        Optional<Alumno> optionalAlumno = servicioAlumnos.getById(id);
+        if (!optionalAlumno.isPresent()) {
+            return ResponseEntity.notFound().build();
+        }
+
+        Alumno alumno = optionalAlumno.get();
+        User user = alumno.getUser();
+        user.setPassword(PasswordUtils.hashPassword(
+            alumno.getNia()
+        ));
+        servicioUser.update(user.getId(), user);
+
+        return ResponseEntity.ok("Contraseña actualizada correctamente");
     }
 }

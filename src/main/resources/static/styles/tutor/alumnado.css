@@ -358,3 +358,20 @@
         fill: #ffffff;
     }
 }
+
+.password-reset-svg {
+    max-width: 35px;
+    background-color: #c0ffba;
+    fill: #000000;
+    border-radius: 10px;
+    grid-column: 3;
+    grid-row: 1 / span 99;
+    height: 100%;
+    transition: 300ms ease-in-out;
+
+    &:hover {
+        cursor: pointer;
+        background-color: #a8e0a1;
+        fill: #ffffff;
+    }
+}
