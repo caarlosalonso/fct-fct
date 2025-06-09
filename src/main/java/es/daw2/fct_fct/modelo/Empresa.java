@@ -67,7 +67,4 @@ public class Empresa extends AbsBaseEntity {
 
     @Column(name = "fecha_contacto", nullable = true, columnDefinition = "DATE")
     private LocalDate fecha_contacto;
-
-    @Column(name = "propuesta_por", nullable = true, columnDefinition = "BIGINT")
-    private Long propuestaPorId;
 }
