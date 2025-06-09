@@ -26,7 +26,7 @@ export class DNIInput extends TextInput {
                 dni = dni.replace(letraInicial, this.nIEPrefixToNumber(letraInicial));
             }
 
-            return dni.slice(-1) === this.computeLetraControl(dni.slice(0, -1));
+            return dni.slice(-1) === DNIInput.computeLetraControl(dni.slice(0, -1));
         }
     }
 
