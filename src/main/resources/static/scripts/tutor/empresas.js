@@ -256,7 +256,7 @@ function editEmpresa(empresa) {
     form.getInput('empresa-email').retrack(empresa.email);
     form.getInput('empresa-persona_contacto').retrack(empresa.persona_contacto);
     form.getInput('observaciones').retrack(empresa.observaciones);
-    form.getInput('propuesta-por').retrack(empresa.propuesta_por || '');
+    form.getInput('propuesta-por').retrack(empresa.propuesta_por);
 
     // Selector de estado
     const estadoSelect = document.getElementById('empresa-estado');
