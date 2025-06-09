@@ -24,12 +24,10 @@ export class Form {
         this.onlyInput = this.form.getAttribute('form-only-input') === 'true';
 
         this.getEntries();
-        if (!this.onlyInput) {
-            this.buildLegend();
-            this.buildMessage();
-            this.buildSubmit();
-            this.buildEvents();
-        }
+        if (!this.onlyInput) this.buildLegend();
+        this.buildMessage();
+        this.buildSubmit();
+        this.buildEvents();
 
         Form.formMap.set(this.form, this);
     }

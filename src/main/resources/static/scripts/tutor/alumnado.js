@@ -102,13 +102,11 @@ function build(alumnos, cursoActual, grupoTutor) {
         })
     }
 
-    const agignar = document.getElementById('asignar')
-    agignar.addEventListener('click', (event) => {
-        event.preventDefault();
-
+    const asignar = Form.getForm('alumno-search-form');
+    asignar.getInput('asignar').addEventListener('click', (event) => {
         const alumnoId = search.getInput('search').getValue();
         if (!alumnoId) {
-            form.showError('Selecciona un alumno para asignar al grupo');
+            asignar.showError('Selecciona un alumno para asignar al grupo');
             return;
         }
 
@@ -124,15 +122,14 @@ function build(alumnos, cursoActual, grupoTutor) {
         })
         .then(response => {
             if (response.ok) {
-                form.submitFinish();
+                asignar.submitFinish();
             } else {
-                form.showError('Error al asignar el alumno al grupo');
+                asignar.showError('Error al asignar el alumno al grupo');
             }
         })
         .catch(error => {
-            form.showError('Error al enviar los datos: ' + error.message);
+            asignar.showError('Error al enviar los datos: ' + error.message);
         });
-
     });
 
     const crearAlumno = document.getElementById('create-alumno');
