@@ -1,5 +1,11 @@
 import { Form } from '../classes/Form.js';
-import { PasswordInput } from '../classes/PasswordInput.js';
+import { tableLoading, tableFail, createSVG, createClickableSVG } from '../functions.js';
+
+const SECTION = 'display-section';
+
+window.addEventListener('DOMContentLoaded', () => {
+    promise();
+});
 
 window.addEventListener('FormsCreated', (event) => {
     const form = Form.getForm('alumno-form');
@@ -21,8 +27,6 @@ window.addEventListener('FormsCreated', (event) => {
         let nuss = this.input.value.trim().toUpperCase();
         return nuss.length === 0 ? null : nuss;
     }
-
-    promise();
 });
 
 function promise() {
@@ -55,12 +59,14 @@ async function fetchGrupoTutor() {
 }
 
 function build(cursoActual, grupoTutor) {
+    const displaySection = document.getElementById('display-section');
+    while( displaySection.firstChild) displaySection.removeChild(displaySection.firstChild);
+
     if (grupoTutor.length === 0) {
-        document.getElementById('tutor').classList.add('empty');
-        document.getElementById('tutor').textContent = 'No tienes ningún grupo asignado como tutor';
+        displaySection.classList.add('empty');
+        displaySection.textContent = 'No tienes ningún grupo asignado como tutor';
         return;
     }
-
 
     console.log('Ciclo lectivo actual:', cursoActual);
     console.log('Grupo tutor:', grupoTutor);
