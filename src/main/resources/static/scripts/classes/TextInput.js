@@ -85,8 +85,11 @@ export class TextInput extends Input {
         this.states.trackedValue = value;
         this.input.value = value;
         this.states.changed = false;
-        this.states.active = (value.length > 0);
-        this.forceActive();
+
+        if (value.length > 0) {
+            this.forceActive();
+        }
+        this.states.active = false;
         this.updateState();
     }
 
