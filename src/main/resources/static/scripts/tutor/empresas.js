@@ -229,10 +229,19 @@ function editEmpresa(empresa) {
     form.getInput('empresa-email').retrack(empresa.email);
     form.getInput('empresa-persona_contacto').retrack(empresa.persona_contacto);
 
+    // Selector de estado
+    const estadoSelect = document.getElementById('empresa-estado');
+    if (estadoSelect && empresa.estado) {
+        estadoSelect.value = empresa.estado.toLowerCase();
+    }
+
     form.form.setAttribute('submit-text', 'Actualizar empresa');
     form.submit.textContent = 'Actualizar empresa';
 
     form.onsubmit = (event) => {
+        event.preventDefault();
+
+        const estadoSelect = document.getElementById('empresa-estado');
         const data = {
             nombre: form.getInput('empresa-nombre').getValue(),
             cif: form.getInput('empresa-cif').getValue(),
