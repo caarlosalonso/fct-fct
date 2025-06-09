@@ -1,5 +1,15 @@
+if (!HTMLInputElement.prototype.isEmpty) {
+    HTMLInputElement.prototype.isEmpty = function() {
+        return !this.value || this.value.trim() === '';
+    };
+}
 if (!HTMLSelectElement.prototype.isEmpty) {
     HTMLSelectElement.prototype.isEmpty = function() {
+        return !this.value || this.value.trim() === '';
+    };
+}
+if (!HTMLTextAreaElement.prototype.isEmpty) {
+    HTMLTextAreaElement.prototype.isEmpty = function() {
         return !this.value || this.value.trim() === '';
     };
 }
