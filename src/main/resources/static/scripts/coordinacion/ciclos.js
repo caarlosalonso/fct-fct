@@ -391,15 +391,20 @@ async function addGrupo(ciclo, cicloLectivo, numero) {
     try {
         const array = await fetchTutoresDisponibles(cicloLectivo);
 
+        if (array.length === 0) {
+            form.getInput('tutor').options.push({
+                value: -1,
+                label: 'No hay tutores disponibles'
+            });
+        }
+
         array.forEach(tutor => {
-            const [value, label] = [tutor.id, tutor.name];
+            const [value, label] = [tutor.tutorId, tutor.name];
             form.getInput('tutor').options.push({value, label});
         });
     } catch (error) {
         console.error(error);
     }
-
-    console.log(form.getInput('tutor').options);
 
     form.onsubmit = (event) => {
         const cicloLectivoId = cicloLectivo.id;
@@ -407,6 +412,11 @@ async function addGrupo(ciclo, cicloLectivo, numero) {
         const numero = form.getInput('grupo-numero').getValue();
         const horario = form.getInput('grupo-horario').getValue();
         const tutor = form.getInput('tutor').getValue();
+
+        if (tutor === -1) {
+            form.showError('Por favor, selecciona un tutor válido.');
+            return;
+        }
 
         let grupo = {
             ciclo: cicloId,
