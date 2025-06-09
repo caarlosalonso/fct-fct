@@ -322,3 +322,39 @@
     }
 
 }
+
+
+
+.edit-svg {
+    max-width: 35px;
+    background-color: #ddabdd;
+    fill: #000000;
+    border-radius: 10px;
+    grid-column: 2;
+    grid-row: 1 / span 99;
+    height: 100%;
+    transition: 300ms ease-in-out;
+
+    &:hover {
+        cursor: pointer;
+        background-color: #b87ab8;
+        fill: #ffffff;
+    }
+}
+
+.delete-svg {
+    max-width: 35px;
+    background-color: #ffbaba;
+    fill: #000000;
+    border-radius: 10px;
+    grid-column: 3;
+    grid-row: 1 / span 99;
+    height: 100%;
+    transition: 300ms ease-in-out;
+
+    &:hover {
+        cursor: pointer;
+        background-color: #ff7a7a;
+        fill: #ffffff;
+    }
+}

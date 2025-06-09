@@ -80,7 +80,7 @@ function build(alumnos, cursoActual, grupoTutor, alumnosCurso) {
     console.log('Alumnos del curso:', alumnosCurso);
     
     const form = Form.getForm('alumno-form');
-    crearLista(alumnosCurso, form);
+    crearLista(alumnosCurso, grupoTutor, form);
 
     const asignar = Form.getForm('alumno-search-form');
     const searchInput = asignar.getInput('search');
@@ -165,7 +165,7 @@ function build(alumnos, cursoActual, grupoTutor, alumnosCurso) {
     displaySection.appendChild(cicloInfo);
 }
 
-function crearLista(alumnosCurso, form) {
+function crearLista(alumnosCurso, grupoTutor, form) {
     const listar = document.getElementById('listar');
     while(listar && listar.firstChild) listar.removeChild(listar.firstChild);
 
@@ -281,7 +281,7 @@ function setInputsToUpdate(form, id) {
     let isCancelled = form.cancel();
     if (! isCancelled) return;
 
-    document.getElementById('titulo').textContent = `Información del alumno de ${chosenCurso.textContent}`;
+    document.getElementById('titulo').textContent = `Información del alumno`;
 
     const alumno = map.find(a => a.id === id);
     if (!alumno) return;
