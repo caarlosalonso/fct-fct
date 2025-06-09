@@ -89,7 +89,6 @@ export class TextInput extends Input {
         if (value.length > 0) {
             this.forceActive();
         }
-        this.states.active = false;
         this.updateState();
     }
 

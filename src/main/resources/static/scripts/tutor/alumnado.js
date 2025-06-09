@@ -94,8 +94,8 @@ function build(alumnos, cursoActual, grupoTutor) {
         })
     }
 
+    const crearAlumno = document.getElementById('create-alumno');
     
-
 
 
     const displaySection = document.getElementById(SECTION);
