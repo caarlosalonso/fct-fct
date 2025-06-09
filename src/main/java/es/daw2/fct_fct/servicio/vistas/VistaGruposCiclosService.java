@@ -1,6 +1,7 @@
 package es.daw2.fct_fct.servicio.vistas;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -20,5 +21,12 @@ public class VistaGruposCiclosService {
 
     public VistaGruposCiclos obtenerPorId(Long id) {
         return repository.findById(id).orElse(null);
+    }
+
+    public Optional<VistaGruposCiclos> getByTutorId(Long tutorId) {
+        return ((List<VistaGruposCiclos>) repository.findAll())
+            .stream()
+            .filter(grupoCiclo -> grupoCiclo.getTutorId().equals(tutorId))
+            .findFirst();
     }
 }

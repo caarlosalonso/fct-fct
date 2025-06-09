@@ -19,12 +19,24 @@ public class VistaGruposCiclos {
     @Column(name = "grupo_id", nullable = false)
     private Long grupoId;
 
-    @Column(name = "ciclo_id", nullable = false)
-    private Long ciclo_id;
-
     @Column(name = "numero", nullable = false)
     private Integer numero;
 
+    @Column(name = "ciclo_id", nullable = false)
+    private Long cicloId;
+
     @Column(name = "grupo_nombre", nullable = false)
-    private String grupo_nombre;
+    private String grupoNombre;
+
+    @Column(name = "tutor_id", nullable = false)
+    private Long tutorId;
+
+    @Column(name = "name", nullable = false)
+    private String name;
+
+    @Column(name = "email", nullable = false)
+    private String email;
+
+    @Column(name = "user_id", nullable = false)
+    private Long userId;
 }
