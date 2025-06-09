@@ -280,8 +280,7 @@ function editEmpresa(empresa) {
             phone: form.getInput('empresa-telefono').getValue(),
             email: form.getInput('empresa-email').getValue(),
             persona_contacto: form.getInput('empresa-persona_contacto').getValue(),
-            propuesta_por: form.getInput('propuesta_por').getValue(),
-            observaciones: form.getInput('observaciones').getValue(),
+propuesta_por: parseInt(form.getInput('propuesta_por').getValue(), 10),            observaciones: form.getInput('observaciones').getValue(),
             numero_convenio: form.getInput('numero_convenio').getValue(),
             estado: form.getInput('empresa-estado').getValue()
         };
