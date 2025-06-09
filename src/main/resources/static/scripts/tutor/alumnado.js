@@ -78,7 +78,7 @@ function build(alumnos, cursoActual, grupoTutor) {
             let query = searchInput.input.value;
             query = (query || '').toLowerCase().trim();
             console.log(query);
-            searchInput.options = [];
+            let options = [];
             
             alumnos.forEach(alumno => {
                 const [ name, email, nia, dni ] = [alumno.nombreAlumno, alumno.email, alumno.nia, alumno.dni];
@@ -90,15 +90,15 @@ function build(alumnos, cursoActual, grupoTutor) {
                 ];
                 const match = values.some(val => val.includes(query));
                 console.log(match, values);
-                console.log(searchInput.options);
+                console.log(options);
                 if (match) {
-                    searchInput.options.push({
+                    options.push({
                         value: alumno.alumnoId,
                         label: `${name} (${nia}) - ${email} - ${dni}`
                     });
                 }
             });
-            searchInput.updateDropdown();
+            searchInput.updateDropdown(options, true);
         })
     }
 
