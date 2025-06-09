@@ -66,6 +66,10 @@ public class ControladorEmpresa extends CrudController<Long, Empresa, Empresa, E
         empresa.setEmail(dto.getEmail());
         empresa.setPersona_contacto(dto.getPersona_contacto());
         empresa.setEstado(dto.getEstado());
+        empresa.setObservaciones(dto.getObservaciones());
+        empresa.setPropuesta_por(dto.getPropuesta_por());
+        empresa.setNumero_convenio(dto.getNumero_convenio());
+        empresa.setPhone(dto.getPhone());
 
         Optional<Empresa> empresaActualizada = service.update(id, empresa);
         if (!empresaActualizada.isPresent()) {
