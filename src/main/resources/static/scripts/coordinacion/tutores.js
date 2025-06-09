@@ -1,18 +1,16 @@
 import { Form } from '../classes/Form.js';
-import { PasswordInput } from '../classes/PasswordInput';
+import { tableLoading, tableFail, createSVG, createClickableSVG } from './functions.js';
 
 let TIMEOUT;
+const SECTION = 'tutores-section';
+const FORM = 'tutor-form';
 
 window.addEventListener('DOMContentLoaded', () => {
-    tableLoading();
-});
-
-window.addEventListener('FormsCreated', () => {
     promise();
 });
 
 function promise() {
-    tableLoading();
+    tableLoading(SECTION);
 
     Promise.resolve(
         fetchTutores()
@@ -22,67 +20,9 @@ function promise() {
         clearTimeout(TIMEOUT);
         buildTutoresTable(tutores);
     }).catch((error) => {
-        tableFail();
+        tableFail(SECTION, TIMEOUT, promise);
         console.error(error);
     });
-}
-
-function tableLoading() {
-    const tutoresSection = document.getElementById('tutores-section');
-    while (tutoresSection.firstChild) {
-        tutoresSection.removeChild(tutoresSection.firstChild);
-    }
-
-    const spinner = document.createElement('div');
-    spinner.className = 'spinner spinner-border color-primary';
-    tutoresSection.appendChild(spinner);
-
-    const spinnerText = document.createElement('span');
-    spinnerText.className = 'visually-hidden';
-    spinnerText.textContent = 'Cargando...';
-    spinner.appendChild(spinnerText);
-}
-
-function tableFail() {
-    const tutoresSection = document.getElementById('tutores-section');
-    while (tutoresSection.firstChild) {
-        tutoresSection.removeChild(tutoresSection.firstChild);
-    }
-
-    const errorMessageSection = document.createElement('div');
-    errorMessageSection.id = 'error-message-section';
-    errorMessageSection.appendChild(createSVG(
-        "0 0 48 48",
-        "M 40.9706 35.3137 L 29.6569 24 L 40.9706 12.6863 C 42.3848 11.2721 42.3848 8.4437 40.9706 7.0294 S 36.7279 5.6152 35.3137 7.0294 L 24 18.3431 L 12.6863 7.0294 C 11.2721 5.6152 8.4437 5.6152 7.0294 7.0294 S 5.6152 11.2721 7.0294 12.6863 L 18.3431 24 L 7.0294 35.3137 C 5.6152 36.7279 5.6152 39.5563 7.0294 40.9706 S 11.2721 42.3848 12.6863 40.9706 L 24 29.6569 L 35.3137 40.9706 C 36.7279 42.3848 39.5563 42.3848 40.9706 40.9706 S 42.3848 36.7279 40.9706 35.3137 Z",
-        () => {},
-        "cross-svg"
-    ));
-    tutoresSection.appendChild(errorMessageSection);
-
-    clearTimeout(TIMEOUT);
-    TIMEOUT = setTimeout(() => {
-        clearTimeout(TIMEOUT);
-        
-        tableLoading();
-        TIMEOUT = setTimeout(() => {
-            promise();
-        }, 8000);
-    }, 2000);
-}
-
-function createSVG(viewBox, pathData, clickHandler, ...classList) {
-    const SVG_NS = 'http://www.w3.org/2000/svg';
-    const svg = document.createElementNS(SVG_NS, 'svg');
-    classList.forEach(cls => svg.classList.add(cls));
-    svg.setAttribute('viewBox', viewBox);
-    svg.setAttribute('xmlns', SVG_NS);
-    svg.onclick = clickHandler;
-
-    const path = document.createElementNS(SVG_NS, 'path');
-    path.setAttribute('d', pathData);
-    svg.appendChild(path);
-
-    return svg;
 }
 
 async function fetchTutores() {
@@ -95,25 +35,153 @@ async function fetchTutores() {
 function buildTutoresTable(tutores) {
     console.log(tutores);
 
-    const tutoresSection = document.getElementById('tutores-section');
-    while (tutoresSection.firstChild) {
-        tutoresSection.removeChild(tutoresSection.firstChild);
-    }
+    const tutoresSection = document.getElementById(SECTION);
+    while (tutoresSection.firstChild) tutoresSection.removeChild(tutoresSection.firstChild);
 
-    if (tutores.length === 0) {
-        const noTutoresMessage = document.createElement('p');
-        noTutoresMessage.textContent = 'No hay tutores disponibles.';
-        tutoresSection.appendChild(noTutoresMessage);
+    const parent = document.createElement('div');
+    parent.classList.add('cell', 'hoverable');
+    tutoresSection.appendChild(parent);
+
+    let cell = document.createElement('div');
+    cell.classList.add('cell-content', 'empty-cell');
+    parent.appendChild(cell);
+
+    cell.appendChild(createClickableSVG(
+        "0 0 48 48",
+        "M 44 20 L 28 20 L 28 4 C 28 2 26 0 24 0 S 20 2 20 4 L 20 20 L 4 20 C 2 20 0 22 0 24 S 2 28 4 28 L 20 28 L 20 44 C 20 46 22 48 24 48 S 28 46 28 44 L 28 28 L 44 28 C 46 28 48 26 48 24 S 46 20 44 20 Z",
+        () => {
+            const form = Form.getForm(FORM);
+            setInputsToCreate();
+        },
+        'plus-svg'
+    ));
+
+    if (tutores.length === 0) return;
+
+    tutores.forEach((tutor) => {
+        cell = document.createElement('div');
+        cell.classList.add('cell', 'hoverable');
+        tutoresSection.appendChild(cell);
+
+        const tutorCard = document.createElement('div');
+        tutorCard.classList.add('tutor-card', 'cell-content', 'filled-cell');
+        tutorCard.innerHTML = `
+            <p class="cell-title">${tutor.name}</p>
+            <p class="cell-subtitle">${tutor.email}</p>
+        `;
+        tutorCard.onclick = () => {
+            const form = Form.getForm(FORM);
+            setInputsToUpdate(tutores, tutor.tutorId);
+        }
+        cell.appendChild(tutorCard);
+    });
+}
+
+window.addEventListener('FormsCreated', () => {
+    setInputsToCreate();
+});
+
+function setInputsToCreate() {
+    const form = Form.getForm(FORM);
+    console.log(form);
+
+    if (!form) {
+        console.error(`Form with ID "${FORM}" not found.`);
         return;
     }
 
-    tutores.forEach((tutor) => {
-        const tutorCard = document.createElement('div');
-        tutorCard.className = 'tutor-card';
-        tutorCard.innerHTML = `
-            <h3>${tutor.name}</h3>
-            <p>${tutor.email}</p>
-        `;
-        tutoresSection.appendChild(tutorCard);
-    });
+    form.onsubmit = () => {
+        const nombre = form.getInput('tutor-nombre').getValue();
+        const email = form.getInput('tutor-email').getValue();
+        const password = form.getInput('tutor-password').getValue();
+
+        const data = {
+            name: nombre,
+            email: email,
+            password: password
+        }
+
+        console.log(data)
+
+        fetch('/api/tutores/create', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
+        })
+        .then((response) => {
+            console.log(response);
+            if (response.status === 201 || response.ok) {
+                form.showSuccess('Tutor creado correctamente.');
+                form.reset();
+                promise();
+            }
+        })
+        .catch((error) => {
+            form.showError(`Error al crear el tutor: ${error.message}`);
+        });
+    }
+
+    form.getInput('tutor-nombre').retrack('');
+    form.getInput('tutor-email').retrack('');
+    form.getInput('tutor-password').retrack('');
+
+    form.form.setAttribute('submit-text', 'Crear tutor');
+    form.submit.textContent = 'Crear tutor';
+}
+
+function setInputsToUpdate(tutores, tutorId) {
+    const form = Form.getForm(FORM);
+    console.log(form);
+
+    if (!form) {
+        console.error(`Form with ID "${FORM}" not found.`);
+        return;
+    }
+
+    form.onsubmit = () => {
+        const nombre = form.getInput('tutor-nombre').getValue();
+        const email = form.getInput('tutor-email').getValue();
+        const password = form.getInput('tutor-password').getValue();
+
+        const data = {
+            name: nombre,
+            email: email,
+            password: password
+        }
+
+        if (tutorId === null) {
+            form.showError('No se ha seleccionado un tutor para actualizar.');
+            return;
+        }
+
+        fetch(`/api/tutores/${tutorId}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
+        })
+        .then((response) => {
+            if (response.ok) {
+                form.showSuccess('Tutor actualizado correctamente.');
+                form.reset();
+                form.submitFinish();
+                promise();
+            }
+        })
+        .catch((error) => {
+            form.showError(`Error al actualizar el tutor: ${error.message}`);
+        });
+    }
+
+    const tutor = tutores.find(c => c.tutorId === tutorId);
+
+    form.getInput('tutor-nombre').retrack(tutor.name);
+    form.getInput('tutor-email').retrack(tutor.email);
+    form.getInput('tutor-password').retrack('');
+
+    form.form.setAttribute('submit-text', 'Actualizar tutor');
+    form.submit.textContent = 'Actualizar tutor';
 }

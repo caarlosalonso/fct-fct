@@ -38,14 +38,6 @@ public class HomeController {
     public String error() {
         return "error.html";
     }
-/*
-    /index
-    /coordinacion
-    /crear
-    /ciclos
-    /alumnado
-    /profile
-*/
 
     @GetMapping("/")
     public String empty(HttpServletRequest request) {
@@ -171,7 +163,7 @@ public class HomeController {
         if (user == null || role == null) return REDIRECT_LOGIN;
 
         return switch(role) {
-            case User.Role.TUTOR        -> "admin/tutores.html";
+            case User.Role.COORDINADOR  -> "coordinacion/tutores.html";
             default                     -> REDIRECT_INDEX;
         };
     }
