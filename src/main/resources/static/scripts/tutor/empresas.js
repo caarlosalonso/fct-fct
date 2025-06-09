@@ -238,7 +238,7 @@ function editEmpresa(empresa) {
             cif: form.getInput('empresa-cif').getValue(),
             sector: form.getInput('empresa-sector').getValue(),
             address: form.getInput('empresa-address').getValue(),
-            telefono: form.getInput('empresa-telefono').getValue(),
+            phone: form.getInput('empresa-telefono').getValue(),
             email: form.getInput('empresa-email').getValue(),
             persona_contacto: form.getInput('empresa-persona_contacto').getValue()
         };
