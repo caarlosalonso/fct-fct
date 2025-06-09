@@ -25,11 +25,7 @@ export class SelectInput extends TextInput {
 
     buildSelect() {
         const options = this.input.getAttribute('data-options');
-        if (!options) {
-            this.options = [];
-            return;
-        }
-
+        this.options = [];
         options.split(';').forEach(option => {
             const [value, label] = option.split(':');
             this.options.push({ value, label });
@@ -98,7 +94,7 @@ export class SelectInput extends TextInput {
 
     updateDropdown(array) {
         while(this.dropdown && this.dropdown.firstChild) this.dropdown.removeChild(this.dropdown.firstChild);
-        this.options = array;
+        this.options = (!array || !Array.isArray(array)) ? [] : array;
         this.createDropdown();
     }
 }
