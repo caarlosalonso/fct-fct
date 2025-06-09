@@ -55,6 +55,15 @@ export class SelectInput extends TextInput {
             this.dropdown.appendChild(optionElement);
         });
 
+        this.input.addEventListener('input', () => {
+            const searchValue = this.input.value.trim().toLowerCase();
+            this.options.forEach(option => {
+                if (option.label.toLowerCase().includes(searchValue)) {
+                    this.hiddenValue = option.value;
+                }
+            });
+        });
+
         // Show dropdown on focus
         this.input.addEventListener('focus', () => {
             this.showDropdown();
