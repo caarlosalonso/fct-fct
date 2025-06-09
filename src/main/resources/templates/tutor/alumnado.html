@@ -45,7 +45,10 @@
                 <span class="visually-hidden">Cargando...</span>
             </div>
         </section>
-        <section id="alumnos-section">
+        <section id="listar">
+            
+        </section>
+        <section id="asignar">
             <form id="alumno-search-form" method="GET" submit-text="Buscar alumno" form-only-input="true">
                 <div id="inputs" class="form-container">
                     <div class="instance form-input grouped-inputs">
@@ -58,11 +61,16 @@
                             <button id="asignar" class="btn btn-primary">Asignar a mi grupo</button>
                         </div>
                     </div>
+                    <div class="instance form-input grouped-inputs">
+                        <div id="nuevo-alumno">
+                            <button id="create-alumno" class="btn btn-primary">Nuevo alumno</button>
+                        </div>
+                    </div>
                 </div>
             </form>
-            <div id="nuevo-alumno">
-                <button id="create-alumno" class="btn btn-primary">Nuevo alumno</button>
-            </div>
+        </section>
+
+        <section id="alumnos-section">
             <div id="set-info">
                 <h1 id="titulo">Información del alumno</h1>
                 <form id="alumno-form" method="POST" submit-text="Crear alumno">
