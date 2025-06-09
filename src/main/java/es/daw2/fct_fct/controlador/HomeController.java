@@ -169,8 +169,33 @@ public class HomeController {
     }
 
     @GetMapping("/empresas")
-    public String empresas() {
-        return "tutor/empresas.html";
+    public String empresas(HttpServletRequest request) {
+        HttpSession session = request.getSession(false);
+        if (session == null) return REDIRECT_LOGIN;
+        Object user = session.getAttribute("user");
+        Object role = session.getAttribute("role");
+        if (user == null || role == null) return REDIRECT_LOGIN;
+
+        return switch(role) {
+            case User.Role.TUTOR        -> "tutor/empresas.html";
+            case User.Role.ALUMNO       -> "alumno/empresas.html";
+            default                     -> REDIRECT_INDEX;
+        };
+    }
+
+    @GetMapping("/fcts")
+    public String fcts(HttpServletRequest request) {
+        HttpSession session = request.getSession(false);
+        if (session == null) return REDIRECT_LOGIN;
+        Object user = session.getAttribute("user");
+        Object role = session.getAttribute("role");
+        if (user == null || role == null) return REDIRECT_LOGIN;
+
+        return switch(role) {
+            case User.Role.TUTOR        -> "tutor/fcts.html";
+            case User.Role.ALUMNO       -> "alumno/fcts.html";
+            default                     -> REDIRECT_INDEX;
+        };
     }
 
     @GetMapping("/subir")
