@@ -123,10 +123,10 @@ function setInputsToCreate() {
         });
     }
 
-    form.getInput('coordinador-nombre').setValue('');
-    form.getInput('coordinador-email').setValue('');
-    form.getInput('coordinador-password').setValue('');
-    
+    form.getInput('coordinador-nombre').retrack('');
+    form.getInput('coordinador-email').retrack('');
+    form.getInput('coordinador-password').retrack('');
+
     form.form.setAttribute('submit-text', 'Crear coordinador');
     form.submit.textContent = 'Crear coordinador';
 }
@@ -178,9 +178,9 @@ function setInputsToUpdate(coordinadores, coordinacionId) {
 
     const coordinador = coordinadores.find(c => c.coordinacionId === coordinacionId);
 
-    form.getInput('coordinador-nombre').setValue(coordinador.name);
-    form.getInput('coordinador-email').setValue(coordinador.email);
-    form.getInput('coordinador-password').setValue('');
+    form.getInput('coordinador-nombre').retrack(coordinador.name);
+    form.getInput('coordinador-email').retrack(coordinador.email);
+    form.getInput('coordinador-password').retrack('');
 
     form.form.setAttribute('submit-text', 'Actualizar coordinador');
     form.submit.textContent = 'Actualizar coordinador';
