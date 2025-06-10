@@ -150,19 +150,21 @@ public class ControladorCurso extends CrudController<Long, Curso, Curso, Curso, 
 
         curso.setRating(a.rating());
         curso.setObservaciones(a.observaciones());
+        System.out.println("Curso a actualizar: " + curso);
 
         Optional<Alumno> optional = servicioAlumno.getById(curso.getAlumno().getId());
 
         if(!optional.isPresent()){
             return ResponseEntity.notFound().build();
         }
+        System.out.println("Alumno a actualizar: " + optional.get());
 
         Alumno alumno = optional.get();
-
+        System.out.println("Alumno a actualizar: " + alumno);
         alumno.getUser().setName(a.name());
         alumno.getUser().setEmail(a.email());
         servicioUser.update(alumno.getUser().getId(), alumno.getUser());
-
+        System.out.println("Alumno actualizado: " + alumno.getUser());
         alumno.setPhone(a.phone());
         alumno.setNia(a.nia());
         alumno.setDni(a.dni());
@@ -171,9 +173,11 @@ public class ControladorCurso extends CrudController<Long, Curso, Curso, Curso, 
         alumno.setConvocatoria(a.convocatoria() == null ? 3 : a.convocatoria());
 
         Optional<Alumno> alumnoActualizado = servicioAlumno.update(id, alumno);
+        System.out.println("Alumno actualizado: " + alumnoActualizado);
         if (!alumnoActualizado.isPresent()) {
             return ResponseEntity.badRequest().body("No se ha podido actualizar el alumno con el id: " + id);
         }
+        System.out.println("Todo debería haber ido bien");
 
         URI location = URI.create("/api/cursos/" + id);
 
