@@ -258,7 +258,7 @@ function editEmpresa(empresa) {
     form.getInput('empresa-persona_contacto').retrack(empresa.persona_contacto);
     form.getInput('numero_convenio').retrack(empresa.convenio);
     form.getInput('observaciones').retrack(empresa.observaciones);
-    form.getInput('propuesta_por').retrack(empresa.propuesta_por);
+    form.getInput('propuesta_por').retrack(empresa.propuesta_por ? empresa.propuesta_por.id : '');
 
     // Selector de estado
     const estadoSelect = document.getElementById('empresa-estado');
@@ -280,7 +280,8 @@ function editEmpresa(empresa) {
             phone: form.getInput('empresa-telefono').getValue(),
             email: form.getInput('empresa-email').getValue(),
             persona_contacto: form.getInput('empresa-persona_contacto').getValue(),
-propuesta_por: parseInt(form.getInput('propuesta_por').getValue(), 10),            observaciones: form.getInput('observaciones').getValue(),
+            propuesta_por: form.getInput('propuesta_por').getValue() ? parseInt(form.getInput('propuesta_por').getValue(), 10) : null,          
+            observaciones: form.getInput('observaciones').getValue(),
             numero_convenio: form.getInput('numero_convenio').getValue(),
             estado: form.getInput('empresa-estado').getValue()
         };
