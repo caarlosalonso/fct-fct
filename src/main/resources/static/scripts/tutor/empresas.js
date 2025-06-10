@@ -230,27 +230,24 @@ function createSVG(viewBox, pathData, clickHandler, ...classList) {
     return svg;
 }
 
-// Funciones para editar/eliminar (puedes implementar la lógica real)
-function collapseAll() {
+function hideAll() {
     const form = document.getElementById('empresa-form');
-    if (form) form.parentNode.classList.add('collapsed');
+    if (section) section.classList.add('oculto');
 }
 
 function finish(form) {
     form.reset();
     if (typeof form.submitFinish === 'function') form.submitFinish();
-    collapseAll();
+    hideAll();
     document.getElementById('display-section').classList.remove('oculto');
     cargarEmpresas();
 }
 
 function editEmpresa(empresa) {
-    collapseAll();
+    hideAll();
 
-    document.getElementById('display-section').classList.remove('oculto');
-
-    const form = Form.getForm('empresa-form');
-    form.form.parentNode.classList.remove('collapsed');
+    const form = Form.getForm('empresa-section');
+    section.classList.remove('oculto');
 
     // Rellenar campos
     form.getInput('empresa-nombre').retrack(empresa.nombre);
@@ -333,17 +330,15 @@ function removeEmpresa(empresa) {
 }
 
 function addEmpresa() {
-    collapseAll();
+    hideAll();
 
-    document.getElementById('display-section').classList.remove('oculto');
-
-    const form = Form.getForm('empresa-form');
-    form.form.parentNode.classList.remove('collapsed');
+    const form = Form.getForm('empresa-section');
+    section.classList.remove('oculto');
 
     form.onsubmit = () => {
-        collapseAll();
+        hideAll();
         const form = Form.getForm('empresa-form');
-        form.form.parentNode.classList.remove('collapsed');
+        section.classList.remove('oculto');
 
         form.form.setAttribute('submit-text', 'Crear empresa');
         form.submit.textContent = 'Crear empresa';
