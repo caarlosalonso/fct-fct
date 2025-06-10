@@ -110,7 +110,8 @@ function build(cursoActual, grupoTutor, alumnosCurso, empresas, tutoresEmpresas,
     alumnosCurso.forEach((alumno) => {
         computeFinFCT(alumno.alumnoId);
         searchEmpresa(alumno.alumnoId, empresas);
-    })
+        searchTutorEmpresa(alumno.alumnoId, tutoresEmpresas);
+    });
 }
 
 function createCell(alumno) {
@@ -140,11 +141,11 @@ function createCell(alumno) {
         if (cell.classList.contains('collapsed')) {
             cell.classList.remove('collapsed');
             cell.classList.add('expanded');
-            collapseSpan.classList.remove('collapsed');
+            collapseSpan.textContent = `◀`;
         } else {
             cell.classList.remove('expanded');
             cell.classList.add('collapsed');
-            collapseSpan.classList.add('collapsed');
+            collapseSpan.textContent = `▼`;
         }
     };
 
@@ -159,7 +160,7 @@ function createCell(alumno) {
             </div>
             <div class="instance form-input grouped-inputs">
                 <div class="form-group form-input">
-                    <input id="tutor-empresa-${alumno.alumnoId}" type="select" name="tutor_empresa" class="text-based input" label="Empresa" data-show-validity="true">
+                    <input id="tutor-empresa-${alumno.alumnoId}" type="select" name="tutor_empresa" class="text-based input" label="Tutor de empresa" data-show-validity="true">
                 </div>
             </div>
             <div class="instance form-input grouped-inputs">
@@ -320,5 +321,52 @@ function searchEmpresa(alumnoId, empresas) {
             }
         });
         empresasSelect.updateDropdown(options, true);
+    });
+}
+
+function searchTutorEmpresa(alumnoId, tutoresEmpresas) {
+    const formulario = Form.getForm(`fct-form-${alumnoId}`);
+    if (!formulario) {
+        console.error(`Formulario con ID fct-form-${alumnoId} no encontrado.`);
+        return;
+    }
+    const empresasSelect = formulario.getInput(`empresa-${alumnoId}`);
+    if (!empresasSelect) {
+        console.error(`Input de empresa con ID empresa-${alumnoId} no encontrado.`);
+        return;
+    }
+
+    const tutoresSelect = formulario.getInput(`tutor-empresa-${alumnoId}`);
+    if (!tutoresSelect) {
+        console.error(`Input de tutor de empresa con ID tutor-empresa-${alumnoId} no encontrado.`);
+        return;
+    }
+
+    tutoresEmpresas = tutoresEmpresas.filter((tutorEmpresa) => tutorEmpresa.empresaId === empresasSelect.getValue());
+
+    tutoresSelect.input.addEventListener('input', () => {
+        let query = tutoresSelect.input.value;
+        query = (query || '').toLowerCase().trim();
+        console.log(query);
+        let options = [];
+
+        tutoresEmpresas.forEach(tutor => {
+            const [ nombre, email ] = [tutor.nombre, tutor.email];
+            const values = [
+                (nombre || '').toLowerCase(),
+                (email || '').toLowerCase()
+            ];
+
+            const match = values.some(val => val.includes(query));
+            console.log(match, values);
+            console.log(options);
+            if (match) {
+                options.push({
+                    value: tutor.id,
+                    label: `${nombre} - ${email}`
+                });
+            }
+        });
+        tutoresSelect.updateDropdown(options, true);
     });
 }
