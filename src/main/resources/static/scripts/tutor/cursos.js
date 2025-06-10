@@ -340,20 +340,18 @@ function agregarEmpresaPosible(alumno, empresas, empresasPosibles) {
         let options = [];
 
         empresas.forEach(empresa => {
-            const [ nombre, cif, email, plazas, nombreCiclo ] = [empresa.nombreEmpresa, empresa.cif, empresa.email, empresa.plazas, empresa.nombreCiclo];
+            const [ nombre, cif, email ] = [empresa.nombre, empresa.cif, empresa.email];
             const values = [
                 (nombre || '').toLowerCase(),
                 (cif || '').toLowerCase(),
-                (email || '').toLowerCase(),
-                (plazas || '').toString().toLowerCase(),
-                (nombreCiclo || '').toLowerCase()
+                (email || '').toLowerCase()
             ];
 
             const match = values.some(val => val.includes(query));
             if (match) {
                 options.push({
                     value: empresa.id,
-                    label: `${nombre} (${cif}) - ${email}${plazas ? ` - ${plazas} plazas` : ''}${nombreCiclo ? ` - ${nombreCiclo}` : ''}`
+                    label: `${nombre} (${cif}) - ${email}`
                 });
             }
         });
@@ -362,7 +360,7 @@ function agregarEmpresaPosible(alumno, empresas, empresasPosibles) {
 
     search.onsubmit = () => {
         alumno.posiblesEmpresas = alumno.posiblesEmpresas.split(';');
-        if (alumnos.posiblesEmpresas.contains(empresasSelect.getValue())) {
+        if (alumno.posiblesEmpresas.includes(empresasSelect.getValue())) {
             search.reset();
             search.submitFinish();
             parent.classList.remove('active');
