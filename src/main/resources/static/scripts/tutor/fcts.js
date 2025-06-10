@@ -62,7 +62,7 @@ function build(cursoActual, grupoTutor, alumnosCurso) {
         const cell = createCell(alumno);
         if (alumno.rating === 'VERDE') {
             verdes.appendChild(cell);
-        } else if (alumno.rating === 'AMBAR') {
+        } else if (alumno.rating === 'AMARILLO') {
             amarillos.appendChild(cell);
         } else if (alumno.rating === 'ROJO') {
             rojos.appendChild(cell);

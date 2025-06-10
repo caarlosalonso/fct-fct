@@ -5,7 +5,7 @@ const SECTION = 'curso-actual';
 
 const RATING = {
     VERDE: 'Verde',
-    AMBAR: 'Ámbar',
+    AMARILLO: 'Amarillo',
     ROJO: 'Rojo'
 };
 
