@@ -205,6 +205,11 @@ function computeFinFCT(alumnoId) {
     fechaInicioInput.input.addEventListener('input', () => {
         compute(fechaInicioInput, horasSemanalesInput, noLectivosInput, horasDePracticasInput, fechaFinInput);
     });
+    fechaInicioInput.validate = () => {
+        if (fechaFinInput.isEmpty()) return true;
+        const fecha = new Date(fechaFinInput.getValue());
+        return !(fecha.getDay() === 0 || fecha.getDay() === 6);
+    }
 
     horasSemanalesInput.input.addEventListener('input', () => {
         compute(fechaInicioInput, horasSemanalesInput, noLectivosInput, horasDePracticasInput, fechaFinInput);
@@ -221,8 +226,14 @@ function computeFinFCT(alumnoId) {
 
 function compute(fechaInicio, horasSemanales, noLectivos, horasDePracticas, fechaFin) {
     const fechaInicioValue = fechaInicio.getValue();
-    
     if (!fechaInicioValue) return;
+    if (!fechaInicio.validate()) {
+        fechaFin.validate = () => false;
+        fechaFin.setValue('');
+        fechaFin.showValidity();
+        fechaInicio.showValidity();
+        return;
+    }
 
     const horasSemanalesValue = horasSemanales.getValue();
     const noLectivosValue = noLectivos.getValue();
@@ -258,7 +269,6 @@ function compute(fechaInicio, horasSemanales, noLectivos, horasDePracticas, fech
     fechaFin.validate = () => {
         if (fechaFin.isEmpty()) return true;
         const fechaFinValue = fechaFin.getValue();
-        console.log(fechaFinValue, fechaFinal);
         return fechaFinValue === fechaFinal;
     }
     fechaFin.setValue(fechaFinal);
