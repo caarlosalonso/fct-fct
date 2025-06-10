@@ -124,8 +124,6 @@ function crearLista(tutorias, form) {
 }
 
 function setInputsToCreate(form) {
-    document.getElementById('titulo').textContent = 'Creación de un nuevo tutoría';
-
     form.onsubmit = () => {
         const fecha = form.getInput('fecha').getValue();
 
@@ -161,8 +159,6 @@ function setInputsToCreate(form) {
 }
 
 function setInputsToUpdate(form, tutoria) {
-    document.getElementById('titulo').textContent = `Información de la tutoría`;
-
     form.onsubmit = () => {
         const fecha = form.getInput('fecha').getValue();
 
