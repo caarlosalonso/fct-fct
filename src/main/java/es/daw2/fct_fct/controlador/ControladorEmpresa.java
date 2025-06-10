@@ -87,6 +87,8 @@ public class ControladorEmpresa extends CrudController<Long, Empresa, EmpresaDTO
             empresa.setPropuesta_por(null);
         }
 
+        System.out.println("propuesta_por antes de guardar: " + (empresa.getPropuesta_por() != null ? empresa.getPropuesta_por().getId() : "null"));
+
         Optional<Empresa> empresaActualizada = service.update(id, empresa);
         if (!empresaActualizada.isPresent()) {
             return ResponseEntity.badRequest().body("No se ha podido actualizar la empresa con el id: " + id);
