@@ -250,7 +250,7 @@ function editEmpresa(empresa) {
     const section = document.getElementById('empresa-section');
     section.classList.remove('oculto');
 
-    const form = Form.getForm('empresa-section');
+    const form = Form.getForm('empresa-form');
 
     // Rellenar campos
     form.getInput('empresa-nombre').retrack(empresa.nombre);
