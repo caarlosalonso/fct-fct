@@ -73,6 +73,6 @@ function build(cursoActual, grupoTutor, alumnosCurso) {
 function createCell(alumno) {
     const cell = document.createElement('div');
     cell.classList.add('alumno-cell');
-    cell.textContent = `${alumno.nombre}`;
+    cell.textContent = `${alumno.nombreAlumno}`;
     return cell;
 }
