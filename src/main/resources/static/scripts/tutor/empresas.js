@@ -232,6 +232,7 @@ function createSVG(viewBox, pathData, clickHandler, ...classList) {
 
 function hideAll() {
     const form = document.getElementById('empresa-form');
+    const section = document.getElementById('empresa-section');
     if (section) section.classList.add('oculto');
 }
 
@@ -246,8 +247,10 @@ function finish(form) {
 function editEmpresa(empresa) {
     hideAll();
 
-    const form = Form.getForm('empresa-section');
+    const section = document.getElementById('empresa-section');
     section.classList.remove('oculto');
+
+    const form = Form.getForm('empresa-section');
 
     // Rellenar campos
     form.getInput('empresa-nombre').retrack(empresa.nombre);
@@ -331,9 +334,11 @@ function removeEmpresa(empresa) {
 
 function addEmpresa() {
     hideAll();
+    
+    const section = document.getElementById('empresa-section');
+    section.classList.remove('oculto');
 
     const form = Form.getForm('empresa-section');
-    section.classList.remove('oculto');
 
     form.onsubmit = () => {
         hideAll();
