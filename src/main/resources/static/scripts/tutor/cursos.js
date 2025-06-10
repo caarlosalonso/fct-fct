@@ -273,7 +273,7 @@ function setInputsToUpdate(form, alumno) {
 
         console.log(alumno.cursoId);
 
-        fetch(`/api/cursos/${alumno.cursoId}`, {
+        fetch(`/api/cursos/update/${alumno.cursoId}`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json'

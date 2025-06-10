@@ -9,10 +9,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import es.daw2.fct_fct.dto.AlumnoActualizarCursoDTO;
 import es.daw2.fct_fct.dto.AlumnoGrupoDTO;
 import es.daw2.fct_fct.modelo.Alumno;
 import es.daw2.fct_fct.modelo.CicloLectivo;
@@ -22,6 +24,7 @@ import es.daw2.fct_fct.servicio.ServicioAlumno;
 import es.daw2.fct_fct.servicio.ServicioCicloLectivo;
 import es.daw2.fct_fct.servicio.ServicioCurso;
 import es.daw2.fct_fct.servicio.ServicioGrupo;
+import es.daw2.fct_fct.servicio.ServicioUser;
 import jakarta.servlet.http.HttpServletRequest;
 
 
@@ -131,5 +134,49 @@ public class ControladorCurso extends CrudController<Long, Curso, Curso, Curso, 
         boolean deleted = service.delete(id);
         if (!deleted) return ResponseEntity.badRequest().body("No se ha podido eliminar el recurso con el id: " + id);
         return ResponseEntity.noContent().build();
+    }
+
+    @Autowired
+    private ServicioUser servicioUser;
+
+    @PutMapping("/update/{id}")
+    public ResponseEntity<?> update(@PathVariable Long id, @RequestBody AlumnoActualizarCursoDTO a, HttpServletRequest request) {
+        Optional<Curso> cursoOptional = service.getById(id);
+        if (cursoOptional.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+
+        Curso curso = cursoOptional.get();
+
+        curso.setRating(a.rating());
+        curso.setObservaciones(a.observaciones());
+
+        Optional<Alumno> optional = servicioAlumno.getById(curso.getAlumno().getId());
+
+        if(!optional.isPresent()){
+            return ResponseEntity.notFound().build();
+        }
+
+        Alumno alumno = optional.get();
+
+        alumno.getUser().setName(a.name());
+        alumno.getUser().setEmail(a.email());
+        servicioUser.update(alumno.getUser().getId(), alumno.getUser());
+
+        alumno.setPhone(a.phone());
+        alumno.setNia(a.nia());
+        alumno.setDni(a.dni());
+        alumno.setNuss(a.nuss());
+        alumno.setAddress(a.address());
+        alumno.setConvocatoria(a.convocatoria() == null ? 3 : a.convocatoria());
+
+        Optional<Alumno> alumnoActualizado = servicioAlumno.update(id, alumno);
+        if (!alumnoActualizado.isPresent()) {
+            return ResponseEntity.badRequest().body("No se ha podido actualizar el alumno con el id: " + id);
+        }
+
+        URI location = URI.create("/api/cursos/" + id);
+
+        return ResponseEntity.ok().location(location).body(alumnoActualizado);
     }
 }
