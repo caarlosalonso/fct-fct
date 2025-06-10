@@ -362,14 +362,14 @@ function agregarEmpresaPosible(alumno, empresas, empresasPosibles) {
     });
 
     search.onsubmit = () => {
-        alumno.posiblesEmpresas = alumno.posiblesEmpresas.split(';');
-        if (alumno.posiblesEmpresas.includes('' + empresasSelect.getValue())) {
-            alumno.posiblesEmpresas = alumno.posiblesEmpresas.join(';');
+        let posiblesEmpresas = alumno.posiblesEmpresas.split(';');
+        if (posiblesEmpresas.includes('' + empresasSelect.getValue())) {
             clearModal(search, parent);
             return;
         }
-        alumno.posiblesEmpresas.push('' + empresasSelect.getValue());
-        alumno.posiblesEmpresas = alumno.posiblesEmpresas.join(';');
+        if (alumno.posiblesEmpresas.length === 0) posiblesEmpresas = [];
+        posiblesEmpresas.push('' + empresasSelect.getValue());
+        posiblesEmpresas = posiblesEmpresas.join(';');
 
         fetch(`/api/cursos/posibles-empresas/${alumno.cursoId}`, {
             method: 'PUT',
@@ -377,7 +377,7 @@ function agregarEmpresaPosible(alumno, empresas, empresasPosibles) {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-                posiblesEmpresas: alumno.posiblesEmpresas
+                posiblesEmpresas: posiblesEmpresas
             })
         })
         .then((response) => {
