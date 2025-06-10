@@ -230,3 +230,7 @@ main {
 #add-empresa-btn:hover {
     background: #146c43;
 }
+
+.label {
+    top: unset !important;
+}
