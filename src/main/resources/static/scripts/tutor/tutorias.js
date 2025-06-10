@@ -51,7 +51,7 @@ function build(tutorias, cursoActual, grupoTutor) {
     console.log('Grupo del tutor:', grupoTutor);
 
     const form = Form.getForm('crear-form');
-    crearLista(tutorias, form);
+    crearLista(tutorias, form, grupoTutor);
 
     setInputsToCreate(form, grupoTutor);
 
@@ -70,7 +70,7 @@ function build(tutorias, cursoActual, grupoTutor) {
     displaySection.appendChild(cicloInfo);
 }
 
-function crearLista(tutorias, form) {
+function crearLista(tutorias, form, grupoTutor) {
     const listar = document.getElementById('listar');
     while(listar && listar.firstChild) listar.removeChild(listar.firstChild);
 

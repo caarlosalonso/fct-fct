@@ -38,6 +38,8 @@
     justify-content: space-around;
     background-color: var(--background-color);
     border-radius: 0px;
+    padding: 10px 0px;
+    gap: 10px 0px;
 }
 
 .tutoria-item {
@@ -91,6 +93,10 @@
 
     &:hover {
         cursor: pointer;
+
+        & .add-svg {
+            fill: #00ff00;
+        }
     }
 }
 
@@ -99,10 +105,6 @@
     max-height: 35px;
     fill: #ffffff;
     transition: 300ms ease-in-out;
-
-    &:hover {
-        fill: #00ff00;
-    }
 }
 
 /* ---------------------------------------------------------------------------- */
