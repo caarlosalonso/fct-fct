@@ -362,7 +362,7 @@ function agregarEmpresaPosible(alumno, empresas, empresasPosibles) {
 
     search.onsubmit = () => {
         alumno.posiblesEmpresas = alumno.posiblesEmpresas.split(';');
-        if (alumno.posiblesEmpresas.includes(empresasSelect.getValue())) {
+        if (alumno.posiblesEmpresas.includes('' + empresasSelect.getValue())) {
             search.reset();
             search.submitFinish();
             parent.classList.remove('active');
@@ -370,7 +370,7 @@ function agregarEmpresaPosible(alumno, empresas, empresasPosibles) {
             parent.style.top = '0';
             return;
         }
-        alumno.posiblesEmpresas.push(empresasSelect.getValue());
+        alumno.posiblesEmpresas.push('' + empresasSelect.getValue());
         alumno.posiblesEmpresas = alumno.posiblesEmpresas.join(';');
 
         fetch(`/api/cursos/posibles-empresas/${alumno.cursoId}`, {

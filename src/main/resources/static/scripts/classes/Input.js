@@ -93,14 +93,6 @@ export class Input {
         this.label = document.createElement('p');
         this.label.classList.add('label');
         this.label.innerText = this.input.getAttribute('label');
-
-        /*  The label's height isn't computed until it is added to the DOM, but
-            it can't be added to DOM until it's position is computed, because,
-            if it's added later, it would slide into position which would look
-            bad. To fix this, the height is assumed to be 24px.                 */
-        /*                     parent's half height      label's half height   ?*/
-        let verticalPosition = this.parent.offsetHeight / 2 - 12             - 1;
-        //this.label.style.top = `${verticalPosition}px`;
         this.parent.appendChild(this.label);
     }
 
