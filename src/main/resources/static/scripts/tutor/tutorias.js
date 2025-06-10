@@ -10,13 +10,15 @@ window.addEventListener('FormsCreated', (event) => {
 function promise() {
     Promise.all([
         fetchTutorias(),
-        fetchCursoActual()
+        fetchCursoActual(),
+        fetchGrupoTutor(),
     ])
     .then(([
         tutorias,
-        cursoActual
+        cursoActual,
+        grupoTutor
     ]) => {
-        build(tutorias, cursoActual);
+        build(tutorias, cursoActual, grupoTutor);
     }).catch((error) => {
         console.error(error);
     });
@@ -36,7 +38,14 @@ async function fetchCursoActual() {
     return await response.json();
 }
 
-function build(tutorias, cursoActual) {
+async function fetchGrupoTutor() {
+    const response = await fetch('/api/vista-grupos-ciclos/tutor');
+    if (response.status === 204) return [];
+    if (!response.ok) throw new Error('Error al obtener los grupos');
+    return await response.json();
+}
+
+function build(tutorias, cursoActual, grupoTutor) {
     console.log('Tutorías:', tutorias);
     console.log('Ciclo lectivo actual:', cursoActual);
 
@@ -52,7 +61,7 @@ function build(tutorias, cursoActual) {
     const displaySection = document.getElementById(SECTION);
     while( displaySection.firstChild) displaySection.removeChild(displaySection.firstChild);
 
-    if (tutorias.length === 0) {
+    if (cursoActual.length === 0) {
         displaySection.classList.add('empty');
         displaySection.textContent = 'No tienes ninguna tutoría asignada';
         return;

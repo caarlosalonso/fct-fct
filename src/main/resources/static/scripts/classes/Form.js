@@ -9,6 +9,7 @@ import { DateInput } from "./DateInput.js";
 import { DNIInput } from "./DNIInput.js";
 import { NumberInput } from "./NumberInput.js";
 import { SelectInput } from "./SelectInput.js";
+import { DateTimeInput } from "./DateTimeInput.js";
 
 export class Form {
     static formMap = new Map();
@@ -40,16 +41,17 @@ export class Form {
     getEntries() {
         this.form.querySelectorAll('.input').forEach(input => {
             switch (input.getAttribute('type')) {
-                case 'email':       this.entries.push(new EmailInput(input));       break;
-                case 'password':    this.entries.push(new PasswordInput(input));    break;
-                case 'text':        this.entries.push(new TextInput(input));        break;
-                case 'tel':         this.entries.push(new TelInput(input));         break;
-                case 'file':        this.entries.push(new FileInput(input));        break;
-                case 'dni':         this.entries.push(new DNIInput(input));         break;
-                case 'date':        this.entries.push(new DateInput(input));        break;
-                case 'number':      this.entries.push(new NumberInput(input));      break;
-                case 'select':      this.entries.push(new SelectInput(input));      break;
-                default:            this.entries.push(new Input(input));            break;
+                case 'email':           this.entries.push(new EmailInput(input));       break;
+                case 'password':        this.entries.push(new PasswordInput(input));    break;
+                case 'text':            this.entries.push(new TextInput(input));        break;
+                case 'tel':             this.entries.push(new TelInput(input));         break;
+                case 'file':            this.entries.push(new FileInput(input));        break;
+                case 'dni':             this.entries.push(new DNIInput(input));         break;
+                case 'date':            this.entries.push(new DateInput(input));        break;
+                case 'number':          this.entries.push(new NumberInput(input));      break;
+                case 'select':          this.entries.push(new SelectInput(input));      break;
+                case 'datetime-local':  this.entries.push(new DateTimeInput(input));    break;
+                default:                this.entries.push(new Input(input));            break;
             }
         });
         this.entries.forEach((input) => {
