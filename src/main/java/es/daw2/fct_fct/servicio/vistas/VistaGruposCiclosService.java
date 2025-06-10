@@ -26,10 +26,7 @@ public class VistaGruposCiclosService {
     public Optional<VistaGruposCiclos> getByTutorId(Long tutorId) {
         return ((List<VistaGruposCiclos>) repository.findAll())
             .stream()
-            .filter(grupoCiclo -> {
-                System.out.println("Comparando tutorId: " + grupoCiclo.getTutorId() + " con " + tutorId);
-                return grupoCiclo.getTutorId().equals(tutorId);
-            })
+            .filter(grupoCiclo -> grupoCiclo.getTutorId().equals(tutorId))
             .findFirst();
     }
 }

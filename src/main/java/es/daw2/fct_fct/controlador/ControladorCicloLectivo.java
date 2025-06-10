@@ -61,8 +61,6 @@ public class ControladorCicloLectivo extends CrudController<Long, CicloLectivo, 
 
     @Override
     ResponseEntity<?> update(@PathVariable Long id, @RequestBody CicloLectivoCreateDTO dto, HttpServletRequest request) {
-        System.out.println(dto);
-        
         Optional<CicloLectivo> cicloLectivoOpt = service.getById(id);
         if (!cicloLectivoOpt.isPresent()) {
             return ResponseEntity.badRequest().body("No se encontró el ciclo lectivo con el id: " + id);

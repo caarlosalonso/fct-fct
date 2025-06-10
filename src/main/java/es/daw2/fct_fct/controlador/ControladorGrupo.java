@@ -93,7 +93,6 @@ public class ControladorGrupo extends CrudController<Long, Grupo, CreateGrupoDTO
     @Override
     public ResponseEntity<?> update(@PathVariable Long id, @RequestBody CreateGrupoDTO dto, HttpServletRequest request) {
         Optional<Grupo> gruposOpt = service.getById(id);
-            System.out.println(dto);
 
         if (gruposOpt.isEmpty()) {
             return ResponseEntity.notFound().build();

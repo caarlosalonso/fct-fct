@@ -40,7 +40,6 @@ public class VistaGruposCiclosController {
         }
 
         Long tutorId = (Long) session.getAttribute("child_id");
-        System.out.println("Session ID: " + tutorId);
         Optional<VistaGruposCiclos> grupoOpt = servicio.getByTutorId(tutorId);
 
         if (grupoOpt.isEmpty()) {
