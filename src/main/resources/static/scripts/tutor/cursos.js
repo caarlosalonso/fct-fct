@@ -228,7 +228,7 @@ function crearLista(alumnosCurso, grupoTutor, form, empresas) {
             createClickableSVG(
                 '0 0 48 48',
                 'M 44 20 L 28 20 L 28 4 C 28 2 26 0 24 0 S 20 2 20 4 L 20 20 L 4 20 C 2 20 0 22 0 24 S 2 28 4 28 L 20 28 L 20 44 C 20 46 22 48 24 48 S 28 46 28 44 L 28 28 L 44 28 C 46 28 48 26 48 24 S 46 20 44 20 Z',
-                () => agregarEmpresaPosible(alumno, empresas),
+                () => agregarEmpresaPosible(alumno, empresas, empresasPosibles),
                 'add-empresa-svg'
             )
         );
@@ -237,6 +237,7 @@ function crearLista(alumnosCurso, grupoTutor, form, empresas) {
             alumno.posiblesEmpresas.split(';').forEach((empresaId) => {
                 const empresaSpan = document.createElement('span');
                 empresaSpan.classList.add('empresa-posible');
+                console.log(empresas.find(e => e.empresaId === empresaId)?.nombre || empresaId);
                 empresaSpan.textContent = empresas.find(e => e.empresaId === empresaId)?.nombre || empresaId;
                 empresasPosibles.appendChild(empresaSpan);
                 empresaSpan.appendChild(
@@ -314,16 +315,25 @@ function quitarEmpresa(alumno, empresaId) {
     });
 }
 
-function agregarEmpresaPosible(alumno, empresas) {
+function agregarEmpresaPosible(alumno, empresas, empresasPosibles) {
     const search = Form.getForm('agregar-empresa-form');
     const parent = search.form.parentElement;
+
+    if (empresasPosibles && parent) {
+        const rect = empresasPosibles.getBoundingClientRect();
+        parent.style.left = `${rect.left + window.scrollX}px`;
+        parent.style.top = `${rect.bottom + window.scrollY}px`;
+    }
+
     parent.classList.add('active');
-    parent.addEventListener('key', (event) => {
+    parent.addEventListener('keydown', (event) => {
         event.preventDefault();
         if (event.key === 'Escape') {
             search.reset();
             search.submitFinish();
             parent.classList.remove('active');
+            parent.style.left = '0';
+            parent.style.top = '0';
         }
     });
 
@@ -358,6 +368,7 @@ function agregarEmpresaPosible(alumno, empresas) {
         alumno.posiblesEmpresas = alumno.posiblesEmpresas.split(';');
         alumno.posiblesEmpresas.push(empresasSelect.getValue());
         alumno.posiblesEmpresas = alumno.posiblesEmpresas.join(';');
+        console.log('Empresas posibles:', alumno.posiblesEmpresas);
 
         fetch(`/api/cursos/posibles-empresas/${alumno.cursoId}`, {
             method: 'PUT',
