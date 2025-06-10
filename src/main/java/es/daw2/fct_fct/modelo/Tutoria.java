@@ -30,7 +30,7 @@ public class Tutoria extends AbsBaseEntity {
     @JoinColumn(name = "grupo_id")
     private Grupo grupo;
 
-    @Column(name = "fecha", nullable = false, columnDefinition = "DATE")
+    @Column(name = "fecha", nullable = false, columnDefinition = "DATETIME")
     private LocalDateTime fecha;
 
 }
