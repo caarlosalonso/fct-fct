@@ -50,7 +50,6 @@ export class RangeInput extends Input {
         this.input.addEventListener('input', () => {
             this.changeText();
             this.updateState();
-            this.showValidity();
         });
     }
 
