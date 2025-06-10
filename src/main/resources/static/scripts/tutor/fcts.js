@@ -209,28 +209,12 @@ function computeFinFCT(alumnoId) {
             fechaFinInput
         );
     });
-
-    fechaFinInput.input.addEventListener('input', () => {
-        compute(
-            fechaInicioInput,
-            horasSemanalesInput,
-            noLectivosInput,
-            horasDePracticasInput,
-            fechaFinInput,
-            true
-        );
-    });
 }
 
-function compute(fechaInicio, horasSemanales, noLectivos, horasDePracticas, fechaFin, modificacionFechaFin = false) {
+function compute(fechaInicio, horasSemanales, noLectivos, horasDePracticas, fechaFin) {
     const fechaInicioValue = fechaInicio.getValue();
     
     if (!fechaInicioValue) return;
-
-    if (modificacionFechaFin) {
-
-        return;
-    }
 
     const horasSemanalesValue = horasSemanales.getValue();
     const noLectivosValue = noLectivos.getValue();
@@ -261,7 +245,15 @@ function compute(fechaInicio, horasSemanales, noLectivos, horasDePracticas, fech
     const year = date.getFullYear();
     const month = String(date.getMonth() + 1).padStart(2, '0'); // Meses empiezan en 0
     const day = String(date.getDate()).padStart(2, '0'); // Días con dos dígitos
+    const fechaFinal = `${year}-${month}-${day}`;
 
-    fechaFin.setValue(`${year}-${month}-${day}`);
+    fechaFin.validate = () => {
+        if (fechaFin.isEmpty()) return true;
+        const fechaFinValue = fechaFin.getValue();
+        console.log(fechaFinValue, fechaFinal);
+        return fechaFinValue === fechaFinal;
+    }
+    fechaFin.setValue(fechaFinal);
+    fechaFin.showValidity();
 }
 

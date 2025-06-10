@@ -33,8 +33,8 @@ export class RangeInput extends Input {
 
     buildLabel() {
         this.label = document.createElement('p');
-        this.label.classList.add('label');
-        this.label.innerText = this.input.getAttribute('range-label');
+        this.label.classList.add('label', 'active');
+        this.changeText();
         this.parent.appendChild(this.label);
     }
 
@@ -50,6 +50,7 @@ export class RangeInput extends Input {
         this.input.addEventListener('input', () => {
             this.changeText();
             this.updateState();
+            this.label.classList.add('active');
         });
     }
 
