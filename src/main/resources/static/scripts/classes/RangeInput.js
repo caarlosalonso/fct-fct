@@ -19,6 +19,10 @@ export class RangeInput extends Input {
             const value = parseFloat(this.input.value);
             return isNaN(value) ? null : value;
         }
+
+        this.isEmpty = () => {
+            return false;
+        }
     }
 
     init() {
