@@ -140,6 +140,7 @@ function build(alumnos, cursoActual, grupoTutor, alumnosCurso) {
         .then(response => {
             if (response.ok) {
                 promise();
+                asignar.reset();
                 asignar.submitFinish();
             } else if (response.status === 400) {
                 asignar.showError('El alumno ya está asignado a este grupo');

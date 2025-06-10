@@ -88,16 +88,21 @@ function crearLista(tutorias, form) {
 
     tutorias.forEach(tutoria => {
         const item = document.createElement('div');
-        item.classList.add('alumno-item');
+        item.classList.add('tutoria-item');
         listar.appendChild(item);
 
         const fechaSpan = document.createElement('span');
-        fechaSpan.classList.add('cell-title');
-        fechaSpan.textContent = tutoria.fecha;
+        fechaSpan.classList.add('cell-value', 'cell-title');
+        fechaSpan.textContent = new Date(tutoria.fecha).toLocaleDateString([], { year: 'numeric', month: '2-digit', day: '2-digit' });
         item.appendChild(fechaSpan);
 
+        const horaSpan = document.createElement('span');
+        horaSpan.classList.add('cell-value', 'cell-subtitle');
+        horaSpan.textContent = new Date(tutoria.fecha).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+        item.appendChild(horaSpan);
+
         const estadoSpan = document.createElement('span');
-        estadoSpan.classList.add('cell-subtitle');
+        estadoSpan.classList.add('cell-value', 'cell-subtitle');
         estadoSpan.textContent = `Estado: ${new Date(tutoria.fecha) < new Date() ? 'Pasada' : 'Próxima'}`;
         item.appendChild(estadoSpan);
 
@@ -106,7 +111,8 @@ function crearLista(tutorias, form) {
                 '0 -0.5 25 25',
                 'M 20.848 1.879 C 19.676 0.707 17.777 0.707 16.605 1.879 L 2.447 16.036 C 2.029 16.455 1.743 16.988 1.627 17.569 L 1.04 20.505 C 0.76 21.904 1.994 23.138 3.393 22.858 L 6.329 22.271 C 6.909 22.155 7.443 21.869 7.862 21.451 L 22.019 7.293 C 23.191 6.121 23.191 4.222 22.019 3.05 L 20.848 1.879 Z M 18.019 3.293 C 18.41 2.902 19.043 2.902 19.433 3.293 L 20.605 4.465 C 20.996 4.855 20.996 5.488 20.605 5.879 L 6.447 20.036 C 6.308 20.176 6.13 20.271 5.936 20.31 L 3.001 20.897 L 3.588 17.962 C 3.627 17.768 3.722 17.59 3.862 17.451 L 13.933 7.379 L 16.52 9.965 L 17.934 8.56 L 15.348 5.965 L 18.019 3.293 Z',
                 () => setInputsToUpdate(form, tutoria),
-                'edit-svg'
+                'edit-svg',
+                'svg'
             )
         );
         item.appendChild(
@@ -117,7 +123,8 @@ function crearLista(tutorias, form) {
                     event.preventDefault();
                     removeTutoria(form, tutoria);
                 },
-                'delete-svg'
+                'delete-svg',
+                'svg'
             )
         );
     });
@@ -131,8 +138,6 @@ function setInputsToCreate(form, grupoTutor) {
             fecha: fecha,
             grupoId: grupoTutor.grupoId
         };
-
-        console.log(newTutoria);
 
         fetch('/api/tutorias/create', {
             method: 'POST',
