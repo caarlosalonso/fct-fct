@@ -316,7 +316,7 @@ function quitarEmpresa(alumno, empresaId) {
 
 function agregarEmpresaPosible(alumno, empresas) {
     const search = Form.getForm('agregar-empresa-form');
-    const parent = search.input.parentElement;
+    const parent = search.form.parentElement;
     parent.classList.add('active');
     parent.addEventListener('key', (event) => {
         event.preventDefault();
