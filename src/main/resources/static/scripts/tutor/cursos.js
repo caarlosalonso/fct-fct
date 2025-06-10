@@ -37,15 +37,17 @@ function promise() {
         fetchAlumnos(),
         fetchCursoActual(),
         fetchGrupoTutor(),
-        fetchAlumnosCurso()
+        fetchAlumnosCurso(),
+        fetchEmpresas()
     ])
     .then(([
         alumnos,
         cursoActual,
         grupoTutor,
-        alumnosCurso
+        alumnosCurso,
+        empresas
     ]) => {
-        build(alumnos, cursoActual, grupoTutor, alumnosCurso);
+        build(alumnos, cursoActual, grupoTutor, alumnosCurso, empresas);
     }).catch((error) => {
         console.error('Error al obtener los ciclos lectivos:', error);
     });
@@ -79,14 +81,22 @@ async function fetchGrupoTutor() {
     return await response.json();
 }
 
-function build(alumnos, cursoActual, grupoTutor, alumnosCurso) {
+async function fetchEmpresas() {
+    const response = await fetch('/api/empresa/all');
+    if (response.status === 204) return [];
+    if (!response.ok) throw new Error('Error al obtener los grupos');
+    return await response.json();
+}
+
+function build(alumnos, cursoActual, grupoTutor, alumnosCurso, empresas) {
     console.log('Alumnos:', alumnos);
     console.log('Ciclo lectivo actual:', cursoActual);
     console.log('Grupo tutor:', grupoTutor);
     console.log('Alumnos del curso:', alumnosCurso);
-    
+    console.log('Empresas:', empresas);
+
     const form = Form.getForm('alumno-form');
-    crearLista(alumnosCurso, grupoTutor, form);
+    crearLista(alumnosCurso, grupoTutor, form, empresas);
 
     const asignar = Form.getForm('alumno-search-form');
     const searchInput = asignar.getInput('search');
@@ -116,7 +126,7 @@ function build(alumnos, cursoActual, grupoTutor, alumnosCurso) {
                 }
             });
             searchInput.updateDropdown(options, true);
-        })
+        });
     }
 
     asignar.onsubmit = () => {
@@ -171,7 +181,7 @@ function build(alumnos, cursoActual, grupoTutor, alumnosCurso) {
     displaySection.appendChild(cicloInfo);
 }
 
-function crearLista(alumnosCurso, grupoTutor, form) {
+function crearLista(alumnosCurso, grupoTutor, form, empresas) {
     const listar = document.getElementById('listar');
     while(listar && listar.firstChild) listar.removeChild(listar.firstChild);
 
@@ -210,6 +220,34 @@ function crearLista(alumnosCurso, grupoTutor, form) {
         emailSpan.textContent = `Email: ${alumno.email}`;
         item.appendChild(emailSpan);
 
+        const empresasPosibles = document.createElement('div');
+        empresasPosibles.classList.add('cell-value', 'empresas-posibles');
+        item.appendChild(empresasPosibles);
+
+        empresasPosibles.appendChild(
+            createClickableSVG(
+                '0 -0.5 25 25',
+                'M 20.848 1.879 C 19.676 0.707 17.777 0.707 16.605 1.879 L 2.447 16.036 C 2.029 16.455 1.743 16.988 1.627 17.569 L 1.04 20.505 C 0.76 21.904 1.994 23.138 3.393 22.858 L 6.329 22.271 C 6.909 22.155 7.443 21.869 7.862 21.451 L 22.019 7.293 C 23.191 6.121 23.191 4.222 22.019 3.05 L 20.848 1.879 Z M 18.019 3.293 C 18.41 2.902 19.043 2.902 19.433 3.293 L 20.605 4.465 C 20.996 4.855 20.996 5.488 20.605 5.879 L 6.447 20.036 C 6.308 20.176 6.13 20.271 5.936 20.31 L 3.001 20.897 L 3.588 17.962 C 3.627 17.768 3.722 17.59 3.862 17.451 L 13.933 7.379 L 16.52 9.965 L 17.934 8.56 L 15.348 5.965 L 18.019 3.293 Z',
+                () => agregarEmpresaPosible(alumno, empresas),
+                'add-empresa-svg'
+            )
+        );
+
+        alumno.posiblesEmpresas.split(';').forEach((empresaId) => {
+            const empresaSpan = document.createElement('span');
+            empresaSpan.classList.add('empresa-posible');
+            empresaSpan.textContent = empresas.find(e => e.empresaId === empresaId)?.nombre || empresaId;
+            empresasPosibles.appendChild(empresaSpan);
+            empresaSpan.appendChild(
+                createClickableSVG(
+                    '0 -0.5 25 25',
+                    'M 20.848 1.879 C 19.676 0.707 17.777 0.707 16.605 1.879 L 2.447 16.036 C 2.029 16.455 1.743 16.988 1.627 17.569 L 1.04 20.505 C 0.76 21.904 1.994 23.138 3.393 22.858 L 6.329 22.271 C 6.909 22.155 7.443 21.869 7.862 21.451 L 22.019 7.293 C 23.191 6.121 23.191 4.222 22.019 3.05 L 20.848 1.879 Z M 18.019 3.293 C 18.41 2.902 19.043 2.902 19.433 3.293 L 20.605 4.465 C 20.996 4.855 20.996 5.488 20.605 5.879 L 6.447 20.036 C 6.308 20.176 6.13 20.271 5.936 20.31 L 3.001 20.897 L 3.588 17.962 C 3.627 17.768 3.722 17.59 3.862 17.451 L 13.933 7.379 L 16.52 9.965 L 17.934 8.56 L 15.348 5.965 L 18.019 3.293 Z',
+                    () => quitarEmpresa(alumno, empresaId),
+                    'remove-empresa-svg'
+                )
+            );
+        });
+
         item.appendChild(
             createClickableSVG(
                 '0 -0.5 25 25',
@@ -244,6 +282,107 @@ function crearLista(alumnosCurso, grupoTutor, form) {
             )
         );
     });
+}
+
+function quitarEmpresa(alumno, empresaId) {
+    alumno.posiblesEmpresas = alumno.posiblesEmpresas
+        .split(';')
+        .filter(id => id !== empresaId)
+        .join(';');
+    
+    fetch(`/api/cursos/posibles-empresas/${alumno.cursoId}`, {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ posiblesEmpresas: alumno.posiblesEmpresas })
+    })
+    .then((response) => {
+        if (response.ok) {
+            promise();
+        } else {
+            console.error('Error al quitar la empresa del alumno');
+        }
+    })
+    .catch((error) => {
+        console.error('Error al quitar la empresa del alumno:', error);
+    })
+    .finally(() => {
+        search.submitFinish();
+    });
+}
+
+function agregarEmpresaPosible(alumno, empresas) {
+    const search = Form.getForm('agregar-empresa-form');
+    const parent = search.parentElement;
+    parent.classList.add('active');
+    parent.addEventListener('key', (event) => {
+        event.preventDefault();
+        if (event.key === 'Escape') {
+            search.reset();
+            search.submitFinish();
+            parent.classList.remove('active');
+        }
+    });
+
+    const empresasSelect = search.getInput('buscar-empresa');
+    empresasSelect.input.addEventListener('input', () => {
+        let query = empresasSelect.input.value;
+        query = (query || '').toLowerCase().trim();
+        console.log(query);
+        let options = [];
+
+        empresas.forEach(empresa => {
+            const [ nombre, cif, email, plazas, nombreCiclo ] = [empresa.nombreEmpresa, empresa.cif, empresa.email, empresa.plazas, empresa.nombreCiclo];
+            const values = [
+                (nombre || '').toLowerCase(),
+                (cif || '').toLowerCase(),
+                (email || '').toLowerCase(),
+                (plazas || '').toString().toLowerCase(),
+                (nombreCiclo || '').toLowerCase()
+            ];
+
+            const match = values.some(val => val.includes(query));
+            console.log(match, values);
+            console.log(options);
+            if (match) {
+                options.push({
+                    value: empresa.empresaId,
+                    label: `${nombre} (${cif}) - ${email}${plazas ? ` - ${plazas} plazas` : ''}${nombreCiclo ? ` - ${nombreCiclo}` : ''}`
+                });
+            }
+        });
+        empresasSelect.updateDropdown(options, true);
+    });
+
+    search.onsubmit = () => {
+        alumno.posiblesEmpresas = alumno.posiblesEmpresas
+            .split(';')
+            .push(empresasSelect.getValue())
+            .join(';');
+        
+        fetch(`/api/cursos/posibles-empresas/${alumno.cursoId}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ posiblesEmpresas: alumno.posiblesEmpresas })
+        })
+        .then((response) => {
+            if (response.ok) {
+                search.reset();
+                promise();
+            } else {
+                console.error('Error al agregar la empresa del alumno');
+            }
+        })
+        .catch((error) => {
+            console.error('Error al agregar la empresa del alumno:', error);
+        })
+        .finally(() => {
+            search.submitFinish();
+        });
+    }
 }
 
 function setInputsToUpdate(form, alumno) {

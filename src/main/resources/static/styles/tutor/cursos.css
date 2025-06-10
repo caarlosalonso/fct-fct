@@ -139,3 +139,17 @@
         margin: 0px;
     }
 }
+
+
+#modal {
+    display: none;
+    position: absolute;
+    top: 0;
+    left: 0;
+
+    &.active {
+        display: block;
+        top: 200px;
+        left: 200px;
+    }
+}

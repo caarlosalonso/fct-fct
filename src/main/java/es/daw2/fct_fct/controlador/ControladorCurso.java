@@ -179,4 +179,23 @@ public class ControladorCurso extends CrudController<Long, Curso, Curso, Curso, 
 
         return ResponseEntity.ok().location(location).body(alumnoActualizado);
     }
+
+    @PutMapping("/posibles-empresas/{cursoId}")
+    public ResponseEntity<?> posiblesEmpresas(@PathVariable Long cursoId, @RequestBody String empresasIds, HttpServletRequest request) {
+        Optional<Curso> cursoOpt = service.getById(cursoId);
+        if (cursoOpt.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+
+        Curso curso = cursoOpt.get();
+        curso.setPosiblesEmpresas(empresasIds);
+        
+        Optional<Curso> updatedCurso = service.update(cursoId, curso);
+        if (!updatedCurso.isPresent()) {
+            return ResponseEntity.badRequest().body("No se ha podido actualizar el curso con el id: " + cursoId);
+        }
+
+        URI location = URI.create("/api/cursos/" + cursoId);
+        return ResponseEntity.ok().location(location).body(updatedCurso);
+    }
 }
