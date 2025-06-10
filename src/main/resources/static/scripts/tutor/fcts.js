@@ -74,10 +74,10 @@ function build(cursoActual, grupoTutor, alumnosCurso) {
 
 function createCell(alumno) {
     const cell = document.createElement('div');
-    cell.classList.add('alumno-cell');
+    cell.classList.add('alumno-cell', 'collapsed');
 
     const bar = document.createElement('p');
-    bar.classList.add('alumno-bar', 'collapsed');
+    bar.classList.add('alumno-bar');
     cell.appendChild(bar);
 
     const nombreSpan = document.createElement('span');
@@ -96,13 +96,13 @@ function createCell(alumno) {
     collapseSpan.textContent = `◀`;
     bar.appendChild(collapseSpan);
     bar.onclick = () => {
-        if (bar.classList.contains('collapsed')) {
-            bar.classList.remove('collapsed');
-            bar.classList.add('expanded');
+        if (cell.classList.contains('collapsed')) {
+            cell.classList.remove('collapsed');
+            cell.classList.add('expanded');
             collapseSpan.classList.remove('collapsed');
         } else {
-            bar.classList.remove('expanded');
-            bar.classList.add('collapsed');
+            cell.classList.remove('expanded');
+            cell.classList.add('collapsed');
             collapseSpan.classList.add('collapsed');
         }
     };

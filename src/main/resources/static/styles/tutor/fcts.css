@@ -32,6 +32,15 @@
     display: flex;
     flex-direction: column;
     gap: 5px;
+
+    &.collapsed {
+        height: 35px;
+        overflow: hidden;
+    }
+
+    &.expanded {
+        height: auto;
+    }
 }
 
 .alumno-bar {
@@ -41,14 +50,6 @@
 
     &:hover {
         cursor: pointer;
-    }
-
-    &.collapsed {
-        max-height: 30px;
-    }
-
-    &.expanded {
-        max-height: 100px;
     }
 }
 

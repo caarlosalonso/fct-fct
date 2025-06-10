@@ -22,10 +22,9 @@ export class RangeInput extends Input {
     }
 
     init() {
+        super.init();
         this.buildLabel();
         this.buildInput();
-        this.updateState();
-        this.createValidityElements();
     }
 
     buildLabel() {
