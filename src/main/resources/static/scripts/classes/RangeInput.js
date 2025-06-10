@@ -7,7 +7,7 @@ export class RangeInput extends Input {
         this.maximum = parseFloat(this.input.getAttribute('data-max')) || 100;
         this.step = parseFloat(this.input.getAttribute('data-step')) || 1;
         this.value = parseFloat(this.input.getAttribute('data-value')) || this.minimum;
-        this.labelText = this.input.getAttribute('data-label') || '';
+        this.labelText = this.input.getAttribute('label') || '';
         this.validate = () => {
             if (this.isEmpty()) return true;
             const value = parseFloat(this.input.value);
@@ -48,16 +48,6 @@ export class RangeInput extends Input {
         this.parent.appendChild(this.input);
 
         this.input.addEventListener('input', () => {
-            this.changeText();
-            this.updateState();
-        });
-
-        this.input.addEventListener('change', () => {
-            this.changeText();
-            this.updateState();
-        });
-
-        this.input.addEventListener('click', () => {
             this.changeText();
             this.updateState();
         });
