@@ -51,6 +51,16 @@ export class RangeInput extends Input {
             this.changeText();
             this.updateState();
         });
+
+        this.input.addEventListener('change', () => {
+            this.changeText();
+            this.updateState();
+        });
+
+        this.input.addEventListener('click', () => {
+            this.changeText();
+            this.updateState();
+        });
     }
 
     changeText() {
