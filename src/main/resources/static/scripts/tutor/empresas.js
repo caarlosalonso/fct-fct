@@ -240,11 +240,14 @@ function finish(form) {
     form.reset();
     if (typeof form.submitFinish === 'function') form.submitFinish();
     collapseAll();
+    document.getElementById('display-section').classList.remove('oculto');
     cargarEmpresas();
 }
 
 function editEmpresa(empresa) {
     collapseAll();
+
+    document.getElementById('display-section').classList.add('oculto');
 
     const form = Form.getForm('empresa-form');
     form.form.parentNode.classList.remove('collapsed');
@@ -331,6 +334,8 @@ function removeEmpresa(empresa) {
 
 function addEmpresa() {
     collapseAll();
+
+    document.getElementById('display-section').classList.add('oculto');
 
     const form = Form.getForm('empresa-form');
     form.form.parentNode.classList.remove('collapsed');
