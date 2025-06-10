@@ -12,6 +12,7 @@
     margin: 0 auto;
     display: flex;
     flex-direction: column;
+    transition: 200ms ease-in-out;
 }
 
 /* ---------------------------------------------------------------------------- */
@@ -90,4 +91,15 @@
     background-color: var(--background-color);
     border-radius: 0px 0px var(--border-radius) var(--border-radius);
     padding: var(--border-radius);
+}
+
+
+/* ---------------------------------------------------------------------------- */
+/*                                     MEDIA                                    */
+/* ---------------------------------------------------------------------------- */
+@media (max-width: 600px) {
+    #main-content {
+        width: 100%;
+        margin: 0;
+    }
 }
