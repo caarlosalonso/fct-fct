@@ -50,7 +50,7 @@ export class Form {
                 case 'date':            this.entries.push(new DateInput(input));        break;
                 case 'number':          this.entries.push(new NumberInput(input));      break;
                 case 'select':          this.entries.push(new SelectInput(input));      break;
-                case 'datetime':        this.entries.push(new DateTimeInput(input));    break;
+                case 'datetime-local':  this.entries.push(new DateTimeInput(input));    break;
                 default:                this.entries.push(new Input(input));            break;
             }
         });

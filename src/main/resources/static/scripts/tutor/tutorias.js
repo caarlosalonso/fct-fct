@@ -53,11 +53,6 @@ function build(tutorias, cursoActual, grupoTutor) {
     const form = Form.getForm('crear-form');
     crearLista(tutorias, form);
 
-    const crearTutorias = document.getElementById('create-tutoria');
-    crearTutorias.addEventListener('click', (event) => {
-        event.preventDefault();
-        setInputsToCreate(form, grupoTutor);
-    });
     setInputsToCreate(form, grupoTutor);
 
     const displaySection = document.getElementById(SECTION);
@@ -86,8 +81,24 @@ function crearLista(tutorias, form) {
         return;
     }
 
+    let item = document.createElement('div');
+    item.classList.add('tutoria-item', 'add');
+    item.id = 'create-tutoria';
+    item.onclick = (event) => {
+        event.preventDefault();
+        setInputsToCreate(form, grupoTutor);
+    }
+    listar.appendChild(item);
+    item.appendChild(
+        createSVG(
+            '0 0 48 48',
+            'M 44 20 L 28 20 L 28 4 C 28 2 26 0 24 0 S 20 2 20 4 L 20 20 L 4 20 C 2 20 0 22 0 24 S 2 28 4 28 L 20 28 L 20 44 C 20 46 22 48 24 48 S 28 46 28 44 L 28 28 L 44 28 C 46 28 48 26 48 24 S 46 20 44 20 Z',
+            'add-svg'
+        )
+    );
+
     tutorias.forEach(tutoria => {
-        const item = document.createElement('div');
+        item = document.createElement('div');
         item.classList.add('tutoria-item');
         listar.appendChild(item);
 
