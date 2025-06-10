@@ -118,24 +118,24 @@ function createCell(alumno) {
             </div>
             <div class="instance form-input grouped-inputs">
                 <div class="form-group form-input">
-                    <input type="date" name="fechaInicio" class="text-based input" label="Fecha de inicio" data-show-validity="true" data-required="true">
+                    <input id="fecha-inicio-${alumno.alumnoId}" type="date" name="fechaInicio" class="text-based input" label="Fecha de inicio" data-show-validity="true" data-required="true">
                 </div>
             </div>
             <div class="instance form-input grouped-inputs">
                 <div class="form-group form-input">
-                    <input type="range" name="horasSemanales" class="text-based input" label="{n} Hora{s} semanal{es}" data-show-validity="true" data-required="true" min="30" max="40" step="1" value="40">
+                    <input id="horas-semanales-${alumno.alumnoId}" type="range" name="horasSemanales" class="text-based input" label="{n} Hora{s} semanal{es}" data-show-validity="true" data-required="true" min="30" max="40" step="1" value="40">
                 </div>
                 <div class="form-group form-input">
                     <p class="info">Sin contar sábados y domingos</p>
-                    <input type="range" name="noLectivos" class="text-based input" label="{n} No lectivo{s}" data-show-validity="true" data-required="true" min="0" max="20" step="1" value="0">
+                    <input id="no-lectivos-${alumno.alumnoId}" type="range" name="noLectivos" class="text-based input" label="{n} No lectivo{s}" data-show-validity="true" data-required="true" min="0" max="20" step="1" value="0">
                 </div>
                 <div class="form-group form-input">
-                    <input type="range" name="horasDePracticas" class="text-based input" label="{n} Hora{s} de prácticas" data-show-validity="true" data-required="true" min="300" max="500" step="1" value="370">
+                    <input id="horas-de-practicas-${alumno.alumnoId}" type="range" name="horasDePracticas" class="text-based input" label="{n} Hora{s} de prácticas" data-show-validity="true" data-required="true" min="300" max="500" step="1" value="370">
                 </div>
             </div>
             <div class="instance form-input grouped-inputs">
                 <div class="form-group form-input">
-                    <input type="date" name="fechaFin" class="text-based input" label="Fin de FCT" data-show-validity="true" data-required="true">
+                    <input id="fecha-fin-${alumno.alumnoId}" type="date" name="fechaFin" class="text-based input" label="Fin de FCT" data-show-validity="true" data-required="true">
                 </div>
             </div>
         </div>
@@ -145,3 +145,115 @@ function createCell(alumno) {
 
     return cell;
 }
+
+function computeFinFCT(alumnoId) {
+    const formulario = Form.getForm(`fct-form-${alumnoId}`);
+    if (!formulario) {
+        console.error(`Formulario con ID fct-form-${alumnoId} no encontrado.`);
+        return;
+    }
+    const fechaInicioInput = formulario.getInput(`fecha-inicio-${alumnoId}`);
+    const horasSemanalesInput = formulario.getInput(`horas-semanales-${alumnoId}`);
+    const noLectivosInput = formulario.getInput(`no-lectivos-${alumnoId}`);
+    const horasDePracticasInput = formulario.getInput(`horas-de-practicas-${alumnoId}`);
+    const fechaFinInput = formulario.getInput(`fecha-fin-${alumnoId}`);
+    if (!fechaInicioInput || !horasSemanalesInput || !noLectivosInput || !horasDePracticasInput || !fechaFinInput) {
+        console.error(`Inputs necesarios no encontrados en el formulario fct-form-${alumnoId}.`);
+        return;
+    }
+
+    fechaInicioInput.input.addEventListener('input', () => {
+        compute(
+            fechaInicioInput,
+            horasSemanalesInput,
+            noLectivosInput,
+            horasDePracticasInput,
+            fechaFinInput
+        );
+    });
+
+    horasSemanalesInput.input.addEventListener('input', () => {
+        compute(
+            fechaInicioInput,
+            horasSemanalesInput,
+            noLectivosInput,
+            horasDePracticasInput,
+            fechaFinInput
+        );
+    });
+
+    noLectivosInput.input.addEventListener('input', () => {
+        compute(
+            fechaInicioInput,
+            horasSemanalesInput,
+            noLectivosInput,
+            horasDePracticasInput,
+            fechaFinInput
+        );
+    });
+
+    horasDePracticasInput.input.addEventListener('input', () => {
+        compute(
+            fechaInicioInput,
+            horasSemanalesInput,
+            noLectivosInput,
+            horasDePracticasInput,
+            fechaFinInput
+        );
+    });
+
+    fechaFinInput.input.addEventListener('input', () => {
+        compute(
+            fechaInicioInput,
+            horasSemanalesInput,
+            noLectivosInput,
+            horasDePracticasInput,
+            fechaFinInput,
+            true
+        );
+    });
+}
+
+function compute(fechaInicio, horasSemanales, noLectivos, horasDePracticas, fechaFin, modificacioFechaFin = false) {
+    const fechaInicioValue = fechaInicio.getValue();
+    
+    if (!fechaInicioValue) return;
+
+    if (modificacionFechaFin) {
+
+        return;
+    }
+
+    const horasSemanalesValue = horasSemanales.getValue();
+    const noLectivosValue = noLectivos.getValue();
+    const horasDePracticasValue = horasDePracticas.getValue();
+
+    let days = Math.ceil(horasDePracticasValue / parseInt(horasSemanalesValue) * 5); // Días
+    days += parseInt(noLectivosValue); // Días extra por no lectivos
+
+    const date = new Date(fechaInicioValue); // Convierte la fecha a un objeto Date
+    let count = 0; // Crea una variable para llevar el registro
+
+    while(count < days - 1) {
+        const dayOfTheWeek = date.getDay();
+
+        // Si es un día laborable (lunes a viernes)
+        if (dayOfTheWeek > 0 && dayOfTheWeek < 6) {
+            count++;
+        }
+
+        date.setDate(date.getDate() + 1);
+    }
+
+    // Para que el día de fin de FCT no sea sábado o domingo
+    while (date.getDay() === 0 || date.getDay() === 6) {
+        date.setDate(date.getDate() + 1);
+    }
+
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0'); // Meses empiezan en 0
+    const day = String(date.getDate()).padStart(2, '0'); // Días con dos dígitos
+
+    fechaFin.setValue(`${year}-${month}-${day}`);
+}
+
