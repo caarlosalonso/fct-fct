@@ -81,20 +81,18 @@ function createCell(alumno) {
     const nombreSpan = document.createElement('span');
     nombreSpan.classList.add('alumno-nombre');
     nombreSpan.textContent = `${alumno.nombreAlumno}`;
-    cell.appendChild(nombreSpan);
+    bar.appendChild(nombreSpan);
 
     const empresaSpan = document.createElement('span');
     empresaSpan.classList.add('empresa-nombre');
     if (! alumno.nombreEmpresa) empresaSpan.classList.add('sin-empresa');
     empresaSpan.textContent = `${alumno.nombreEmpresa || 'Sin empresa'}`;
-    cell.appendChild(empresaSpan);
+    bar.appendChild(empresaSpan);
 
     const collapseSpan = document.createElement('span');
     collapseSpan.classList.add('alumno-collapse', 'collapsed');
     collapseSpan.textContent = `◀`;
-    cell.appendChild(collapseSpan);
-
-
+    bar.appendChild(collapseSpan);
     bar.onclick = () => {
         if (bar.classList.contains('collapsed')) {
             bar.classList.remove('collapsed');
@@ -106,6 +104,39 @@ function createCell(alumno) {
             collapseSpan.classList.add('collapsed');
         }
     };
+
+    const fct = document.createElement('form');
+    fct.innerHTML = `
+        <div class="inputs form-container">
+            <div class="instance form-input grouped-inputs">
+                <div class="form-group form-input">
+                    <input type="select" name="empresa" class="text-based input" label="Empresa" data-show-validity="true" data-required="true">
+                </div>
+            </div>
+            <div class="instance form-input grouped-inputs">
+                <div class="form-group form-input">
+                    <input type="date" name="fechaInicio" class="text-based input" label="Fecha de inicio" data-show-validity="true" data-required="true">
+                </div>
+            </div>
+            <div class="instance form-input grouped-inputs">
+                <div class="form-group form-input">
+                    <input type="range" name="horasSemanales" class="text-based input" label="Horas semanales" data-show-validity="true" data-required="true" min="30" max="40" step="1" value="40">
+                </div>
+                <div class="form-group form-input">
+                    <p class="info">Sin contar sábados y domingos</p>
+                    <input type="range" name="noLectivos" class="text-based input" label="No lectivos" data-show-validity="true" data-required="true" min="0" max="20" step="1" value="0">
+                </div>
+                <div class="form-group form-input">
+                    <input type="range" name="horasDePracticas" class="text-based input" label="Horas de prácticas" data-show-validity="true" data-required="true" min="300" max="500" step="1" value="370">
+                </div>
+            </div>
+            <div class="instance form-input grouped-inputs">
+                <div class="form-group form-input">
+                    <input type="date" name="fechaFin" class="text-based input" label="Fin de FCT" data-show-validity="true" data-required="true">
+                </div>
+            </div>
+        </div>
+    `;
 
     return cell;
 }
