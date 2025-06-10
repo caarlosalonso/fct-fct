@@ -294,6 +294,7 @@ function quitarEmpresa(alumno, empresaId) {
         .split(';')
         .filter(id => id !== empresaId)
         .join(';');
+    console.log(alumno.posiblesEmpresas);
     
     fetch(`/api/cursos/posibles-empresas/${alumno.cursoId}`, {
         method: 'PUT',
@@ -311,9 +312,6 @@ function quitarEmpresa(alumno, empresaId) {
     })
     .catch((error) => {
         console.error('Error al quitar la empresa del alumno:', error);
-    })
-    .finally(() => {
-        search.submitFinish();
     });
 }
 
@@ -366,8 +364,11 @@ function agregarEmpresaPosible(alumno, empresas, empresasPosibles) {
     });
 
     search.onsubmit = () => {
+        console.log('Pre', alumno.posiblesEmpresas);
         alumno.posiblesEmpresas = alumno.posiblesEmpresas.split(';');
+        console.log('Post', alumno.posiblesEmpresas);
         alumno.posiblesEmpresas.push(empresasSelect.getValue());
+        console.log('Push', alumno.posiblesEmpresas);
         alumno.posiblesEmpresas = alumno.posiblesEmpresas.join(';');
         console.log('Empresas posibles:', alumno.posiblesEmpresas);
 
