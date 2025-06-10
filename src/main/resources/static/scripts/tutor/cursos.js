@@ -327,11 +327,12 @@ function agregarEmpresaPosible(alumno, empresas, empresasPosibles) {
     parent.classList.add('active');
     parent.addEventListener('keydown', (event) => {
         if (event.key === 'Escape') {
-            search.reset();
-            search.submitFinish();
-            parent.classList.remove('active');
-            parent.style.left = '0';
-            parent.style.top = '0';
+            clearModal(search, parent);
+        }
+    });
+    window.addEventListener('keydown', (event) => {
+        if (event.key === 'Escape') {
+            clearModal(search, parent);
         }
     });
 
@@ -364,11 +365,7 @@ function agregarEmpresaPosible(alumno, empresas, empresasPosibles) {
         alumno.posiblesEmpresas = alumno.posiblesEmpresas.split(';');
         if (alumno.posiblesEmpresas.includes('' + empresasSelect.getValue())) {
             alumno.posiblesEmpresas = alumno.posiblesEmpresas.join(';');
-            search.reset();
-            search.submitFinish();
-            parent.classList.remove('active');
-            parent.style.left = '0';
-            parent.style.top = '0';
+            clearModal(search, parent);
             return;
         }
         alumno.posiblesEmpresas.push('' + empresasSelect.getValue());
@@ -401,6 +398,14 @@ function agregarEmpresaPosible(alumno, empresas, empresasPosibles) {
             console.error('Error al agregar la empresa del alumno:', error);
         });
     }
+}
+
+function clearModal(search, parent) {
+    search.reset();
+    search.submitFinish();
+    parent.classList.remove('active');
+    parent.style.left = '0';
+    parent.style.top = '0';
 }
 
 function setInputsToUpdate(form, alumno) {
