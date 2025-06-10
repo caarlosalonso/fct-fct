@@ -301,7 +301,7 @@ function quitarEmpresa(alumno, empresaId) {
         headers: {
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify({ posiblesEmpresas: alumno.posiblesEmpresas })
+        body: alumno.posiblesEmpresas
     })
     .then((response) => {
         if (response.ok) {
@@ -355,7 +355,7 @@ function agregarEmpresaPosible(alumno, empresas, empresasPosibles) {
             const match = values.some(val => val.includes(query));
             if (match) {
                 options.push({
-                    value: empresa.empresaId,
+                    value: empresa.id,
                     label: `${nombre} (${cif}) - ${email}${plazas ? ` - ${plazas} plazas` : ''}${nombreCiclo ? ` - ${nombreCiclo}` : ''}`
                 });
             }
@@ -377,7 +377,7 @@ function agregarEmpresaPosible(alumno, empresas, empresasPosibles) {
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({ posiblesEmpresas: alumno.posiblesEmpresas })
+            body: alumno.posiblesEmpresas
         })
         .then((response) => {
             if (response.ok) {

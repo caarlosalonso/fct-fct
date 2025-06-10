@@ -182,6 +182,8 @@ public class ControladorCurso extends CrudController<Long, Curso, Curso, Curso, 
 
     @PutMapping("/posibles-empresas/{cursoId}")
     public ResponseEntity<?> posiblesEmpresas(@PathVariable Long cursoId, @RequestBody String empresasIds, HttpServletRequest request) {
+        System.out.println("Empresas IDs: " + empresasIds);
+
         Optional<Curso> cursoOpt = service.getById(cursoId);
         if (cursoOpt.isEmpty()) {
             return ResponseEntity.notFound().build();
