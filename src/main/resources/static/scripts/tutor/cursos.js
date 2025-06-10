@@ -358,6 +358,11 @@ function agregarEmpresaPosible(alumno, empresas) {
     });
 
     search.onsubmit = () => {
+        console.log(alumno.posiblesEmpresas);
+        console.log(alumno.posiblesEmpresas.split(';'));
+        console.log(alumno.posiblesEmpresas.split(';').push(empresasSelect.getValue()));
+        console.log(alumno.posiblesEmpresas.split(';').push(empresasSelect.getValue()).join(';'));
+
         alumno.posiblesEmpresas = alumno.posiblesEmpresas
             .split(';')
             .push(empresasSelect.getValue())
