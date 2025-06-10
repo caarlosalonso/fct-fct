@@ -58,6 +58,12 @@ public class VistaAlumno {
     @Column(name = "observaciones", length = 2047)
     private String observaciones;
 
+    @Column(name = "a_extraordinaria")
+    private Integer aExtraordinaria;
+
+    @Column(name = "posibles_empresas", nullable = false, length = 1023)
+    private String posiblesEmpresas;
+
     @Column(name = "grupo_id", nullable = false)
     private Long grupoId;
     

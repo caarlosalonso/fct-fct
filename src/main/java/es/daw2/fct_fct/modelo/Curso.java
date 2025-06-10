@@ -39,6 +39,12 @@ public class Curso extends AbsBaseEntity {
     @Column(name = "rating", nullable = true, columnDefinition = "VARCHAR(15) DEFAULT 'Verde'")
     private String rating;
 
+    @Column(name = "a_extraordinaria", nullable = false, columnDefinition = "TINYINT UNSIGNED DEFAULT 0")
+    private Short aExtraordinaria;
+
+    @Column(name = "posibles_empresas", nullable = false, columnDefinition = "VARCHAR(1023) DEFAULT ''")
+    private String posiblesEmpresas;
+
     @Column(name = "observaciones", nullable = true, columnDefinition = "VARCHAR(2047)")
     private String observaciones;
 }
