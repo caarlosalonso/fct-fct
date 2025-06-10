@@ -73,6 +73,39 @@ function build(cursoActual, grupoTutor, alumnosCurso) {
 function createCell(alumno) {
     const cell = document.createElement('div');
     cell.classList.add('alumno-cell');
-    cell.textContent = `${alumno.nombreAlumno}`;
+
+    const bar = document.createElement('p');
+    bar.classList.add('alumno-bar', 'collapsed');
+    cell.appendChild(bar);
+
+    const nombreSpan = document.createElement('span');
+    nombreSpan.classList.add('alumno-nombre');
+    nombreSpan.textContent = `${alumno.nombreAlumno}`;
+    cell.appendChild(nombreSpan);
+
+    const empresaSpan = document.createElement('span');
+    empresaSpan.classList.add('empresa-nombre');
+    if (! alumno.nombreEmpresa) empresaSpan.classList.add('sin-empresa');
+    empresaSpan.textContent = `${alumno.nombreEmpresa || 'Sin empresa'}`;
+    cell.appendChild(empresaSpan);
+
+    const collapseSpan = document.createElement('span');
+    collapseSpan.classList.add('alumno-collapse', 'collapsed');
+    collapseSpan.textContent = `◀`;
+    cell.appendChild(collapseSpan);
+
+
+    bar.onclick = () => {
+        if (bar.classList.contains('collapsed')) {
+            bar.classList.remove('collapsed');
+            bar.classList.add('expanded');
+            collapseSpan.classList.remove('collapsed');
+        } else {
+            bar.classList.remove('expanded');
+            bar.classList.add('collapsed');
+            collapseSpan.classList.add('collapsed');
+        }
+    };
+
     return cell;
 }

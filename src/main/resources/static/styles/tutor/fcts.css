@@ -27,3 +27,33 @@
     flex-direction: column;
     gap: 10px;
 }
+
+.alumno-cell {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.alumno-bar {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+
+    &:hover {
+        cursor: pointer;
+    }
+
+    &.collapsed {
+        max-height: 30px;
+    }
+
+    &.expanded {
+        max-height: 100px;
+    }
+}
+
+.empresa-nombre {
+    &.sin-empresa {
+        color: #ff8888;
+    }
+}

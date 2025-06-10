@@ -46,10 +46,6 @@ async function fetchGrupoTutor() {
 }
 
 function build(tutorias, cursoActual, grupoTutor) {
-    console.log('Tutorías:', tutorias);
-    console.log('Ciclo lectivo actual:', cursoActual);
-    console.log('Grupo del tutor:', grupoTutor);
-
     const form = Form.getForm('crear-form');
     crearLista(tutorias, form, grupoTutor);
 
@@ -97,6 +93,7 @@ function crearLista(tutorias, form, grupoTutor) {
         )
     );
 
+    tutorias.sort((a, b) => new Date(a.fecha) - new Date(b.fecha));
     tutorias.forEach(tutoria => {
         item = document.createElement('div');
         item.classList.add('tutoria-item');
