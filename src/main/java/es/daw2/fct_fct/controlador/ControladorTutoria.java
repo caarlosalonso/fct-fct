@@ -3,29 +3,43 @@ package es.daw2.fct_fct.controlador;
 import java.net.URI;
 import java.util.Optional;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import es.daw2.fct_fct.dto.CreateTutoriaDTO;
+import es.daw2.fct_fct.modelo.Grupo;
 import es.daw2.fct_fct.modelo.Tutoria;
+import es.daw2.fct_fct.servicio.ServicioGrupo;
 import es.daw2.fct_fct.servicio.ServicioTutoria;
 import jakarta.servlet.http.HttpServletRequest;
 
 
 @RestController
 @RequestMapping("/api/tutorias")
-public class ControladorTutoria extends CrudController<Long, Tutoria, Tutoria, Tutoria, ServicioTutoria> {
+public class ControladorTutoria extends CrudController<Long, Tutoria, CreateTutoriaDTO, Tutoria, ServicioTutoria> {
+
+    @Autowired
+    private ServicioGrupo servicioGrupo;
 
     @Override
-    public ResponseEntity<?> create(@RequestBody Tutoria t, HttpServletRequest request) {
-        System.out.println(t);
-        service.save(t);
+    public ResponseEntity<?> create(@RequestBody CreateTutoriaDTO t, HttpServletRequest request) {
+        Tutoria tutoria = new Tutoria();
+        tutoria.setFecha(t.fecha());
 
-        URI location = URI.create("/api/tutorias/" + t.getId());
+        Optional<Grupo> grupoOpt = servicioGrupo.getById(t.grupoId());
+        if (grupoOpt.isEmpty()) {
+            return ResponseEntity.badRequest().body("El grupo con id " + t.grupoId() + " no existe.");
+        }
+        tutoria.setGrupo(grupoOpt.get());
 
-        return ResponseEntity.created(location).body(t);
+        service.save(tutoria);
+        URI location = URI.create("/api/tutorias/" + tutoria.getId());
+
+        return ResponseEntity.created(location).body(tutoria);
     }
 
     // all ya existe en CrudController

@@ -56,9 +56,9 @@ function build(tutorias, cursoActual, grupoTutor) {
     const crearTutorias = document.getElementById('create-tutoria');
     crearTutorias.addEventListener('click', (event) => {
         event.preventDefault();
-        setInputsToCreate(form);
+        setInputsToCreate(form, grupoTutor);
     });
-    setInputsToCreate(form);
+    setInputsToCreate(form, grupoTutor);
 
     const displaySection = document.getElementById(SECTION);
     while( displaySection.firstChild) displaySection.removeChild(displaySection.firstChild);
@@ -123,12 +123,13 @@ function crearLista(tutorias, form) {
     });
 }
 
-function setInputsToCreate(form) {
+function setInputsToCreate(form, grupoTutor) {
     form.onsubmit = () => {
         const fecha = form.getInput('fecha').getValue();
 
         let newTutoria = {
-            fecha: fecha
+            fecha: fecha,
+            grupoId: grupoTutor.grupoId
         };
 
         fetch('/api/tutorias/create', {
