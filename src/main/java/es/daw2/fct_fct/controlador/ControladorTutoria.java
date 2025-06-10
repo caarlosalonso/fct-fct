@@ -28,8 +28,6 @@ public class ControladorTutoria extends CrudController<Long, Tutoria, CreateTuto
 
     @Override
     public ResponseEntity<?> create(@RequestBody CreateTutoriaDTO t, HttpServletRequest request) {
-        System.out.println("Creando una nueva tutoría: " + t);
-
         Tutoria tutoria = new Tutoria();
         tutoria.setFecha(t.fecha());
 
@@ -51,8 +49,6 @@ public class ControladorTutoria extends CrudController<Long, Tutoria, CreateTuto
 
     @Override
     public ResponseEntity<?> update(@PathVariable Long id, @RequestBody UpdateTutoriaDTO t, HttpServletRequest request) {
-        System.out.println("Actualizando la tutoría con id: " + id + " con los datos: " + t);
-
         Optional<Tutoria> tutoria = service.getById(id);
 
         if (!tutoria.isPresent()) {

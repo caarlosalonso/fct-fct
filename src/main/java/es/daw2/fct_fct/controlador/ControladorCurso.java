@@ -78,7 +78,7 @@ public class ControladorCurso extends CrudController<Long, Curso, Curso, Curso, 
             .findFirst();
         
         if (cursoOpt.isPresent()) {
-            return ResponseEntity.badRequest().body("El alumno ya está asignado al grupo en el ciclo lectivo.");
+            return ResponseEntity.badRequest().body("El alumno ya está asignado al grupo en un ciclo lectivo.");
         }
 
         Curso curso = new Curso();

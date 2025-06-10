@@ -18,7 +18,7 @@ export class DateTimeInput extends TextInput {
 
     init() {
         super.init();
-        this.input.setAttribute('type', 'datetime-local');
+        this.input.setAttribute('type', 'datetime');
     }
 
     updateState() {
