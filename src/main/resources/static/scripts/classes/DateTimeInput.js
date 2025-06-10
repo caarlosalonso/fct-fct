@@ -12,6 +12,7 @@ export class DateTimeInput extends TextInput {
         this.validate = () => {
             if (this.isEmpty()) return true;
             const date = new Date(this.input.value);
+            date.setHours(date.getHours() + 2); // Adjust for timezone offset
             console.log(date.toISOString());
             return !isNaN(date.getTime());
         };
