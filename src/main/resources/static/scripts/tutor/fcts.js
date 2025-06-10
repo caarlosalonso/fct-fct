@@ -68,6 +68,8 @@ function build(cursoActual, grupoTutor, alumnosCurso) {
             rojos.appendChild(cell);
         }
     });
+
+    document.querySelectorAll('form').forEach(form => new Form(form).init());
 }
 
 function createCell(alumno) {
@@ -121,14 +123,14 @@ function createCell(alumno) {
             </div>
             <div class="instance form-input grouped-inputs">
                 <div class="form-group form-input">
-                    <input type="range" name="horasSemanales" class="text-based input" label="Horas semanales" data-show-validity="true" data-required="true" min="30" max="40" step="1" value="40">
+                    <input type="range" name="horasSemanales" class="text-based input" label="{n} Hora{s} semanal{es}" data-show-validity="true" data-required="true" min="30" max="40" step="1" value="40">
                 </div>
                 <div class="form-group form-input">
                     <p class="info">Sin contar sábados y domingos</p>
-                    <input type="range" name="noLectivos" class="text-based input" label="No lectivos" data-show-validity="true" data-required="true" min="0" max="20" step="1" value="0">
+                    <input type="range" name="noLectivos" class="text-based input" label="{n} No lectivo{s}" data-show-validity="true" data-required="true" min="0" max="20" step="1" value="0">
                 </div>
                 <div class="form-group form-input">
-                    <input type="range" name="horasDePracticas" class="text-based input" label="Horas de prácticas" data-show-validity="true" data-required="true" min="300" max="500" step="1" value="370">
+                    <input type="range" name="horasDePracticas" class="text-based input" label="{n} Hora{s} de prácticas" data-show-validity="true" data-required="true" min="300" max="500" step="1" value="370">
                 </div>
             </div>
             <div class="instance form-input grouped-inputs">

@@ -10,6 +10,7 @@ import { DNIInput } from "./DNIInput.js";
 import { NumberInput } from "./NumberInput.js";
 import { SelectInput } from "./SelectInput.js";
 import { DateTimeInput } from "./DateTimeInput.js";
+import { RangeInput } from "./RangeInput.js";
 
 export class Form {
     static formMap = new Map();
@@ -51,6 +52,7 @@ export class Form {
                 case 'number':          this.entries.push(new NumberInput(input));      break;
                 case 'select':          this.entries.push(new SelectInput(input));      break;
                 case 'datetime-local':  this.entries.push(new DateTimeInput(input));    break;
+                case 'range':           this.entries.push(new RangeInput(input));       break;
                 default:                this.entries.push(new Input(input));            break;
             }
         });
