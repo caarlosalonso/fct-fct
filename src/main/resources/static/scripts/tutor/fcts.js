@@ -404,7 +404,7 @@ function onsubmit(alumnoId, cursoId) {
 
         console.log('Datos del FCT:', data);
 
-        fetch('/api/fcts/create', {
+        fetch('/api/fcts/fct', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'

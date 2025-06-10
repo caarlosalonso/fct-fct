@@ -37,7 +37,7 @@ public class ControladorFCT extends CrudController<Long, Fct, Fct, Fct, Servicio
     @Autowired
     private ServicioEmpresa servicioEmpresa;
 
-    @PostMapping("/create")
+    @PostMapping("/fct")
     public ResponseEntity<?> createOrUpdate(@RequestBody CreateFctDTO dto, HttpServletRequest request) {
         Optional<Fct> fctOpt = service.getByCursoId(dto.cursoId());
         if (fctOpt.isPresent()) {
