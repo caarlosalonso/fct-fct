@@ -238,8 +238,6 @@ function crearLista(alumnosCurso, grupoTutor, form, empresas) {
                 const empresaSpan = document.createElement('span');
                 empresaSpan.classList.add('empresa-posible');
                 const found = empresas.find(e => e.id == empresaId);
-                console.log(found);
-
                 empresaSpan.textContent = found?.nombre || empresaId;
                 empresasPosibles.appendChild(empresaSpan);
                 empresaSpan.appendChild(
@@ -294,7 +292,6 @@ function quitarEmpresa(alumno, empresaId) {
         .split(';')
         .filter(id => id !== empresaId)
         .join(';');
-    console.log(alumno.posiblesEmpresas);
     
     fetch(`/api/cursos/posibles-empresas/${alumno.cursoId}`, {
         method: 'PUT',
@@ -364,13 +361,17 @@ function agregarEmpresaPosible(alumno, empresas, empresasPosibles) {
     });
 
     search.onsubmit = () => {
-        console.log('Pre', alumno.posiblesEmpresas);
         alumno.posiblesEmpresas = alumno.posiblesEmpresas.split(';');
-        console.log('Post', alumno.posiblesEmpresas);
+        if (alumnos.posiblesEmpresas.contains(empresasSelect.getValue())) {
+            search.reset();
+            search.submitFinish();
+            parent.classList.remove('active');
+            parent.style.left = '0';
+            parent.style.top = '0';
+            return;
+        }
         alumno.posiblesEmpresas.push(empresasSelect.getValue());
-        console.log('Push', alumno.posiblesEmpresas);
         alumno.posiblesEmpresas = alumno.posiblesEmpresas.join(';');
-        console.log('Empresas posibles:', alumno.posiblesEmpresas);
 
         fetch(`/api/cursos/posibles-empresas/${alumno.cursoId}`, {
             method: 'PUT',
@@ -426,8 +427,6 @@ function setInputsToUpdate(form, alumno) {
             rating: rating,
             observaciones: observaciones
         };
-
-        console.log(alumno.cursoId);
 
         fetch(`/api/cursos/update/${alumno.cursoId}`, {
             method: 'PUT',

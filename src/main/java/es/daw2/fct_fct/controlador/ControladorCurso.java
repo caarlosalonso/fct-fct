@@ -193,6 +193,7 @@ public class ControladorCurso extends CrudController<Long, Curso, Curso, Curso, 
         curso.setPosiblesEmpresas(empresasIds);
         
         Optional<Curso> updatedCurso = service.update(cursoId, curso);
+        System.out.println("Curso actualizado: " + updatedCurso);
         if (!updatedCurso.isPresent()) {
             return ResponseEntity.badRequest().body("No se ha podido actualizar el curso con el id: " + cursoId);
         }
