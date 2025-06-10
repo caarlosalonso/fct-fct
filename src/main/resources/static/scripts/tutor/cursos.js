@@ -143,7 +143,7 @@ function build(alumnos, cursoActual, grupoTutor, alumnosCurso) {
                 asignar.reset();
                 asignar.submitFinish();
             } else if (response.status === 400) {
-                asignar.showError('El alumno ya está asignado a este grupo');
+                asignar.showError('El alumno ya está asignado a un grupo');
             } else {
                 asignar.showError('Error al asignar el alumno al grupo');
             }

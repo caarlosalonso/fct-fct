@@ -133,6 +133,11 @@ function createCell(alumno) {
     empresaSpan.textContent = `${alumno.nombreEmpresa || 'Sin empresa'}`;
     bar.appendChild(empresaSpan);
 
+    const horasRestantesSpan = document.createElement('span');
+    horasRestantesSpan.classList.add('alumno-horas-restantes');
+    horasRestantesSpan.textContent = `${alumno.horasRestantes}`;
+    bar.appendChild(horasRestantesSpan);
+
     const collapseSpan = document.createElement('span');
     collapseSpan.classList.add('alumno-collapse', 'collapsed');
     collapseSpan.textContent = `◀`;

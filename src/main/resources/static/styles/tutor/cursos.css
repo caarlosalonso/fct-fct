@@ -100,13 +100,18 @@
     grid-column: auto / span 3;
 }
 
+#asignar {
+    background-color: var(--background-color);
+    border-radius: var(--border-radius);
+    padding: 10px;
+}
 
 /* ---------------------------------------------------------------------------- */
 /*                                   SET INFO                                   */
 /* ---------------------------------------------------------------------------- */
 #set-info {
     background-color: var(--background-color);
-    border-radius: var(--border-radius);
+    border-radius: 0px 0px var(--border-radius) var(--border-radius);
     color: var(--text-color);
     padding: 10px;
     flex: 1 1 auto;
@@ -114,7 +119,7 @@
     flex-direction: column;
 }
 
-#titulo {
+.titulo {
     font-size: 32px;
     font-weight: bold;
     text-align: center;
