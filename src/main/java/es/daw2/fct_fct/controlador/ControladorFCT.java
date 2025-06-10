@@ -3,30 +3,53 @@ package es.daw2.fct_fct.controlador;
 import java.net.URI;
 import java.util.Optional;
 
-import org.springframework.http.HttpStatus;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import es.daw2.fct_fct.modelo.Curso;
+import es.daw2.fct_fct.modelo.Empresa;
 import es.daw2.fct_fct.modelo.Fct;
+import es.daw2.fct_fct.modelo.TutorEmpresa;
+import es.daw2.fct_fct.servicio.ServicioCurso;
+import es.daw2.fct_fct.servicio.ServicioEmpresa;
 import es.daw2.fct_fct.servicio.ServicioFCT;
+import es.daw2.fct_fct.servicio.ServicioTutorEmpresa;
+import es.daw2.fct_fct.dto.CreateFctDTO;
 import jakarta.servlet.http.HttpServletRequest;
 
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
 
 @RestController
-@RequestMapping("/api/fct")
+@RequestMapping("/api/fcts")
 public class ControladorFCT extends CrudController<Long, Fct, Fct, Fct, ServicioFCT> {
+
+    @Autowired
+    private ServicioTutorEmpresa servicioTutorEmpresa;
+
+    @Autowired
+    private ServicioCurso servicioCurso;
+
+    @Autowired
+    private ServicioEmpresa servicioEmpresa;
+
+    @PostMapping("/create")
+    public ResponseEntity<?> createOrUpdate(@RequestBody CreateFctDTO dto, HttpServletRequest request) {
+        Optional<Fct> fctOpt = service.getByCursoId(dto.cursoId());
+        if (fctOpt.isPresent()) {
+            return updateFct(dto);
+        } else {
+            return createFct(dto);
+        }
+    }
 
     @Override
     public ResponseEntity<?> create(@RequestBody Fct dto, HttpServletRequest request) {
-        service.save(dto);
-
-        URI location = URI.create("/api/fct/" + dto.getId());
-
-        return ResponseEntity.created(location).body(dto);
+        throw new UnsupportedOperationException("No uses esto");
     }
 
     // all ya existe en CrudController
@@ -35,17 +58,82 @@ public class ControladorFCT extends CrudController<Long, Fct, Fct, Fct, Servicio
 
     @Override
     public ResponseEntity<?> update(@PathVariable Long id, @RequestBody Fct dto, HttpServletRequest request) {
-        Optional<Fct> fctOpt = service.getById(id);
+        throw new UnsupportedOperationException("No uses esto");
+    }
+
+    public ResponseEntity<?> createFct(CreateFctDTO dto) {
+        Fct fct = new Fct();
+        Optional<Curso> cursoOpt = servicioCurso.getById(dto.cursoId());
+        if (!cursoOpt.isPresent()) {
+            return ResponseEntity.notFound().build();
+        }
+        fct.setCurso(cursoOpt.get());
+
+        Optional<Empresa> empresaOpt = servicioEmpresa.getById(dto.empresaId());
+        if (!empresaOpt.isPresent()) {
+            return ResponseEntity.notFound().build();
+        }
+        fct.setEmpresa(empresaOpt.get());
+
+        Optional<TutorEmpresa> tutorOpt = servicioTutorEmpresa.getById(dto.tutorEmpresaId());
+        if (!tutorOpt.isPresent()) {
+            return ResponseEntity.notFound().build();
+        }
+        fct.setTutorEmpresa(tutorOpt.get());
+
+        fct.setFechaInicio(dto.fechaInicio());
+        fct.setHorasSemana(dto.horasSemanales());
+        fct.setNoLectivos(dto.noLectivos());
+        fct.setHorasPracticas(dto.horasPracticas());
+        fct.setFechaFin(dto.fechaFin());
+        fct.setApto(false);
+
+        service.save(fct);
+
+        URI location = URI.create("/api/fct/" + fct.getId());
+
+        return ResponseEntity.created(location).body(fct);
+    }
+
+    public ResponseEntity<?> updateFct(CreateFctDTO dto) {
+        Optional<Fct> fctOpt = service.getByCursoId(dto.cursoId());
         if (!fctOpt.isPresent()) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No se encontró el FCT con el id: " + id);
+            return ResponseEntity.notFound().build();
         }
+        Fct fct = fctOpt.get();
 
-        Optional<Fct> fctActualizado = service.update(id, fctOpt.get());
+        Optional<Curso> cursoOpt = servicioCurso.getById(dto.cursoId());
+        if (!cursoOpt.isPresent()) {
+            return ResponseEntity.notFound().build();
+        }
+        fct.setCurso(cursoOpt.get());
+
+        Optional<Empresa> empresaOpt = servicioEmpresa.getById(dto.empresaId());
+        if (!empresaOpt.isPresent()) {
+            return ResponseEntity.notFound().build();
+        }
+        fct.setEmpresa(empresaOpt.get());
+
+        Optional<TutorEmpresa> tutorOpt = servicioTutorEmpresa.getById(dto.tutorEmpresaId());
+        if (!tutorOpt.isPresent()) {
+            return ResponseEntity.notFound().build();
+        }
+        fct.setTutorEmpresa(tutorOpt.get());
+
+        fct.setFechaInicio(dto.fechaInicio());
+        fct.setHorasSemana(dto.horasSemanales());
+        fct.setNoLectivos(dto.noLectivos());
+        fct.setHorasPracticas(dto.horasPracticas());
+        fct.setFechaFin(dto.fechaFin());
+        fct.setApto(false);
+
+        Optional<Fct> fctActualizado = service.update(fct.getId(), fct);
         if (!fctActualizado.isPresent()) {
-            return ResponseEntity.badRequest().body("No se ha podido actualizar el FCT con el id: " + id);
+            return ResponseEntity.badRequest().body("No se ha podido actualizar el FCT con el id: " + fct.getId());
         }
 
-        URI location = URI.create("/api/fct/" + id);
-        return ResponseEntity.created(location).body(fctActualizado.get());
+        URI location = URI.create("/api/fct/" + fct.getId());
+
+        return ResponseEntity.created(location).body(fctActualizado);
     }
 }

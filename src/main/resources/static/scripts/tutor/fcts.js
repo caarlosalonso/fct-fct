@@ -66,7 +66,7 @@ async function fetchTutoresEmpresas() {
 }
 
 async function fetchFCTs() {
-    const response = await fetch('/api/fct/all');
+    const response = await fetch('/api/fcts/all');
     if (response.status === 204) return [];
     if (!response.ok) throw new Error('Error al obtener los FCT');
     return await response.json();
@@ -111,6 +111,7 @@ function build(cursoActual, grupoTutor, alumnosCurso, empresas, tutoresEmpresas,
         computeFinFCT(alumno.alumnoId);
         searchEmpresa(alumno.alumnoId, empresas);
         searchTutorEmpresa(alumno.alumnoId, tutoresEmpresas);
+        onsubmit(alumno.alumnoId, alumno.cursoId);
     });
 }
 
@@ -159,7 +160,7 @@ function createCell(alumno, fcts, grupoTutor) {
 
     const fctDiv = document.createElement('div');
     fctDiv.innerHTML = `
-    <form id="fct-form-${alumno.alumnoId}" method="POST">
+    <form id="fct-form-${alumno.alumnoId}" method="POST" submit-text="Guardar FCT">
         <div class="inputs form-container">
             <div class="instance form-input grouped-inputs">
                 <div class="form-group form-input">
@@ -372,4 +373,55 @@ function searchTutorEmpresa(alumnoId, tutoresEmpresas) {
         });
         tutoresSelect.updateDropdown(options, true);
     });
+}
+
+function onsubmit(alumnoId, cursoId) {
+    const formulario = Form.getForm(`fct-form-${alumnoId}`);
+    if (!formulario) {
+        console.error(`Formulario con ID fct-form-${alumnoId} no encontrado.`);
+        return;
+    }
+
+    formulario.onsubmit = () => {
+        const empresaInput = formulario.getInput(`empresa-${alumnoId}`);
+        const tutorEmpresaInput = formulario.getInput(`tutor-empresa-${alumnoId}`);
+        const fechaInicioInput = formulario.getInput(`fecha-inicio-${alumnoId}`);
+        const horasSemanalesInput = formulario.getInput(`horas-semanales-${alumnoId}`);
+        const noLectivosInput = formulario.getInput(`no-lectivos-${alumnoId}`);
+        const horasDePracticasInput = formulario.getInput(`horas-de-practicas-${alumnoId}`);
+        const fechaFinInput = formulario.getInput(`fecha-fin-${alumnoId}`);
+
+        const data = {
+            cursoId: cursoId,
+            empresaId: empresaInput.getValue(),
+            tutorEmpresaId: tutorEmpresaInput.getValue(),
+            fechaInicio: fechaInicioInput.getValue(),
+            horasSemanales: horasSemanalesInput.getValue(),
+            noLectivos: noLectivosInput.getValue(),
+            horasDePracticas: horasDePracticasInput.getValue(),
+            fechaFin: fechaFinInput.getValue()
+        };
+
+        console.log('Datos del FCT:', data);
+
+        fetch('/api/fcts/create', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
+        })
+        .then((response) => {
+            if (response.ok || response.status === 201) {
+                promise();
+            } else {
+                formulario.showError('Error al crear el FCT. Por favor, revisa los datos introducidos.');
+            formulario.submitFinish();
+            }
+        })
+        .catch((error) => {
+            formulario.showError('Error al enviar los datos: ' + error.message);
+            formulario.submitFinish();
+        });
+    };
 }
