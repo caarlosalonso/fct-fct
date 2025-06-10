@@ -105,8 +105,9 @@ function createCell(alumno) {
         }
     };
 
-    const fct = document.createElement('form');
+    const fct = document.createElement('div');
     fct.innerHTML = `
+    <form id="fct-form-${alumno.alumnoId}" method="POST">
         <div class="inputs form-container">
             <div class="instance form-input grouped-inputs">
                 <div class="form-group form-input">
@@ -136,6 +137,7 @@ function createCell(alumno) {
                 </div>
             </div>
         </div>
+    <form>
     `;
 
     return cell;
