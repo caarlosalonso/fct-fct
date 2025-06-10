@@ -1,0 +1,29 @@
+#main-content {
+    width: 90%;
+    margin: 0 auto;
+    background-color: var(--background-color);
+    border-radius: var(--border-radius);
+    padding: var(--border-radius);
+    display: flex;
+    flex-direction: column;
+    gap: var(--border-radius);
+}
+
+.section {
+    border-radius: var(--border-radius);
+    background-color: #505050;
+    padding: var(--border-radius);
+}
+
+.title {
+    margin: 0px 0px 10px 0px;
+    font-size: 1.5rem;
+    padding: 0px 0px;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.alumnos {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
