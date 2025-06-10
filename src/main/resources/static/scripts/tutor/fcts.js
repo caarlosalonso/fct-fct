@@ -156,6 +156,8 @@ function createCell(alumno) {
                 <div class="form-group form-input">
                     <input id="empresa-${alumno.alumnoId}" type="select" name="empresa" class="text-based input" label="Empresa" data-show-validity="true" data-required="true">
                 </div>
+            </div>
+            <div class="instance form-input grouped-inputs">
                 <div class="form-group form-input">
                     <input id="tutor-empresa-${alumno.alumnoId}" type="select" name="tutor_empresa" class="text-based input" label="Empresa" data-show-validity="true">
                 </div>
@@ -298,19 +300,22 @@ function searchEmpresa(alumnoId, empresas) {
         let options = [];
 
         empresas.forEach(empresa => {
-            const [ nombre, cif, email ] = [empresa.nombreEmpresa, empresa.cif, empresa.email];
+            const [ nombre, cif, email, plazas, nombreCiclo ] = [empresa.nombreEmpresa, empresa.cif, empresa.email, empresa.plazas, empresa.nombreCiclo];
             const values = [
                 (nombre || '').toLowerCase(),
                 (cif || '').toLowerCase(),
-                (email || '').toLowerCase()
+                (email || '').toLowerCase(),
+                (plazas || '').toString().toLowerCase(),
+                (nombreCiclo || '').toLowerCase()
             ];
+
             const match = values.some(val => val.includes(query));
             console.log(match, values);
             console.log(options);
             if (match) {
                 options.push({
                     value: empresa.empresaId,
-                    label: `${nombre} (${cif}) - ${email}`
+                    label: `${nombre} (${cif}) - ${email}${plazas ? ` - ${plazas} plazas` : ''}${nombreCiclo ? ` - ${nombreCiclo}` : ''}`
                 });
             }
         });
