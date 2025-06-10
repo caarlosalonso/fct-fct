@@ -233,7 +233,7 @@ function createSVG(viewBox, pathData, clickHandler, ...classList) {
 // Funciones para editar/eliminar (puedes implementar la lógica real)
 function collapseAll() {
     const form = document.getElementById('empresa-form');
-    document.getElementById('empresa-section').classList.add('collapsed', 'oculto');
+    if (form) form.parentNode.classList.add('collapsed');
 }
 
 function finish(form) {
