@@ -298,7 +298,9 @@ function quitarEmpresa(alumno, empresaId) {
         headers: {
             'Content-Type': 'application/json'
         },
-        body: alumno.posiblesEmpresas
+        body: JSON.stringify({
+            posiblesEmpresas: alumno.posiblesEmpresas
+        })
     })
     .then((response) => {
         if (response.ok) {
@@ -376,7 +378,9 @@ function agregarEmpresaPosible(alumno, empresas, empresasPosibles) {
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: alumno.posiblesEmpresas
+            body: JSON.stringify({
+                posiblesEmpresas: alumno.posiblesEmpresas
+            })
         })
         .then((response) => {
             if (response.ok) {

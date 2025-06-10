@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import es.daw2.fct_fct.dto.AlumnoActualizarCursoDTO;
 import es.daw2.fct_fct.dto.AlumnoGrupoDTO;
+import es.daw2.fct_fct.dto.PosiblesEmpresasDTO;
 import es.daw2.fct_fct.modelo.Alumno;
 import es.daw2.fct_fct.modelo.CicloLectivo;
 import es.daw2.fct_fct.modelo.Curso;
@@ -181,17 +182,15 @@ public class ControladorCurso extends CrudController<Long, Curso, Curso, Curso, 
     }
 
     @PutMapping("/posibles-empresas/{cursoId}")
-    public ResponseEntity<?> posiblesEmpresas(@PathVariable Long cursoId, @RequestBody String empresasIds, HttpServletRequest request) {
-        System.out.println("Empresas IDs: " + empresasIds);
-
+    public ResponseEntity<?> posiblesEmpresas(@PathVariable Long cursoId, @RequestBody PosiblesEmpresasDTO dto, HttpServletRequest request) {
         Optional<Curso> cursoOpt = service.getById(cursoId);
         if (cursoOpt.isEmpty()) {
             return ResponseEntity.notFound().build();
         }
 
         Curso curso = cursoOpt.get();
-        curso.setPosiblesEmpresas(empresasIds);
-        
+        curso.setPosiblesEmpresas(dto.posiblesEmpresas() == null ? "" : dto.posiblesEmpresas());
+
         Optional<Curso> updatedCurso = service.update(cursoId, curso);
         System.out.println("Curso actualizado: " + updatedCurso);
         if (!updatedCurso.isPresent()) {
