@@ -6,7 +6,7 @@ export class DateTimeInput extends TextInput {
         this.getValue = () => {
             if (this.isEmpty()) return '';
             const date = new Date(this.input.value);
-            return date.toISOString();
+            return moment(date.toISOString()).utcOffset(0, true).format();
         }
 
         this.validate = () => {
@@ -21,7 +21,8 @@ export class DateTimeInput extends TextInput {
             if (value === null || value === undefined || value === '') return '';
             const date = new Date(value);
             if (isNaN(date.getTime())) return '';
-            return date.toISOString().split('T')[0] + ' ' + date.toTimeString().split(' ')[0];
+            const formattedDate = moment(date.toISOString()).utcOffset(0, true).format();
+            return formattedDate.split('T')[0] + ' ' + formattedDate.split(' ')[1];
         };
     }
 
