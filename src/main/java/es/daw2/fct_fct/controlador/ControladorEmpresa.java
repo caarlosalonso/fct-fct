@@ -75,14 +75,16 @@ public class ControladorEmpresa extends CrudController<Long, Empresa, EmpresaDTO
         empresa.setPersona_contacto(dto.getPersona_contacto());
         empresa.setEstado(dto.getEstado());
         empresa.setObservaciones(dto.getObservaciones());
-        if (dto.getPropuesta_por() != null) {
-            userRepository.findById(dto.getPropuesta_por()).ifPresent(empresa::setPropuesta_por);
-        }
         empresa.setNumero_convenio(dto.getNumero_convenio());
 
         // Actualizar propuesta_por si viene en el JSON
         if (dto.getPropuesta_por() != null) {
-            userRepository.findById(dto.getPropuesta_por()).ifPresent(empresa::setPropuesta_por);
+            userRepository.findById(dto.getPropuesta_por()).ifPresentOrElse(
+                empresa::setPropuesta_por,
+                () -> empresa.setPropuesta_por(null)
+            );
+        } else {
+            empresa.setPropuesta_por(null);
         }
 
         Optional<Empresa> empresaActualizada = service.update(id, empresa);
