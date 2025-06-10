@@ -322,12 +322,11 @@ function agregarEmpresaPosible(alumno, empresas, empresasPosibles) {
     if (empresasPosibles && parent) {
         const rect = empresasPosibles.getBoundingClientRect();
         parent.style.left = `${rect.left + window.scrollX}px`;
-        parent.style.top = `${rect.bottom + window.scrollY}px`;
+        parent.style.top = `${rect.bottom + 30 + window.scrollY}px`;
     }
 
     parent.classList.add('active');
     parent.addEventListener('keydown', (event) => {
-        event.preventDefault();
         if (event.key === 'Escape') {
             search.reset();
             search.submitFinish();
