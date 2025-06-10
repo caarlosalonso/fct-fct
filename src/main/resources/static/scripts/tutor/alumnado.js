@@ -57,7 +57,6 @@ function build(alumnos) {
         searchInput.input.addEventListener('input', () => {
             let query = searchInput.input.value;
             query = (query || '').toLowerCase().trim();
-            console.log(query);
             let options = [];
             
             alumnos.forEach(alumno => {
@@ -69,8 +68,6 @@ function build(alumnos) {
                     (dni || '').toLowerCase()
                 ];
                 const match = values.some(val => val.includes(query));
-                console.log(match, values);
-                console.log(options);
                 if (match) {
                     options.push({
                         value: alumno.alumnoId,

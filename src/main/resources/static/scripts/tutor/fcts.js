@@ -109,6 +109,7 @@ function build(cursoActual, grupoTutor, alumnosCurso, empresas, tutoresEmpresas,
 
     alumnosCurso.forEach((alumno) => {
         computeFinFCT(alumno.alumnoId);
+        searchEmpresa(alumno.alumnoId, empresas);
     })
 }
 
@@ -153,7 +154,10 @@ function createCell(alumno) {
         <div class="inputs form-container">
             <div class="instance form-input grouped-inputs">
                 <div class="form-group form-input">
-                    <input type="select" name="empresa" class="text-based input" label="Empresa" data-show-validity="true" data-required="true">
+                    <input id="empresa-${alumno.alumnoId}" type="select" name="empresa" class="text-based input" label="Empresa" data-show-validity="true" data-required="true">
+                </div>
+                <div class="form-group form-input">
+                    <input id="tutor-empresa-${alumno.alumnoId}" type="select" name="tutor_empresa" class="text-based input" label="Empresa" data-show-validity="true">
                 </div>
             </div>
             <div class="instance form-input grouped-inputs">
@@ -273,4 +277,43 @@ function compute(fechaInicio, horasSemanales, noLectivos, horasDePracticas, fech
     }
     fechaFin.setValue(fechaFinal);
     fechaFin.showValidity();
+}
+
+function searchEmpresa(alumnoId, empresas) {
+    const formulario = Form.getForm(`fct-form-${alumnoId}`);
+    if (!formulario) {
+        console.error(`Formulario con ID fct-form-${alumnoId} no encontrado.`);
+        return;
+    }
+    const empresasSelect = formulario.getInput(`empresa-${alumnoId}`);
+    if (!empresasSelect) {
+        console.error(`Input de empresa con ID empresa-${alumnoId} no encontrado.`);
+        return;
+    }
+
+    empresasSelect.input.addEventListener('input', () => {
+        let query = empresasSelect.input.value;
+        query = (query || '').toLowerCase().trim();
+        console.log(query);
+        let options = [];
+
+        empresas.forEach(empresa => {
+            const [ nombre, cif, email ] = [empresa.nombreEmpresa, empresa.cif, empresa.email];
+            const values = [
+                (nombre || '').toLowerCase(),
+                (cif || '').toLowerCase(),
+                (email || '').toLowerCase()
+            ];
+            const match = values.some(val => val.includes(query));
+            console.log(match, values);
+            console.log(options);
+            if (match) {
+                options.push({
+                    value: empresa.empresaId,
+                    label: `${nombre} (${cif}) - ${email}`
+                });
+            }
+        });
+        empresasSelect.updateDropdown(options, true);
+    });
 }
