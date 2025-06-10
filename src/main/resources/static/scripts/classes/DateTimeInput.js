@@ -12,7 +12,15 @@ export class DateTimeInput extends TextInput {
         this.validate = () => {
             if (this.isEmpty()) return true;
             const date = new Date(this.input.value);
+            console.log(date.toISOString());
             return !isNaN(date.getTime());
+        };
+
+        this.format = (value) => {
+            if (value === null || value === undefined || value === '') return '';
+            const date = new Date(value);
+            if (isNaN(date.getTime())) return '';
+            return date.toISOString().split('T')[0] + ' ' + date.toTimeString().split(' ')[0];
         };
     }
 
