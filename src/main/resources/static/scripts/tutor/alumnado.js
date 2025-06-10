@@ -88,7 +88,7 @@ function build(alumnos) {
 function setInputsToCreate(form) {
     document.getElementById('titulo').textContent = 'Creación de un nuevo alumno';
 
-    form.onsubmit = function (event) {
+    form.onsubmit = () => {
         const nombre = form.getInput('nombre').getValue();
         const email = form.getInput('email').getValue();
         const phone = form.getInput('phone').getValue();

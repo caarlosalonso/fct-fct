@@ -144,12 +144,6 @@ function build(alumnos, cursoActual, grupoTutor, alumnosCurso) {
         });
     };
 
-    const crearAlumno = document.getElementById('create-alumno');
-    crearAlumno.addEventListener('click', (event) => {
-        event.preventDefault();
-        setInputsToCreate(form);
-    });
-
     const displaySection = document.getElementById(SECTION);
     while( displaySection.firstChild) displaySection.removeChild(displaySection.firstChild);
 
@@ -237,68 +231,10 @@ function crearLista(alumnosCurso, grupoTutor, form) {
     });
 }
 
-function setInputsToCreate(form) {
-    document.getElementById('titulo').textContent = 'Creación de un nuevo alumno';
-
-    form.onsubmit = function (event) {
-        const nombre = form.getInput('nombre').getValue();
-        const email = form.getInput('email').getValue();
-        const phone = form.getInput('phone').getValue();
-        const nia = form.getInput('nia').getValue();
-        const dni = form.getInput('dni').getValue();
-        const nuss = form.getInput('nuss').getValue();
-        const address = form.getInput('address').getValue();
-        const convocatoria = form.getInput('convocatoria').getValue();
-
-        let newAlumno = {
-            nombreAlumno: nombre,
-            email: email,
-            dni: dni,
-            nia: nia,
-            nuss: nuss,
-            phone: phone,
-            address: address,
-            convocatoria: convocatoria
-        };
-
-        fetch('/api/alumnos/create', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(newAlumno)
-        })
-        .then(response => {
-            if (response.status === 201) {
-                promise();
-                form.reset();
-                form.submitFinish();
-                form.showSuccess('Alumno creado correctamente');
-            } else {
-                form.showError('Error al crear el alumno');
-            }
-        })
-        .catch(error => {
-            form.showError('Error al enviar los datos: ' + error.message);
-        });
-    };
-
-    form.getInput('nombre').retrack('');
-    form.getInput('email').retrack('');
-    form.getInput('phone').retrack('');
-    form.getInput('nia').retrack('');
-    form.getInput('dni').retrack('');
-    form.getInput('nuss').retrack('');
-    form.getInput('address').retrack('');
-    form.getInput('convocatoria').retrack('');
-
-    form.form.querySelector('#submit').textContent = 'Crear alumno';
-}
-
 function setInputsToUpdate(form, alumno) {
     document.getElementById('titulo').textContent = `Información del alumno`;
 
-    form.onsubmit = function (event) {
+    form.onsubmit = () => {
         const nombre = form.getInput('nombre').getValue();
         const email = form.getInput('email').getValue();
         const phone = form.getInput('phone').getValue();

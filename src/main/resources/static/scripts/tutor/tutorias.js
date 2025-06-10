@@ -48,6 +48,7 @@ async function fetchGrupoTutor() {
 function build(tutorias, cursoActual, grupoTutor) {
     console.log('Tutorías:', tutorias);
     console.log('Ciclo lectivo actual:', cursoActual);
+    console.log('Grupo del tutor:', grupoTutor);
 
     const form = Form.getForm('crear-form');
     crearLista(tutorias, form);
@@ -57,6 +58,7 @@ function build(tutorias, cursoActual, grupoTutor) {
         event.preventDefault();
         setInputsToCreate(form);
     });
+    setInputsToCreate(form);
 
     const displaySection = document.getElementById(SECTION);
     while( displaySection.firstChild) displaySection.removeChild(displaySection.firstChild);
@@ -113,7 +115,7 @@ function crearLista(tutorias, form) {
                 'M 42 3 H 28 A 2 2 0 0 0 26 1 H 22 A 2 2 0 0 0 20 3 H 6 A 2 2 0 0 0 6 7 H 42 A 2 2 0 0 0 42 3 Z M 37 11 V 43 H 31 V 19 A 1 1 0 0 0 27 19 V 43 H 21 V 19 A 1 1 0 0 0 17 19 V 43 H 11 V 11 A 2 2 0 0 0 7 11 V 45 A 2 2 0 0 0 9 47 H 39 A 2 2 0 0 0 41 45 V 11 A 2 2 0 0 0 37 11 Z',
                 (event) => {
                     event.preventDefault();
-                    removeAlumnoFromGrupo(form, tutoria);
+                    removeTutoria(form, tutoria);
                 },
                 'delete-svg'
             )
@@ -122,9 +124,9 @@ function crearLista(tutorias, form) {
 }
 
 function setInputsToCreate(form) {
-    document.getElementById('titulo').textContent = 'Creación de un nuevo alumno';
+    document.getElementById('titulo').textContent = 'Creación de un nuevo tutoría';
 
-    form.onsubmit = function (event) {
+    form.onsubmit = () => {
         const fecha = form.getInput('fecha').getValue();
 
         let newTutoria = {
@@ -161,7 +163,7 @@ function setInputsToCreate(form) {
 function setInputsToUpdate(form, tutoria) {
     document.getElementById('titulo').textContent = `Información de la tutoría`;
 
-    form.onsubmit = function (event) {
+    form.onsubmit = () => {
         const fecha = form.getInput('fecha').getValue();
 
         let newTutoria = {
@@ -197,16 +199,10 @@ function setInputsToUpdate(form, tutoria) {
     form.form.querySelector('#submit').textContent = 'Actualizar tutoría';
 }
 
-function removeAlumnoFromGrupo(form, tutoria) {
-    if (confirm('¿Estás seguro de que quieres eliminar a este alumno del grupo?')) {
-        fetch(`/api/cursos/delete`, {
-            method: 'DELETE',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                idTutoria: tutoria.id
-            })
+function removeTutoria(form, tutoria) {
+    if (confirm('¿Estás seguro de que quieres eliminar esta tutoría?')) {
+        fetch(`/api/tutorias/${tutoria.id}`, {
+            method: 'DELETE'
         })
         .then(response => {
             if (response.ok) {

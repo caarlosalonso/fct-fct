@@ -20,6 +20,7 @@ public class ControladorTutoria extends CrudController<Long, Tutoria, Tutoria, T
 
     @Override
     public ResponseEntity<?> create(@RequestBody Tutoria t, HttpServletRequest request) {
+        System.out.println(t);
         service.save(t);
 
         URI location = URI.create("/api/tutorias/" + t.getId());
