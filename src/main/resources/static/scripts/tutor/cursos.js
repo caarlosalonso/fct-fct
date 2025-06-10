@@ -331,7 +331,6 @@ function agregarEmpresaPosible(alumno, empresas) {
     empresasSelect.input.addEventListener('input', () => {
         let query = empresasSelect.input.value;
         query = (query || '').toLowerCase().trim();
-        console.log(query);
         let options = [];
 
         empresas.forEach(empresa => {
@@ -345,8 +344,6 @@ function agregarEmpresaPosible(alumno, empresas) {
             ];
 
             const match = values.some(val => val.includes(query));
-            console.log(match, values);
-            console.log(options);
             if (match) {
                 options.push({
                     value: empresa.empresaId,
@@ -358,10 +355,10 @@ function agregarEmpresaPosible(alumno, empresas) {
     });
 
     search.onsubmit = () => {
-        console.log(alumno.posiblesEmpresas);
-        console.log(alumno.posiblesEmpresas.split(';'));
-        console.log(alumno.posiblesEmpresas.split(';').push(empresasSelect.getValue()));
-        console.log(alumno.posiblesEmpresas.split(';').push(empresasSelect.getValue()).join(';'));
+        console.log('Valor:', alumno.posiblesEmpresas);
+        console.log('Array:', alumno.posiblesEmpresas.split(';'));
+        console.log('Push:', alumno.posiblesEmpresas.split(';').push(empresasSelect.getValue()));
+        console.log('Join:', alumno.posiblesEmpresas.split(';').push(empresasSelect.getValue()).join(';'));
 
         alumno.posiblesEmpresas = alumno.posiblesEmpresas
             .split(';')
