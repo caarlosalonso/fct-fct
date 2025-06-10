@@ -101,10 +101,10 @@ export class SelectInput extends TextInput {
     }
 
     updateDropdown(array, interacting = false) {
+        while(this.dropdown && this.dropdown.firstChild) this.dropdown.removeChild(this.dropdown.firstChild);
         this.dropdown.style.height = '0';
         this.dropdown.style.overflowY = 'hidden';
         this.dropdown.style.display = "none";
-        while(this.dropdown && this.dropdown.firstChild) this.dropdown.removeChild(this.dropdown.firstChild);
         this.options = (!array || !Array.isArray(array)) ? [] : array;
         this.createOptions();
 
