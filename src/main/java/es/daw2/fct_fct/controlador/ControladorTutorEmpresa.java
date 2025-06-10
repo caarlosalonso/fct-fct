@@ -15,14 +15,14 @@ import jakarta.servlet.http.HttpServletRequest;
 
 
 @RestController
-@RequestMapping("/api/tutor-empresa")
+@RequestMapping("/api/tutores-empresas")
 public class ControladorTutorEmpresa extends CrudController<Long, TutorEmpresa, TutorEmpresa, TutorEmpresa, ServicioTutorEmpresa> {
 
     @Override
     public ResponseEntity<?> create(@RequestBody TutorEmpresa t, HttpServletRequest request) {
         service.save(t);
 
-        URI location = URI.create("/api/tutor-empresa/" + t.getId());
+        URI location = URI.create("/api/tutores-empresas/" + t.getId());
 
         return ResponseEntity.created(location).body(t);
     }
@@ -46,7 +46,7 @@ public class ControladorTutorEmpresa extends CrudController<Long, TutorEmpresa, 
             return ResponseEntity.badRequest().body("No se ha podido actualizar el tutor con el id: " + id);
         }
 
-        URI location = URI.create("/api/tutor-empresa/" + t.getId());
+        URI location = URI.create("/api/tutores-empresas/" + t.getId());
 
         return ResponseEntity.ok().location(location).body(tutorActualizado);
     }

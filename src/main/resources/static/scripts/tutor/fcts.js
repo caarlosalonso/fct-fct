@@ -11,14 +11,20 @@ function promise() {
     Promise.all([
         fetchCursoActual(),
         fetchGrupoTutor(),
-        fetchAlumnosCurso()
+        fetchAlumnosCurso(),
+        fetchEmpresas(),
+        fetchTutoresEmpresas(),
+        fetchFCTs()
     ])
     .then(([
         cursoActual,
         grupoTutor,
-        alumnosCurso
+        alumnosCurso,
+        empresas,
+        tutoresEmpresas,
+        fcts
     ]) => {
-        build(cursoActual, grupoTutor, alumnosCurso);
+        build(cursoActual, grupoTutor, alumnosCurso, empresas, tutoresEmpresas, fcts);
     }).catch((error) => {
         console.error('Error al obtener la información:', error);
     });
@@ -45,10 +51,36 @@ async function fetchGrupoTutor() {
     return await response.json();
 }
 
-function build(cursoActual, grupoTutor, alumnosCurso) {
+async function fetchEmpresas() {
+    const response = await fetch('/api/empresas/all');
+    if (response.status === 204) return [];
+    if (!response.ok) throw new Error('Error al obtener las empresas');
+    return await response.json();
+}
+
+async function fetchTutoresEmpresas() {
+    const response = await fetch('/api/tutores-empresas/all');
+    if (response.status === 204) return [];
+    if (!response.ok) throw new Error('Error al obtener los tutores de empresas');
+    return await response.json();
+}
+
+async function fetchFCTs() {
+    const response = await fetch('/api/fct/all');
+    if (response.status === 204) return [];
+    if (!response.ok) throw new Error('Error al obtener los FCT');
+    return await response.json();
+}
+
+
+
+function build(cursoActual, grupoTutor, alumnosCurso, empresas, tutoresEmpresas, fcts) {
     console.log('Ciclo lectivo actual:', cursoActual);
     console.log('Grupo tutor:', grupoTutor);
     console.log('Alumnos del curso:', alumnosCurso);
+    console.log('Empresas:', empresas);
+    console.log('Tutores de empresas:', tutoresEmpresas);
+    console.log('FCTs:', fcts);
 
     const verdes = document.getElementById('verdes');
     const amarillos = document.getElementById('amarillos');
@@ -171,43 +203,19 @@ function computeFinFCT(alumnoId) {
     }
 
     fechaInicioInput.input.addEventListener('input', () => {
-        compute(
-            fechaInicioInput,
-            horasSemanalesInput,
-            noLectivosInput,
-            horasDePracticasInput,
-            fechaFinInput
-        );
+        compute(fechaInicioInput, horasSemanalesInput, noLectivosInput, horasDePracticasInput, fechaFinInput);
     });
 
     horasSemanalesInput.input.addEventListener('input', () => {
-        compute(
-            fechaInicioInput,
-            horasSemanalesInput,
-            noLectivosInput,
-            horasDePracticasInput,
-            fechaFinInput
-        );
+        compute(fechaInicioInput, horasSemanalesInput, noLectivosInput, horasDePracticasInput, fechaFinInput);
     });
 
     noLectivosInput.input.addEventListener('input', () => {
-        compute(
-            fechaInicioInput,
-            horasSemanalesInput,
-            noLectivosInput,
-            horasDePracticasInput,
-            fechaFinInput
-        );
+        compute(fechaInicioInput, horasSemanalesInput, noLectivosInput, horasDePracticasInput, fechaFinInput);
     });
 
     horasDePracticasInput.input.addEventListener('input', () => {
-        compute(
-            fechaInicioInput,
-            horasSemanalesInput,
-            noLectivosInput,
-            horasDePracticasInput,
-            fechaFinInput
-        );
+        compute(fechaInicioInput, horasSemanalesInput, noLectivosInput, horasDePracticasInput, fechaFinInput);
     });
 }
 
@@ -256,4 +264,3 @@ function compute(fechaInicio, horasSemanales, noLectivos, horasDePracticas, fech
     fechaFin.setValue(fechaFinal);
     fechaFin.showValidity();
 }
-

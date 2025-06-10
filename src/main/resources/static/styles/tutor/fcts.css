@@ -58,3 +58,10 @@
         color: #ff8888;
     }
 }
+
+p.info {
+    position: absolute;
+    bottom: -23px;
+    font-size: 0.8rem;
+    font-style: italic;
+}
