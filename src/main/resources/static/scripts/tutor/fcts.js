@@ -131,14 +131,14 @@ function createCell(alumno) {
             </div>
             <div class="instance form-input grouped-inputs">
                 <div class="form-group form-input">
-                    <input id="horas-semanales-${alumno.alumnoId}" type="range" name="horasSemanales" class="text-based input" label="{n} Hora{s} semanal{es}" data-required="true" min="30" max="40" step="1" value="40">
+                    <input id="horas-semanales-${alumno.alumnoId}" type="range" name="horasSemanales" class="text-based input" label="{n} Hora{s} semanal{es}" data-required="true" data-min="30" data-max="40" data-step="1" data-value="40">
                 </div>
                 <div class="form-group form-input">
                     <p class="info">Sin contar sábados y domingos</p>
-                    <input id="no-lectivos-${alumno.alumnoId}" type="range" name="noLectivos" class="text-based input" label="{n} No lectivo{s}" data-required="true" min="0" max="20" step="1" value="0">
+                    <input id="no-lectivos-${alumno.alumnoId}" type="range" name="noLectivos" class="text-based input" label="{n} No lectivo{s}" data-required="true" data-min="0" data-max="20" data-step="1" data-value="0">
                 </div>
                 <div class="form-group form-input">
-                    <input id="horas-de-practicas-${alumno.alumnoId}" type="range" name="horasDePracticas" class="text-based input" label="{n} Hora{s} de prácticas" data-required="true" min="300" max="500" step="1" value="370">
+                    <input id="horas-de-practicas-${alumno.alumnoId}" type="range" name="horasDePracticas" class="text-based input" label="{n} Hora{s} de prácticas" data-required="true" data-min="300" data-max="500" data-step="1" data-value="370">
                 </div>
             </div>
             <div class="instance form-input grouped-inputs">
