@@ -21,13 +21,18 @@ export class Form {
     }
 
     init() {
-        this.onlyInput = this.form.getAttribute('form-only-input') === 'true';
-
         this.getEntries();
-        if (!this.onlyInput) this.buildLegend();
-        this.buildMessage();
-        this.buildSubmit();
-        this.buildEvents();
+        const showLegend = this.form.getAttribute('form-legend') !== 'false';
+        if (showLegend) this.buildLegend();
+
+        const showMessage = this.form.getAttribute('form-message') !== 'false';
+        if (showMessage) this.buildMessage();
+
+        const showSubmitButton = this.form.getAttribute('form-submit-button') !== 'false';
+        if (showSubmitButton) {
+            this.buildSubmit();
+            this.buildEvents();
+        }
 
         Form.formMap.set(this.form, this);
     }

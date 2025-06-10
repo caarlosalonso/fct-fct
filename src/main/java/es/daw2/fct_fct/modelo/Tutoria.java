@@ -1,6 +1,6 @@
 package es.daw2.fct_fct.modelo;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -31,6 +31,6 @@ public class Tutoria extends AbsBaseEntity {
     private Grupo grupo;
 
     @Column(name = "fecha", nullable = false, columnDefinition = "DATE")
-    private LocalDate fecha;
+    private LocalDateTime fecha;
 
 }

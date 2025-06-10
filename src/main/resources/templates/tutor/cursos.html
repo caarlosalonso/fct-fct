@@ -11,9 +11,9 @@
     <script type="module" src="/scripts/global.js"></script>
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Alumnado - Tutor</title>
+    <title>Curso - Tutor</title>
 
-    <link rel="stylesheet" href="/styles/tutor/alumnado.css">
+    <link rel="stylesheet" href="/styles/tutor/cursos.css">
 
     <link rel="stylesheet" href="/styles/navigation.css">
 </head>
@@ -25,7 +25,7 @@
                     <a href="/index" class="navigation nav-link">Inicio</a>
                 </li>
                 <li class="navigation nav-item">
-                    <a href="/cursos" class="navigation nav-link">Cursos</a>
+                    <a href="/cursos" class="navigation nav-link active">Cursos</a>
                 </li>
                 <li class="navigation nav-item">
                     <a href="/fcts" class="navigation nav-link">FCTs</a>
@@ -37,7 +37,7 @@
                     <a href="/empresas" class="navigation nav-link">Empresas</a>
                 </li>
                 <li class="navigation nav-item">
-                    <a href="/alumnado" class="navigation nav-link active">Alumnado</a>
+                    <a href="/alumnado" class="navigation nav-link">Alumnado</a>
                 </li>
                 <li class="navigation nav-item">
                     <a href="/perfil" class="navigation nav-link">Perfil</a>
@@ -46,8 +46,18 @@
         </nav>
     </header>
     <main id="main-content">
+        <section id="curso-actual">
+            <div class="spinner spinner-border color-primary">
+                <span class="visually-hidden">Cargando...</span>
+            </div>
+        </section>
+        <section id="listar">
+            <div class="spinner spinner-border color-primary">
+                <span class="visually-hidden">Cargando...</span>
+            </div>
+        </section>
         <section id="asignar">
-            <form id="alumno-search-form" method="GET" submit-text="Asignar a mi grupo" form-submit-button="false" form-legend="false" form-message="false">
+            <form id="alumno-search-form" method="GET" submit-text="Asignar a mi grupo" form-only-input="true">
                 <div id="inputs" class="form-container">
                     <div class="instance form-input grouped-inputs">
                         <div class="form-group form-input">
@@ -60,7 +70,7 @@
         <section id="alumnos-section">
             <div id="set-info">
                 <h1 id="titulo">Información del alumno</h1>
-                <form id="alumno-form" method="POST" submit-text="Crear alumno">
+                <form id="alumno-form" method="POST" submit-text="Actualizar alumno">
                     <div id="inputs" class="form-container">
                         <div class="instance form-input grouped-inputs">
                             <div class="form-group form-input">
@@ -80,7 +90,7 @@
                             </div>
 
                             <div class="form-group form-input">
-                                <input type="dni" name="dni" id="dni" class="text-based input" label="Introduce su DNI" data-show-validity="true" data-required="true">
+                                <input type="dni" name="dni" id="dni" class="text-based input" label="Introduce su DNI" data-show-validity="true">
                             </div>
 
                             <div class="form-group form-input">
@@ -102,12 +112,17 @@
                             <div class="form-group form-input">
                                 <input type="number" name="convocatoria" id="convocatoria" class="text-based input" label="Introduce su convocatoria" data-show-validity="true" data-min="1" data-max="3" data-step="1">
                             </div>
+                            
+                            <div class="form-group form-input">
+                                <input type="select" name="rating" id="rating" class="text-based input" label="Introduce su Semáforo" data-show-validity="true" data-options="VERDE:Verde;AMBAR:Ámbar;ROJO:Rojo">
+                            </div>
                         </div>
+
                     </div>
                 </form>
             </div>
         </section>
     </main>
-    <script type="module" src="/scripts/tutor/alumnado.js"></script>
+    <script type="module" src="/scripts/tutor/cursos.js"></script>
 </body>
 </html>
