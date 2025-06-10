@@ -60,27 +60,27 @@ public class VistaEmpresasPlazas {
     @Column(name = "numero_convenio", nullable = false)
     private String numeroConvenio;
 
-    @Column(name = "plaza_id", nullable = false)
+    @Column(name = "plaza_id")
     private Long plazaId;
 
-    @Column(name = "plazas", nullable = false)
+    @Column(name = "plazas")
     private Integer plazas;
 
-    @Column(name = "ciclo_id", nullable = false)
+    @Column(name = "ciclo_id")
     private Long cicloId;
 
-    @Column(name = "nombre_ciclo", nullable = false)
+    @Column(name = "nombre_ciclo")
     private String nombreCiclo;
 
-    @Column(name = "acronimo", nullable = false)
+    @Column(name = "acronimo")
     private String acronimo;
 
-    @Column(name = "nivel", nullable = false)
+    @Column(name = "nivel")
     private String nivel;
 
-    @Column(name = "familia_profesional", nullable = false)
+    @Column(name = "familia_profesional")
     private String familiaProfesional;
 
-    @Column(name = "horas_practicas", nullable = false)
+    @Column(name = "horas_practicas")
     private Integer horasPracticas;
 }
