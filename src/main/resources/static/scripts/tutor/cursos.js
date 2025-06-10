@@ -355,16 +355,10 @@ function agregarEmpresaPosible(alumno, empresas) {
     });
 
     search.onsubmit = () => {
-        console.log('Valor:', alumno.posiblesEmpresas);
-        console.log('Array:', alumno.posiblesEmpresas.split(';'));
-        console.log('Push:', alumno.posiblesEmpresas.split(';').push(empresasSelect.getValue()));
-        console.log('Join:', alumno.posiblesEmpresas.split(';').push(empresasSelect.getValue()).join(';'));
+        alumno.posiblesEmpresas = alumno.posiblesEmpresas.split(';');
+        alumno.posiblesEmpresas.push(empresasSelect.getValue());
+        alumno.posiblesEmpresas = alumno.posiblesEmpresas.join(';');
 
-        alumno.posiblesEmpresas = alumno.posiblesEmpresas
-            .split(';')
-            .push(empresasSelect.getValue())
-            .join(';');
-        
         fetch(`/api/cursos/posibles-empresas/${alumno.cursoId}`, {
             method: 'PUT',
             headers: {
