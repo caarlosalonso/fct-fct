@@ -139,6 +139,7 @@ function createCell(alumno) {
         </div>
     <form>
     `;
+    cell.appendChild(fct);
 
     return cell;
 }
