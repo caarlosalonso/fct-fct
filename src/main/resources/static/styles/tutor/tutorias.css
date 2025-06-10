@@ -44,7 +44,7 @@
     display: grid;
     grid-template-columns: auto auto;
     width: 200px;
-    background-color: var(--background-color);
+    background-color: #606060;
     border-radius: var(--border-radius);
     padding: var(--border-radius);
 }
@@ -81,6 +81,27 @@
         cursor: pointer;
         background-color: #ff7a7a;
         fill: #ffffff;
+    }
+}
+
+.add {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    &:hover {
+        cursor: pointer;
+    }
+}
+
+.add-svg {
+    max-width: 35px;
+    max-height: 35px;
+    fill: #ffffff;
+    transition: 300ms ease-in-out;
+
+    &:hover {
+        fill: #00ff00;
     }
 }
 
