@@ -133,12 +133,12 @@ function createCell(alumno, fcts, grupoTutor) {
     empresaSpan.textContent = `${alumno.nombreEmpresa || 'Sin empresa'}`;
     bar.appendChild(empresaSpan);
 
-    const fct = fcts.find(fct => fct.alumnoId === alumno.alumnoId);
-    console.log(fct, grupoTutor);
+    const fct = fcts.filter(fct => fct.alumnoId === alumno.alumnoId)
+                    .filter(fct => fct.cicloId === grupoTutor.cicloId);
 
     const horasRestantesSpan = document.createElement('span');
     horasRestantesSpan.classList.add('alumno-horas-restantes');
-    horasRestantesSpan.textContent = `Horas restantes: ${alumno.horasRestantes}`;
+    horasRestantesSpan.textContent = `Horas restantes: ${fct.length > 0 ? grupoTutor.horasPracticas - fct[0].horasPracticas : grupoTutor.horasPracticas}`;
     bar.appendChild(horasRestantesSpan);
 
     const collapseSpan = document.createElement('span');
@@ -262,12 +262,7 @@ function compute(fechaInicio, horasSemanales, noLectivos, horasDePracticas, fech
 
     while(count < days - 1) {
         const dayOfTheWeek = date.getDay();
-
-        // Si es un día laborable (lunes a viernes)
-        if (dayOfTheWeek > 0 && dayOfTheWeek < 6) {
-            count++;
-        }
-
+        if (dayOfTheWeek > 0 && dayOfTheWeek < 6) count++; // Si es un día laborable (lunes a viernes)
         date.setDate(date.getDate() + 1);
     }
 
