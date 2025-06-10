@@ -95,7 +95,7 @@ function build(cursoActual, grupoTutor, alumnosCurso, empresas, tutoresEmpresas,
                                 .sort((a, b) => a.nombreAlumno.localeCompare(b.nombreAlumno));
 
     alumnosCurso.forEach((alumno) => {
-        const cell = createCell(alumno);
+        const cell = createCell(alumno, fcts, grupoTutor);
         if (alumno.rating === 'VERDE') {
             verdes.appendChild(cell);
         } else if (alumno.rating === 'AMARILLO') {
@@ -114,7 +114,7 @@ function build(cursoActual, grupoTutor, alumnosCurso, empresas, tutoresEmpresas,
     });
 }
 
-function createCell(alumno) {
+function createCell(alumno, fcts, grupoTutor) {
     const cell = document.createElement('div');
     cell.classList.add('alumno-cell', 'collapsed');
 
@@ -133,9 +133,12 @@ function createCell(alumno) {
     empresaSpan.textContent = `${alumno.nombreEmpresa || 'Sin empresa'}`;
     bar.appendChild(empresaSpan);
 
+    const fct = fcts.find(fct => fct.alumnoId === alumno.alumnoId);
+    console.log(fct, grupoTutor);
+
     const horasRestantesSpan = document.createElement('span');
     horasRestantesSpan.classList.add('alumno-horas-restantes');
-    horasRestantesSpan.textContent = `${alumno.horasRestantes}`;
+    horasRestantesSpan.textContent = `Horas restantes: ${alumno.horasRestantes}`;
     bar.appendChild(horasRestantesSpan);
 
     const collapseSpan = document.createElement('span');
@@ -146,16 +149,16 @@ function createCell(alumno) {
         if (cell.classList.contains('collapsed')) {
             cell.classList.remove('collapsed');
             cell.classList.add('expanded');
-            collapseSpan.textContent = `◀`;
+            collapseSpan.textContent = `▼`;
         } else {
             cell.classList.remove('expanded');
             cell.classList.add('collapsed');
-            collapseSpan.textContent = `▼`;
+            collapseSpan.textContent = `◀`;
         }
     };
 
-    const fct = document.createElement('div');
-    fct.innerHTML = `
+    const fctDiv = document.createElement('div');
+    fctDiv.innerHTML = `
     <form id="fct-form-${alumno.alumnoId}" method="POST">
         <div class="inputs form-container">
             <div class="instance form-input grouped-inputs">
@@ -182,7 +185,7 @@ function createCell(alumno) {
                     <input id="no-lectivos-${alumno.alumnoId}" type="range" name="noLectivos" class="text-based input" label="{n} No lectivo{s}" data-required="true" data-min="0" data-max="20" data-step="1" data-value="0">
                 </div>
                 <div class="form-group form-input">
-                    <input id="horas-de-practicas-${alumno.alumnoId}" type="range" name="horasDePracticas" class="text-based input" label="{n} Hora{s} de prácticas" data-required="true" data-min="100" data-max="500" data-step="1" data-value="370">
+                    <input id="horas-de-practicas-${alumno.alumnoId}" type="range" name="horasDePracticas" class="text-based input" label="{n} Hora{s} de prácticas" data-required="true" data-min="100" data-max="${grupoTutor.horasPracticas}" data-step="1" data-value="${grupoTutor.horasPracticas < 370 ? grupoTutor.horasPracticas : 370}">
                 </div>
             </div>
             <div class="instance form-input grouped-inputs">
@@ -191,9 +194,9 @@ function createCell(alumno) {
                 </div>
             </div>
         </div>
-    <form>
+    </form>
     `;
-    cell.appendChild(fct);
+    cell.appendChild(fctDiv);
 
     return cell;
 }

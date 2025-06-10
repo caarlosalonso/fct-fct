@@ -102,7 +102,7 @@
 
 #asignar {
     background-color: var(--background-color);
-    border-radius: var(--border-radius);
+    border-radius: 0;
     padding: 10px;
 }
 
