@@ -106,10 +106,7 @@ export class SelectInput extends TextInput {
         this.createOptions();
 
         if (interacting) {
-            this.hideDropdown();
-            setTimeout(() => {
-                this.showDropdown();
-            }, 1);
+            this.showDropdown();
         }
     }
 }

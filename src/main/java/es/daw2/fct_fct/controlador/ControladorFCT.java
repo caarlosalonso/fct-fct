@@ -40,6 +40,7 @@ public class ControladorFCT extends CrudController<Long, Fct, Fct, Fct, Servicio
     @PostMapping("/fct")
     public ResponseEntity<?> createOrUpdate(@RequestBody CreateFctDTO dto, HttpServletRequest request) {
         Optional<Fct> fctOpt = service.getByCursoId(dto.cursoId());
+        System.out.println("FctOpt: " + dto);
         if (fctOpt.isPresent()) {
             return updateFct(dto);
         } else {
@@ -68,18 +69,21 @@ public class ControladorFCT extends CrudController<Long, Fct, Fct, Fct, Servicio
             return ResponseEntity.notFound().build();
         }
         fct.setCurso(cursoOpt.get());
+        System.out.println("Ping 11");
 
         Optional<Empresa> empresaOpt = servicioEmpresa.getById(dto.empresaId());
         if (!empresaOpt.isPresent()) {
             return ResponseEntity.notFound().build();
         }
         fct.setEmpresa(empresaOpt.get());
+        System.out.println("Ping 12");
 
         Optional<TutorEmpresa> tutorOpt = servicioTutorEmpresa.getById(dto.tutorEmpresaId());
         if (!tutorOpt.isPresent()) {
             return ResponseEntity.notFound().build();
         }
         fct.setTutorEmpresa(tutorOpt.get());
+        System.out.println("Ping 13");
 
         fct.setFechaInicio(dto.fechaInicio());
         fct.setHorasSemana(dto.horasSemanales());
@@ -101,24 +105,28 @@ public class ControladorFCT extends CrudController<Long, Fct, Fct, Fct, Servicio
             return ResponseEntity.notFound().build();
         }
         Fct fct = fctOpt.get();
+        System.out.println("Ping 21");
 
         Optional<Curso> cursoOpt = servicioCurso.getById(dto.cursoId());
         if (!cursoOpt.isPresent()) {
             return ResponseEntity.notFound().build();
         }
         fct.setCurso(cursoOpt.get());
+        System.out.println("Ping 22");
 
         Optional<Empresa> empresaOpt = servicioEmpresa.getById(dto.empresaId());
         if (!empresaOpt.isPresent()) {
             return ResponseEntity.notFound().build();
         }
         fct.setEmpresa(empresaOpt.get());
+        System.out.println("Ping 23");
 
         Optional<TutorEmpresa> tutorOpt = servicioTutorEmpresa.getById(dto.tutorEmpresaId());
         if (!tutorOpt.isPresent()) {
             return ResponseEntity.notFound().build();
         }
         fct.setTutorEmpresa(tutorOpt.get());
+        System.out.println("Ping 24");
 
         fct.setFechaInicio(dto.fechaInicio());
         fct.setHorasSemana(dto.horasSemanales());
