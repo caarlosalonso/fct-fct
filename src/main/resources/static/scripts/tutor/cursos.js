@@ -237,8 +237,10 @@ function crearLista(alumnosCurso, grupoTutor, form, empresas) {
             alumno.posiblesEmpresas.split(';').forEach((empresaId) => {
                 const empresaSpan = document.createElement('span');
                 empresaSpan.classList.add('empresa-posible');
-                console.log(empresas.find(e => e.id === empresaId)?.nombre || empresaId);
-                empresaSpan.textContent = empresas.find(e => e.id === empresaId)?.nombre || empresaId;
+                const found = empresas.find(e => e.id === empresaId);
+                console.log(found);
+
+                empresaSpan.textContent = found?.nombre || empresaId;
                 empresasPosibles.appendChild(empresaSpan);
                 empresaSpan.appendChild(
                     createClickableSVG(
@@ -379,16 +381,19 @@ function agregarEmpresaPosible(alumno, empresas, empresasPosibles) {
         .then((response) => {
             if (response.ok) {
                 search.reset();
+                search.submitFinish();
+                parent.classList.remove('active');
+                parent.style.left = '0';
+                parent.style.top = '0';
                 promise();
             } else {
+                search.submitFinish();
                 console.error('Error al agregar la empresa del alumno');
             }
         })
         .catch((error) => {
-            console.error('Error al agregar la empresa del alumno:', error);
-        })
-        .finally(() => {
             search.submitFinish();
+            console.error('Error al agregar la empresa del alumno:', error);
         });
     }
 }
