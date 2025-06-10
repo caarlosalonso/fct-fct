@@ -222,7 +222,7 @@ function computeFinFCT(alumnoId) {
     });
 }
 
-function compute(fechaInicio, horasSemanales, noLectivos, horasDePracticas, fechaFin, modificacioFechaFin = false) {
+function compute(fechaInicio, horasSemanales, noLectivos, horasDePracticas, fechaFin, modificacionFechaFin = false) {
     const fechaInicioValue = fechaInicio.getValue();
     
     if (!fechaInicioValue) return;
