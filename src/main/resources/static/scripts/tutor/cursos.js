@@ -127,7 +127,8 @@ function build(alumnos, cursoActual, grupoTutor, alumnosCurso) {
             },
             body: JSON.stringify({
                 idAlumno: alumnoId,
-                idGrupo: grupoTutor.grupoId
+                idGrupo: grupoTutor.grupoId,
+                idCicloLectivo: cursoActual.idCicloLectivo
             })
         })
         .then(response => {

@@ -1,6 +1,7 @@
 package es.daw2.fct_fct.controlador;
 
 import java.net.URI;
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,9 +15,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 import es.daw2.fct_fct.dto.AlumnoGrupoDTO;
 import es.daw2.fct_fct.modelo.Alumno;
+import es.daw2.fct_fct.modelo.CicloLectivo;
 import es.daw2.fct_fct.modelo.Curso;
 import es.daw2.fct_fct.modelo.Grupo;
 import es.daw2.fct_fct.servicio.ServicioAlumno;
+import es.daw2.fct_fct.servicio.ServicioCicloLectivo;
 import es.daw2.fct_fct.servicio.ServicioCurso;
 import es.daw2.fct_fct.servicio.ServicioGrupo;
 import jakarta.servlet.http.HttpServletRequest;
@@ -38,9 +41,16 @@ public class ControladorCurso extends CrudController<Long, Curso, Curso, Curso, 
     private ServicioGrupo servicioGrupo;
     @Autowired
     private ServicioAlumno servicioAlumno;
+    @Autowired
+    private ServicioCicloLectivo servicioCicloLectivo;
 
     @PostMapping("/alumno")
     public ResponseEntity<?> addAlumnoToGrupo(@RequestBody AlumnoGrupoDTO dto, HttpServletRequest request) {
+        Optional<CicloLectivo> clopt = servicioCicloLectivo.getById(dto.idCicloLectivo());
+        if (clopt.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+
         Optional<Grupo> grupoOpt = servicioGrupo.getById(dto.idGrupo());
         if (grupoOpt.isEmpty()) {
             return ResponseEntity.notFound().build();
@@ -53,8 +63,19 @@ public class ControladorCurso extends CrudController<Long, Curso, Curso, Curso, 
         }
         Alumno alumno = alumnoOpt.get();
 
-        if (service.checkIfExistsByGrupoAndAlumno(dto.idGrupo(), dto.idAlumno())) {
-            return ResponseEntity.badRequest().body("El alumno ya está asignado a este grupo.");
+        List<Long> lg = servicioGrupo.list()
+            .stream()
+            .filter(g -> g.getCicloLectivo().getId().equals(dto.idCicloLectivo()))
+            .map(Grupo::getId)
+            .toList();
+
+        Optional<Curso> cursoOpt = service.list()
+            .stream()
+            .filter(c -> lg.contains(c.getGrupo().getId()) && c.getAlumno().getId().equals(alumno.getId()))
+            .findFirst();
+        
+        if (cursoOpt.isPresent()) {
+            return ResponseEntity.badRequest().body("El alumno ya está asignado al grupo en el ciclo lectivo.");
         }
 
         Curso curso = new Curso();
