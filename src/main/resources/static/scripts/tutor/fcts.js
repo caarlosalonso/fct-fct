@@ -49,4 +49,30 @@ function build(cursoActual, grupoTutor, alumnosCurso) {
     console.log('Ciclo lectivo actual:', cursoActual);
     console.log('Grupo tutor:', grupoTutor);
     console.log('Alumnos del curso:', alumnosCurso);
+
+    const verdes = document.getElementById('verdes');
+    const amarillos = document.getElementById('amarillos');
+    const rojos = document.getElementById('rojos');
+
+    verdes.innerHTML = '';
+    amarillos.innerHTML = '';
+    rojos.innerHTML = '';
+
+    alumnosCurso.forEach((alumno) => {
+        const cell = createCell(alumno);
+        if (alumno.rating === 'verde') {
+            verdes.appendChild(cell);
+        } else if (alumno.rating === 'amarillo') {
+            amarillos.appendChild(cell);
+        } else if (alumno.rating === 'rojo') {
+            rojos.appendChild(cell);
+        }
+    });
+}
+
+function createCell(alumno) {
+    const cell = document.createElement('div');
+    cell.classList.add('alumno-cell');
+    cell.textContent = `${alumno.nombre}`;
+    return cell;
 }
