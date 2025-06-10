@@ -10,53 +10,25 @@
 }
 
 /* ---------------------------------------------------------------------------- */
-/*                                  NAVIGATION                                  */
+/*                                CURSO ACTUAL                                  */
 /* ---------------------------------------------------------------------------- */
-#navbar {
-    background-color: var(--background-color);
-    border-bottom: 1px solid #777777;
-    height: 70px;
-    margin-bottom: 15px;
-}
-
-.navigation.nav {
-    padding: 0px 15px;
-    display: flex;
-    justify-content: left;
-    align-items: center;
-    gap: 15px;
-    height: 100%;
-    width: 100%;
-}
-
-.navigation.nav-link {
-    color: var(--text-color);
-    background-color: #99ffff33;
-    border-radius: var(--border-radius);
-    text-decoration: none;
-    padding: 10px 15px;
-    font-size: 18px;
-    transition: 400ms ease-in-out;
-
-    &.active {
-        background-color: #99ffff66;
-        font-weight: bold;
-    }
-}
-
-/* ---------------------------------------------------------------------------- */
-/*                                CURSO SELECTION                               */
-/* ---------------------------------------------------------------------------- */
-#curso-selection {
+#curso-actual {
     background-color: #303030;
     width: 95%;
     margin: 0 auto;
     border-radius: 15px 15px 0px 0px;
     padding: 15px 15px 0px 15px;
     gap: 30px;
+
+    &.empty {
+        width: 100%;
+        margin: 0px;
+        padding: 0px;
+        border-radius: 0px;
+    }
 }
 
-.curso.nav-link {
+.grupo.nav-link {
     color: var(--text-color);
 
     &:hover {
@@ -185,6 +157,21 @@
 
 .alumno {
     text-align: justify;
+}
+
+#forgot-password {
+    background-color: orange;
+
+    &:hover {
+        background-color: rgb(180, 117, 0);
+    }
+}
+
+.collapsed {
+    width: 0px;
+    margin: 0px;
+    padding: 0px;
+    border: 0px;
 }
 
 /* ---------------------------------------------------------------------------- */
@@ -334,4 +321,48 @@
         font-size: 10px;
     }
 
+}
+
+.edit-svg {
+    background-color: #ddabdd;
+    fill: #000000;
+    border-radius: 10px;
+    transition: 300ms ease-in-out;
+
+    &:hover {
+        cursor: pointer;
+        background-color: #b87ab8;
+        fill: #ffffff;
+    }
+}
+
+.delete-svg {
+    background-color: #ffbaba;
+    fill: #000000;
+    border-radius: 10px;
+    transition: 300ms ease-in-out;
+
+    &:hover {
+        cursor: pointer;
+        background-color: #ff7a7a;
+        fill: #ffffff;
+    }
+}
+
+.svg {
+    width: 100%;
+    max-height: 35px;
+}
+
+.tutoria-item {
+    display: grid;
+    grid-template-columns: auto auto auto;
+    width: 300px;
+    background-color: var(--background-color);
+    border-radius: var(--border-radius);
+    padding: var(--border-radius);
+}
+
+.cell-value {
+    grid-column: auto / span 2;
 }
