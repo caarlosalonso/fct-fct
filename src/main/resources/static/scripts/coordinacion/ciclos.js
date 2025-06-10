@@ -88,6 +88,10 @@ async function fetchGrupos() {
 }
 
 function drawTable(ciclos, ciclosLectivos, grupos) {
+    console.log('Ciclos:', ciclos);
+    console.log('Ciclos Lectivos:', ciclosLectivos);
+    console.log('Grupos:', grupos);
+
     const ciclosList = [];
     ciclosLectivos.sort((a, b) => new Date(a.fechaInicio) - new Date(b.fechaInicio));
 
