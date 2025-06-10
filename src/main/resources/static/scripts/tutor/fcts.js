@@ -60,11 +60,11 @@ function build(cursoActual, grupoTutor, alumnosCurso) {
 
     alumnosCurso.forEach((alumno) => {
         const cell = createCell(alumno);
-        if (alumno.rating === 'verde') {
+        if (alumno.rating === 'VERDE') {
             verdes.appendChild(cell);
-        } else if (alumno.rating === 'amarillo') {
+        } else if (alumno.rating === 'AMBAR') {
             amarillos.appendChild(cell);
-        } else if (alumno.rating === 'rojo') {
+        } else if (alumno.rating === 'ROJO') {
             rojos.appendChild(cell);
         }
     });
