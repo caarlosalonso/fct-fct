@@ -4,9 +4,9 @@ import { tableLoading, tableFail, createSVG, createClickableSVG } from '../funct
 const SECTION = 'curso-actual';
 
 const RATING = {
-    VERDE: 'Verde',
-    AMARILLO: 'Amarillo',
-    ROJO: 'Rojo'
+    VERDE: 'Si',
+    AMARILLO: 'Poco probable',
+    ROJO: 'No'
 };
 
 window.addEventListener('FormsCreated', (event) => {

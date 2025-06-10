@@ -100,7 +100,7 @@ export class Input {
             bad. To fix this, the height is assumed to be 24px.                 */
         /*                     parent's half height      label's half height   ?*/
         let verticalPosition = this.parent.offsetHeight / 2 - 12             - 1;
-        this.label.style.top = `${verticalPosition}px`;
+        //this.label.style.top = `${verticalPosition}px`;
         this.parent.appendChild(this.label);
     }
 

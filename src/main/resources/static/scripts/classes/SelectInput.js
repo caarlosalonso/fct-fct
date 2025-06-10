@@ -50,7 +50,9 @@ export class SelectInput extends TextInput {
 
         // Hide dropdown on blur
         this.input.addEventListener('blur', () => {
-            this.hideDropdown();
+            setTimeout(() => {
+                this.hideDropdown();
+            }, 200);
         });
     }
 
