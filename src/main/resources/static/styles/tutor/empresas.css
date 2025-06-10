@@ -209,3 +209,28 @@ main {
 .oculto {
     display: none !important;
 }
+
+#add-empresa-btn-wrapper {
+    display: flex;
+    justify-content: center;
+    margin: 30px 0;
+}
+
+#add-empresa-btn {
+    width: 80px;
+    height: 40px;
+    cursor: pointer;
+    border-radius: 8px;
+    background: #198754;
+    transition: background 0.2s;
+    /* Para que el SVG no tenga padding extra */
+    display: block;
+}
+
+#add-empresa-btn:hover {
+    background: #146c43;
+}
+
+.label {
+    top: unset !important;
+}
