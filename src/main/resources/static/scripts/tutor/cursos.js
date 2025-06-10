@@ -3,6 +3,12 @@ import { tableLoading, tableFail, createSVG, createClickableSVG } from '../funct
 
 const SECTION = 'curso-actual';
 
+const RATING = {
+    VERDE: 'Verde',
+    AMBAR: 'Ámbar',
+    ROJO: 'Rojo'
+};
+
 window.addEventListener('FormsCreated', (event) => {
     promise();
     const form = Form.getForm('alumno-form');
@@ -133,6 +139,8 @@ function build(alumnos, cursoActual, grupoTutor, alumnosCurso) {
         })
         .then(response => {
             if (response.ok) {
+                promise();
+                asignar.clear();
                 asignar.submitFinish();
             } else if (response.status === 400) {
                 asignar.showError('El alumno ya está asignado a este grupo');
@@ -142,7 +150,10 @@ function build(alumnos, cursoActual, grupoTutor, alumnosCurso) {
         })
         .catch(error => {
             asignar.showError('Error al enviar los datos: ' + error.message);
-        });
+        })
+        .finally(() => {
+            asignar.submitFinish();
+        })
     };
 
     const displaySection = document.getElementById(SECTION);
@@ -244,8 +255,10 @@ function setInputsToUpdate(form, alumno) {
         const nuss = form.getInput('nuss').getValue();
         const address = form.getInput('address').getValue();
         const convocatoria = form.getInput('convocatoria').getValue();
+        const rating = form.getInput('rating').getValue();
+        const observaciones = form.getInput('observaciones').getValue();
 
-        let newAlumno = {
+        let changeAlumno = {
             name: nombre,
             email: email,
             phone: phone,
@@ -253,15 +266,19 @@ function setInputsToUpdate(form, alumno) {
             dni: dni,
             nuss: nuss,
             address: address,
-            convocatoria: convocatoria
+            convocatoria: convocatoria,
+            rating: rating,
+            observaciones: observaciones
         };
 
-        fetch(`/api/alumnos/${alumno.alumnoId}`, {
+        console.log(alumno.cursoId);
+
+        fetch(`/api/cursos/${alumno.cursoId}`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify(newAlumno)
+            body: JSON.stringify(changeAlumno)
         })
         .then(response => {
             if (response.ok) {
@@ -288,6 +305,8 @@ function setInputsToUpdate(form, alumno) {
     form.getInput('nuss').retrack(alumno.nuss);
     form.getInput('address').retrack(alumno.address);
     form.getInput('convocatoria').retrack(alumno.convocatoria);
+    form.getInput('rating').retrack(RATING[alumno.rating]);
+    form.getInput('observaciones').retrack(alumno.observaciones || '');
 
     form.form.querySelector('#submit').textContent = 'Actualizar alumno';
 }
