@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import es.daw2.fct_fct.dto.CreateTutoriaDTO;
+import es.daw2.fct_fct.dto.UpdateTutoriaDTO;
 import es.daw2.fct_fct.modelo.Grupo;
 import es.daw2.fct_fct.modelo.Tutoria;
 import es.daw2.fct_fct.servicio.ServicioGrupo;
@@ -20,7 +21,7 @@ import jakarta.servlet.http.HttpServletRequest;
 
 @RestController
 @RequestMapping("/api/tutorias")
-public class ControladorTutoria extends CrudController<Long, Tutoria, CreateTutoriaDTO, Tutoria, ServicioTutoria> {
+public class ControladorTutoria extends CrudController<Long, Tutoria, CreateTutoriaDTO, UpdateTutoriaDTO, ServicioTutoria> {
 
     @Autowired
     private ServicioGrupo servicioGrupo;
@@ -47,21 +48,21 @@ public class ControladorTutoria extends CrudController<Long, Tutoria, CreateTuto
     // getById ya existe en CrudController
 
     @Override
-    public ResponseEntity<?> update(@PathVariable Long id, @RequestBody Tutoria t, HttpServletRequest request) {
+    public ResponseEntity<?> update(@PathVariable Long id, @RequestBody UpdateTutoriaDTO t, HttpServletRequest request) {
         Optional<Tutoria> tutoria = service.getById(id);
 
         if (!tutoria.isPresent()) {
             return ResponseEntity.notFound().build();
         }
 
-        t.setId(id);
+        tutoria.get().setFecha(t.fecha());
 
-        Optional<Tutoria> tutoriaActualizada = service.update(id, t);
+        Optional<Tutoria> tutoriaActualizada = service.update(id, tutoria.get());
         if (!tutoriaActualizada.isPresent()) {
             return ResponseEntity.badRequest().body("No se ha podido actualizar la tutoría con el id: " + id);
         }
 
-        URI location = URI.create("/api/tutorias/" + t.getId());
+        URI location = URI.create("/api/tutorias/" + id);
 
         return ResponseEntity.ok().location(location).body(tutoriaActualizada);
     }

@@ -356,8 +356,8 @@
 
 .tutoria-item {
     display: grid;
-    grid-template-columns: auto auto auto;
-    width: 300px;
+    grid-template-columns: auto auto;
+    width: 200px;
     background-color: var(--background-color);
     border-radius: var(--border-radius);
     padding: var(--border-radius);
