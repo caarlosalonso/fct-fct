@@ -5,5 +5,5 @@ import java.time.LocalDateTime;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 public record UpdateTutoriaDTO(
-    @JsonFormat(pattern = "dd/MM/yyyy', 'HH:mm:ss") LocalDateTime fecha
+    @JsonFormat(pattern = "dd'/'MM'/'yyyy', 'HH:mm:ss") LocalDateTime fecha
 ) {}
