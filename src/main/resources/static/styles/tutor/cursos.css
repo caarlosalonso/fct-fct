@@ -186,7 +186,7 @@
         left: 200px;
     }
 
-    & p.label.active {
+    & p.label.active, & input {
         background-color: #999999;
     }
 }

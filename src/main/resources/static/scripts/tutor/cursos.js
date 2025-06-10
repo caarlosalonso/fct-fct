@@ -237,7 +237,7 @@ function crearLista(alumnosCurso, grupoTutor, form, empresas) {
             alumno.posiblesEmpresas.split(';').forEach((empresaId) => {
                 const empresaSpan = document.createElement('span');
                 empresaSpan.classList.add('empresa-posible');
-                const found = empresas.find(e => e.id === empresaId);
+                const found = empresas.split(';').find(e => e.id === empresaId);
                 console.log(found);
 
                 empresaSpan.textContent = found?.nombre || empresaId;
