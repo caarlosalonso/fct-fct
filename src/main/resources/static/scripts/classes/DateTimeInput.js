@@ -6,18 +6,12 @@ export class DateTimeInput extends TextInput {
         this.getValue = () => {
             if (this.isEmpty()) return '';
             const date = new Date(this.input.value);
-            console.log(
-                date.toLocaleString()
-            );
-
-            date.setHours(date.getHours() + 2); // Adjust for timezone offset
-            return date.toISOString();
+            return date.toLocaleString();
         }
 
         this.validate = () => {
             if (this.isEmpty()) return true;
             const date = new Date(this.input.value);
-            date.setHours(date.getHours() + 2); // Adjust for timezone offset
             return !isNaN(date.getTime());
         };
 
@@ -25,8 +19,7 @@ export class DateTimeInput extends TextInput {
             if (value === null || value === undefined || value === '') return '';
             const date = new Date(value);
             if (isNaN(date.getTime())) return '';
-            
-            return date.toISOString().split('T')[0] + ' ' + date.toTimeString().split(' ')[0];
+            return date.toLocaleString().replace(',', '');
         };
     }
 
