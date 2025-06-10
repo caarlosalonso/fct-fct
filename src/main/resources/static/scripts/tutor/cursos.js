@@ -363,6 +363,7 @@ function agregarEmpresaPosible(alumno, empresas, empresasPosibles) {
     search.onsubmit = () => {
         alumno.posiblesEmpresas = alumno.posiblesEmpresas.split(';');
         if (alumno.posiblesEmpresas.includes('' + empresasSelect.getValue())) {
+            alumno.posiblesEmpresas = alumno.posiblesEmpresas.join(';');
             search.reset();
             search.submitFinish();
             parent.classList.remove('active');

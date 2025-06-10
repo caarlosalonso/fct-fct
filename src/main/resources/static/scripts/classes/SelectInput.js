@@ -52,7 +52,7 @@ export class SelectInput extends TextInput {
         this.input.addEventListener('blur', () => {
             setTimeout(() => {
                 this.hideDropdown();
-            }, 200);
+            }, 50);
         });
     }
 
