@@ -247,7 +247,7 @@ function finish(form) {
 function editEmpresa(empresa) {
     collapseAll();
 
-    document.getElementById('display-section').classList.add('oculto');
+    document.getElementById('display-section').classList.remove('oculto');
 
     const form = Form.getForm('empresa-form');
     form.form.parentNode.classList.remove('collapsed');
@@ -335,7 +335,7 @@ function removeEmpresa(empresa) {
 function addEmpresa() {
     collapseAll();
 
-    document.getElementById('display-section').classList.add('oculto');
+    document.getElementById('display-section').classList.remove('oculto');
 
     const form = Form.getForm('empresa-form');
     form.form.parentNode.classList.remove('collapsed');
