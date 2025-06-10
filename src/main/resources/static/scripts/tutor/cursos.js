@@ -175,6 +175,9 @@ function crearLista(alumnosCurso, grupoTutor, form) {
     const listar = document.getElementById('listar');
     while(listar && listar.firstChild) listar.removeChild(listar.firstChild);
 
+    alumnosCurso = alumnosCurso.filter(alumno => alumno.grupoId === grupoTutor.grupoId)
+                                .sort((a, b) => a.nombreAlumno.localeCompare(b.nombreAlumno));
+
     if (alumnosCurso.length === 0) {
         const mensaje = document.createElement('p');
         mensaje.textContent = 'No hay alumnos en este curso';
