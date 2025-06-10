@@ -132,6 +132,8 @@ function setInputsToCreate(form, grupoTutor) {
             grupoId: grupoTutor.grupoId
         };
 
+        console.log(newTutoria);
+
         fetch('/api/tutorias/create', {
             method: 'POST',
             headers: {
