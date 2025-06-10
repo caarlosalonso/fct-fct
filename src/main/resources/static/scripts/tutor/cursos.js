@@ -237,8 +237,8 @@ function crearLista(alumnosCurso, grupoTutor, form, empresas) {
             alumno.posiblesEmpresas.split(';').forEach((empresaId) => {
                 const empresaSpan = document.createElement('span');
                 empresaSpan.classList.add('empresa-posible');
-                console.log(empresas.find(e => e.empresaId === empresaId)?.nombre || empresaId);
-                empresaSpan.textContent = empresas.find(e => e.empresaId === empresaId)?.nombre || empresaId;
+                console.log(empresas.find(e => e.id === empresaId)?.nombre || empresaId);
+                empresaSpan.textContent = empresas.find(e => e.id === empresaId)?.nombre || empresaId;
                 empresasPosibles.appendChild(empresaSpan);
                 empresaSpan.appendChild(
                     createClickableSVG(
