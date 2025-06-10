@@ -78,11 +78,13 @@ public class ControladorFCT extends CrudController<Long, Fct, Fct, Fct, Servicio
         fct.setEmpresa(empresaOpt.get());
         System.out.println("Ping 12");
 
-        Optional<TutorEmpresa> tutorOpt = servicioTutorEmpresa.getById(dto.tutorEmpresaId());
-        if (!tutorOpt.isPresent()) {
-            return ResponseEntity.notFound().build();
+        if (dto.tutorEmpresaId() != null) {
+            Optional<TutorEmpresa> tutorOpt = servicioTutorEmpresa.getById(dto.tutorEmpresaId());
+            if (!tutorOpt.isPresent()) {
+                return ResponseEntity.notFound().build();
+            }
+            fct.setTutorEmpresa(tutorOpt.get());
         }
-        fct.setTutorEmpresa(tutorOpt.get());
         System.out.println("Ping 13");
 
         fct.setFechaInicio(dto.fechaInicio());
@@ -121,11 +123,13 @@ public class ControladorFCT extends CrudController<Long, Fct, Fct, Fct, Servicio
         fct.setEmpresa(empresaOpt.get());
         System.out.println("Ping 23");
 
-        Optional<TutorEmpresa> tutorOpt = servicioTutorEmpresa.getById(dto.tutorEmpresaId());
-        if (!tutorOpt.isPresent()) {
-            return ResponseEntity.notFound().build();
+        if (dto.tutorEmpresaId() != null) {
+            Optional<TutorEmpresa> tutorOpt = servicioTutorEmpresa.getById(dto.tutorEmpresaId());
+            if (!tutorOpt.isPresent()) {
+                return ResponseEntity.notFound().build();
+            }
+            fct.setTutorEmpresa(tutorOpt.get());
         }
-        fct.setTutorEmpresa(tutorOpt.get());
         System.out.println("Ping 24");
 
         fct.setFechaInicio(dto.fechaInicio());
