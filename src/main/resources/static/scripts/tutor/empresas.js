@@ -257,7 +257,7 @@ function editEmpresa(empresa) {
     form.getInput('empresa-telefono').retrack(empresa.phone);
     form.getInput('empresa-email').retrack(empresa.email);
     form.getInput('empresa-persona_contacto').retrack(empresa.persona_contacto);
-    form.getInput('numero_convenio').retrack(empresa.convenio);
+    form.getInput('numero_convenio').retrack(empresa.numero_convenio);
     form.getInput('observaciones').retrack(empresa.observaciones);
     form.getInput('propuesta_por').retrack(empresa.propuesta_por ? empresa.propuesta_por.id : '');
 
