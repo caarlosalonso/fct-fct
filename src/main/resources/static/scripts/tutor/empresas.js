@@ -328,3 +328,74 @@ function removeEmpresa(empresa) {
         alert('Error al eliminar la empresa');
     });
 }
+
+function addEmpresa() {
+    collapseAll();
+
+    const form = Form.getForm('empresa-form');
+    form.form.parentNode.classList.remove('collapsed');
+
+    form.onsubmit = () => {
+        collapseAll();
+        const form = Form.getForm('empresa-form');
+        form.form.parentNode.classList.remove('collapsed');
+
+        form.form.setAttribute('submit-text', 'Crear empresa');
+        form.submit.textContent = 'Crear empresa';
+
+        const data = {
+            nombre: form.getInput('empresa-nombre').getValue(),
+            cif: form.getInput('empresa-cif').getValue(),
+            sector: form.getInput('empresa-sector').getValue(),
+            address: form.getInput('empresa-address').getValue(),
+            phone: form.getInput('empresa-telefono').getValue(),
+            email: form.getInput('empresa-email').getValue(),
+            persona_contacto: form.getInput('empresa-persona_contacto').getValue(),
+            propuesta_por: form.getInput('propuesta_por').getValue() ? parseInt(form.getInput('propuesta_por').getValue(), 10) : null,
+            observaciones: form.getInput('observaciones').getValue(),
+            numero_convenio: form.getInput('numero_convenio').getValue(),
+            estado: form.getInput('empresa-estado').getValue()
+        };
+
+        fetch('/api/empresa/create', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(data)
+        }).then(response => {
+            if (response.ok || response.status === 201) {
+                finish(form);
+            } else {
+                response.text().then((text) => {
+                    form.showError(`Error al crear la empresa: ${text}`);
+                });
+            }
+        }).catch(error => {
+            console.error('Error al crear la empresa:', error);
+            form.showError('Error al crear la empresa');
+        });
+    };
+
+    // Resetea los campos del formulario
+    form.getInput('empresa-nombre').retrack('');
+    form.getInput('empresa-cif').retrack('');
+    form.getInput('empresa-sector').retrack('');
+    form.getInput('empresa-address').retrack('');
+    form.getInput('empresa-telefono').retrack('');
+    form.getInput('empresa-email').retrack('');
+    form.getInput('empresa-persona_contacto').retrack('');
+    form.getInput('numero_convenio').retrack('');
+    form.getInput('observaciones').retrack('');
+    form.getInput('propuesta_por').retrack('');
+    form.getInput('empresa-estado').retrack('');
+
+    form.form.setAttribute('submit-text', 'Crear empresa');
+    form.submit.textContent = 'Crear empresa';
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+    
+    const addBtn = document.getElementById('add-empresa-btn');
+    if (addBtn) {
+        addBtn.addEventListener('click', addEmpresa);
+    }
+});
