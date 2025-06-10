@@ -140,6 +140,36 @@
     }
 }
 
+.add-empresa-svg {
+    max-width: 25px;
+    width: 100%;
+    fill: #99ff99;
+
+    &:hover {
+        cursor: pointer;
+        fill: #66ff66;
+    }
+}
+
+.empresa-posible {
+    background-color: #ff999999;
+    border-radius: 3px;
+
+    &:hover {
+        cursor: pointer;
+        background-color: #ff9999;
+
+        & .remove-empresa-svg {
+            fill: #ffffff;
+        }
+    }
+
+    & .remove-empresa-svg {
+        fill: #000000;
+        max-width: 25px;
+        height: 100%;
+    }
+}
 
 #modal {
     display: none;

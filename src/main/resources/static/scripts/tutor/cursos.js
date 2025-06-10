@@ -226,27 +226,29 @@ function crearLista(alumnosCurso, grupoTutor, form, empresas) {
 
         empresasPosibles.appendChild(
             createClickableSVG(
-                '0 -0.5 25 25',
-                'M 20.848 1.879 C 19.676 0.707 17.777 0.707 16.605 1.879 L 2.447 16.036 C 2.029 16.455 1.743 16.988 1.627 17.569 L 1.04 20.505 C 0.76 21.904 1.994 23.138 3.393 22.858 L 6.329 22.271 C 6.909 22.155 7.443 21.869 7.862 21.451 L 22.019 7.293 C 23.191 6.121 23.191 4.222 22.019 3.05 L 20.848 1.879 Z M 18.019 3.293 C 18.41 2.902 19.043 2.902 19.433 3.293 L 20.605 4.465 C 20.996 4.855 20.996 5.488 20.605 5.879 L 6.447 20.036 C 6.308 20.176 6.13 20.271 5.936 20.31 L 3.001 20.897 L 3.588 17.962 C 3.627 17.768 3.722 17.59 3.862 17.451 L 13.933 7.379 L 16.52 9.965 L 17.934 8.56 L 15.348 5.965 L 18.019 3.293 Z',
+                '0 0 48 48',
+                'M 44 20 L 28 20 L 28 4 C 28 2 26 0 24 0 S 20 2 20 4 L 20 20 L 4 20 C 2 20 0 22 0 24 S 2 28 4 28 L 20 28 L 20 44 C 20 46 22 48 24 48 S 28 46 28 44 L 28 28 L 44 28 C 46 28 48 26 48 24 S 46 20 44 20 Z',
                 () => agregarEmpresaPosible(alumno, empresas),
                 'add-empresa-svg'
             )
         );
 
-        alumno.posiblesEmpresas.split(';').forEach((empresaId) => {
-            const empresaSpan = document.createElement('span');
-            empresaSpan.classList.add('empresa-posible');
-            empresaSpan.textContent = empresas.find(e => e.empresaId === empresaId)?.nombre || empresaId;
-            empresasPosibles.appendChild(empresaSpan);
-            empresaSpan.appendChild(
-                createClickableSVG(
-                    '0 -0.5 25 25',
-                    'M 20.848 1.879 C 19.676 0.707 17.777 0.707 16.605 1.879 L 2.447 16.036 C 2.029 16.455 1.743 16.988 1.627 17.569 L 1.04 20.505 C 0.76 21.904 1.994 23.138 3.393 22.858 L 6.329 22.271 C 6.909 22.155 7.443 21.869 7.862 21.451 L 22.019 7.293 C 23.191 6.121 23.191 4.222 22.019 3.05 L 20.848 1.879 Z M 18.019 3.293 C 18.41 2.902 19.043 2.902 19.433 3.293 L 20.605 4.465 C 20.996 4.855 20.996 5.488 20.605 5.879 L 6.447 20.036 C 6.308 20.176 6.13 20.271 5.936 20.31 L 3.001 20.897 L 3.588 17.962 C 3.627 17.768 3.722 17.59 3.862 17.451 L 13.933 7.379 L 16.52 9.965 L 17.934 8.56 L 15.348 5.965 L 18.019 3.293 Z',
-                    () => quitarEmpresa(alumno, empresaId),
-                    'remove-empresa-svg'
-                )
-            );
-        });
+        if (alumno.posiblesEmpresas.length > 0) {
+            alumno.posiblesEmpresas.split(';').forEach((empresaId) => {
+                const empresaSpan = document.createElement('span');
+                empresaSpan.classList.add('empresa-posible');
+                empresaSpan.textContent = empresas.find(e => e.empresaId === empresaId)?.nombre || empresaId;
+                empresasPosibles.appendChild(empresaSpan);
+                empresaSpan.appendChild(
+                    createClickableSVG(
+                        '0 0 48 48',
+                        'M 40.9706 35.3137 L 29.6569 24 L 40.9706 12.6863 C 42.3848 11.2721 42.3848 8.4437 40.9706 7.0294 S 36.7279 5.6152 35.3137 7.0294 L 24 18.3431 L 12.6863 7.0294 C 11.2721 5.6152 8.4437 5.6152 7.0294 7.0294 S 5.6152 11.2721 7.0294 12.6863 L 18.3431 24 L 7.0294 35.3137 C 5.6152 36.7279 5.6152 39.5563 7.0294 40.9706 S 11.2721 42.3848 12.6863 40.9706 L 24 29.6569 L 35.3137 40.9706 C 36.7279 42.3848 39.5563 42.3848 40.9706 40.9706 S 42.3848 36.7279 40.9706 35.3137 Z',
+                        () => quitarEmpresa(alumno, empresaId),
+                        'remove-empresa-svg'
+                    )
+                );
+            });
+        }
 
         item.appendChild(
             createClickableSVG(
@@ -314,7 +316,7 @@ function quitarEmpresa(alumno, empresaId) {
 
 function agregarEmpresaPosible(alumno, empresas) {
     const search = Form.getForm('agregar-empresa-form');
-    const parent = search.parentElement;
+    const parent = search.input.parentElement;
     parent.classList.add('active');
     parent.addEventListener('key', (event) => {
         event.preventDefault();
