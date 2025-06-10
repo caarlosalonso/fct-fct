@@ -85,7 +85,7 @@ public class ControladorCurso extends CrudController<Long, Curso, Curso, Curso, 
         curso.setGrupo(grupo);
         curso.setAlumno(alumno);
         curso.setHorasHechas((short) 0);
-        curso.setRating("Verde");
+        curso.setRating("VERDE");
         curso.setObservaciones("");
 
         service.save(curso);
@@ -148,8 +148,8 @@ public class ControladorCurso extends CrudController<Long, Curso, Curso, Curso, 
 
         Curso curso = cursoOptional.get();
 
-        curso.setRating(a.rating());
-        curso.setObservaciones(a.observaciones());
+        curso.setRating(a.rating() == null ? "VERDE" : a.rating());
+        curso.setObservaciones(a.observaciones() == null ? "" : a.observaciones());
 
         Optional<Alumno> optional = servicioAlumno.getById(curso.getAlumno().getId());
 
