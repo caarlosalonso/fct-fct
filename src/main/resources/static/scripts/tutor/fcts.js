@@ -177,7 +177,7 @@ function createCell(alumno) {
                     <input id="no-lectivos-${alumno.alumnoId}" type="range" name="noLectivos" class="text-based input" label="{n} No lectivo{s}" data-required="true" data-min="0" data-max="20" data-step="1" data-value="0">
                 </div>
                 <div class="form-group form-input">
-                    <input id="horas-de-practicas-${alumno.alumnoId}" type="range" name="horasDePracticas" class="text-based input" label="{n} Hora{s} de prácticas" data-required="true" data-min="300" data-max="500" data-step="1" data-value="370">
+                    <input id="horas-de-practicas-${alumno.alumnoId}" type="range" name="horasDePracticas" class="text-based input" label="{n} Hora{s} de prácticas" data-required="true" data-min="100" data-max="500" data-step="1" data-value="370">
                 </div>
             </div>
             <div class="instance form-input grouped-inputs">
