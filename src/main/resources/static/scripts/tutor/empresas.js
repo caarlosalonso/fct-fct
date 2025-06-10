@@ -170,9 +170,10 @@ function crearGridEmpresas(empresas) {
             cell.classList.add('cell');
             cell.style.gridRow = `${rowIdx + 2}`;
             cell.style.gridColumn = `${colIdx + 1}`;
-            cell.textContent = empresa[col.key] || '';
-
-            if (col.key === 'hay_convenio') {
+            
+            if (col.key === 'propuesta_por') {
+                cell.textContent = empresa.propuesta_por ? (empresa.propuesta_por.nombre || empresa.propuesta_por.id || '') : '';
+            } else if (col.key === 'hay_convenio') {
                 // Si hay número de convenio, muestra un check
                 cell.textContent = empresa.numero_convenio && empresa.numero_convenio.trim() !== '' ? '✔️' : '';
             } else {
