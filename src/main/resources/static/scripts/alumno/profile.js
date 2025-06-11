@@ -60,7 +60,7 @@ function build(alumno) {
         let updatedAlumno = {
             name: nombre,
             email: email,
-            telefono: phone,
+            phone: telefono,
             nia: nia,
             dni: dni,
             nuss: nuss,
