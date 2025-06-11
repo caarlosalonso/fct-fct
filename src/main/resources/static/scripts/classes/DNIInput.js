@@ -15,6 +15,7 @@ export class DNIInput extends TextInput {
         this.regex = /^[X-Z\d]\d{0,7}[A-Z]$/;
 
         this.validate = () => {
+            if (!this.shouldValidate()) return true;
             if (this.isEmpty()) return true;
 
             let dni = this.getValue();

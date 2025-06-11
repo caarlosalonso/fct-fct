@@ -10,6 +10,7 @@ export class DateInput extends TextInput {
         }
 
         this.validate = () => {
+            if (!this.shouldValidate()) return true;
             if (this.isEmpty()) return true;
             const date = new Date(this.input.value);
             return !isNaN(date.getTime());

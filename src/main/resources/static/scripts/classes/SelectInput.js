@@ -8,6 +8,7 @@ export class SelectInput extends TextInput {
         this.input.value = '';
         this.hiddenValue = '';
         this.validate = () => {
+            if (!this.shouldValidate()) return true;
             if (this.isEmpty()) return true;
             return this.options.some(option => option.value === this.hiddenValue);
         };

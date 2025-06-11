@@ -23,6 +23,7 @@ export class EmailInput extends TextInput {
         // Para que la validación de si es un email sea en el submit.
         this.input.type = 'text';
         this.validate = () => {
+            if (!this.shouldValidate()) return true;
             if (this.isEmpty()) return true;
             const val = String(this.input.value).toLowerCase();
             return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(val);

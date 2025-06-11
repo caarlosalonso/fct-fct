@@ -11,6 +11,10 @@ export class TextInput extends Input {
             if (val === null || val === undefined) return null;
             return val.trim();
         }
+        this.validate = function() {
+            if (!this.shouldValidate()) return true;
+            return true;
+        }
     }
 
     init(form) {

@@ -117,12 +117,14 @@ export class ToggleSwitch extends Input {
             elementFalse.querySelectorAll('input').forEach((input) => {
                 const element = this.form.getInput(input.id);
                 element.states.required = element.states.trueRequired;
+                element.states.validate = true;
                 element.updateState();
             });
 
             elementTrue.querySelectorAll('input').forEach((input) => {
                 const element = this.form.getInput(input.id);
                 element.states.required = element.states.falseRequired;
+                element.states.validate = true;
                 element.updateState();
             });
 
@@ -132,6 +134,7 @@ export class ToggleSwitch extends Input {
                 elementFalse.querySelectorAll('input').forEach((input) => {
                     const element = this.form.getInput(input.id);
                     element.states.required = false;
+                    element.states.validate = false;
                     element.updateState();
                 });
             } else {
@@ -140,6 +143,7 @@ export class ToggleSwitch extends Input {
                 elementTrue.querySelectorAll('input').forEach((input) => {
                     const element = this.form.getInput(input.id);
                     element.states.required = false;
+                    element.states.validate = false;
                     element.updateState();
                 });
             }

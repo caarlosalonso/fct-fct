@@ -4,6 +4,7 @@ export class PasswordInput extends TextInput {
     constructor(input) {
         super(input);
         this.validate = () => {
+            if (!this.shouldValidate()) return true;
             return true;
         }
     }

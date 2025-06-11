@@ -33,6 +33,7 @@ export class Input {
             'trackedValue':     Utility.getElementValueByAttribute(Input.ATTRIBUTES.TRACKED, this.input),
             'valid':            null,
             'showValidity':     Utility.getBooleanAttribute(Input.ATTRIBUTES.SHOW_VALIDITY, this.input),
+            'validate':         true,
             'errorAffected':    false
         }
     }
@@ -117,7 +118,12 @@ export class Input {
         }
     }
 
+    shouldValidate() {
+        return this.states.validate;
+    }
+
     validate() {
+        if (!this.shouldValidate()) return true;
         return true;
     }
 

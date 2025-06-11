@@ -4,6 +4,7 @@ export class TelInput extends TextInput {
     constructor(input) {
         super(input);
         this.validate = () => {
+            if (!this.shouldValidate()) return true;
             if (this.isEmpty()) return true;
             const val = String(this.input.value).replace(/\s/g, '');
             return /^\d{9}$/.test(val);

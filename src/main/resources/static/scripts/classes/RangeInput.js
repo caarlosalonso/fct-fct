@@ -9,6 +9,7 @@ export class RangeInput extends Input {
         this.value = parseFloat(this.input.getAttribute('data-value')) || this.minimum;
         this.labelText = this.input.getAttribute('label') || '';
         this.validate = () => {
+            if (!this.shouldValidate()) return true;
             if (this.isEmpty()) return true;
             const value = parseFloat(this.input.value);
             return !isNaN(value) && value >= this.minimum && value <= this.maximum;

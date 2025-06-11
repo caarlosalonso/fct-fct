@@ -14,6 +14,7 @@ export class NumberInput extends TextInput {
         if (isNaN(parseFloat(this.step))) this.step = '1';
         this.input.setAttribute('step', this.step);
         this.validate = () => {
+            if (!this.shouldValidate()) return true;
             if (this.isEmpty()) return true;
 
             const value = parseFloat(this.input.value);
