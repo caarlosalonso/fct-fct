@@ -54,6 +54,10 @@
     &.pasada {
         background-color: #c58686;
     }
+
+    &.add {
+        background-color: #707070;
+    }
 }
 
 .svg {
