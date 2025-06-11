@@ -473,7 +473,7 @@ function onsubmit(alumnoId, cursoId) {
         let data = {};
         if (checkbox.getValue()) {
             data = {
-                renuncia: true,
+                renuncia: 1,
                 cursoId: cursoId,
                 empresaId: null,
                 tutorEmpresaId: null,
@@ -486,7 +486,7 @@ function onsubmit(alumnoId, cursoId) {
             };
         } else {
             data = {
-                renuncia: false,
+                renuncia: 0,
                 cursoId: cursoId,
                 empresaId: empresaInput.getValue(),
                 tutorEmpresaId: tutorEmpresaInput.getValue(),
