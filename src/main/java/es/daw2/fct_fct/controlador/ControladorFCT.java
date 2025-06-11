@@ -74,6 +74,8 @@ public class ControladorFCT extends CrudController<Long, Fct, Fct, Fct, Servicio
         if (dto.renuncia() == null) return ResponseEntity.badRequest().body("El campo 'renuncia' es obligatorio");
         System.out.println("Ping 12");
 
+        System.out.println(dto.renuncia());
+        System.out.println(dto.renuncia().booleanValue());
         if (dto.renuncia().booleanValue()) {
             System.out.println("Ping 121");
             fct.setMotivoRenuncia(dto.motivoRenuncia());
