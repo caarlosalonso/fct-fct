@@ -95,7 +95,7 @@ function build(cursoActual, grupoTutor, alumnosCurso, empresas, tutoresEmpresas,
                                 .sort((a, b) => a.nombreAlumno.localeCompare(b.nombreAlumno));
 
     document.getElementById('modal').innerHTML = `
-        <form id="agregar-empresa-form" method="POST" submit-text="Agregar Empresa" form-legend="false" form-message="false">
+        <form id="agregar-empresa-form" method="POST" submit-text="Agregar Empresa" form-legend="false">
             <div class="form-group form-input">
                 <input type="select" id="buscar-empresa" name="nombre-empresa" class="text-based input" label="Empresa" data-required="true">
             </div>
@@ -180,17 +180,10 @@ function createCell(alumno, fcts, grupoTutor, empresas) {
     );
 
     if (alumno.posiblesEmpresas.length > 0) {
-        console.log(alumno.posiblesEmpresas.split(';'));
-
         alumno.posiblesEmpresas.split(';').forEach((empresaId) => {
             const empresaSpan = document.createElement('span');
             empresaSpan.classList.add('empresa-posible');
-            const found = empresas.find(e => {
-                //console.log(e, empresaId);
-                return e.empresaId == empresaId
-            });
-            console.log("found:", found, empresas);
-
+            const found = empresas.find(e => e.empresaId == empresaId);
             empresaSpan.textContent = found?.nombreEmpresa || empresaId;
             empresasPosibles.appendChild(empresaSpan);
             empresaSpan.appendChild(
@@ -361,7 +354,6 @@ function searchEmpresa(alumnoId, empresas) {
     empresasSelect.input.addEventListener('input', () => {
         let query = empresasSelect.input.value;
         query = (query || '').toLowerCase().trim();
-        console.log(query);
         let options = [];
 
         empresas.filter((empresa) => empresa.estado !== "DENEGADO")
@@ -376,8 +368,6 @@ function searchEmpresa(alumnoId, empresas) {
             ];
 
             const match = values.some(val => val.includes(query));
-            console.log(match, values);
-            console.log(options);
             if (match) {
                 options.push({
                     value: empresa.empresaId,
@@ -412,7 +402,6 @@ function searchTutorEmpresa(alumnoId, tutoresEmpresas) {
     tutoresSelect.input.addEventListener('input', () => {
         let query = tutoresSelect.input.value;
         query = (query || '').toLowerCase().trim();
-        console.log(query);
         let options = [];
 
         tutoresEmpresas.forEach(tutor => {
@@ -423,8 +412,6 @@ function searchTutorEmpresa(alumnoId, tutoresEmpresas) {
             ];
 
             const match = values.some(val => val.includes(query));
-            console.log(match, values);
-            console.log(options);
             if (match) {
                 options.push({
                     value: tutor.id,
@@ -563,8 +550,6 @@ function agregarEmpresaPosible(alumno, empresas, empresasPosibles) {
     });
 
     search.onsubmit = () => {
-        console.log(empresasSelect.getValue());
-
         let posiblesEmpresas = alumno.posiblesEmpresas.split(';');
         if (posiblesEmpresas.includes('' + empresasSelect.getValue())) {
             clearModal(search, parent);

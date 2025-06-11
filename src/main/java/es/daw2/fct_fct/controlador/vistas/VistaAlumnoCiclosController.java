@@ -38,7 +38,6 @@ public class VistaAlumnoCiclosController {
 
         Long alumnoId = (Long) request.getSession().getAttribute("child_id");
         Optional<VistaAlumnoCiclos> alumnoOpt = service.getByALumnoId(alumnoId);
-        System.out.println(alumnoOpt);
 
         if (alumnoOpt.isEmpty()) {
             return ResponseEntity.noContent().build();
