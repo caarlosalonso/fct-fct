@@ -102,16 +102,44 @@ function build(cursoActual, grupoTutor, alumnosCurso, empresas, tutoresEmpresas,
         </form>
     `;
 
+    let counts = {
+        verdes: 0,
+        amarillos: 0,
+        rojos: 0
+    };
     alumnosCurso.forEach((alumno) => {
         const cell = createCell(alumno, fcts, grupoTutor, empresas);
         if (alumno.rating === 'VERDE') {
             verdes.appendChild(cell);
+            counts.verdes++;
         } else if (alumno.rating === 'AMARILLO') {
             amarillos.appendChild(cell);
+            counts.amarillos++;
         } else if (alumno.rating === 'ROJO') {
             rojos.appendChild(cell);
+            counts.rojos++;
         }
     });
+
+    document.getElementById('green-title').textContent = `Alumnos que seguramente promocionen (${counts.verdes})`;
+    document.getElementById('yellow-title').textContent = `Alumnos que puede que promocionen (${counts.amarillos})`;
+    document.getElementById('red-title').textContent = `Alumnos que están en riesgo (${counts.rojos})`;
+
+    if (counts.verdes === 0) {
+        const message = document.createElement('p');
+        message.textContent = 'No hay alumnos que seguramente promocionen.';
+        verdes.appendChild(message);
+    }
+    if (counts.amarillos === 0) {
+        const message = document.createElement('p');
+        message.textContent = 'No hay alumnos que puede que promocionen.';
+        amarillos.appendChild(message);
+    }
+    if (counts.rojos === 0) {
+        const message = document.createElement('p');
+        message.textContent = 'No hay alumnos que están en riesgo. Yay!';
+        rojos.appendChild(message);
+    }
 
     document.querySelectorAll('form').forEach(form => new Form(form).init());
 
