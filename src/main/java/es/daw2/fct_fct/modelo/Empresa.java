@@ -56,6 +56,9 @@ public class Empresa extends AbsBaseEntity {
     @Column(name = "phone", nullable = true, columnDefinition = "varchar(15)")
     private String phone;
 
+    @Column(name = "numero_plazas" , nullable = true, columnDefinition = "INT")
+    private Integer numero_plazas;
+
     @Column(name = "persona_contacto", nullable = true, columnDefinition = "varchar(255)")
     private String persona_contacto;
 

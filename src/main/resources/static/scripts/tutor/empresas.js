@@ -35,7 +35,7 @@ async function cargarEmpresas() {
 }
 
 async function fetchEmpresas() {
-    const response = await fetch('/api/empresa/all');
+    const response = await fetch('/api/vista-empresas-tutores/all');
     if (response.status === 204) return [];
     if (!response.ok) throw new Error('No se encontraron empresas');
     return await response.json();
@@ -137,6 +137,8 @@ function crearGridEmpresas(empresas) {
         { key: 'address', label: 'Dirección' },
         { key: 'hay_convenio', label: 'Convenio' },
         { key: 'numero_convenio', label: 'Número Convenio' },
+        { key: 'numero_plazas', label: 'Número Plazas' },
+        { key: 'fecha_contacto', label: 'Fecha Contacto' },
         { key: 'persona_contacto', label: 'Persona Contacto' },
         { key: 'propuesta_por', label: 'Propuesta por' },
         { key: 'observaciones', label: 'Observaciones' }
@@ -261,6 +263,8 @@ function editEmpresa(empresa) {
     form.getInput('empresa-email').retrack(empresa.email);
     form.getInput('empresa-persona_contacto').retrack(empresa.persona_contacto);
     form.getInput('numero_convenio').retrack(empresa.numero_convenio);
+    form.getInput('numero_plazas').retrack(empresa.numero_plazas);
+    form.getInput('fecha_contacto').retrack(empresa.fecha_contacto ? new Date(empresa.fecha_contacto).toISOString().split('T')[0] : '');
     form.getInput('observaciones').retrack(empresa.observaciones);
     form.getInput('propuesta_por').retrack(empresa.propuesta_por ? empresa.propuesta_por.id : '');
 
@@ -287,10 +291,12 @@ function editEmpresa(empresa) {
             propuesta_por: form.getInput('propuesta_por').getValue() ? parseInt(form.getInput('propuesta_por').getValue(), 10) : null,
             observaciones: form.getInput('observaciones').getValue(),
             numero_convenio: form.getInput('numero_convenio').getValue(),
+            numero_plazas: form.getInput('numero_plazas').getValue(),
+            fecha_contacto: form.getInput('fecha_contacto').getValue() ? new Date(form.getInput('fecha_contacto').getValue()).toISOString() : null,
             estado: form.getInput('empresa-estado').getValue()
         };
 
-        fetch(`/api/empresa/${empresa.id}`, {
+        fetch(`/api/vista-empresas-tutores/${empresa.id}`, {
             method: 'PUT',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(data)
@@ -359,6 +365,8 @@ function addEmpresa() {
             propuesta_por: form.getInput('propuesta_por').getValue() ? parseInt(form.getInput('propuesta_por').getValue(), 10) : null,
             observaciones: form.getInput('observaciones').getValue(),
             numero_convenio: form.getInput('numero_convenio').getValue(),
+            numero_plazas: form.getInput('numero_plazas').getValue(),
+            fecha_contacto: form.getInput('fecha_contacto').getValue() ? new Date(form.getInput('fecha_contacto').getValue()).toISOString() : null,
             estado: form.getInput('empresa-estado').getValue()
         };
 
@@ -389,6 +397,8 @@ function addEmpresa() {
     form.getInput('empresa-email').retrack('');
     form.getInput('empresa-persona_contacto').retrack('');
     form.getInput('numero_convenio').retrack('');
+    form.getInput('numero_plazas').retrack('');
+    form.getInput('fecha_contacto').retrack('');
     form.getInput('observaciones').retrack('');
     form.getInput('propuesta_por').retrack('');
     form.getInput('empresa-estado').retrack('');
