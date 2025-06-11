@@ -59,31 +59,30 @@ function build(cursos, fcts, grupos, ciclos, ciclosLectivos, stats) {
     }
     while (section.firstChild) section.removeChild(section.firstChild);
 
-    const statsDiv = document.createElement('div');
-    statsDiv.innerHTML = `
-        <h2>Estadísticas</h2>
-        <p>Alumnos por ciclo lectivo:</p>
-        <ul>
-            ${stats.alumnosPorCicloLectivo.map(stat => `<li>${stat.nombre}: ${stat.totalAlumnos}</li>`).join('')}
-        </ul>
-        <p>Prácticas por ciclo lectivo:</p>
-        <ul>
-            ${stats.practicasPorCicloLectivo.map(stat => `<li>${stat.nombre}: ${stat.totalPracticas}</li>`).join('')}
-        </ul>
-        <p>Renuncias por ciclo lectivo:</p>
-        <ul>
-            ${stats.renunciasPorCicloLectivo.map(stat => `<li>${stat.nombre}: ${stat.totalRenuncias}</li>`).join('')}
-        </ul>
-        <p>Alumnos que titulan por ciclo lectivo:</p>
-        <ul>
-            ${stats.titulanPorCicloLectivo.map(stat => `<li>${stat.nombre}: ${stat.totalTitulan}</li>`).join('')}
-        </ul>
-        <p>Motivos de renuncia:</p>
-        <ul>
-            ${Object.entries(stats.motivosRenuncia).map(([motivo, count]) => `<li>${motivo}: ${count}</li>`).join('')}
-        </ul>
+    const statsTable = document.createElement('table');
+    statsTable.innerHTML = `
+        <thead>
+            <tr>
+                <th>Ciclo Lectivo</th>
+                <th>Cantidad de Alumnos</th>
+                <th>Cantidad que va a Prácticas</th>
+                <th>Cantidad que Renuncia</th>
+                <th>Cantidad que Titula</th>
+            </tr>
+        </thead>
+        <tbody>
+            ${stats.alumnosPorCicloLectivo.map((stat, index) => `
+                <tr>
+                    <td>${stat.nombre}</td>
+                    <td>${stat.totalAlumnos}</td>
+                    <td>${stats.practicasPorCicloLectivo[index]?.totalPracticas || 0}</td>
+                    <td>${stats.renunciasPorCicloLectivo[index]?.totalRenuncias || 0}</td>
+                    <td>${stats.titulanPorCicloLectivo[index]?.totalTitulan || 0}</td>
+                </tr>
+            `).join('')}
+        </tbody>
     `;
-    section.appendChild(statsDiv);
+    section.appendChild(statsTable);
 }
 
 window.addEventListener('FormsCreated', async (event) => {
