@@ -52,6 +52,8 @@ export class RangeInput extends Input {
             this.updateState();
             this.label.classList.add('active');
         });
+
+        this.label.classList.add('active');
     }
 
     changeText() {
