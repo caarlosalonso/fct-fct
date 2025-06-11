@@ -460,6 +460,7 @@ function onsubmit(alumnoId, cursoId) {
     }
 
     formulario.onsubmit = () => {
+        const checkbox = formulario.getInput(`checkbox-${alumnoId}`);
         const empresaInput = formulario.getInput(`empresa-${alumnoId}`);
         const tutorEmpresaInput = formulario.getInput(`tutor-empresa-${alumnoId}`);
         const fechaInicioInput = formulario.getInput(`fecha-inicio-${alumnoId}`);
@@ -469,17 +470,34 @@ function onsubmit(alumnoId, cursoId) {
         const fechaFinInput = formulario.getInput(`fecha-fin-${alumnoId}`);
         const motivoRenuncia = formulario.getInput(`motivo-renuncia-${alumnoId}`);
 
-        const data = {
-            cursoId: cursoId,
-            empresaId: empresaInput.getValue(),
-            tutorEmpresaId: tutorEmpresaInput.getValue(),
-            fechaInicio: fechaInicioInput.getValue(),
-            horasSemanales: horasSemanalesInput.getValue(),
-            noLectivos: noLectivosInput.getValue(),
-            horasDePracticas: horasDePracticasInput.getValue(),
-            fechaFin: fechaFinInput.getValue(),
-            motivoRenuncia: motivoRenuncia.getValue()
-        };
+        let data = {};
+        if (checkbox.getValue()) {
+            data = {
+                renuncia: true,
+                cursoId: cursoId,
+                empresaId: null,
+                tutorEmpresaId: null,
+                fechaInicio: null,
+                horasSemanales: null,
+                noLectivos: null,
+                horasDePracticas: null,
+                fechaFin: null,
+                motivoRenuncia: motivoRenuncia.getValue()
+            };
+        } else {
+            data = {
+                renuncia: false,
+                cursoId: cursoId,
+                empresaId: empresaInput.getValue(),
+                tutorEmpresaId: tutorEmpresaInput.getValue(),
+                fechaInicio: fechaInicioInput.getValue(),
+                horasSemanales: horasSemanalesInput.getValue(),
+                noLectivos: noLectivosInput.getValue(),
+                horasDePracticas: horasDePracticasInput.getValue(),
+                fechaFin: fechaFinInput.getValue(),
+                motivoRenuncia: null
+            };
+        }
 
         console.log('Datos del FCT:', data);
 

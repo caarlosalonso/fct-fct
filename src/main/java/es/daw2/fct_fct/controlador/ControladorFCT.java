@@ -71,6 +71,16 @@ public class ControladorFCT extends CrudController<Long, Fct, Fct, Fct, Servicio
         fct.setCurso(cursoOpt.get());
         System.out.println("Ping 11");
 
+        if (dto.renuncia() == null) return ResponseEntity.badRequest().body("El campo 'renuncia' es obligatorio");
+
+        if (dto.renuncia()) {
+            fct.setMotivoRenuncia(dto.motivoRenuncia());
+            fct.setApto(false);
+            service.save(fct);
+            URI location = URI.create("/api/fct/" + fct.getId());
+            return ResponseEntity.created(location).body(fct);
+        }
+
         Optional<Empresa> empresaOpt = servicioEmpresa.getById(dto.empresaId());
         if (!empresaOpt.isPresent()) {
             return ResponseEntity.notFound().build();
@@ -107,6 +117,16 @@ public class ControladorFCT extends CrudController<Long, Fct, Fct, Fct, Servicio
             return ResponseEntity.notFound().build();
         }
         Fct fct = fctOpt.get();
+
+        if (dto.renuncia() == null) return ResponseEntity.badRequest().body("El campo 'renuncia' es obligatorio");
+
+        if (dto.renuncia()) {
+            fct.setMotivoRenuncia(dto.motivoRenuncia());
+            fct.setApto(false);
+            service.save(fct);
+            URI location = URI.create("/api/fct/" + fct.getId());
+            return ResponseEntity.created(location).body(fct);
+        }
         System.out.println("Ping 21");
 
         Optional<Curso> cursoOpt = servicioCurso.getById(dto.cursoId());

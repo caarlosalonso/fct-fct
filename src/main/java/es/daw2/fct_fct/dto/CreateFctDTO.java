@@ -3,6 +3,7 @@ package es.daw2.fct_fct.dto;
 import java.time.LocalDate;
 
 public record CreateFctDTO(
+    Boolean renuncia,
     Long cursoId,
     Long empresaId,
     Long tutorEmpresaId,
@@ -10,5 +11,6 @@ public record CreateFctDTO(
     Integer horasSemanales,
     Integer noLectivos,
     Integer horasPracticas,
-    LocalDate fechaFin
+    LocalDate fechaFin,
+    String motivoRenuncia
 ) {}
