@@ -9,7 +9,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.google.firebase.cloud.StorageClient;
 
-import es.daw2.fct_fct.modelo.User;
 import es.daw2.fct_fct.modelo.vAlumno;
 import es.daw2.fct_fct.repositorio.RepositorioVAlumno;
 
@@ -19,18 +18,18 @@ public class ServicioArchivo extends AbstractService<Long, vAlumno, RepositorioV
     @Autowired
     private servicioVAlumno servicioVAlumno;
 
-    public String subirArchivo(Long idUsuario, MultipartFile archivo) throws IOException {
+    public String subirArchivo(Long id, MultipartFile archivo) throws IOException {
 
         String bucketName = StorageClient.getInstance().bucket().getName();
 
-        Optional<vAlumno> va = servicioVAlumno.getByUserId(idUsuario);
+        Optional<vAlumno> va = servicioVAlumno.findById(id);
 
         if (va.isEmpty()) {
             throw new IllegalArgumentException("El usuario no es un alumno válido");
         }
 
         vAlumno vAlumno = va.get();
-        String ruta = String.format("%s/%s/%s/%s/%s",
+        String ruta = String.format("%d/%s/%d/%d/%s",
             vAlumno.getAño(),
             vAlumno.getCiclo(),
             vAlumno.getGrupo(),
