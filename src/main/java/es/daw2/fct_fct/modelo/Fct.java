@@ -40,7 +40,10 @@ public class Fct extends AbsBaseEntity {
     @JoinColumn(name = "tutor_empresa_id", nullable = true)
     private TutorEmpresa tutorEmpresa;
 
-    @Column(name = "anexo_21", nullable = false, columnDefinition = "VARCHAR(5)")
+    @Column(name = "motivo_renuncia", nullable = true, columnDefinition = "VARCHAR(45)")
+    private String motivoRenuncia;
+
+    @Column(name = "anexo_21", nullable = true, columnDefinition = "VARCHAR(5)")
     private String anexo21;
 
     @Column(name = "fecha_inicio", nullable = true, columnDefinition = "DATE")

@@ -160,7 +160,7 @@ function createCell(alumno, fcts, grupoTutor, empresas) {
 
     const empresasPosibles = document.createElement('div');
     empresasPosibles.classList.add('cell-value', 'empresas-posibles');
-    bar.appendChild(empresasPosibles);
+    cell.appendChild(empresasPosibles);
 
     empresasPosibles.appendChild(
         createClickableSVG(
@@ -197,34 +197,48 @@ function createCell(alumno, fcts, grupoTutor, empresas) {
         <div class="inputs form-container">
             <div class="instance form-input grouped-inputs">
                 <div class="form-group form-input">
-                    <input id="empresa-${alumno.alumnoId}" type="select" name="empresa" class="text-based input" label="Empresa" data-show-validity="true" data-required="true">
+                    <input id="checkbox-${alumno.alumnoId}" type="toggle-switch" name="renuncia" class="input" label="¿Renuncia a prácticas?">
                 </div>
             </div>
-            <div class="instance form-input grouped-inputs">
-                <div class="form-group form-input">
-                    <input id="tutor-empresa-${alumno.alumnoId}" type="select" name="tutor_empresa" class="text-based input" label="Tutor de empresa" data-show-validity="true">
+            <div id="checkbox-${alumno.alumnoId}-false">
+                <div class="instance form-input grouped-inputs">
+                    <div class="form-group form-input">
+                        <input id="empresa-${alumno.alumnoId}" type="select" name="empresa" class="text-based input" label="Empresa" data-show-validity="true" data-required="true">
+                    </div>
+                </div>
+                <div class="instance form-input grouped-inputs">
+                    <div class="form-group form-input">
+                        <input id="tutor-empresa-${alumno.alumnoId}" type="select" name="tutor_empresa" class="text-based input" label="Tutor de empresa" data-show-validity="true">
+                    </div>
+                </div>
+                <div class="instance form-input grouped-inputs">
+                    <div class="form-group form-input">
+                        <input id="fecha-inicio-${alumno.alumnoId}" type="date" name="fechaInicio" class="text-based input" label="Fecha de inicio" data-show-validity="true" data-required="true">
+                    </div>
+                </div>
+                <div class="instance form-input grouped-inputs">
+                    <div class="form-group form-input">
+                        <input id="horas-semanales-${alumno.alumnoId}" type="range" name="horasSemanales" class="text-based input" label="{n} Hora{s} semanal{es}" data-required="true" data-min="30" data-max="40" data-step="1" data-value="40">
+                    </div>
+                    <div class="form-group form-input">
+                        <p class="info">Sin contar sábados y domingos</p>
+                        <input id="no-lectivos-${alumno.alumnoId}" type="range" name="noLectivos" class="text-based input" label="{n} No lectivo{s}" data-required="true" data-min="0" data-max="20" data-step="1" data-value="0">
+                    </div>
+                    <div class="form-group form-input">
+                        <input id="horas-de-practicas-${alumno.alumnoId}" type="range" name="horasDePracticas" class="text-based input" label="{n} Hora{s} de prácticas" data-required="true" data-min="100" data-max="${grupoTutor.horasPracticas}" data-step="1" data-value="${grupoTutor.horasPracticas < 370 ? grupoTutor.horasPracticas : 370}">
+                    </div>
+                </div>
+                <div class="instance form-input grouped-inputs">
+                    <div class="form-group form-input">
+                        <input id="fecha-fin-${alumno.alumnoId}" type="date" name="fechaFin" class="text-based input" label="Fin de FCT" data-show-validity="true" data-required="true">
+                    </div>
                 </div>
             </div>
-            <div class="instance form-input grouped-inputs">
-                <div class="form-group form-input">
-                    <input id="fecha-inicio-${alumno.alumnoId}" type="date" name="fechaInicio" class="text-based input" label="Fecha de inicio" data-show-validity="true" data-required="true">
-                </div>
-            </div>
-            <div class="instance form-input grouped-inputs">
-                <div class="form-group form-input">
-                    <input id="horas-semanales-${alumno.alumnoId}" type="range" name="horasSemanales" class="text-based input" label="{n} Hora{s} semanal{es}" data-required="true" data-min="30" data-max="40" data-step="1" data-value="40">
-                </div>
-                <div class="form-group form-input">
-                    <p class="info">Sin contar sábados y domingos</p>
-                    <input id="no-lectivos-${alumno.alumnoId}" type="range" name="noLectivos" class="text-based input" label="{n} No lectivo{s}" data-required="true" data-min="0" data-max="20" data-step="1" data-value="0">
-                </div>
-                <div class="form-group form-input">
-                    <input id="horas-de-practicas-${alumno.alumnoId}" type="range" name="horasDePracticas" class="text-based input" label="{n} Hora{s} de prácticas" data-required="true" data-min="100" data-max="${grupoTutor.horasPracticas}" data-step="1" data-value="${grupoTutor.horasPracticas < 370 ? grupoTutor.horasPracticas : 370}">
-                </div>
-            </div>
-            <div class="instance form-input grouped-inputs">
-                <div class="form-group form-input">
-                    <input id="fecha-fin-${alumno.alumnoId}" type="date" name="fechaFin" class="text-based input" label="Fin de FCT" data-show-validity="true" data-required="true">
+            <div id="checkbox-${alumno.alumnoId}-true">
+                <div class="instance form-input grouped-inputs">
+                    <div class="form-group form-input">
+                        <input id="motivo-renuncia-${alumno.alumnoId}" type="text" name="motivoRenuncia" class="text-based input" label="Motivo renuncia" data-required="true">
+                    </div>
                 </div>
             </div>
         </div>

@@ -11,6 +11,7 @@ import { NumberInput } from "./NumberInput.js";
 import { SelectInput } from "./SelectInput.js";
 import { DateTimeInput } from "./DateTimeInput.js";
 import { RangeInput } from "./RangeInput.js";
+import { ToggleSwitch } from "./ToggleSwitch.js";
 
 export class Form {
     static formMap = new Map();
@@ -53,6 +54,7 @@ export class Form {
                 case 'select':          this.entries.push(new SelectInput(input));      break;
                 case 'datetime-local':  this.entries.push(new DateTimeInput(input));    break;
                 case 'range':           this.entries.push(new RangeInput(input));       break;
+                case 'toggle-switch':   this.entries.push(new ToggleSwitch(input));     break;
                 default:                this.entries.push(new Input(input));            break;
             }
         });

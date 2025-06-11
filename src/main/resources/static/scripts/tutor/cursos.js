@@ -6,7 +6,8 @@ const SECTION = 'curso-actual';
 const RATING = {
     VERDE: 'Si',
     AMARILLO: 'Poco probable',
-    ROJO: 'No'
+    ROJO: 'No',
+    EXTRAORDINARIA: 'A extraordinaria'
 };
 
 window.addEventListener('FormsCreated', (event) => {
@@ -432,7 +433,8 @@ function setInputsToUpdate(form, alumno) {
             nuss: nuss,
             address: address,
             convocatoria: convocatoria,
-            rating: rating,
+            rating: rating !== 'EXTRAORDINARIA' ? rating : 'EXTRAORDINARIA',
+            aExtraordinaria: rating === 'EXTRAORDINARIA',
             observaciones: observaciones
         };
 
