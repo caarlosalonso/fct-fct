@@ -85,22 +85,23 @@ function build(alumno, alumnosCurso, cursoActual, fcts) {
     main.innerHTML = `
         <h2>FCTs del Alumno</h2>
         <ul>
-            ${fctsAlumno.map(fct => `<li>${fct.nombre}: ${fct.horas ? fct.horas : 0} horas</li>`).join('')}
+            ${fctsAlumno.map(fct => `<li>${fct.curso.grupo.cicloLectivo.nombre}: ${fct.horas ? fct.horas : 0} horas</li>`).join('')}
         </ul>
         <h3>FCT Actual</h3>
         ${fctActual ? `
-            <p>${fctActual.nombre}: ${fctActual.horas ? fctActual.horas : 0} horas</p>
             ${fctActual.empresa ? `
+                <p>${fctActual.curso.grupo.cicloLectivo.nombre}: ${fctActual.horas ? fctActual.horas : 0} horas</p>
                 <p>Empresa: ${fctActual.empresa.nombre}</p>
                 ${fctActual.tutorEmpresa ? `<p>Tutor: ${fctActual.tutorEmpresa.nombre}</p>` : ''}
                 <p>Fecha Inicio: ${fctActual.fechaInicio || 'No especificada'}</p>
                 <p>Fecha Fin: ${fctActual.fechaFin || 'No especificada'}</p>
+            ` : fctActual.motivoRenuncia ? `
+                <p>Renunció a las prácticas: ${fctActual.motivoRenuncia}</p>
             ` : `
-                <p>No tiene empresa asignada. <a href="/empresas">Proponer empresa</a></p>
+                <p>No tiene empresa para prácticas. <a href="/empresas">Proponer empresa</a></p>
             `}
-            ${fctActual.motivoRenuncia ? `<p>Renunció a la FCT: ${fctActual.motivoRenuncia}</p>` : ''}
         ` : `
-            <p>No tiene FCT asignada.</p>
+            <p>No tiene FCT actual. <a href="/empresas">Proponer empresa</a></p>
         `}
         <h3>Horas Hechas</h3>
         <p>${horasHechas} horas</p>
