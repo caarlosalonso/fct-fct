@@ -23,6 +23,7 @@ public class ArchivoController {
     public ResponseEntity<String> subirArchivo(
         @AuthenticationPrincipal User user,
         @RequestParam("archivo") MultipartFile archivo) {
+            System.out.println("User id en subirArchivo: " + (user != null ? user.getId() : "null"));
     try {
         String url = servicioArchivo.subirArchivo(user.getId(), archivo);
         return ResponseEntity.ok("Archivo subido correctamente. URL: " + url);
