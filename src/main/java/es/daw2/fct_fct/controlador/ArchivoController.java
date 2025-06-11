@@ -5,7 +5,7 @@ import java.io.IOException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.annotation.AuthenticationPrincipal; // Si usas Spring Security
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -21,16 +21,16 @@ public class ArchivoController {
 
     @PostMapping("/subir")
     public ResponseEntity<String> subirArchivo(
-            @RequestParam("id") Long idUsuario,
-            @RequestParam("archivo") MultipartFile archivo) {
-        try {
-            String url = servicioArchivo.subirArchivo(idUsuario, archivo);
-            return ResponseEntity.ok("Archivo subido correctamente. URL: " + url);
-        } catch (IllegalArgumentException e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
-        } catch (IOException e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                                .body("Error al subir archivo a Firebase.");
-        }
+        @AuthenticationPrincipal User user,
+        @RequestParam("archivo") MultipartFile archivo) {
+    try {
+        String url = servicioArchivo.subirArchivo(user.getId(), archivo);
+        return ResponseEntity.ok("Archivo subido correctamente. URL: " + url);
+    } catch (IllegalArgumentException e) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+    } catch (IOException e) {
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                            .body("Error al subir archivo a Firebase.");
     }
+}
 }
