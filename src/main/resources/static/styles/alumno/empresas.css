@@ -1,0 +1,7 @@
+main#main-content {
+    background-color: var(--background-color);
+    width: 95%;
+    margin: 0 auto;
+    padding: var(--border-radius);
+    border-radius: var(--border-radius);
+}

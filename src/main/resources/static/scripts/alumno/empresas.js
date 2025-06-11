@@ -21,7 +21,7 @@ window.addEventListener('FormsCreated', (event) => {
             sector: sector,
             address: address,
             personaContacto: personaContacto,
-            observaciones: observaciones
+            observaciones: `Observaciones del alumno: ${observaciones}`
         }
 
         fetch('/api/empresa/proponer', {
