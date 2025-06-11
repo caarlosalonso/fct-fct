@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import es.daw2.fct_fct.dto.AlumnoActualizarDTO;
 import es.daw2.fct_fct.dto.AlumnoCreateDTO;
+import es.daw2.fct_fct.dto.AlumnoUpdateInfoDTO;
 import es.daw2.fct_fct.modelo.Alumno;
 import es.daw2.fct_fct.modelo.User;
 import es.daw2.fct_fct.servicio.ServicioAlumno;
@@ -20,6 +21,7 @@ import jakarta.servlet.http.HttpServletRequest;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -111,5 +113,35 @@ public class ControladorAlumno extends CrudController<Long, Alumno, AlumnoCreate
         return service.getByUserId(userId)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
+    }
+
+    @PutMapping("/update/{id}")
+    public ResponseEntity<?> updateByAlumno(@PathVariable Long id, @RequestBody AlumnoUpdateInfoDTO a, HttpServletRequest request) {
+        Optional<Alumno> optional = service.getById(id);
+
+        if(!optional.isPresent()){
+            return ResponseEntity.notFound().build();
+        }
+
+        Alumno alumno = optional.get();
+
+        alumno.getUser().setName(a.name());
+        alumno.getUser().setEmail(a.email());
+        servicioUser.update(alumno.getUser().getId(), alumno.getUser());
+
+        alumno.setPhone(a.phone());
+        alumno.setNia(a.nia());
+        alumno.setDni(a.dni());
+        alumno.setNuss(a.nuss());
+        alumno.setAddress(a.address());
+
+        Optional<Alumno> alumnoActualizado = service.update(id, alumno);
+        if (!alumnoActualizado.isPresent()) {
+            return ResponseEntity.badRequest().body("No se ha podido actualizar el alumno con el id: " + id);
+        }
+
+        URI location = URI.create("/api/alumnos/" + id);
+
+        return ResponseEntity.ok().location(location).body(alumnoActualizado);
     }
 }

@@ -47,8 +47,6 @@ async function fetchSelf() {
 }
 
 function build(alumno) {
-    console.log('Alumno:', alumno);
-
     const form = Form.getForm(FORM);
 
     form.onsubmit = () => {
@@ -59,9 +57,8 @@ function build(alumno) {
         const dni = form.getInput('dni').getValue();
         const nuss = form.getInput('nuss').getValue();
         const address = form.getInput('address').getValue();
-        const convocatoria = form.getInput('convocatoria').getValue();
 
-        let newAlumno = {
+        let updatedAlumno = {
             nombreAlumno: nombre,
             email: email,
             dni: dni,
@@ -71,25 +68,26 @@ function build(alumno) {
             address: address
         };
 
-        fetch(`/api/alumnos/${alumno.id}`, {
+        fetch(`/api/alumnos/update/${alumno.id}`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify(newAlumno)
+            body: JSON.stringify(updatedAlumno)
         })
         .then(response => {
             if (response.status === 201) {
                 promise();
                 form.reset();
-                form.submitFinish();
-                form.showSuccess('Alumno creado correctamente');
+                form.showSuccess('Tu información se ha actualizado correctamente');
             } else {
-                form.showError('Error al crear el alumno');
+                form.showError('Error al actualizar tus datos');
+                form.submitFinish();
             }
         })
         .catch(error => {
             form.showError('Error al enviar los datos: ' + error.message);
+            form.submitFinish();
         });
     };
 
@@ -100,6 +98,4 @@ function build(alumno) {
     form.getInput('dni').retrack(alumno.dni || '');
     form.getInput('nuss').retrack(alumno.nuss || '');
     form.getInput('address').retrack(alumno.address || '');
-
-    form.form.querySelector('.submit-button').textContent = 'Crear alumno';
 }
