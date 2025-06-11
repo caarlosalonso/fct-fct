@@ -84,7 +84,7 @@ public class SessionValidation {
             return null;
         }
 
-        Long userId = (Long) session.getAttribute("id");
+        Long userId = (Long) session.getAttribute("user");
         if (userId == null) {
             logging.append("No encontrado.");
             System.out.println(logging.toString());
