@@ -387,7 +387,7 @@ function removeEmpresa(empresa) {
         return;
     }
 
-    fetch(`/api/empresa/${empresa.id}`, {
+    fetch(`/api/empresa/${empresa.empresaId || empresa.id}`, {
         method: 'DELETE'
     }).then(response => {
         if (response.ok) {
