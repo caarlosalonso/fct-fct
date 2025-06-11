@@ -94,6 +94,14 @@ function build(cursoActual, grupoTutor, alumnosCurso, empresas, tutoresEmpresas,
     alumnosCurso = alumnosCurso.filter(alumno => alumno.grupoId === grupoTutor.grupoId)
                                 .sort((a, b) => a.nombreAlumno.localeCompare(b.nombreAlumno));
 
+    document.getElementById('modal').innerHTML = `
+        <form id="agregar-empresa-form" method="POST" submit-text="Agregar Empresa" form-legend="false" form-message="false">
+            <div class="form-group form-input">
+                <input type="select" id="buscar-empresa" name="nombre-empresa" class="text-based input" label="Empresa" data-required="true">
+            </div>
+        </form>
+    `;
+
     alumnosCurso.forEach((alumno) => {
         const cell = createCell(alumno, fcts, grupoTutor, empresas);
         if (alumno.rating === 'VERDE') {
@@ -178,7 +186,7 @@ function createCell(alumno, fcts, grupoTutor, empresas) {
             const found = empresas.find(e => e.id == empresaId);
             console.log(found);
 
-            empresaSpan.textContent = found?.nombre || empresaId;
+            empresaSpan.textContent = found?.nombreEmpresa || empresaId;
             empresasPosibles.appendChild(empresaSpan);
             empresaSpan.appendChild(
                 createClickableSVG(
@@ -351,14 +359,15 @@ function searchEmpresa(alumnoId, empresas) {
         console.log(query);
         let options = [];
 
-        empresas.forEach(empresa => {
-            const [ nombre, cif, email, plazas, nombreCiclo ] = [empresa.nombreEmpresa, empresa.cif, empresa.email, empresa.plazas, empresa.nombreCiclo];
+        empresas.filter((empresa) => empresa.estado !== "DENEGADO")
+            .forEach(empresa => {
+            const [ nombre, cif, email, plazas, sector ] = [empresa.nombreEmpresa, empresa.cif, empresa.email, empresa.plazas, empresa.sector];
             const values = [
                 (nombre || '').toLowerCase(),
                 (cif || '').toLowerCase(),
                 (email || '').toLowerCase(),
                 (plazas || '').toString().toLowerCase(),
-                (nombreCiclo || '').toLowerCase()
+                (sector || '').toLowerCase()
             ];
 
             const match = values.some(val => val.includes(query));
@@ -367,7 +376,7 @@ function searchEmpresa(alumnoId, empresas) {
             if (match) {
                 options.push({
                     value: empresa.empresaId,
-                    label: `${nombre} (${cif}) - ${email}${plazas ? ` - ${plazas} plazas` : ''}${nombreCiclo ? ` - ${nombreCiclo}` : ''}`
+                    label: `${nombre} (${cif ? cif : 'Sin CIF'}) - ${email}${plazas ? ` - ${plazas} plazas` : ''}${sector ? ` - ${sector}` : ''}`
                 });
             }
         });
@@ -528,8 +537,9 @@ function agregarEmpresaPosible(alumno, empresas, empresasPosibles) {
         query = (query || '').toLowerCase().trim();
         let options = [];
 
-        empresas.forEach(empresa => {
-            const [ nombre, cif, email ] = [empresa.nombre, empresa.cif, empresa.email];
+        empresas.filter((empresa) => empresa.estado !== "DENEGADO")
+            .forEach(empresa => {
+            const [ nombre, cif, email ] = [empresa.nombreEmpresa, empresa.cif, empresa.email];
             const values = [
                 (nombre || '').toLowerCase(),
                 (cif || '').toLowerCase(),
@@ -540,7 +550,7 @@ function agregarEmpresaPosible(alumno, empresas, empresasPosibles) {
             if (match) {
                 options.push({
                     value: empresa.id,
-                    label: `${nombre} (${cif}) - ${email}`
+                    label: `${nombre} (${cif ? cif : 'Sin CIF'}) - ${email}`
                 });
             }
         });

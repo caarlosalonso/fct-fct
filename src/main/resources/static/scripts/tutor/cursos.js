@@ -343,8 +343,9 @@ function agregarEmpresaPosible(alumno, empresas, empresasPosibles) {
         query = (query || '').toLowerCase().trim();
         let options = [];
 
-        empresas.forEach(empresa => {
-            const [ nombre, cif, email ] = [empresa.nombre, empresa.cif, empresa.email];
+        empresas.filter((empresa) => empresa.estado !== "DENEGADO")
+            .forEach(empresa => {
+            const [ nombre, cif, email ] = [empresa.nombreEmpresa, empresa.cif, empresa.email];
             const values = [
                 (nombre || '').toLowerCase(),
                 (cif || '').toLowerCase(),
@@ -355,7 +356,7 @@ function agregarEmpresaPosible(alumno, empresas, empresasPosibles) {
             if (match) {
                 options.push({
                     value: empresa.id,
-                    label: `${nombre} (${cif}) - ${email}`
+                    label: `${nombre} (${cif ? cif : 'Sin CIF'}) - ${email}`
                 });
             }
         });
