@@ -171,6 +171,7 @@ function createCell(alumno, fcts, grupoTutor, empresas) {
     bar.appendChild(nombreSpan);
 
     const empresa = empresas.filter((empresa) => empresa.empresaId === fct.empresaId);
+    console.log('Empresa:', empresa);
     let tieneEmpresa = empresa.length > 0;
     let renunciaAFCT = false;
     if (!tieneEmpresa) {
