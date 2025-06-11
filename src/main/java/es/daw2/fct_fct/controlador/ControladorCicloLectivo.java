@@ -45,7 +45,7 @@ public class ControladorCicloLectivo extends CrudController<Long, CicloLectivo, 
 
     @GetMapping("/actual")
     ResponseEntity<?> getById(HttpServletRequest request) {
-        ResponseEntity<?> sessionValidation = SessionValidation.isValidSession(request, Role.TUTOR);
+        ResponseEntity<?> sessionValidation = SessionValidation.isValidSession(request, Role.TUTOR, Role.ALUMNO, Role.COORDINADOR, Role.ADMIN);
         if (sessionValidation != null) return sessionValidation;
 
         Optional<CicloLectivo> cicloLectivoOpt = service.getCicloLectivoActual();

@@ -11,14 +11,14 @@ function promise() {
     Promise.all([
         fetchTutorias(),
         fetchCursoActual(),
-        fetchGrupoTutor(),
+        fetchCursoAlumno(),
     ])
     .then(([
         tutorias,
         cursoActual,
-        grupoTutor
+        cursoAlumno
     ]) => {
-        build(tutorias, cursoActual, grupoTutor);
+        build(tutorias, cursoActual, cursoAlumno);
     }).catch((error) => {
         console.error(error);
     });
@@ -38,18 +38,25 @@ async function fetchCursoActual() {
     return await response.json();
 }
 
-async function fetchGrupoTutor() {
-    const response = await fetch('/api/vista-grupos-ciclos/tutor');
+async function fetchCursoAlumno() {
+    const response = await fetch('/api/vista-alumno-ciclos/alumno');
     if (response.status === 204) return [];
     if (!response.ok) throw new Error('Error al obtener los grupos');
     return await response.json();
 }
 
-function build(tutorias, cursoActual, grupoTutor) {
-    const form = Form.getForm('crear-form');
-    crearLista(tutorias, form, grupoTutor);
+function build(tutorias, cursoActual, cursoAlumno) {
+    console.log('Tutorías:', tutorias);
+    console.log('Curso Actual:', cursoActual);
+    console.log('Curso Alumno:', cursoAlumno);
 
-    setInputsToCreate(form, grupoTutor);
+
+
+    
+    const form = Form.getForm('crear-form');
+    crearLista(tutorias, form, cursoAlumno);
+
+    setInputsToCreate(form, cursoAlumno);
 
     const displaySection = document.getElementById(SECTION);
     while( displaySection.firstChild) displaySection.removeChild(displaySection.firstChild);
