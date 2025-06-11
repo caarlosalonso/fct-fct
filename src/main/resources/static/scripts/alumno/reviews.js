@@ -39,7 +39,7 @@ async function fetchFCTs() {
 }
 
 async function fetchCursos() {
-    const response = await fetch('/api/cursos/all');
+    const response = await fetch('/api/cursos/alumno');
     if (response.status === 204) return [];
     if (!response.ok) throw new Error('Error al obtener los cursos');
     return await response.json();

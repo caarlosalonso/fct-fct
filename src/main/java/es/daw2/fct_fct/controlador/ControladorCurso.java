@@ -3,10 +3,12 @@ package es.daw2.fct_fct.controlador;
 import java.net.URI;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -26,6 +28,8 @@ import es.daw2.fct_fct.servicio.ServicioCicloLectivo;
 import es.daw2.fct_fct.servicio.ServicioCurso;
 import es.daw2.fct_fct.servicio.ServicioGrupo;
 import es.daw2.fct_fct.servicio.ServicioUser;
+import es.daw2.fct_fct.utils.Role;
+import es.daw2.fct_fct.utils.SessionsManager;
 import jakarta.servlet.http.HttpServletRequest;
 
 
@@ -199,5 +203,18 @@ public class ControladorCurso extends CrudController<Long, Curso, Curso, Curso, 
 
         URI location = URI.create("/api/cursos/" + cursoId);
         return ResponseEntity.ok().location(location).body(updatedCurso);
+    }
+
+    @GetMapping("/alumno")
+    public ResponseEntity<?> getCursosByAlumno(HttpServletRequest request) {
+        SessionsManager.isValidSession(request, Role.ALUMNO);
+        Long alumnoId = (Long) request.getSession().getAttribute("child_id");
+        List<Curso> cursos = service.list()
+            .stream()
+            .filter((curso) -> curso.getAlumno().getId() == alumnoId)
+            .collect(Collectors.toList());
+
+        if (cursos.isEmpty()) return ResponseEntity.noContent().build();
+        return ResponseEntity.ok(cursos);
     }
 }
