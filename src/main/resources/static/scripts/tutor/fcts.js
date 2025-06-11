@@ -467,6 +467,7 @@ function onsubmit(alumnoId, cursoId) {
         const noLectivosInput = formulario.getInput(`no-lectivos-${alumnoId}`);
         const horasDePracticasInput = formulario.getInput(`horas-de-practicas-${alumnoId}`);
         const fechaFinInput = formulario.getInput(`fecha-fin-${alumnoId}`);
+        const motivoRenuncia = formulario.getInput(`motivo-renuncia-${alumnoId}`);
 
         const data = {
             cursoId: cursoId,
@@ -476,7 +477,8 @@ function onsubmit(alumnoId, cursoId) {
             horasSemanales: horasSemanalesInput.getValue(),
             noLectivos: noLectivosInput.getValue(),
             horasDePracticas: horasDePracticasInput.getValue(),
-            fechaFin: fechaFinInput.getValue()
+            fechaFin: fechaFinInput.getValue(),
+            motivoRenuncia: motivoRenuncia.getValue()
         };
 
         console.log('Datos del FCT:', data);
