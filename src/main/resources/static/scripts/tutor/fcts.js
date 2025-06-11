@@ -180,6 +180,8 @@ function createCell(alumno, fcts, grupoTutor, empresas) {
     );
 
     if (alumno.posiblesEmpresas.length > 0) {
+        console.log(alumno.posiblesEmpresas.split(';'));
+
         alumno.posiblesEmpresas.split(';').forEach((empresaId) => {
             const empresaSpan = document.createElement('span');
             empresaSpan.classList.add('empresa-posible');
