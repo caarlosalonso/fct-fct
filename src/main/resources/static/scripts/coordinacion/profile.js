@@ -51,11 +51,12 @@ function build(coordinador) {
                 form.showSuccess('Su información se ha actualizado correctamente');
             } else {
                 form.showError('Error al actualizar sus datos');
-                form.submitFinish();
             }
         })
         .catch(error => {
             form.showError('Error al enviar los datos: ' + error.message);
+        })
+        .finally(() => {
             form.submitFinish();
         });
     };
