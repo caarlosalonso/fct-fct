@@ -1,7 +1,7 @@
 import { Form } from '../classes/Form.js';
 import { tableLoading, tableFail, createSVG, createClickableSVG } from '../functions.js';
 
-const SECTION = 'curso-actual';
+const SECTION = 'reviews-section';
 
 window.addEventListener('DOMContentLoaded', (event) => {
     promise();
@@ -29,4 +29,18 @@ async function fetchReviews() {
 
 function build(reviews) {
     console.log('Reseñas:', reviews);
+
+    const section = document.getElementById(SECTION);
+    if (!section) {
+        console.error(`No se encontró la sección con ID: ${SECTION}`);
+        return;
+    }
+    while(section.firstChild) section.removeChild(section.firstChild);
+
+    if (reviews.length === 0) {
+        const message = document.createElement('p');
+        message.textContent = 'No hay reseñas.';
+        section.appendChild(message);
+        return;
+    }
 }
