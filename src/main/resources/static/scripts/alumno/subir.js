@@ -12,7 +12,7 @@ form.addEventListener('submit', async (event) => {
     }
 
     const formData = new FormData();
-    formData.append('file', archivo);
+    formData.append('archivo', archivo);
 
     try {
         const response = await fetch('/api/archivo/subir', {
