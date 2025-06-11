@@ -60,7 +60,7 @@ function build(coordinador) {
             form.submitFinish();
         });
     };
-
+    console.log(coordinador);
     form.getInput('nombre').retrack(coordinador.user.name || '');
     form.getInput('email').retrack(coordinador.user.email || '');
 }
