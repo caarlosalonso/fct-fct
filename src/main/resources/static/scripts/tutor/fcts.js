@@ -183,7 +183,10 @@ function createCell(alumno, fcts, grupoTutor, empresas) {
         alumno.posiblesEmpresas.split(';').forEach((empresaId) => {
             const empresaSpan = document.createElement('span');
             empresaSpan.classList.add('empresa-posible');
-            const found = empresas.find(e => e.empresaId == empresaId);
+            const found = empresas.find(e => {
+                console.log(e, empresaId);
+                return e.empresaId == empresaId
+            });
             console.log("found:", found, empresas);
 
             empresaSpan.textContent = found?.nombreEmpresa || empresaId;
