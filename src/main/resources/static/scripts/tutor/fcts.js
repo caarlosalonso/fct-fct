@@ -160,7 +160,7 @@ function createCell(alumno, fcts, grupoTutor) {
 
     const empresasPosibles = document.createElement('div');
     empresasPosibles.classList.add('cell-value', 'empresas-posibles');
-    item.appendChild(empresasPosibles);
+    bar.appendChild(empresasPosibles);
 
     empresasPosibles.appendChild(
         createClickableSVG(
