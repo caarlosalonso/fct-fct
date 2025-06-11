@@ -62,6 +62,34 @@ function build(alumno, alumnosCurso, cursoActual, fcts) {
     console.log('Curso actual:', cursoActual);
     console.log('FCTs:', fcts);
 
-    const fct = fcts.find((fct) => fct.curso.alumno.id === alumno.id);
-    console.log(fct);
+    const fcts = fcts.filter((fct) => fct.curso.alumno.id === alumno.id);
+    const fctActual = fcts.find((fct) => fct.curso.cicloLectivo.id === cursoActual.id);
+
+    console.log("Fcts: ", fcts, "Fct Actual: ", fctActual);
+
+    let horasHechas = 0;
+    fcts.forEach((fct) => {
+        if (fct.id === fctActual.id) return;
+        horasHechas += fct.horas ? fct.horas : 0;
+    });
+
+    console.log("Horas hechas: ", horasHechas);
+
+    const main = document.getElementById('main-content');
+    if (!main) {
+        console.error(`No se encontró el elemento con ID: main-content`);
+        return;
+    }
+    while (main.firstChild) main.removeChild(main.firstChild);
+
+    main.innerHTML = `
+        <h2>FCTs del Alumno</h2>
+        <ul>
+            ${fcts.map(fct => `<li>${fct.nombre}: ${fct.horas ? fct.horas : 0} horas</li>`).join('')}
+        </ul>
+        <h3>FCT Actual</h3>
+        <p>${fctActual.nombre}: ${fctActual.horas ? fctActual.horas : 0} horas</p>
+        <h3>Horas Hechas</h3>
+        <p>${horasHechas} horas</p>
+    `;
 }

@@ -153,10 +153,9 @@ function build(cursoActual, grupoTutor, alumnosCurso, empresas, tutoresEmpresas,
 }
 
 function createCell(alumno, fcts, grupoTutor, empresas) {
-    const fct = fcts.filter(fct => fct.curso.id === alumno.cursoId)
-                    .filter(fct => fct.curso.grupo.cicloLectivo.id === grupoTutor.cicloLectivoId);
+    const fctsDelAlumno = fcts.filter(fct => fct.curso.id === alumno.cursoId);
 
-    console.log(alumno, fct);
+    console.log(alumno, fctsDelAlumno);
 
     const cell = document.createElement('div');
     cell.classList.add('alumno-cell', 'collapsed');
@@ -169,6 +168,8 @@ function createCell(alumno, fcts, grupoTutor, empresas) {
     nombreSpan.classList.add('alumno-nombre');
     nombreSpan.textContent = `${alumno.nombreAlumno}`;
     bar.appendChild(nombreSpan);
+
+    const fct = fctsDelAlumno.find(fct => fct.curso.grupo.cicloLectivo.id === grupoTutor.cicloLectivoId);
 
     const empresa = empresas.filter((empresa) => empresa.empresaId === fct.empresa.id);
     console.log('Empresa:', empresa);
