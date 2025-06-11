@@ -19,7 +19,7 @@ export class ToggleSwitch extends Input {
     }
 
     buildInput() {
-        this.input.type = 'checkbox';
+        this.input.setAttribute('type', 'checkbox');
         this.input.classList.add('toggle-switch');
         this.input.checked = this.checked;
 
