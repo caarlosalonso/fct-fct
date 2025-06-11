@@ -1,65 +1,32 @@
-import { Form } from './classes/Form.js';
+const form = document.getElementById('alumno-form');
+const archivoInput = document.getElementById('archivo');
+const idInput = document.getElementById('id');
+const resultado = document.getElementById('resultado');
 
-window.addEventListener('FormsCreated', (event) => {
-    const form = Form.getForm('login-form');
-    if (! form) {
-        console.error("Form with ID 'login-form' not found.");
+form.addEventListener('submit', async (event) => {
+    event.preventDefault();
+
+    const archivo = archivoInput.files[0];
+    const id = idInput.value;
+
+    if (!archivo || !id) {
+        resultado.innerText = "Falta seleccionar archivo o ID.";
         return;
     }
 
-    form.onsubmit = () => {
-        console.log("Form sent");
+    const formData = new FormData();
+    formData.append('archivo', archivo);
+    formData.append('id', id);
 
-        const email = form.getInput('email').getValue();
-        const password = form.getInput('password').getValue();
-
-        // Information to be sent
-        const data = {
-            email: email,
-            password: password,
-        };
-
-        fetch('/api/users/firebaselogin', {
+    try {
+        const response = await fetch('/api/archivo/subir', {
             method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(data),
-        })
-        .then(response => {
-            if (response.ok) {
-                form.showSuccess('Login exitoso.');
-                window.location.href = '/index';
-            } else {
-                form.showError('Login fallido: Email o contraseña incorrectos.');
-            }
-            form.submitFinish();
-        })
-        .catch(error => {
-            form.showError('Internal Server Error');
-            form.submitFinish();
+            body: formData
         });
 
-        fetch('/auth/login', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/x-www-form-urlencoded',
-            },
-            body: new URLSearchParams({ email, password }),
-            credentials: 'same-origin'
-        })
-        .then(response => {
-            if (response.ok) {
-                form.showSuccess('Login exitoso.');
-                window.location.href = '/index';
-            } else {
-                form.showError('Login fallido: Email o contraseña incorrectos.');
-            }
-            form.submitFinish();
-        })
-        .catch(error => {
-            form.showError('Internal Server Error');
-            form.submitFinish();
-        });
+        const text = await response.text();
+        resultado.innerText = text;
+    } catch (error) {
+        resultado.innerText = 'Error al subir el archivo.';
     }
 });

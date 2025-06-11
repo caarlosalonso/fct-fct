@@ -19,18 +19,17 @@ public class ServicioArchivo extends AbstractService<Long, vAlumno, RepositorioV
     @Autowired
     private servicioVAlumno servicioVAlumno;
 
-    public void subirArchivo(User user, MultipartFile archivo) throws IOException {
+    public String subirArchivo(Long idUsuario, MultipartFile archivo) throws IOException {
 
         String bucketName = StorageClient.getInstance().bucket().getName();
 
-        Optional<vAlumno> va = servicioVAlumno.getByUserId(user.getId());
+        Optional<vAlumno> va = servicioVAlumno.getByUserId(idUsuario);
 
         if (va.isEmpty()) {
             throw new IllegalArgumentException("El usuario no es un alumno válido");
         }
 
         vAlumno vAlumno = va.get();
-        //Construir ruta: año/ciclo/curso/idAlumno/nombreArchivo
         String ruta = String.format("%s/%s/%s/%s/%s",
             vAlumno.getAño(),
             vAlumno.getCiclo(),
@@ -38,13 +37,14 @@ public class ServicioArchivo extends AbstractService<Long, vAlumno, RepositorioV
             vAlumno.getId(),
             archivo.getOriginalFilename());
 
-        /*String ruta = String.format("%s/%s/%s/%s/%s",
-            archivo.getOriginalFilename());*/
-        
+        var blob = StorageClient.getInstance()
+                                .bucket()
+                                .create(ruta, archivo.getBytes(), archivo.getContentType());
 
-        // Crear el objeto en el bucket
-        StorageClient.getInstance()
-                    .bucket()
-                    .create(ruta, archivo.getBytes(), archivo.getContentType());
-}
+        return String.format(
+            "https://firebasestorage.googleapis.com/v0/b/%s/o/%s?alt=media",
+            bucketName,
+            java.net.URLEncoder.encode(blob.getName(), java.nio.charset.StandardCharsets.UTF_8)
+        );
+    }
 }
