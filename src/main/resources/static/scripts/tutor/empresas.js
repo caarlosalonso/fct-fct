@@ -430,8 +430,8 @@ function addEmpresa() {
             propuesta_por: form.getInput('propuesta_por').getValue() ? parseInt(form.getInput('propuesta_por').getValue(), 10) : null,
             observaciones: form.getInput('observaciones').getValue(),
             numero_convenio: form.getInput('numero_convenio').getValue(),
-            numero_plazas: form.getInput('numero_plazas').getValue(),
-            fecha_contacto: form.getInput('fecha_contacto').getValue() ? new Date(form.getInput('fecha_contacto').getValue()).toISOString() : null,
+            numero_plazas: form.getInput('numero_plazas').getValue() ? parseInt(form.getInput('numero_plazas').getValue(), 10) : null,
+            fecha_contacto: form.getInput('fecha_contacto').getValue() ? new Date(form.getInput('fecha_contacto').getValue()).toISOString().split('T')[0] : null,
             estado: form.getInput('empresa-estado').getValue()
         };
 
