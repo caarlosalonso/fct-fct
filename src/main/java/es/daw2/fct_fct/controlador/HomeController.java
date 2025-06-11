@@ -266,7 +266,7 @@ public class HomeController {
         if (user == null || role == null) return REDIRECT_LOGIN;
 
         return switch(role) {
-            case Role.ALUMNO            -> "alumno/stats.html";
+            case Role.ALUMNO            -> "alumno/subir.html";
             default                     -> REDIRECT_INDEX;
         };
     }
