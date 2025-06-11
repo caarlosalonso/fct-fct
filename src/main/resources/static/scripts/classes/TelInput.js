@@ -17,8 +17,8 @@ export class TelInput extends TextInput {
         }
     }
 
-    init() {
-        super.init();
+    init(form) {
+        super.init(form);
         this.input.setAttribute('type', 'tel');
         this.input.addEventListener('input', (event) => {
             this.input.value = this.format(this.input.value);

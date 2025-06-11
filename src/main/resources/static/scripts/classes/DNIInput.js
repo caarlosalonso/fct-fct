@@ -30,8 +30,8 @@ export class DNIInput extends TextInput {
         }
     }
 
-    init() {
-        super.init();
+    init(form) {
+        super.init(form);
         this.buildDNI();
         this.createEventListeners();
     }

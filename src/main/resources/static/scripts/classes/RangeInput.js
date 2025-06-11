@@ -25,8 +25,8 @@ export class RangeInput extends Input {
         }
     }
 
-    init() {
-        super.init();
+    init(form) {
+        super.init(form);
         this.buildLabel();
         this.buildInput();
     }

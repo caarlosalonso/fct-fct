@@ -26,7 +26,7 @@ export class NumberInput extends TextInput {
         }
     }
 
-    init() {
-        super.init();
+    init(form) {
+        super.init(form);
     }
 }

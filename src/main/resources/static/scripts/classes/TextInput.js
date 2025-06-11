@@ -13,7 +13,8 @@ export class TextInput extends Input {
         }
     }
 
-    init() {
+    init(form) {
+        super.init(form);
         this.buildLabel();
         this.buildInput();
         this.updateState();

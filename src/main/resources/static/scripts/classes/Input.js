@@ -25,6 +25,7 @@ export class Input {
             'active':           false,
             'focus':            false,
             'required':         Utility.getBooleanAttribute(Input.ATTRIBUTES.REQUIRED, this.input),
+            'trueRequired':     Utility.getBooleanAttribute(Input.ATTRIBUTES.REQUIRED, this.input),
             'frozen':           Utility.getBooleanAttribute(Input.ATTRIBUTES.FROZEN, this.input),
             'frozenValue':      Utility.getElementValueByAttribute(Input.ATTRIBUTES.FROZEN, this.input),
             'tracked':          Utility.getBooleanAttribute(Input.ATTRIBUTES.TRACKED, this.input),
@@ -119,7 +120,9 @@ export class Input {
         return true;
     }
 
-    init() {}
+    init(form) {
+        this.form = form;
+    }
 
     isDifferent() {
         return false;

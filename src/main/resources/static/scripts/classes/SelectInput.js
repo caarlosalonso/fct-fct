@@ -17,8 +17,8 @@ export class SelectInput extends TextInput {
         }
     }
 
-    init() {
-        super.init();
+    init(form) {
+        super.init(form);
         this.buildSelect();
         this.createDropdown();
         this.createOptions();

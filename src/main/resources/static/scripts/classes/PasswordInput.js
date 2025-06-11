@@ -8,8 +8,8 @@ export class PasswordInput extends TextInput {
         }
     }
 
-    init() {
-        super.init();
+    init(form) {
+        super.init(form);
         this.buildPassword();
     }
 

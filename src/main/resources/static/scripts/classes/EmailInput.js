@@ -29,8 +29,8 @@ export class EmailInput extends TextInput {
         }
     }
 
-    init() {
-        super.init();
+    init(form) {
+        super.init(form);
         this.buildEmail();
     }
 

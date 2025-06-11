@@ -7,11 +7,12 @@ export class ToggleSwitch extends Input {
         this.id = this.input.getAttribute('id');
     }
 
-    init() {
+    init(form) {
         super.init();
         this.buildLabel();
         this.buildToggle();
         this.toggleElements();
+        this.form = form;
     }
 
     buildLabel() {
@@ -114,12 +115,34 @@ export class ToggleSwitch extends Input {
         const elementTrue = document.getElementById(`${this.id}-true`);
         
         if (elementFalse && elementTrue) {
+            elementFalse.querySelectorAll('input').forEach((input) => {
+                const element = this.form.getInput(input.id);
+                element.states.required = element.states.trueRequired;
+                element.updateState();
+            });
+
+            elementTrue.querySelectorAll('input').forEach((input) => {
+                const element = this.form.getInput(input.id);
+                element.states.required = element.states.falseRequired;
+                element.updateState();
+            });
+
             if (this.input.checked) {
                 elementFalse.classList.add('hidden');
                 elementTrue.classList.remove('hidden');
+                elementFalse.querySelectorAll('input').forEach((input) => {
+                    const element = this.form.getInput(input.id);
+                    element.states.required = false;
+                    element.updateState();
+                });
             } else {
                 elementFalse.classList.remove('hidden');
                 elementTrue.classList.add('hidden');
+                elementTrue.querySelectorAll('input').forEach((input) => {
+                    const element = this.form.getInput(input.id);
+                    element.states.required = false;
+                    element.updateState();
+                });
             }
         }
     }

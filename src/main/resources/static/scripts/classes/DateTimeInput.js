@@ -35,8 +35,8 @@ export class DateTimeInput extends TextInput {
         };
     }
 
-    init() {
-        super.init();
+    init(form) {
+        super.init(form);
         this.input.setAttribute('type', 'datetime-local');
     }
 

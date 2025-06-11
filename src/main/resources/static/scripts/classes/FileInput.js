@@ -13,7 +13,8 @@ export class FileInput extends Input {
         };
     }
 
-    init() {
+    init(form) {
+        this.form = form;
         this.buildFileInput();
         this.createValidityElements();
     }
