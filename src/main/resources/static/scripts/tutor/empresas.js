@@ -304,7 +304,7 @@ function editEmpresa(empresa) {
             nombre_usuario: empresa.nombre_usuario || null
         };
 
-        fetch(`/api/vista-empresas-tutores/${empresa.empresa.id}`, {
+        fetch(`/api/vista-empresas-tutores/${empresa.empresa.Id || empresa.id}`, {
             method: 'PUT',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(data)
