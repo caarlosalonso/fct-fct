@@ -153,6 +153,11 @@ function build(cursoActual, grupoTutor, alumnosCurso, empresas, tutoresEmpresas,
 }
 
 function createCell(alumno, fcts, grupoTutor, empresas) {
+    const fct = fcts.filter(fct => fct.alumnoId === alumno.alumnoId)
+                    .filter(fct => fct.cicloId === grupoTutor.cicloId);
+
+    console.log(alumno, fct);
+
     const cell = document.createElement('div');
     cell.classList.add('alumno-cell', 'collapsed');
 
@@ -170,9 +175,6 @@ function createCell(alumno, fcts, grupoTutor, empresas) {
     if (! alumno.nombreEmpresa) empresaSpan.classList.add('sin-empresa');
     empresaSpan.textContent = `${alumno.nombreEmpresa || 'Sin empresa'}`;
     bar.appendChild(empresaSpan);
-
-    const fct = fcts.filter(fct => fct.alumnoId === alumno.alumnoId)
-                    .filter(fct => fct.cicloId === grupoTutor.cicloId);
 
     const horasRestantesSpan = document.createElement('span');
     horasRestantesSpan.classList.add('alumno-horas-restantes');
