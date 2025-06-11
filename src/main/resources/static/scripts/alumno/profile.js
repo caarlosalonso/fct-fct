@@ -51,7 +51,7 @@ function build(alumno) {
     form.onsubmit = () => {
         const nombre = form.getInput('nombre').getValue();
         const email = form.getInput('email').getValue();
-        const phone = form.getInput('phone').getValue();
+        const telefono = form.getInput('telefono').getValue();
         const nia = form.getInput('nia').getValue();
         const dni = form.getInput('dni').getValue();
         const nuss = form.getInput('nuss').getValue();
@@ -60,7 +60,7 @@ function build(alumno) {
         let updatedAlumno = {
             name: nombre,
             email: email,
-            phone: phone,
+            telefono: phone,
             nia: nia,
             dni: dni,
             nuss: nuss,
@@ -92,7 +92,7 @@ function build(alumno) {
 
     form.getInput('nombre').retrack(alumno.user.name || '');
     form.getInput('email').retrack(alumno.user.email || '');
-    form.getInput('phone').retrack(alumno.phone || '');
+    form.getInput('telefono').retrack(alumno.phone || '');
     form.getInput('nia').retrack(alumno.nia || '');
     form.getInput('dni').retrack(alumno.dni || '');
     form.getInput('nuss').retrack(alumno.nuss || '');
