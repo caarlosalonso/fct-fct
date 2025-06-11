@@ -49,9 +49,6 @@ function build(alumno) {
 
     const form = Form.getForm('alumno-form');
 
-
-    document.getElementById('titulo').textContent = 'Creación de un nuevo alumno';
-
     form.onsubmit = () => {
         const nombre = form.getInput('nombre').getValue();
         const email = form.getInput('email').getValue();
@@ -69,12 +66,11 @@ function build(alumno) {
             nia: nia,
             nuss: nuss,
             phone: phone,
-            address: address,
-            convocatoria: convocatoria
+            address: address
         };
 
-        fetch('/api/alumnos/create', {
-            method: 'POST',
+        fetch(`/api/alumnos/${alumno.id}`, {
+            method: 'PUT',
             headers: {
                 'Content-Type': 'application/json'
             },
@@ -97,12 +93,11 @@ function build(alumno) {
 
     form.getInput('nombre').retrack('');
     form.getInput('email').retrack('');
-    form.getInput('phone').retrack('');
-    form.getInput('nia').retrack('');
-    form.getInput('dni').retrack('');
-    form.getInput('nuss').retrack('');
-    form.getInput('address').retrack('');
-    form.getInput('convocatoria').retrack('');
+    form.getInput('telefono').retrack(alumno.phone || '');
+    form.getInput('nia').retrack(alumno.nia || '');
+    form.getInput('dni').retrack(alumno.dni || '');
+    form.getInput('nuss').retrack(alumno.nuss || '');
+    form.getInput('address').retrack(alumno.address || '');
 
     form.form.querySelector('.submit-button').textContent = 'Crear alumno';
 }
