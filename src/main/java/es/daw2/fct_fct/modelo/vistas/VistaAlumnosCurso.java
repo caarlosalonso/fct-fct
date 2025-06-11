@@ -53,9 +53,6 @@ public class VistaAlumnosCurso {
     @Column(name = "observaciones")
     private String observaciones;
 
-    @Column(name = "a_extraordinaria")
-    private Integer aExtraordinaria;
-
     @Column(name = "posibles_empresas", nullable = false, length = 1023)
     private String posiblesEmpresas;
 

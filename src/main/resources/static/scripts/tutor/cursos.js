@@ -223,7 +223,7 @@ function crearLista(alumnosCurso, grupoTutor, form, empresas) {
 
         const ratingSpan = document.createElement('span');
         ratingSpan.classList.add('cell-value', 'cell-subtitle');
-        ratingSpan.textContent = (alumno.aExtraordinaria == true ? 'A extraordinaria' : `Promociona? ${RATING[alumno.rating]}`);
+        ratingSpan.textContent = (alumno.rating == 'EXTRAORDINARIA' ? 'A extraordinaria' : `Promociona? ${RATING[alumno.rating]}`);
         item.appendChild(ratingSpan);
 
         const empresasPosibles = document.createElement('div');
@@ -439,8 +439,7 @@ function setInputsToUpdate(form, alumno) {
             nuss: nuss,
             address: address,
             convocatoria: convocatoria,
-            rating: rating !== 'EXTRAORDINARIA' ? rating : 'EXTRAORDINARIA',
-            aExtraordinaria: rating === 'EXTRAORDINARIA' ? 0 : 1,
+            rating: rating,
             observaciones: observaciones
         };
 
