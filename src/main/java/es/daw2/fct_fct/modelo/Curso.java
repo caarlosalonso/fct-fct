@@ -1,7 +1,5 @@
 package es.daw2.fct_fct.modelo;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import jakarta.persistence.AttributeOverride;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -24,7 +22,6 @@ import lombok.NoArgsConstructor;
 public class Curso extends AbsBaseEntity {
 
     @ManyToOne
-    @JsonIgnore
     @JoinColumn(name = "alumno_id", nullable = false)
     private Alumno alumno;
 

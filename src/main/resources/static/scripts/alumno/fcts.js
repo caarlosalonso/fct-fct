@@ -62,4 +62,6 @@ function build(alumno, alumnosCurso, cursoActual, fcts) {
     console.log('Curso actual:', cursoActual);
     console.log('FCTs:', fcts);
 
+    const fct = fcts.find((fct) => fct.curso.alumno.id === alumno.id);
+    console.log(fct);
 }
