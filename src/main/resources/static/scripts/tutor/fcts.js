@@ -554,7 +554,7 @@ function agregarEmpresaPosible(alumno, empresas, empresasPosibles) {
             const match = values.some(val => val.includes(query));
             if (match) {
                 options.push({
-                    value: empresa.id,
+                    value: empresa.empresaId,
                     label: `${nombre} (${cif ? cif : 'Sin CIF'}) - ${email}`
                 });
             }
