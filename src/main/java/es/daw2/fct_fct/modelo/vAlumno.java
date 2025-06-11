@@ -25,7 +25,7 @@ public class vAlumno {
     @Column(name = "grupo")
     private Short grupo;
 
-    @Column(name = "fecha_inicio")
+    @Column(name = "ciclo_lectivo")
     private Integer año;
 
 }
