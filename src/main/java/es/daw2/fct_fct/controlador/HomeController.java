@@ -243,6 +243,20 @@ public class HomeController {
         };
     }
 
+    @GetMapping("/stats")
+    public String stats(HttpServletRequest request) {
+        HttpSession session = request.getSession(false);
+        if (session == null) return REDIRECT_LOGIN;
+        Object user = session.getAttribute("user");
+        Object role = session.getAttribute("role");
+        if (user == null || role == null) return REDIRECT_LOGIN;
+
+        return switch(role) {
+            case Role.COORDINADOR  -> "coordinacion/stats.html";
+            default                     -> REDIRECT_INDEX;
+        };
+    }
+
     @GetMapping("/subir")
     public String subir() {
         return "subirarchivo.html";
