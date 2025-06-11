@@ -48,6 +48,8 @@ public class ControladorEmpresa extends CrudController<Long, Empresa, EmpresaDTO
         nuevaEmpresa.setPersona_contacto(dto.getPersona_contacto());
         nuevaEmpresa.setEstado(dto.getEstado());
         nuevaEmpresa.setObservaciones(dto.getObservaciones());
+        nuevaEmpresa.setNumero_plazas(dto.getNumero_plazas());
+        nuevaEmpresa.setFecha_contacto(dto.getFecha_contacto());
         if (dto.getPropuesta_por() != null) {
             userRepository.findById(dto.getPropuesta_por()).ifPresent(nuevaEmpresa::setPropuesta_por);
         }
