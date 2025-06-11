@@ -1,28 +1,7 @@
 import { Form } from '../classes/Form.js';
 import { tableLoading, tableFail, createSVG, createClickableSVG } from '../functions.js';
 
-const SECTION = 'curso-actual';
-
-window.addEventListener('FormsCreated', (event) => {
-    promise();
-});
-
-function promise() {
-    Promise.all([
-        fetchCursos(),
-        fetchFCTs(),
-        fetchGrupos()
-    ])
-    .then(([
-        cursos,
-        fcts,
-        grupos
-    ]) => {
-        build(cursos, fcts, grupos);
-    }).catch((error) => {
-        console.error('Error al obtener la información:', error);
-    });
-}
+const SECTION = 'main-content';
 
 async function fetchCursos() {
     const response = await fetch('/api/cursos/all');
@@ -45,8 +24,80 @@ async function fetchGrupos() {
     return await response.json();
 }
 
-function build(cursos, fcts, grupos) {
+async function fetchCiclos() {
+    const response = await fetch('/api/ciclos/all');
+    if (response.status === 204) return [];
+    if (!response.ok) throw new Error('Error al obtener los ciclos');
+    return await response.json();
+}
+
+async function fetchCiclosLectivos() {
+    const response = await fetch('/api/ciclos-lectivos/all');
+    if (response.status === 204) return [];
+    if (!response.ok) throw new Error('Error al obtener los ciclos lectivos');
+    return await response.json();
+}
+
+async function fetchStats() {
+    const response = await fetch('/api/stats');
+    if (!response.ok) throw new Error('Error al obtener las estadísticas');
+    return await response.json();
+}
+
+function build(cursos, fcts, grupos, ciclos, ciclosLectivos, stats) {
     console.log('Cursos:', cursos);
     console.log('FCTs:', fcts);
     console.log('Grupos:', grupos);
+    console.log('Ciclos:', ciclos);
+    console.log('Ciclos Lectivos:', ciclosLectivos);
+    console.log('Estadísticas:', stats);
+
+    const section = document.getElementById(SECTION);
+    if (!section) {
+        console.error(`No se encontró la sección con ID: ${SECTION}`);
+        return;
+    }
+    while (section.firstChild) section.removeChild(section.firstChild);
+
+    const statsDiv = document.createElement('div');
+    statsDiv.innerHTML = `
+        <h2>Estadísticas</h2>
+        <p>Alumnos por ciclo lectivo:</p>
+        <ul>
+            ${stats.alumnosPorCicloLectivo.map(stat => `<li>${stat.nombre}: ${stat.totalAlumnos}</li>`).join('')}
+        </ul>
+        <p>Alumnos que fueron a prácticas: ${stats.totalPracticas}</p>
+        <p>Alumnos que renunciaron: ${stats.totalRenuncias}</p>
+    `;
+    section.appendChild(statsDiv);
+}
+
+window.addEventListener('FormsCreated', async (event) => {
+    try {
+        const stats = await fetchStats();
+        promise(stats);
+    } catch (error) {
+        console.error('Error al obtener las estadísticas:', error);
+    }
+});
+
+function promise(stats) {
+    Promise.all([
+        fetchCursos(),
+        fetchFCTs(),
+        fetchGrupos(),
+        fetchCiclos(),
+        fetchCiclosLectivos()
+    ])
+    .then(([
+        cursos,
+        fcts,
+        grupos,
+        ciclos,
+        ciclosLectivos
+    ]) => {
+        build(cursos, fcts, grupos, ciclos, ciclosLectivos, stats);
+    }).catch((error) => {
+        console.error('Error al obtener la información:', error);
+    });
 }
