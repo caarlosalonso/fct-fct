@@ -16,16 +16,16 @@ import lombok.NoArgsConstructor;
 public class vAlumno {
 
     @Id
-    @Column(name = "user_id", nullable = false, columnDefinition = "BIGINT")
+    @Column(name = "user_id", columnDefinition = "BIGINT")
     private Long id;
 
-    @Column(name = "acronimo" , nullable = false, columnDefinition = "VARCHAR(10)")
+    @Column(name = "ciclo")
     private String ciclo;
 
-    @Column(name = "numero" , nullable = false, columnDefinition = "TINYINT")
+    @Column(name = "grupo")
     private Short grupo;
 
-    @Column(name = "fecha_inicio" , nullable = false, columnDefinition = "INT")
+    @Column(name = "fecha_inicio")
     private Integer año;
 
 }
