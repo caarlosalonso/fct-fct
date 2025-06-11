@@ -10,7 +10,7 @@ public record CreateFctDTO(
     LocalDate fechaInicio,
     Integer horasSemanales,
     Integer noLectivos,
-    Integer horasPracticas,
+    Integer horasDePracticas,
     LocalDate fechaFin,
     String motivoRenuncia
 ) {}
