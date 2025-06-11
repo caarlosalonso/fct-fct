@@ -34,6 +34,8 @@ async function cargarEmpresas() {
     }
 }
 
+console.log(empresas);
+
 async function fetchEmpresas() {
     const response = await fetch('/api/vista-empresas-tutores/all');
     if (response.status === 204) return [];
