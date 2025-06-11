@@ -2,8 +2,11 @@ package es.daw2.fct_fct.controlador;
 
 import java.io.IOException;
 import java.util.Map;
+import java.util.Optional;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -11,12 +14,18 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import es.daw2.fct_fct.modelo.User;
+import es.daw2.fct_fct.modelo.vAlumno;
 import es.daw2.fct_fct.servicio.ServicioArchivo;
 import es.daw2.fct_fct.servicio.ServicioUser;
+import es.daw2.fct_fct.servicio.servicioVAlumno;
+import jakarta.servlet.http.HttpSession;
 
 @RestController
 @RequestMapping("/api/ficheros")
 public class ControladorArchivo {
+
+    @Autowired
+    private servicioVAlumno servicioVAlumno;
 
     private final ServicioArchivo servicioArchivo;
 
@@ -59,4 +68,25 @@ public class ControladorArchivo {
 
         return ResponseEntity.ok(Map.of("mensaje", "Archivo subido correctamente"));
     }
+
+    @GetMapping("/ruta-personalizada")
+    public ResponseEntity<?> getRutaPersonalizada(HttpSession session, @RequestParam String fileName) {
+        Object userIdObj = session.getAttribute("userId");
+        if (userIdObj == null) {
+            return ResponseEntity.status(401).body(Map.of("error", "No hay sesión activa"));
+        }
+        Long userId = (Long) userIdObj;
+        Optional<vAlumno> va = servicioVAlumno.getByUserId(userId);
+        if (va.isEmpty()) {
+            return ResponseEntity.status(400).body(Map.of("error", "Usuario no válido"));
+        }
+        vAlumno vAlumno = va.get();
+        String ruta = String.format("%s/%s/%s/%s/%s",
+            vAlumno.getAño(),
+            vAlumno.getCiclo(),
+            vAlumno.getGrupo(),
+            vAlumno.getId(),
+            fileName);
+        return ResponseEntity.ok(Map.of("ruta", ruta));
+}
 }

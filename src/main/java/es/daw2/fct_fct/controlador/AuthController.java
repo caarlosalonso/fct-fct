@@ -39,16 +39,13 @@ public class AuthController {
         if (userIdObj == null) {
             return ResponseEntity.status(401).body(Map.of("error", "No hay sesión activa"));
         }
-
         Long userId = (Long) userIdObj;
         User u = ServicioUser.getById(userId).orElse(null);
         if (u == null) {
             return ResponseEntity.status(401).body(Map.of("error", "Usuario no encontrado en sesión"));
         }
-
         String firebaseToken = FirebaseAuth.getInstance()
             .createCustomToken(u.getId().toString());
-
         return ResponseEntity.ok(Map.of("firebaseToken", firebaseToken));
     }
 }
