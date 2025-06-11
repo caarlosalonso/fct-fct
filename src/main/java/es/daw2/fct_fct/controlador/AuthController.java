@@ -22,7 +22,7 @@ public class AuthController {
     @Autowired
     ServicioUser ServicioUser;
 
-    @PostMapping("/api/users/login")
+    @PostMapping("/api/users/firebaselogin")
     public ResponseEntity<?> login(@RequestParam String email, @RequestParam String password, HttpSession session) {
         User u = ServicioUser.findByEmailAndPassword(email, password);
         if (u == null) {

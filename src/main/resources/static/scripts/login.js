@@ -19,7 +19,7 @@ window.addEventListener('FormsCreated', (event) => {
             password: password,
         };
 
-        fetch('/api/users/login', {
+        fetch('/api/users/firebaselogin', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded',
