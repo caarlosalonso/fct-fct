@@ -1,3 +1,5 @@
+const SECTION = 'curso-actual';
+
 window.addEventListener('DOMContentLoaded', (event) => {
     promise();
 });
@@ -75,7 +77,7 @@ function crearLista(tutorias) {
 
     tutorias.sort((a, b) => new Date(a.fecha) - new Date(b.fecha));
     tutorias.forEach(tutoria => {
-        item = document.createElement('div');
+        const item = document.createElement('div');
         item.classList.add('tutoria-item');
         listar.appendChild(item);
 

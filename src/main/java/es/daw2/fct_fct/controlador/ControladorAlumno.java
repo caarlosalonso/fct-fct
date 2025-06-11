@@ -108,6 +108,7 @@ public class ControladorAlumno extends CrudController<Long, Alumno, AlumnoCreate
         if (sessionValidation != null) return sessionValidation;
 
         Long userId = SessionValidation.getUserIdFromSession(request);
+        System.out.println("User ID from session: " + userId);
         return service.getByUserId(userId)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());

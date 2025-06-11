@@ -1,11 +1,9 @@
 import { Form } from '../classes/Form.js';
 import { tableLoading, tableFail, createSVG, createClickableSVG } from '../functions.js';
 
-const SECTION = 'curso-actual';
-
 window.addEventListener('FormsCreated', (event) => {
     promise();
-    const form = Form.getForm('alumno-form');
+    const form = Form.getForm('info-form');
     form.getInput('nia').validate = function () {
         if (this.input.value.trim().length === 0) return true;
         let nia = this.input.value.trim().toUpperCase();
