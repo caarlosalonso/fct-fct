@@ -459,6 +459,8 @@ function onsubmit(alumnoId, cursoId) {
         return;
     }
 
+    formulario.showErrorIfNotValid = () => true;
+
     formulario.onsubmit = () => {
         const checkbox = formulario.getInput(`checkbox-${alumnoId}`);
         const empresaInput = formulario.getInput(`empresa-${alumnoId}`);

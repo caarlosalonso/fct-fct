@@ -12,7 +12,6 @@ export class ToggleSwitch extends Input {
         this.buildLabel();
         this.buildToggle();
         this.toggleElements();
-        console.log('form: ', this.form);
     }
 
     buildLabel() {
