@@ -32,7 +32,7 @@ public class Fct extends AbsBaseEntity {
 
     @ManyToOne
     @JsonIgnore
-    @JoinColumn(name = "empresa_id", nullable = false)
+    @JoinColumn(name = "empresa_id", nullable = true)
     private Empresa empresa;
 
     @ManyToOne
