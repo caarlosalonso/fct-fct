@@ -156,7 +156,7 @@ function dibujarTabla(empresas, alumnos) {
                 console.log(options);
                 if (match) {
                     options.push({
-                        value: alumno.alumnoId,
+                        value: user.userId,
                         label: `${name} (${nia}) - ${email} - ${dni}`
                     });
                 }
@@ -193,7 +193,7 @@ function crearGridEmpresas(empresas, alumnos) {
     const alumnoMap = {};
     if (alumnos && Array.isArray(alumnos)) {
         alumnos.forEach(a => {
-            alumnoMap[a.alumnoId] = a;
+            alumnoMap[a.userId] = a;
         });
     }
 
