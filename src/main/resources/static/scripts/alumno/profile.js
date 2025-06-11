@@ -1,9 +1,11 @@
 import { Form } from '../classes/Form.js';
 import { tableLoading, tableFail, createSVG, createClickableSVG } from '../functions.js';
 
+const FORM = 'info-form';
+
 window.addEventListener('FormsCreated', (event) => {
     promise();
-    const form = Form.getForm('info-form');
+    const form = Form.getForm(FORM);
     form.getInput('nia').validate = function () {
         if (this.input.value.trim().length === 0) return true;
         let nia = this.input.value.trim().toUpperCase();
@@ -47,7 +49,7 @@ async function fetchSelf() {
 function build(alumno) {
     console.log('Alumno:', alumno);
 
-    const form = Form.getForm('alumno-form');
+    const form = Form.getForm(FORM);
 
     form.onsubmit = () => {
         const nombre = form.getInput('nombre').getValue();
@@ -91,8 +93,8 @@ function build(alumno) {
         });
     };
 
-    form.getInput('nombre').retrack('');
-    form.getInput('email').retrack('');
+    form.getInput('nombre').retrack(alumno.user.name || '');
+    form.getInput('email').retrack(alumno.user.email || '');
     form.getInput('telefono').retrack(alumno.phone || '');
     form.getInput('nia').retrack(alumno.nia || '');
     form.getInput('dni').retrack(alumno.dni || '');
