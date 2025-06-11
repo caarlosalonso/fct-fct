@@ -92,6 +92,7 @@ function build(cursoActual, grupoTutor, alumnosCurso, empresas, tutoresEmpresas,
 
     // Sólo alumnos de su curso
     alumnosCurso = alumnosCurso.filter(alumno => alumno.grupoId === grupoTutor.grupoId)
+                                .filter(alumno => alumno.rating !== 'EXTRAORDINARIA')
                                 .sort((a, b) => a.nombreAlumno.localeCompare(b.nombreAlumno));
 
     document.getElementById('modal').innerHTML = `
