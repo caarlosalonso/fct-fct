@@ -12,5 +12,7 @@ public record CreateFctDTO(
     Integer noLectivos,
     Integer horasDePracticas,
     LocalDate fechaFin,
+    String anexo21,
+    String observaciones,
     String motivoRenuncia
 ) {}

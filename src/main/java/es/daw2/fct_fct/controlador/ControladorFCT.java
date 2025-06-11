@@ -109,6 +109,8 @@ public class ControladorFCT extends CrudController<Long, Fct, Fct, Fct, Servicio
         fct.setHorasSemana(dto.horasSemanales());
         fct.setNoLectivos(dto.noLectivos());
         fct.setHorasPracticas(dto.horasDePracticas());
+        fct.setAnexo21(dto.anexo21());
+        fct.setObservaciones(dto.observaciones());
         fct.setFechaFin(dto.fechaFin());
         fct.setApto(false);
 
@@ -165,6 +167,8 @@ public class ControladorFCT extends CrudController<Long, Fct, Fct, Fct, Servicio
         fct.setNoLectivos(dto.noLectivos());
         fct.setHorasPracticas(dto.horasDePracticas());
         fct.setFechaFin(dto.fechaFin());
+        fct.setAnexo21(dto.anexo21());
+        fct.setObservaciones(dto.observaciones());
         fct.setApto(false);
 
         Optional<Fct> fctActualizado = service.update(fct.getId(), fct);

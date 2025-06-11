@@ -259,6 +259,11 @@ function createCell(alumno, fcts, grupoTutor, empresas) {
                 </div>
                 <div class="instance form-input grouped-inputs">
                     <div class="form-group form-input">
+                        <input id="anexo21-${alumno.alumnoId}" type="text" name="anexo21" class="text-based input" label="Anexo 21" data-required="true">
+                    </div>
+                </div>
+                <div class="instance form-input grouped-inputs">
+                    <div class="form-group form-input">
                         <input id="fecha-inicio-${alumno.alumnoId}" type="date" name="fechaInicio" class="text-based input" label="Fecha de inicio" data-show-validity="true" data-required="true">
                     </div>
                 </div>
@@ -277,6 +282,11 @@ function createCell(alumno, fcts, grupoTutor, empresas) {
                 <div class="instance form-input grouped-inputs">
                     <div class="form-group form-input">
                         <input id="fecha-fin-${alumno.alumnoId}" type="date" name="fechaFin" class="text-based input" label="Fin de FCT" data-show-validity="true" data-required="true">
+                    </div>
+                </div>
+                <div class="instance form-input grouped-inputs">
+                    <div class="form-group form-input">
+                        <input id="observaciones-${alumno.alumnoId}" type="text" name="observaciones" class="text-based input" label="Observaciones">
                     </div>
                 </div>
             </div>
@@ -479,8 +489,9 @@ function onsubmit(alumnoId, cursoId) {
         const noLectivosInput = formulario.getInput(`no-lectivos-${alumnoId}`);
         const horasDePracticasInput = formulario.getInput(`horas-de-practicas-${alumnoId}`);
         const fechaFinInput = formulario.getInput(`fecha-fin-${alumnoId}`);
+        const anexo21 = formulario.getInput(`anexo21-${alumnoId}`);
+        const observaciones = formulario.getInput(`observaciones-${alumnoId}`);
         const motivoRenuncia = formulario.getInput(`motivo-renuncia-${alumnoId}`);
-console.log("Checkbox value:", checkbox.getValue());
 
         let data = {};
         if (checkbox.getValue()) {
@@ -494,6 +505,8 @@ console.log("Checkbox value:", checkbox.getValue());
                 noLectivos: null,
                 horasDePracticas: null,
                 fechaFin: null,
+                anexo21: null,
+                observaciones: null,
                 motivoRenuncia: motivoRenuncia.getValue()
             };
         } else {
@@ -507,6 +520,8 @@ console.log("Checkbox value:", checkbox.getValue());
                 noLectivos: noLectivosInput.getValue(),
                 horasDePracticas: horasDePracticasInput.getValue(),
                 fechaFin: fechaFinInput.getValue(),
+                anexo21: anexo21.getValue(),
+                observaciones: observaciones.getValue(),
                 motivoRenuncia: null
             };
         }
