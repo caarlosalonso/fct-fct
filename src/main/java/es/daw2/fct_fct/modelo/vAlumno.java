@@ -21,13 +21,16 @@ public class vAlumno {
     @Column(name = "user_id")
     private Long id;
 
+    @Column(name = "nombre")
+    private String name;
+
     @Column(name = "ciclo")
     private String ciclo;
 
     @Column(name = "grupo")
     private Integer grupo;
 
-    @Column(name = "ciclo_lectivo")
+    @Column(name = "year")
     private LocalDate año;
 
 }
