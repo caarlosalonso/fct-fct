@@ -264,7 +264,7 @@ function editEmpresa(empresa) {
     form.getInput('empresa-address').retrack(empresa.address);
     form.getInput('empresa-telefono').retrack(empresa.phone);
     form.getInput('empresa-email').retrack(empresa.email);
-    form.getInput('empresa-persona_contacto').retrack(empresa.persona_contacto);
+    form.getInput('persona_contacto').retrack(empresa.persona_contacto);
     form.getInput('numero_convenio').retrack(empresa.numero_convenio);
     form.getInput('numero_plazas').retrack(empresa.numero_plazas);
     form.getInput('fecha_contacto').retrack(empresa.fecha_contacto ? new Date(empresa.fecha_contacto).toISOString().split('T')[0] : '');
@@ -291,10 +291,10 @@ function editEmpresa(empresa) {
             address: form.getInput('empresa-address').getValue(),
             phone: form.getInput('empresa-telefono').getValue(),
             email: form.getInput('empresa-email').getValue(),
-            personaContacto: form.getInput('empresa-persona_contacto').getValue(),
+            persona_contacto: form.getInput('persona_contacto').getValue(),
             propuestaPor: form.getInput('propuesta_por').getValue() ? parseInt(form.getInput('propuesta_por').getValue(), 10) : null,
             observaciones: form.getInput('observaciones').getValue(),
-            numeroConvenio: form.getInput('numero_convenio').getValue(),
+            numero_convenio: form.getInput('numero_convenio').getValue(),
             numero_plazas: form.getInput('numero_plazas').getValue(),
             fecha_contacto: form.getInput('fecha_contacto').getValue() ? new Date(form.getInput('fecha_contacto').getValue()).toISOString().split('T')[0] : null,
             estado: form.getInput('empresa-estado').getValue(),
@@ -369,7 +369,7 @@ function addEmpresa() {
             address: form.getInput('empresa-address').getValue(),
             phone: form.getInput('empresa-telefono').getValue(),
             email: form.getInput('empresa-email').getValue(),
-            persona_contacto: form.getInput('empresa-persona_contacto').getValue(),
+            persona_contacto: form.getInput('persona_contacto').getValue(),
             propuesta_por: form.getInput('propuesta_por').getValue() ? parseInt(form.getInput('propuesta_por').getValue(), 10) : null,
             observaciones: form.getInput('observaciones').getValue(),
             numero_convenio: form.getInput('numero_convenio').getValue(),
@@ -403,7 +403,7 @@ function addEmpresa() {
     form.getInput('empresa-address').retrack('');
     form.getInput('empresa-telefono').retrack('');
     form.getInput('empresa-email').retrack('');
-    form.getInput('empresa-persona_contacto').retrack('');
+    form.getInput('persona_contacto').retrack('');
     form.getInput('numero_convenio').retrack('');
     form.getInput('numero_plazas').retrack('');
     form.getInput('fecha_contacto').retrack('');
