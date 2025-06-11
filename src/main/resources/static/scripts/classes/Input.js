@@ -99,6 +99,7 @@ export class Input {
 
     updateState() {
         const {label, states} = this;
+        console.log(this, label, states);
         label.classList.toggle('active', states.active);
         label.classList.toggle('focus', states.focus);
         label.classList.toggle('required', states.required);
