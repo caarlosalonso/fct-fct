@@ -19,24 +19,31 @@
 </head>
 <body>
     <header>
-        <nav id="navbar">
-            <ul class="navigation nav">
-                <li class="navigation nav-item">
-                    <a href="/index" class="navigation nav-link">Inicio</a>
-                </li>
-                <li class="navigation nav-item">
-                    <a href="/ciclos" class="navigation nav-link">Ciclos</a>
-                </li>
-                <li class="navigation nav-item">
-                    <a href="/alumnado" class="navigation nav-link">Alumnado</a>
-                </li>
-                <li class="navigation nav-item">
-                    <a href="/tutores" class="navigation nav-link active">Tutores</a>
-                </li>
-                <li class="navigation nav-item">
-                    <a href="/perfil" class="navigation nav-link">Perfil</a>
-                </li>
-            </ul>
+        <nav class="navbar navbar-expand-md">
+            <div class="container-fluid">
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav ms-auto">
+                        <li class="nav-item">
+                            <a href="/index" class="nav-link">Inicio</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="/ciclos" class="nav-link">Ciclos</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="/alumnado" class="nav-link">Alumnado</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="/tutores" class="nav-link selected">Tutores</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="/perfil" class="nav-link">Perfil</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
         </nav>
     </header>
     <section id="tutores-section">
