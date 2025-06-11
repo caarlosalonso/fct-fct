@@ -396,33 +396,39 @@ input.password.text-based {
 /* ---------------------------------------------------------------------------- */
 /*                              TOGGLE SWITCH STYLES                            */
 /* ---------------------------------------------------------------------------- */
+.form-input {
+    & .toggle-wrapper {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+    }
+}
 
-/* Contenedor del toggle */
+.label {
+    &.toggle-label {
+        position: static;
+        transform: none;
+        background-color: transparent;
+        font-size: 1rem;
+        margin: 0;
+        padding: 0;
+        left: auto;
+        flex-shrink: 0;
+    }
+}
+
 .toggle-container {
     display: inline-block;
     cursor: pointer;
     user-select: none;
     outline: none;
     transition: opacity 0.3s ease-in-out;
+    flex-shrink: 0;
 
     &:focus {
         outline: 2px solid var(--focus-color);
         outline-offset: 2px;
         border-radius: var(--border-radius);
-
-        & .toggle-track:not(.frozen) {
-            box-shadow: 0 0 0 8px rgba(var(--primary-color-rgb), 0.1);
-            border-color: var(--focus-color);
-        }
-
-        & .toggle-track.active:not(.frozen) {
-            background-color: var(--secondary-color);
-            border-color: var(--secondary-color);
-        }
-
-        & .toggle-thumb:not(.frozen) {
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
-        }
     }
 
     &.frozen {
@@ -439,11 +445,27 @@ input.password.text-based {
         }
     }
 
+    &:hover {
+        & .toggle-track:not(.frozen) {
+            box-shadow: 0 0 0 8px rgba(var(--primary-color-rgb), 0.1);
+            border-color: var(--focus-color);
+        }
+        
+        & .toggle-track.active:not(.frozen) {
+            background-color: var(--secondary-color);
+            border-color: var(--secondary-color);
+        }
+        
+        & .toggle-thumb:not(.frozen) {
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+        }
+    }
+
     &:active {
         & .toggle-thumb:not(.frozen) {
             transform: scale(0.95);
         }
-
+        
         & .toggle-thumb.active:not(.frozen) {
             transform: translateX(24px) scale(0.95);
         }
@@ -509,24 +531,27 @@ input.password.text-based {
     }
 }
 
-/* Responsive - adaptado al sistema */
 @media (max-width: 768px) {
     .toggle-track {
         width: 44px;
         height: 22px;
     }
-    
+
     .toggle-thumb {
         width: 18px;
         height: 18px;
+        
+        &.active {
+            transform: translateX(22px);
+        }
     }
-    
-    .toggle-thumb.active {
-        transform: translateX(22px);
-    }
-    
-    .toggle-container:active .toggle-thumb.active:not(.frozen) {
-        transform: translateX(22px) scale(0.95);
+
+    .toggle-container {
+        &:active {
+            & .toggle-thumb.active:not(.frozen) {
+                transform: translateX(22px) scale(0.95);
+            }
+        }
     }
 }
 

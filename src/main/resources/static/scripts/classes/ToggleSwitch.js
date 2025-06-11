@@ -16,7 +16,7 @@ export class ToggleSwitch extends Input {
 
     buildLabel() {
         this.label = document.createElement('p');
-        this.label.classList.add('label', 'active');
+        this.label.classList.add('label', 'toggle-label');
         this.label.textContent = this.input.getAttribute('label') || '';
         this.parent.appendChild(this.label);
     }
@@ -24,6 +24,9 @@ export class ToggleSwitch extends Input {
     buildToggle() {
         this.input.style.display = 'none';
         this.input.checked = this.checked;
+
+        this.toggleWrapper = document.createElement('div');
+        this.toggleWrapper.classList.add('toggle-wrapper');
 
         this.toggleContainer = document.createElement('div');
         this.toggleContainer.classList.add('toggle-container');
@@ -37,6 +40,10 @@ export class ToggleSwitch extends Input {
         this.toggleTrack.appendChild(this.toggleThumb);
         this.toggleContainer.appendChild(this.toggleTrack);
         this.parent.appendChild(this.toggleContainer);
+        
+        this.toggleWrapper.appendChild(this.label);
+        this.toggleWrapper.appendChild(this.toggleContainer);
+        this.parent.appendChild(this.toggleWrapper);
 
         this.updateToggleState();
 

@@ -1,7 +1,11 @@
+:root {
+    --background-color: #505050;
+}
+
 #main-content {
     width: 90%;
     margin: 0 auto;
-    background-color: var(--background-color);
+    background-color: #303030;
     border-radius: var(--border-radius);
     padding: var(--border-radius);
     display: flex;
@@ -11,7 +15,7 @@
 
 .section {
     border-radius: var(--border-radius);
-    background-color: #505050;
+    background-color: var(--background-color);
     padding: var(--border-radius);
 }
 
@@ -75,7 +79,7 @@ p.info {
 }
 
 .add-empresa-svg {
-max-width: 25px;
+    max-width: 25px;
     width: 100%;
     fill: #99ff99;
     background-color: #83d78399;
