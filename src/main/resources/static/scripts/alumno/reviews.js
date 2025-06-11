@@ -9,14 +9,18 @@ window.addEventListener('DOMContentLoaded', (event) => {
 
 function promise() {
     Promise.all([
-        fetchEmpresas()
+        fetchEmpresas(),
+        fetchFCTs(),
+        fetchCursos()
     ])
     .then(([
-        empresas
+        empresas,
+        fcts,
+        cursos
     ]) => {
-        build(empresas);
+        build(empresas, fcts, cursos);
     }).catch((error) => {
-        console.error('Error al obtener las empresas:', error);
+        console.error('Error al obtener la información:', error);
     });
 }
 
@@ -27,6 +31,22 @@ async function fetchEmpresas() {
     return await response.json();
 }
 
-function build(empresas) {
+async function fetchFCTs() {
+    const response = await fetch('/api/fcts/all');
+    if (response.status === 204) return [];
+    if (!response.ok) throw new Error('Error al obtener los FCT');
+    return await response.json();
+}
+
+async function fetchCursos() {
+    const response = await fetch('/api/cursos/all');
+    if (response.status === 204) return [];
+    if (!response.ok) throw new Error('Error al obtener los cursos');
+    return await response.json();
+}
+
+function build(empresas, fcts, cursos) {
     console.log('Empresas:', empresas);
+    console.log('FCTs:', fcts);
+    console.log('Cursos:', cursos);
 }
