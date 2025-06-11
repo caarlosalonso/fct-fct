@@ -74,6 +74,14 @@ function build(cursos, fcts, grupos, ciclos, ciclosLectivos, stats) {
         <ul>
             ${stats.renunciasPorCicloLectivo.map(stat => `<li>${stat.nombre}: ${stat.totalRenuncias}</li>`).join('')}
         </ul>
+        <p>Alumnos que titulan por ciclo lectivo:</p>
+        <ul>
+            ${stats.titulanPorCicloLectivo.map(stat => `<li>${stat.nombre}: ${stat.totalTitulan}</li>`).join('')}
+        </ul>
+        <p>Motivos de renuncia:</p>
+        <ul>
+            ${Object.entries(stats.motivosRenuncia).map(([motivo, count]) => `<li>${motivo}: ${count}</li>`).join('')}
+        </ul>
     `;
     section.appendChild(statsDiv);
 }
