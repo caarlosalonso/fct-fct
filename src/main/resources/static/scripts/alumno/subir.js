@@ -2,6 +2,13 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.2/firebas
 import { getAuth, signInWithCustomToken } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-auth.js";
 import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-storage.js";
 
+await fetch('/auth/login', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+    body: new URLSearchParams({ email, password }),
+    credentials: 'same-origin'
+});
+
 const firebaseConfig = {
     apiKey: "AIzaSyAd4xYzRu3vJEmUCkod0FkcMLQA90eNeTU",
     authDomain: "tfc-fct-3b0fa.firebaseapp.com",
