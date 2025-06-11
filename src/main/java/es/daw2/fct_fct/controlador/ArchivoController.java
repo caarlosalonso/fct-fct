@@ -34,7 +34,6 @@ public class ArchivoController {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Usuario no autenticado.");
         }
 
-            System.out.println("User id en subirArchivo: " + (user != null ? user.getId() : "null"));
     try {
         String url = servicioArchivo.subirArchivo(userId, archivo);
         return ResponseEntity.ok("Archivo subido correctamente. URL: " + url);

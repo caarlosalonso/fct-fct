@@ -3,7 +3,6 @@ package es.daw2.fct_fct.servicio;
 import java.io.IOException;
 import java.util.Optional;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -15,14 +14,11 @@ import es.daw2.fct_fct.repositorio.RepositorioVAlumno;
 @Service
 public class ServicioArchivo extends AbstractService<Long, vAlumno, RepositorioVAlumno> {
 
-    @Autowired
-    private servicioVAlumno servicioVAlumno;
-
     public String subirArchivo(Long id, MultipartFile archivo) throws IOException {
 
         String bucketName = StorageClient.getInstance().bucket().getName();
-
-        Optional<vAlumno> va = servicioVAlumno.findById(id);
+        System.out.println("ID: " + id);
+        Optional<vAlumno> va = repository.findById(id);
 
         if (va.isEmpty()) {
             throw new IllegalArgumentException("El usuario no es un alumno válido");
