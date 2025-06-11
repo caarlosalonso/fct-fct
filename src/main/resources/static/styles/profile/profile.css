@@ -1,14 +1,28 @@
-#logout-section {
-    text-align: center;
-    margin-top: 20px;
+main {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    width: 90%;
+    margin: 0 auto;
 }
 
 .section {
     background-color: var(--background-color);
     border-radius: var(--border-radius);
-    width: 90%;
-    margin: 0 auto;
     padding: 15px;
+
+    & .title {
+        text-align: center;
+        font-size: 1.6rem;
+        color: var(--primary-color);
+        margin-bottom: 10px;
+        border-bottom: 1px solid rgba(var(--primary-color-rgb), 0.6);
+    }
+}
+
+#logout-section {
+    text-align: center;
 }
 
 .logout {
@@ -24,5 +38,12 @@
     &:hover {
         cursor: pointer;
         background-color: color-mix(in srgb, var(--secondary-color), white 20%);
+    }
+}
+
+@media screen and (max-width: 999px) {
+    main {
+        width: 100%;
+        margin: 0;
     }
 }
