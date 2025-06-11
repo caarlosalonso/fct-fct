@@ -19,6 +19,7 @@ public class ServicioArchivo extends AbstractService<Long, vAlumno, RepositorioV
         String bucketName = StorageClient.getInstance().bucket().getName();
         System.out.println("ID: " + id);
         Optional<vAlumno> va = repository.findById(id);
+        System.out.println("Alumno encontrado: " + va);
 
         if (va.isEmpty()) {
             throw new IllegalArgumentException("El usuario no es un alumno válido");
