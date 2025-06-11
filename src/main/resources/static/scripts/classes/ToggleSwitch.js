@@ -10,6 +10,7 @@ export class ToggleSwitch extends Input {
     init() {
         super.init();
         this.buildLabel();
+        this.buildInput();
     }
 
     buildLabel() {
