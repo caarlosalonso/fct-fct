@@ -28,13 +28,14 @@ async function cargarEmpresas() {
     try {
         const empresas = await fetchEmpresas();
         dibujarTabla(empresas);
+        console.log(empresas);
     } catch (error) {
         mostrarError();
         console.error(error);
     }
 }
 
-console.log(empresas);
+
 
 async function fetchEmpresas() {
     const response = await fetch('/api/vista-empresas-tutores/all');
