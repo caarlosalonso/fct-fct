@@ -31,15 +31,15 @@ public class ServicioArchivo extends AbstractService<Long, vAlumno, RepositorioV
 
         vAlumno vAlumno = va.get();
         //Construir ruta: año/ciclo/curso/idAlumno/nombreArchivo
-        /*String ruta = String.format("%s/%s/%s/%s/%s",
+        String ruta = String.format("%s/%s/%s/%s/%s",
             vAlumno.getAño(),
             vAlumno.getCiclo(),
             vAlumno.getGrupo(),
             vAlumno.getId(),
-            archivo.getOriginalFilename());*/
-
-        String ruta = String.format("%s",
             archivo.getOriginalFilename());
+
+        /*String ruta = String.format("%s/%s/%s/%s/%s",
+            archivo.getOriginalFilename());*/
         
 
         // Crear el objeto en el bucket
