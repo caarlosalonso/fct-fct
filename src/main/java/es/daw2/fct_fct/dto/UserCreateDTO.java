@@ -2,7 +2,7 @@ package es.daw2.fct_fct.dto;
 
 import java.util.Arrays;
 
-import es.daw2.fct_fct.modelo.User.Role;
+import es.daw2.fct_fct.utils.Role;
 
 public record UserCreateDTO(String name, String email, Role role, String password) {
 

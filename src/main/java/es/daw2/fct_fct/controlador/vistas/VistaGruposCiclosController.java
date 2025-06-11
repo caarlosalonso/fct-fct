@@ -6,11 +6,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import es.daw2.fct_fct.modelo.User.Role;
 import es.daw2.fct_fct.modelo.vistas.VistaGruposCiclos;
 import es.daw2.fct_fct.servicio.vistas.VistaGruposCiclosService;
+import es.daw2.fct_fct.utils.Role;
+import es.daw2.fct_fct.utils.SessionValidation;
 import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpSession;
 
 @RestController
 @RequestMapping("/api/vista-grupos-ciclos")
@@ -32,14 +32,10 @@ public class VistaGruposCiclosController {
 
     @GetMapping("/tutor")
     public ResponseEntity<?> getById(HttpServletRequest request) {
-        HttpSession session = request.getSession(false);
-        if (session == null) return ResponseEntity.status(401).body("No autorizado");
-        Object role = session.getAttribute("role");
-        if (role == null || ! role.equals(Role.TUTOR)) {
-            return ResponseEntity.status(403).body("Forbidden: Sólo los tutores pueden ver el ciclo lectivo actual");
-        }
+        ResponseEntity<?> validationResponse = SessionValidation.isValidSession(request, Role.TUTOR);
+        if (validationResponse != null) return validationResponse;
 
-        Long tutorId = (Long) session.getAttribute("child_id");
+        Long tutorId = (Long) request.getSession().getAttribute("child_id");
         Optional<VistaGruposCiclos> grupoOpt = servicio.getByTutorId(tutorId);
 
         if (grupoOpt.isEmpty()) {

@@ -15,11 +15,11 @@ import org.springframework.web.bind.annotation.RestController;
 import es.daw2.fct_fct.dto.CicloLectivoCreateDTO;
 import es.daw2.fct_fct.modelo.CicloLectivo;
 import es.daw2.fct_fct.modelo.Grupo;
-import es.daw2.fct_fct.modelo.User.Role;
 import es.daw2.fct_fct.servicio.ServicioCicloLectivo;
 import es.daw2.fct_fct.servicio.ServicioGrupo;
+import es.daw2.fct_fct.utils.Role;
+import es.daw2.fct_fct.utils.SessionValidation;
 import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpSession;
 
 
 @RestController
@@ -45,12 +45,8 @@ public class ControladorCicloLectivo extends CrudController<Long, CicloLectivo, 
 
     @GetMapping("/actual")
     ResponseEntity<?> getById(HttpServletRequest request) {
-        HttpSession session = request.getSession(false);
-        if (session == null) return ResponseEntity.status(401).body("No autorizado");
-        Object role = session.getAttribute("role");
-        if (role == null || ! role.equals(Role.TUTOR)) {
-            return ResponseEntity.status(403).body("Forbidden: Sólo los tutores pueden ver el ciclo lectivo actual");
-        }
+        ResponseEntity<?> sessionValidation = SessionValidation.isValidSession(request, Role.TUTOR);
+        if (sessionValidation != null) return sessionValidation;
 
         Optional<CicloLectivo> cicloLectivoOpt = service.getCicloLectivoActual();
         if (!cicloLectivoOpt.isPresent()) return ResponseEntity.notFound().build();

@@ -17,13 +17,13 @@ import es.daw2.fct_fct.dto.CreateUserDTO;
 import es.daw2.fct_fct.modelo.Alumno;
 import es.daw2.fct_fct.modelo.Tutor;
 import es.daw2.fct_fct.modelo.User;
-import es.daw2.fct_fct.modelo.User.Role;
 import es.daw2.fct_fct.servicio.ServicioAlumno;
 import es.daw2.fct_fct.servicio.ServicioTutores;
 import es.daw2.fct_fct.servicio.ServicioUser;
 import es.daw2.fct_fct.utils.PasswordUtils;
+import es.daw2.fct_fct.utils.Role;
+import es.daw2.fct_fct.utils.SessionValidation;
 import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpSession;
 
 
 @RestController
@@ -32,12 +32,8 @@ public class ControladorTutor extends CrudController<Long, Tutor, CreateUserDTO,
 
     @Override
     public ResponseEntity<?> create(@RequestBody CreateUserDTO t, HttpServletRequest request) {
-        HttpSession session = request.getSession(false);
-        if (session == null) return ResponseEntity.status(401).body("No autorizado");
-        Object role = session.getAttribute("role");
-        if (role == null || ! role.equals(Role.COORDINADOR)) {
-            return ResponseEntity.status(403).body("Forbidden: Sólo los coordinadores pueden crear tutores");
-        }
+        ResponseEntity<?> sessionValidation = SessionValidation.isValidSession(request, Role.COORDINADOR);
+        if (sessionValidation != null) return sessionValidation;
 
         User newUser = new User();
         newUser.setName(t.name());
@@ -100,7 +96,7 @@ public class ControladorTutor extends CrudController<Long, Tutor, CreateUserDTO,
         user.setName(dto.nombre());
         user.setEmail(dto.email());
         user.setPassword(PasswordUtils.hashPassword(dto.dni()));
-        user.setRole(User.Role.ALUMNO);
+        user.setRole(Role.ALUMNO);
         user = servicioUser.save(user);
 
         Alumno nuevoAlumno = new Alumno();

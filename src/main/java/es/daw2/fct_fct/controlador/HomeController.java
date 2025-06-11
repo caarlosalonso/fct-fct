@@ -6,7 +6,7 @@ import java.nio.charset.StandardCharsets;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 
-import es.daw2.fct_fct.modelo.User;
+import es.daw2.fct_fct.utils.Role;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -67,10 +67,10 @@ public class HomeController {
         response.addCookie(cookie);
 
         return switch (role) {
-            case User.Role.ADMIN        -> "admin/index.html";
-            case User.Role.COORDINADOR  -> "coordinacion/index.html";
-            case User.Role.TUTOR        -> "tutor/index.html";
-            case User.Role.ALUMNO       -> "alumno/index.html";
+            case Role.ADMIN        -> "admin/index.html";
+            case Role.COORDINADOR  -> "coordinacion/index.html";
+            case Role.TUTOR        -> "tutor/index.html";
+            case Role.ALUMNO       -> "alumno/index.html";
             default                     -> REDIRECT_LOGIN;
         };
     }
@@ -86,10 +86,10 @@ public class HomeController {
         if (user == null || role == null || nombre == null) return REDIRECT_LOGIN;
 
         return switch (role) {
-            case User.Role.ADMIN        -> "admin/profile.html";
-            case User.Role.COORDINADOR  -> "coordinacion/profile.html";
-            case User.Role.TUTOR        -> "tutor/profile.html";
-            case User.Role.ALUMNO       -> "alumno/profile.html";
+            case Role.ADMIN        -> "admin/profile.html";
+            case Role.COORDINADOR  -> "coordinacion/profile.html";
+            case Role.TUTOR        -> "tutor/profile.html";
+            case Role.ALUMNO       -> "alumno/profile.html";
             default                     -> REDIRECT_LOGIN;
         };
     }
@@ -103,9 +103,9 @@ public class HomeController {
         if (user == null || role == null) return REDIRECT_LOGIN;
 
         return switch(role) {
-            case User.Role.ADMIN        -> "admin/ciclos.html";
-            case User.Role.COORDINADOR  -> "coordinacion/ciclos.html";
-            case User.Role.TUTOR        -> "tutor/ciclos.html";
+            case Role.ADMIN        -> "admin/ciclos.html";
+            case Role.COORDINADOR  -> "coordinacion/ciclos.html";
+            case Role.TUTOR        -> "tutor/ciclos.html";
             default                     -> REDIRECT_LOGIN;
         };
     }
@@ -119,9 +119,9 @@ public class HomeController {
         if (user == null || role == null) return REDIRECT_LOGIN;
 
         return switch(role) {
-            case User.Role.ADMIN        -> "admin/alumnado.html";
-            case User.Role.COORDINADOR  -> "coordinacion/alumnado.html";
-            case User.Role.TUTOR        -> "tutor/alumnado.html";
+            case Role.ADMIN        -> "admin/alumnado.html";
+            case Role.COORDINADOR  -> "coordinacion/alumnado.html";
+            case Role.TUTOR        -> "tutor/alumnado.html";
             default                     -> REDIRECT_INDEX;
         };
     }
@@ -135,7 +135,7 @@ public class HomeController {
         if (user == null || role == null) return REDIRECT_LOGIN;
 
         return switch(role) {
-            case User.Role.ADMIN        -> "admin/coordinacion.html";
+            case Role.ADMIN        -> "admin/coordinacion.html";
             default                     -> REDIRECT_INDEX;
         };
     }
@@ -149,7 +149,7 @@ public class HomeController {
         if (user == null || role == null) return REDIRECT_LOGIN;
 
         return switch(role) {
-            case User.Role.ADMIN        -> "admin/createuser.html";
+            case Role.ADMIN        -> "admin/createuser.html";
             default                     -> REDIRECT_INDEX;
         };
     }
@@ -163,7 +163,7 @@ public class HomeController {
         if (user == null || role == null) return REDIRECT_LOGIN;
 
         return switch(role) {
-            case User.Role.COORDINADOR  -> "coordinacion/tutores.html";
+            case Role.COORDINADOR  -> "coordinacion/tutores.html";
             default                     -> REDIRECT_INDEX;
         };
     }
@@ -177,8 +177,8 @@ public class HomeController {
         if (user == null || role == null) return REDIRECT_LOGIN;
 
         return switch(role) {
-            case User.Role.TUTOR        -> "tutor/empresas.html";
-            case User.Role.ALUMNO       -> "alumno/empresas.html";
+            case Role.TUTOR        -> "tutor/empresas.html";
+            case Role.ALUMNO       -> "alumno/empresas.html";
             default                     -> REDIRECT_INDEX;
         };
     }
@@ -192,8 +192,8 @@ public class HomeController {
         if (user == null || role == null) return REDIRECT_LOGIN;
 
         return switch(role) {
-            case User.Role.TUTOR        -> "tutor/fcts.html";
-            case User.Role.ALUMNO       -> "alumno/fcts.html";
+            case Role.TUTOR        -> "tutor/fcts.html";
+            case Role.ALUMNO       -> "alumno/fcts.html";
             default                     -> REDIRECT_INDEX;
         };
     }
@@ -207,8 +207,8 @@ public class HomeController {
         if (user == null || role == null) return REDIRECT_LOGIN;
 
         return switch(role) {
-            case User.Role.TUTOR        -> "tutor/tutorias.html";
-            case User.Role.ALUMNO       -> "alumno/tutorias.html";
+            case Role.TUTOR        -> "tutor/tutorias.html";
+            case Role.ALUMNO       -> "alumno/tutorias.html";
             default                     -> REDIRECT_INDEX;
         };
     }
@@ -222,8 +222,8 @@ public class HomeController {
         if (user == null || role == null) return REDIRECT_LOGIN;
 
         return switch(role) {
-            case User.Role.TUTOR        -> "tutor/cursos.html";
-            case User.Role.ALUMNO       -> "alumno/cursos.html";
+            case Role.TUTOR        -> "tutor/cursos.html";
+            case Role.ALUMNO       -> "alumno/cursos.html";
             default                     -> REDIRECT_INDEX;
         };
     }

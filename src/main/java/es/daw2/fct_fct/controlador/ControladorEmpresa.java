@@ -7,23 +7,26 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import es.daw2.fct_fct.dto.EmpresaDTO;
+import es.daw2.fct_fct.dto.ProponerEmpresaDTO;
+import es.daw2.fct_fct.modelo.Alumno;
 import es.daw2.fct_fct.modelo.Empresa;
-import es.daw2.fct_fct.modelo.User;
 import es.daw2.fct_fct.repositorio.RepositorioUser;
+import es.daw2.fct_fct.servicio.ServicioAlumno;
 import es.daw2.fct_fct.servicio.ServicioEmpresa;
+import es.daw2.fct_fct.utils.Role;
+import es.daw2.fct_fct.utils.SessionValidation;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 
 @RestController
 @RequestMapping("/api/empresa")
 public class ControladorEmpresa extends CrudController<Long, Empresa, EmpresaDTO, EmpresaDTO, ServicioEmpresa> {
-
-    @Autowired
-    private ServicioEmpresa servicioEmpresa;
 
     @Autowired
     private RepositorioUser userRepository;

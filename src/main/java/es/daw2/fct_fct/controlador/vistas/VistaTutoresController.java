@@ -6,11 +6,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import es.daw2.fct_fct.modelo.User.Role;
 import es.daw2.fct_fct.modelo.vistas.VistaTutores;
 import es.daw2.fct_fct.servicio.vistas.VistaTutoresService;
+import es.daw2.fct_fct.utils.Role;
+import es.daw2.fct_fct.utils.SessionValidation;
 import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpSession;
 
 @RestController
 @RequestMapping("/api/vista-tutores")
@@ -32,12 +32,8 @@ public class VistaTutoresController {
 
     @GetMapping("/disponibles/{cicloId}")
     public ResponseEntity<?> obtenerTutoresSinGrupo(@PathVariable Long cicloId, HttpServletRequest request) {
-        HttpSession session = request.getSession(false);
-        if (session == null) return ResponseEntity.status(401).body("No autorizado");
-        Object role = session.getAttribute("role");
-        if (role == null || ! role.equals(Role.COORDINADOR)) {
-            return ResponseEntity.status(403).body("Forbidden: Sólo los coordinadores pueden ver tutores sin grupo");
-        }
+        ResponseEntity<?> sessionValidation = SessionValidation.isValidSession(request, Role.COORDINADOR);
+        if (sessionValidation != null) return sessionValidation;
 
         List<VistaTutores> tutoresDisponibles = servicio.getTutoresSinGrupoEnCicloLectivo(cicloId);
         return ResponseEntity.ok(tutoresDisponibles);

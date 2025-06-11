@@ -18,12 +18,12 @@ import es.daw2.fct_fct.dto.UserDTO;
 import es.daw2.fct_fct.dto.UserResetPasswordDTO;
 import es.daw2.fct_fct.dto.UserResetPasswordTutorDTO;
 import es.daw2.fct_fct.modelo.User;
-import es.daw2.fct_fct.modelo.User.Role;
 import es.daw2.fct_fct.servicio.ServicioAlumno;
 import es.daw2.fct_fct.servicio.ServicioCoordinacion;
 import es.daw2.fct_fct.servicio.ServicioTutores;
 import es.daw2.fct_fct.servicio.ServicioUser;
 import es.daw2.fct_fct.utils.PasswordUtils;
+import es.daw2.fct_fct.utils.Role;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 
@@ -69,10 +69,10 @@ public class ControladorUser extends CrudController<Long, User, UserCreateDTO, U
         System.out.println(newSession.getId() + " - " + userFound.getEmail() + " - " + userFound.getName() + " - " + userFound.getRole());
 
         switch (userFound.getRole()) {
-            case User.Role.ADMIN -> newSession.setAttribute("child_id", userFound.getId());
-            case User.Role.COORDINADOR -> servicioCoordinacion.getByUserId(userFound.getId()).ifPresent(coordinacion -> newSession.setAttribute("child_id", coordinacion.getId()));
-            case User.Role.TUTOR -> servicioTutores.getByUserId(userFound.getId()).ifPresent(tutor -> newSession.setAttribute("child_id", tutor.getId()));
-            case User.Role.ALUMNO -> servicioAlumno.getByUserId(userFound.getId()).ifPresent(alumno -> newSession.setAttribute("child_id", alumno.getId()));
+            case Role.ADMIN -> newSession.setAttribute("child_id", userFound.getId());
+            case Role.COORDINADOR -> servicioCoordinacion.getByUserId(userFound.getId()).ifPresent(coordinacion -> newSession.setAttribute("child_id", coordinacion.getId()));
+            case Role.TUTOR -> servicioTutores.getByUserId(userFound.getId()).ifPresent(tutor -> newSession.setAttribute("child_id", tutor.getId()));
+            case Role.ALUMNO -> servicioAlumno.getByUserId(userFound.getId()).ifPresent(alumno -> newSession.setAttribute("child_id", alumno.getId()));
             default -> {
                 return ResponseEntity.status(403).body("Forbidden: Invalid user role");
             }

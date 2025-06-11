@@ -11,12 +11,12 @@ import es.daw2.fct_fct.dto.AlumnoActualizarDTO;
 import es.daw2.fct_fct.dto.AlumnoCreateDTO;
 import es.daw2.fct_fct.modelo.Alumno;
 import es.daw2.fct_fct.modelo.User;
-import es.daw2.fct_fct.modelo.User.Role;
 import es.daw2.fct_fct.servicio.ServicioAlumno;
 import es.daw2.fct_fct.servicio.ServicioUser;
 import es.daw2.fct_fct.utils.PasswordUtils;
+import es.daw2.fct_fct.utils.Role;
+import es.daw2.fct_fct.utils.SessionValidation;
 import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpSession;
 
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -32,12 +32,8 @@ public class ControladorAlumno extends CrudController<Long, Alumno, AlumnoCreate
 
     @Override
     public ResponseEntity<?> create(@RequestBody AlumnoCreateDTO a, HttpServletRequest request) {
-        HttpSession session = request.getSession(false);
-        if (session == null) return ResponseEntity.status(401).body("No autorizado");
-        Object role = session.getAttribute("role");
-        if (role == null || ! role.equals(Role.TUTOR)) {
-            return ResponseEntity.status(403).body("Forbidden: Sólo los tutores pueden ver el ciclo lectivo actual");
-        }
+        ResponseEntity<?> sessionValidation = SessionValidation.isValidSession(request, Role.TUTOR);
+        if (sessionValidation != null) return sessionValidation;
 
         User newUser = new User();
         newUser.setName(a.nombreAlumno());

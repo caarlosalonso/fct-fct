@@ -11,10 +11,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 import es.daw2.fct_fct.modelo.Coordinacion;
 import es.daw2.fct_fct.modelo.User;
-import es.daw2.fct_fct.modelo.User.Role;
 import es.daw2.fct_fct.servicio.ServicioCoordinacion;
 import es.daw2.fct_fct.servicio.ServicioUser;
 import es.daw2.fct_fct.utils.PasswordUtils;
+import es.daw2.fct_fct.utils.Role;
+import es.daw2.fct_fct.utils.SessionValidation;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 
@@ -32,12 +33,8 @@ public class ControladorCoordinacion extends CrudController<Long, Coordinacion, 
 
     @Override
     public ResponseEntity<?> create(@RequestBody CreateUserDTO c, HttpServletRequest request) {
-        HttpSession session = request.getSession(false);
-        if (session == null) return ResponseEntity.status(401).body("No autorizado");
-        Object role = session.getAttribute("role");
-        if (role == null || ! role.equals(Role.ADMIN)) {
-            return ResponseEntity.status(403).body("Prohibido: Solo los administradores pueden crear coordinadores");
-        }
+        ResponseEntity<?> sessionValidation = SessionValidation.isValidSession(request, Role.ADMIN);
+        if (sessionValidation != null) return sessionValidation;
 
         User newUser = new User();
         newUser.setName(c.name());
