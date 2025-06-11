@@ -110,7 +110,7 @@ function dibujarTabla(empresas, alumnos) {
         // Contenido colapsable
         const content = document.createElement('div');
         content.className = 'collapsible-content';
-        content.appendChild(crearGridEmpresas(lista));
+        content.appendChild(crearGridEmpresas(lista, alumnos));
 
         // Evento para expandir/colapsar
         header.addEventListener('click', () => {
@@ -156,7 +156,7 @@ function dibujarTabla(empresas, alumnos) {
                 console.log(options);
                 if (match) {
                     options.push({
-                        value: alumno.alumnoId,
+                        value: alumno.userId,
                         label: `${name} (${nia}) - ${email} - ${dni}`
                     });
                 }
@@ -173,7 +173,7 @@ function crearTituloTabla(texto) {
     return h;
 }
 
-function crearGridEmpresas(empresas) {
+function crearGridEmpresas(empresas, alumnos) {
     const columns = [
         { key: 'nombre', label: 'Nombre' },
         { key: 'cif', label: 'CIF' },
@@ -189,6 +189,13 @@ function crearGridEmpresas(empresas) {
         { key: 'propuesta_por', label: 'Propuesta por' },
         { key: 'observaciones', label: 'Observaciones' }
     ];
+
+    const alumnoMap = {};
+    if (alumnos && Array.isArray(alumnos)) {
+        alumnos.forEach(a => {
+            alumnoMap[a.userId] = a;
+        });
+    }
 
     const gridData = document.createElement('div');
     gridData.className = 'grid-data';
@@ -220,7 +227,8 @@ function crearGridEmpresas(empresas) {
             cell.style.gridColumn = `${colIdx + 1}`;
             
             if (col.key === 'propuesta_por') {
-                cell.textContent = empresa.propuesta_por ? (empresa.propuesta_por.nombre || empresa.propuesta_por.id || '') : '';
+                const alumno = alumnoMap[empresa.propuesta_por];
+                cell.textContent = alumno ? `${alumno.nombreAlumno} (${alumno.nia})` : '';
             } else if (col.key === 'hay_convenio') {
                 // Si hay número de convenio, muestra un check
                 cell.textContent = empresa.numero_convenio && empresa.numero_convenio.trim() !== '' ? '✔️' : '';
