@@ -63,6 +63,8 @@ public class ControladorFCT extends CrudController<Long, Fct, Fct, Fct, Servicio
     }
 
     public ResponseEntity<?> createFct(CreateFctDTO dto) {
+        System.out.println("DTO: " + dto);
+
         Fct fct = new Fct();
         Optional<Curso> cursoOpt = servicioCurso.getById(dto.cursoId());
         if (!cursoOpt.isPresent()) {

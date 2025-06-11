@@ -469,6 +469,7 @@ function onsubmit(alumnoId, cursoId) {
         const horasDePracticasInput = formulario.getInput(`horas-de-practicas-${alumnoId}`);
         const fechaFinInput = formulario.getInput(`fecha-fin-${alumnoId}`);
         const motivoRenuncia = formulario.getInput(`motivo-renuncia-${alumnoId}`);
+console.log("Checkbox value:", checkbox.getValue());
 
         let data = {};
         if (checkbox.getValue()) {
