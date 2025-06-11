@@ -46,6 +46,40 @@
                 <div class="inputs form-container">
                     <div class="instance form-input grouped-inputs">
                         <div class="form-group form-input">
+                            <input type="text" id="nombre" name="nombre" class="text-based input" label="Tu nombre" data-required="true">
+                        </div>
+                    </div>
+                        <div class="form-group form-input">
+                            <input type="text" id="email" name="email" class="text-based input" label="Tu correo" data-required="true">
+                        </div>
+                        <div class="form-group form-input">
+                            <input type="text" id="telefono" name="telefono" class="text-based input" label="Tu teléfono">
+                        </div>
+                    </div>
+                    <div class="instance form-input grouped-inputs">
+                        <div class="form-group form-input">
+                            <input type="text" id="nia" name="nia" class="text-based input" label="Tu NIA" data-required="true" data-validate="true">
+                        </div>
+                        <div class="form-group form-input">
+                            <input type="dni" id="dni" name="dni" class="text-based input" label="Tu DNI" data-required="true" data-validate="true">
+                        </div>
+                        <div class="form-group form-input">
+                            <input type="text" id="nuss" name="nuss" class="text-based input" label="Tu NUSS" data-required="true" data-validate="true">
+                        </div>
+                    </div>
+                    <div class="instance form-input grouped-inputs">
+                        <div class="form-group form-input">
+                            <input type="text" id="address" name="address" class="text-based input" label="Tu dirección">
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </section>
+        <section id="password-section" class="section">
+            <form id="password-form" method="POST" submit-text="Cambiar contraseña">
+                <div class="inputs form-container">
+                    <div class="instance form-input grouped-inputs">
+                        <div class="form-group form-input">
                             <input type="password" id="current-password" name="current-password" class="text-based input" label="Contraseña actual" data-required="true">
                         </div>
                         <div class="form-group form-input">
@@ -63,6 +97,7 @@
         </section>
     </main>
 
+    <script type="module" src="/scripts/alumno/profile.js"></script>
     <script type="module" src="/scripts/profile/profile.js"></script>
 </body>
 </html>

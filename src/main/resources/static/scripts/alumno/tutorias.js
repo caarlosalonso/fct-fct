@@ -39,7 +39,7 @@ async function fetchCursoActual() {
 }
 
 async function fetchCursoAlumno() {
-    const response = await fetch('/api/vista-alumno-ciclos/alumno');
+    const response = await fetch('/api/vista-alumno-ciclos/all');
     if (response.status === 204) return [];
     if (!response.ok) throw new Error('Error al obtener los grupos');
     return await response.json();
