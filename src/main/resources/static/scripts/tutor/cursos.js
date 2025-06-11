@@ -90,12 +90,6 @@ async function fetchEmpresas() {
 }
 
 function build(alumnos, cursoActual, grupoTutor, alumnosCurso, empresas) {
-    console.log('Alumnos:', alumnos);
-    console.log('Ciclo lectivo actual:', cursoActual);
-    console.log('Grupo tutor:', grupoTutor);
-    console.log('Alumnos del curso:', alumnosCurso);
-    console.log('Empresas:', empresas);
-
     const form = Form.getForm('alumno-form');
     crearLista(alumnosCurso, grupoTutor, form, empresas);
 
@@ -105,7 +99,6 @@ function build(alumnos, cursoActual, grupoTutor, alumnosCurso, empresas) {
         searchInput.input.addEventListener('input', () => {
             let query = searchInput.input.value;
             query = (query || '').toLowerCase().trim();
-            console.log(query);
             let options = [];
             
             alumnos.forEach(alumno => {
@@ -117,8 +110,6 @@ function build(alumnos, cursoActual, grupoTutor, alumnosCurso, empresas) {
                     (dni || '').toLowerCase()
                 ];
                 const match = values.some(val => val.includes(query));
-                console.log(match, values);
-                console.log(options);
                 if (match) {
                     options.push({
                         value: alumno.alumnoId,
