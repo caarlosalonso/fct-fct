@@ -1,7 +1,5 @@
 package es.daw2.fct_fct.modelo;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import jakarta.persistence.AttributeOverride;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -23,17 +21,14 @@ import lombok.NoArgsConstructor;
 public class Grupo extends AbsBaseEntity {
 
     @ManyToOne
-    @JsonIgnore
     @JoinColumn(name = "ciclo_id")
     private Ciclo ciclo;
 
     @ManyToOne
-    @JsonIgnore
     @JoinColumn(name = "ciclo_lectivo_id")
     private CicloLectivo cicloLectivo;
 
     @ManyToOne
-    @JsonIgnore
     @JoinColumn(name = "tutor_id")
     private Tutor tutor;
 
