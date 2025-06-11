@@ -22,7 +22,7 @@ public class VistaEmpresaTutor {
     private Long empresaId;
 
     @Column(name = "nombre", nullable = false, length = 255)
-    private String nombreEmpresa;
+    private String nombre;
 
     @Column(name = "cif", nullable = false)
     private String cif;
@@ -65,8 +65,14 @@ public class VistaEmpresaTutor {
 
     
     @Column(name = "tutor_empresa_id")
-    private Long tutorEmpresaId;
+    private Long tutor_empresaId;
 
-    @Column(name = "tutor_nombre", length = 255)
-    private String tutorNombre;
+    @Column(name = "nombre_tutor", length = 255)
+    private String nombre_tutor;
+
+    @Column(name = "id_usuario")
+    private Long userId;
+
+    @Column(name = "nombre_usuario", length = 255)
+    private String nombre_usuario;
 }
