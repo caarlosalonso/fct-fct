@@ -10,6 +10,5 @@ public record AlumnoActualizarCursoDTO(
     String address,
     Integer convocatoria,
     String rating,
-    Short aExtraordinaria,
     String observaciones
 ) {}

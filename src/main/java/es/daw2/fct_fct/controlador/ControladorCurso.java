@@ -150,7 +150,6 @@ public class ControladorCurso extends CrudController<Long, Curso, Curso, Curso, 
         Curso curso = cursoOptional.get();
 
         curso.setRating(a.rating() == null ? "VERDE" : a.rating());
-        curso.setAExtraordinaria(a.aExtraordinaria() == null ? 0 : a.aExtraordinaria());
         curso.setObservaciones(a.observaciones() == null ? "" : a.observaciones());
 
         Optional<Alumno> optional = servicioAlumno.getById(curso.getAlumno().getId());
