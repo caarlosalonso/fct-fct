@@ -2,8 +2,6 @@ package es.daw2.fct_fct.modelo;
 
 import java.time.LocalDate;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import jakarta.persistence.AttributeOverride;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -26,17 +24,14 @@ import lombok.NoArgsConstructor;
 public class Fct extends AbsBaseEntity {
 
     @ManyToOne
-    @JsonIgnore
     @JoinColumn(name = "curso_id", nullable = false)
     private Curso curso;
 
     @ManyToOne
-    @JsonIgnore
     @JoinColumn(name = "empresa_id", nullable = true)
     private Empresa empresa;
 
     @ManyToOne
-    @JsonIgnore
     @JoinColumn(name = "tutor_empresa_id", nullable = true)
     private TutorEmpresa tutorEmpresa;
 
