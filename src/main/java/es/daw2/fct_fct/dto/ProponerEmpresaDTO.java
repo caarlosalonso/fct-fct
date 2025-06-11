@@ -6,7 +6,7 @@ public record ProponerEmpresaDTO(
     String telefono,
     String email,
     String sector,
-    String direccion,
+    String address,
     String personaContacto,
     String observaciones
 ) {}

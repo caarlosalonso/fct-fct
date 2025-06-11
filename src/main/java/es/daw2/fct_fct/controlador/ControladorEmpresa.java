@@ -124,7 +124,7 @@ public class ControladorEmpresa extends CrudController<Long, Empresa, EmpresaDTO
         nuevaEmpresa.setNombre(dto.nombre());
         nuevaEmpresa.setCif(dto.cif());
         nuevaEmpresa.setSector(dto.sector());
-        //nuevaEmpresa.setAddress(dto.address());
+        nuevaEmpresa.setAddress(dto.address());
         nuevaEmpresa.setPhone(dto.telefono());
         nuevaEmpresa.setEmail(dto.email());
         nuevaEmpresa.setPersona_contacto(dto.personaContacto());

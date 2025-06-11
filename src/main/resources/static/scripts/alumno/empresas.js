@@ -9,7 +9,7 @@ window.addEventListener('FormsCreated', (event) => {
         const telefono = form.getInput('empresa-telefono').getValue();
         const email = form.getInput('empresa-email').getValue();
         const sector = form.getInput('empresa-sector').getValue();
-        const direccion = form.getInput('empresa-direccion').getValue();
+        const address = form.getInput('empresa-address').getValue();
         const personaContacto = form.getInput('empresa-persona-contacto').getValue();
         const observaciones = form.getInput('empresa-observaciones').getValue();
 
@@ -19,14 +19,32 @@ window.addEventListener('FormsCreated', (event) => {
             telefono: telefono,
             email: email,
             sector: sector,
-            direccion: direccion,
+            address: address,
             personaContacto: personaContacto,
             observaciones: observaciones
         }
 
         fetch('/api/empresas/proponer', {
-            
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
         })
+        .then((response) => {
+            if (response.status === 201) {
+                form.showSuccess('Empresa propuesta correctamente');
+                form.reset();
+            } else {
+                form.showError('Error al proponer la empresa');
+            }
+        })
+        .catch((error) => {
+            form.showError('Error al enviar los datos: ' + error.message);
+        })
+        .finally(() => {
+            form.submitFinish();
+        });
     }
 });
 
