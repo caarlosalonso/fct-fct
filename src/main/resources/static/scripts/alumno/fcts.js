@@ -62,13 +62,13 @@ function build(alumno, alumnosCurso, cursoActual, fcts) {
     console.log('Curso actual:', cursoActual);
     console.log('FCTs:', fcts);
 
-    const fcts = fcts.filter((fct) => fct.curso.alumno.id === alumno.id);
-    const fctActual = fcts.find((fct) => fct.curso.cicloLectivo.id === cursoActual.id);
+    const fctsAlumno = fcts.filter((fct) => fct.curso.alumno.id === alumno.id);
+    const fctActual = fctsAlumno.find((fct) => fct.curso.cicloLectivo.id === cursoActual.id);
 
-    console.log("Fcts: ", fcts, "Fct Actual: ", fctActual);
+    console.log("Fcts: ", fctsAlumno, "Fct Actual: ", fctActual);
 
     let horasHechas = 0;
-    fcts.forEach((fct) => {
+    fctsAlumno.forEach((fct) => {
         if (fct.id === fctActual.id) return;
         horasHechas += fct.horas ? fct.horas : 0;
     });
@@ -85,7 +85,7 @@ function build(alumno, alumnosCurso, cursoActual, fcts) {
     main.innerHTML = `
         <h2>FCTs del Alumno</h2>
         <ul>
-            ${fcts.map(fct => `<li>${fct.nombre}: ${fct.horas ? fct.horas : 0} horas</li>`).join('')}
+            ${fctsAlumno.map(fct => `<li>${fct.nombre}: ${fct.horas ? fct.horas : 0} horas</li>`).join('')}
         </ul>
         <h3>FCT Actual</h3>
         <p>${fctActual.nombre}: ${fctActual.horas ? fctActual.horas : 0} horas</p>

@@ -170,14 +170,23 @@ function createCell(alumno, fcts, grupoTutor, empresas) {
     bar.appendChild(nombreSpan);
 
     const fct = fctsDelAlumno.find(fct => fct.curso.grupo.cicloLectivo.id === grupoTutor.cicloLectivoId);
+    console.log("FCT: ", fct);
 
-    const empresa = empresas.filter((empresa) => empresa.empresaId === fct.empresa.id);
-    console.log('Empresa:', empresa);
-    let tieneEmpresa = empresa.length > 0;
+    let tieneEmpresa = false;
     let renunciaAFCT = false;
-    if (!tieneEmpresa) {
-        if (fct.motivoRenuncia !== null) {
-            renunciaAFCT = true;
+    if (!fct) {
+        tieneEmpresa = false;
+    } else {
+        const empresa = empresas.filter((empresa) => empresa.empresaId === fct.empresa.id);
+        console.log('Empresa:', empresa);
+
+        if (empresa.length === 0) {
+            if (fct.motivoRenuncia !== null) {
+                tieneEmpresa = true;
+                renunciaAFCT = true;
+            }
+        } else {
+            tieneEmpresa = true;
         }
     }
 
