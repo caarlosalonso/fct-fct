@@ -29,7 +29,6 @@ public class Curso extends AbsBaseEntity {
     private Alumno alumno;
 
     @ManyToOne
-    @JsonIgnore
     @JoinColumn(name = "grupo_id", nullable = false)
     private Grupo grupo;
 
