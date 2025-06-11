@@ -228,6 +228,21 @@ public class HomeController {
         };
     }
 
+    @GetMapping("/reviews")
+    public String reviews(HttpServletRequest request) {
+        HttpSession session = request.getSession(false);
+        if (session == null) return REDIRECT_LOGIN;
+        Object user = session.getAttribute("user");
+        Object role = session.getAttribute("role");
+        if (user == null || role == null) return REDIRECT_LOGIN;
+
+        return switch(role) {
+            case Role.TUTOR        -> "tutor/reviews.html";
+            case Role.ALUMNO       -> "alumno/reviews.html";
+            default                     -> REDIRECT_INDEX;
+        };
+    }
+
     @GetMapping("/subir")
     public String subir() {
         return "subirarchivo.html";
