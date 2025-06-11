@@ -28,6 +28,13 @@ form.addEventListener('submit', async (event) => {
         return;
     }
 
+    await fetch('/auth/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: new URLSearchParams({ email, password }),
+        credentials: 'same-origin'
+    });
+
     try {
         // 1. Obtener la ruta personalizada del backend
         const rutaRes = await fetch(`/api/ficheros/ruta-personalizada?fileName=${encodeURIComponent(file.name)}`, {
