@@ -435,7 +435,7 @@ function setInputsToUpdate(form, alumno) {
             address: address,
             convocatoria: convocatoria,
             rating: rating !== 'EXTRAORDINARIA' ? rating : 'EXTRAORDINARIA',
-            aExtraordinaria: rating === 'EXTRAORDINARIA',
+            aExtraordinaria: rating === 'EXTRAORDINARIA' ? 0 : 1,
             observaciones: observaciones
         };
 
