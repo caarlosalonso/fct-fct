@@ -22,27 +22,6 @@ window.addEventListener('FormsCreated', (event) => {
         fetch('/api/users/login', {
             method: 'POST',
             headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(data),
-        })
-        .then(response => {
-            if (response.ok) {
-                form.showSuccess('Login exitoso.');
-                window.location.href = '/index';
-            } else {
-                form.showError('Login fallido: Email o contraseña incorrectos.');
-            }
-            form.submitFinish();
-        })
-        .catch(error => {
-            form.showError('Internal Server Error');
-            form.submitFinish();
-        });
-
-        fetch('/auth/login', {
-            method: 'POST',
-            headers: {
                 'Content-Type': 'application/x-www-form-urlencoded',
             },
             body: new URLSearchParams({ email, password }),
@@ -61,5 +40,7 @@ window.addEventListener('FormsCreated', (event) => {
             form.showError('Internal Server Error');
             form.submitFinish();
         });
+
+        
     }
 });
