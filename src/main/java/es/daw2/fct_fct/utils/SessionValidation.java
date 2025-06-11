@@ -74,6 +74,25 @@ public class SessionValidation {
         return ResponseEntity.status(403).body("Denegado: Sólo pueden acceder los usuarios con el rol: " + validRolesString.toString());
     }
 
+    public static Long getUserIdFromSession(HttpServletRequest request) {
+        HttpSession session = request.getSession(false);
+        StringBuilder logging = new StringBuilder("Obteniendo ID de usuario de la sesión - Request: ");
 
+        if (session == null) {
+            logging.append("Nulo.");
+            System.out.println(logging.toString());
+            return null;
+        }
 
+        Long userId = (Long) session.getAttribute("id");
+        if (userId == null) {
+            logging.append("No encontrado.");
+            System.out.println(logging.toString());
+            return null;
+        }
+
+        logging.append("Encontrado: ").append(userId);
+        System.out.println(logging.toString());
+        return userId;
+    }
 }

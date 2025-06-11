@@ -18,6 +18,7 @@ import es.daw2.fct_fct.utils.Role;
 import es.daw2.fct_fct.utils.SessionValidation;
 import jakarta.servlet.http.HttpServletRequest;
 
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -100,4 +101,15 @@ public class ControladorAlumno extends CrudController<Long, Alumno, AlumnoCreate
     }
 
     // delete ya existe en CrudController
+
+    @GetMapping("/self")
+    public ResponseEntity<?> obtenerPorUsuarioActual(HttpServletRequest request) {
+        ResponseEntity<?> sessionValidation = SessionValidation.isValidSession(request, Role.ALUMNO);
+        if (sessionValidation != null) return sessionValidation;
+
+        Long userId = SessionValidation.getUserIdFromSession(request);
+        return service.getByUserId(userId)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
+    }
 }

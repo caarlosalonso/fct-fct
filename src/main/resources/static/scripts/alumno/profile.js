@@ -40,7 +40,7 @@ function promise() {
 }
 
 async function fetchSelf() {
-    const response = await fetch('/api/vista-all-alumnos/self');
+    const response = await fetch('/api/alumnos/self');
     if (response.status === 204) return null;
     if (!response.ok) throw new Error('Error al obtener el alumno');
     return await response.json();

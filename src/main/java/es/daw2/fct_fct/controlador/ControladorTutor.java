@@ -5,6 +5,7 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -128,5 +129,16 @@ public class ControladorTutor extends CrudController<Long, Tutor, CreateUserDTO,
         servicioUser.update(user.getId(), user);
 
         return ResponseEntity.ok("Contraseña actualizada correctamente");
+    }
+
+    @GetMapping("/self")
+    public ResponseEntity<?> obtenerPorUsuarioActual(HttpServletRequest request) {
+        ResponseEntity<?> sessionValidation = SessionValidation.isValidSession(request, Role.TUTOR);
+        if (sessionValidation != null) return sessionValidation;
+
+        Long userId = SessionValidation.getUserIdFromSession(request);
+        return service.getByUserId(userId)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
     }
 }
