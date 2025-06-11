@@ -135,8 +135,8 @@ function dibujarTabla(empresas, alumnos) {
     }
 
     const form = Form.getForm('empresa-form');
-    const search = form.getInput('propuesta_por');
-    if (search) {
+    const searchInput = form.getInput('propuesta_por');
+    if (searchInput) {
         searchInput.input.addEventListener('input', () => {
             let query = searchInput.input.value;
             query = (query || '').toLowerCase().trim();
