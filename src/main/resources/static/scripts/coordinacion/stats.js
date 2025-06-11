@@ -39,9 +39,9 @@ async function fetchFCTs() {
 }
 
 async function fetchGrupos() {
-    const response = await fetch('/api/grupos/actual');
+    const response = await fetch('/api/grupos/all');
     if (response.status === 204) return [];
-    if (!response.ok) throw new Error('Error al obtener los ciclos lectivos');
+    if (!response.ok) throw new Error('Error al obtener los grupos');
     return await response.json();
 }
 
