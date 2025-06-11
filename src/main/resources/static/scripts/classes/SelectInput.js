@@ -111,4 +111,26 @@ export class SelectInput extends TextInput {
             this.showDropdown();
         }
     }
+
+    retrack(value) {
+        if (value === null || value === undefined)
+            value = '';
+
+        value = this.format(value);
+
+        this.states.tracked = true;
+        this.states.trackedValue = value;
+        this.setValue(value);
+        this.states.changed = false;
+
+        if (value.length > 0) {
+            this.forceActive();
+        }
+        this.updateState();
+    }
+
+    setValue(value) {
+        this.input.hiddenValue = value;
+        this.input.value = this.options.find(option => option.value === value)?.label || value;
+    }
 }
