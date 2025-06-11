@@ -2,6 +2,8 @@ package es.daw2.fct_fct.dto;
 
 import java.time.LocalDate;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 public record VistaEmpresaTutorDTO(
     Long empresaId,
     String nombre,
@@ -11,6 +13,7 @@ public record VistaEmpresaTutorDTO(
     String sector,
     String address,
     String persona_contacto,
+    @JsonFormat(pattern = "yyyy-MM-dd")
     LocalDate fecha_contacto,
     Long propuesta_por,
     Boolean hay_convenio,
