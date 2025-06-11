@@ -111,5 +111,39 @@ public class ControladorEmpresa extends CrudController<Long, Empresa, EmpresaDTO
         service.delete(id);
         return ResponseEntity.noContent().build();
     }
-    
+
+    @Autowired
+    private ServicioAlumno serviceAlumno;
+
+    @PostMapping("/proponer")
+    public ResponseEntity<?> proponerEmpresa(@RequestBody ProponerEmpresaDTO dto, HttpServletRequest request) {
+        ResponseEntity<?> sessionValidation = SessionValidation.isValidSession(request, Role.ALUMNO);
+        if (sessionValidation != null) return sessionValidation;
+
+        Empresa nuevaEmpresa = new Empresa();
+        nuevaEmpresa.setNombre(dto.nombre());
+        nuevaEmpresa.setCif(dto.cif());
+        nuevaEmpresa.setSector(dto.sector());
+        //nuevaEmpresa.setAddress(dto.address());
+        nuevaEmpresa.setPhone(dto.telefono());
+        nuevaEmpresa.setEmail(dto.email());
+        nuevaEmpresa.setPersona_contacto(dto.personaContacto());
+        nuevaEmpresa.setEstado("Propuesta");
+        nuevaEmpresa.setObservaciones(dto.observaciones());
+        nuevaEmpresa.setNumero_convenio(null);
+
+        HttpSession session = request.getSession(false);
+        Optional<Alumno> alumnoOpt = serviceAlumno.getById((Long) session.getAttribute("child_id"));
+        if (!alumnoOpt.isPresent()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No se encontró el alumno asociado a la sesión");
+        }
+
+        nuevaEmpresa.setPropuesta_por(alumnoOpt.get().getUser());
+
+        nuevaEmpresa = service.save(nuevaEmpresa);
+
+        URI location = URI.create("/api/empresa/" + nuevaEmpresa.getId());
+
+        return ResponseEntity.created(location).body(nuevaEmpresa);
+    }
 }
