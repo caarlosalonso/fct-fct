@@ -9,12 +9,12 @@ window.addEventListener('DOMContentLoaded', (event) => {
 
 function promise() {
     Promise.all([
-        fetchReviews()
+        fetchEmpresas()
     ])
     .then(([
-        reviews
+        empresas
     ]) => {
-        build(reviews);
+        build(empresas);
     }).catch((error) => {
         console.error('Error al obtener las empresas:', error);
     });
