@@ -66,3 +66,68 @@ p.info {
     font-size: 0.8rem;
     font-style: italic;
 }
+
+.empresas-posibles {
+    padding: 3px;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+
+.add-empresa-svg {
+max-width: 25px;
+    width: 100%;
+    fill: #99ff99;
+    background-color: #83d78399;
+    padding: 2px;
+    border-radius: 2px;
+
+    &:hover {
+        cursor: pointer;
+        background-color: #83d783;
+        fill: #ffffff;
+    }
+}
+
+.empresa-posible {
+    background-color: #ff999999;
+    border-radius: 3px;
+    height: 25px;
+    padding: 3px;
+
+    &:hover {
+        cursor: pointer;
+        background-color: #ff9999;
+
+        & .remove-empresa-svg {
+            fill: #ffffff;
+        }
+    }
+
+    & .remove-empresa-svg {
+        fill: #ff8888;
+        height: 100%;
+    }
+}
+
+#modal {
+    display: none;
+    position: absolute;
+    top: 0;
+    left: 0;
+    background-color: #999999;
+    border-radius: var(--border-radius);
+    padding: var(--border-radius);
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
+    z-index: 999999;
+
+    &.active {
+        display: block;
+        top: 200px;
+        left: 200px;
+    }
+
+    & p.label.active, & input {
+        background-color: #999999;
+    }
+}

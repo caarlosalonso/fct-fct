@@ -158,6 +158,39 @@ function createCell(alumno, fcts, grupoTutor) {
         }
     };
 
+    const empresasPosibles = document.createElement('div');
+    empresasPosibles.classList.add('cell-value', 'empresas-posibles');
+    item.appendChild(empresasPosibles);
+
+    empresasPosibles.appendChild(
+        createClickableSVG(
+            '0 0 48 48',
+            'M 44 20 L 28 20 L 28 4 C 28 2 26 0 24 0 S 20 2 20 4 L 20 20 L 4 20 C 2 20 0 22 0 24 S 2 28 4 28 L 20 28 L 20 44 C 20 46 22 48 24 48 S 28 46 28 44 L 28 28 L 44 28 C 46 28 48 26 48 24 S 46 20 44 20 Z',
+            () => agregarEmpresaPosible(alumno, empresas, empresasPosibles),
+            'add-empresa-svg'
+        )
+    );
+
+    if (alumno.posiblesEmpresas.length > 0) {
+        alumno.posiblesEmpresas.split(';').forEach((empresaId) => {
+            const empresaSpan = document.createElement('span');
+            empresaSpan.classList.add('empresa-posible');
+            const found = empresas.find(e => e.id == empresaId);
+            console.log(found);
+
+            empresaSpan.textContent = found?.nombre || empresaId;
+            empresasPosibles.appendChild(empresaSpan);
+            empresaSpan.appendChild(
+                createClickableSVG(
+                    '0 0 48 48',
+                    'M 40.9706 35.3137 L 29.6569 24 L 40.9706 12.6863 C 42.3848 11.2721 42.3848 8.4437 40.9706 7.0294 S 36.7279 5.6152 35.3137 7.0294 L 24 18.3431 L 12.6863 7.0294 C 11.2721 5.6152 8.4437 5.6152 7.0294 7.0294 S 5.6152 11.2721 7.0294 12.6863 L 18.3431 24 L 7.0294 35.3137 C 5.6152 36.7279 5.6152 39.5563 7.0294 40.9706 S 11.2721 42.3848 12.6863 40.9706 L 24 29.6569 L 35.3137 40.9706 C 36.7279 42.3848 39.5563 42.3848 40.9706 40.9706 S 42.3848 36.7279 40.9706 35.3137 Z',
+                    () => quitarEmpresa(alumno, empresaId),
+                    'remove-empresa-svg'
+                )
+            );
+        });
+    }
+
     const fctDiv = document.createElement('div');
     fctDiv.innerHTML = `
     <form id="fct-form-${alumno.alumnoId}" method="POST" submit-text="Guardar FCT">
@@ -424,4 +457,125 @@ function onsubmit(alumnoId, cursoId) {
             formulario.submitFinish();
         });
     };
+}
+
+function quitarEmpresa(alumno, empresaId) {
+    alumno.posiblesEmpresas = alumno.posiblesEmpresas
+        .split(';')
+        .filter(id => id !== empresaId)
+        .join(';');
+    
+    fetch(`/api/cursos/posibles-empresas/${alumno.cursoId}`, {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            posiblesEmpresas: alumno.posiblesEmpresas
+        })
+    })
+    .then((response) => {
+        if (response.ok) {
+            promise();
+        } else {
+            console.error('Error al quitar la empresa del alumno');
+        }
+    })
+    .catch((error) => {
+        console.error('Error al quitar la empresa del alumno:', error);
+    });
+}
+
+function agregarEmpresaPosible(alumno, empresas, empresasPosibles) {
+    const search = Form.getForm('agregar-empresa-form');
+    const parent = search.form.parentElement;
+
+    if (empresasPosibles && parent) {
+        const rect = empresasPosibles.getBoundingClientRect();
+        parent.style.left = `${rect.left + window.scrollX}px`;
+        parent.style.top = `${rect.bottom + 30 + window.scrollY}px`;
+    }
+
+    parent.classList.add('active');
+    parent.addEventListener('keydown', (event) => {
+        if (event.key === 'Escape') {
+            clearModal(search, parent);
+        }
+    });
+    window.addEventListener('keydown', (event) => {
+        if (event.key === 'Escape') {
+            clearModal(search, parent);
+        }
+    });
+
+    const empresasSelect = search.getInput('buscar-empresa');
+    empresasSelect.input.addEventListener('input', () => {
+        let query = empresasSelect.input.value;
+        query = (query || '').toLowerCase().trim();
+        let options = [];
+
+        empresas.forEach(empresa => {
+            const [ nombre, cif, email ] = [empresa.nombre, empresa.cif, empresa.email];
+            const values = [
+                (nombre || '').toLowerCase(),
+                (cif || '').toLowerCase(),
+                (email || '').toLowerCase()
+            ];
+
+            const match = values.some(val => val.includes(query));
+            if (match) {
+                options.push({
+                    value: empresa.id,
+                    label: `${nombre} (${cif}) - ${email}`
+                });
+            }
+        });
+        empresasSelect.updateDropdown(options, true);
+    });
+
+    search.onsubmit = () => {
+        let posiblesEmpresas = alumno.posiblesEmpresas.split(';');
+        if (posiblesEmpresas.includes('' + empresasSelect.getValue())) {
+            clearModal(search, parent);
+            return;
+        }
+        if (alumno.posiblesEmpresas.length === 0) posiblesEmpresas = [];
+        posiblesEmpresas.push('' + empresasSelect.getValue());
+        posiblesEmpresas = posiblesEmpresas.join(';');
+
+        fetch(`/api/cursos/posibles-empresas/${alumno.cursoId}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                posiblesEmpresas: posiblesEmpresas
+            })
+        })
+        .then((response) => {
+            if (response.ok) {
+                search.reset();
+                search.submitFinish();
+                parent.classList.remove('active');
+                parent.style.left = '0';
+                parent.style.top = '0';
+                promise();
+            } else {
+                search.submitFinish();
+                console.error('Error al agregar la empresa del alumno');
+            }
+        })
+        .catch((error) => {
+            search.submitFinish();
+            console.error('Error al agregar la empresa del alumno:', error);
+        });
+    }
+}
+
+function clearModal(search, parent) {
+    search.reset();
+    search.submitFinish();
+    parent.classList.remove('active');
+    parent.style.left = '0';
+    parent.style.top = '0';
 }
