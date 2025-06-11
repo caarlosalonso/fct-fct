@@ -22,25 +22,37 @@ window.addEventListener('DOMContentLoaded', () => {
     cargarEmpresas();
 });
 
-async function cargarEmpresas() {
+function cargarEmpresas() {
     mostrarCargando();
 
-    try {
-        const empresas = await fetchEmpresas();
-        dibujarTabla(empresas);
-        console.log(empresas);
-    } catch (error) {
+    Promise.all([
+        fetchEmpresas(),
+        fetchAlumnos()
+    ])
+    .then(([
+        empresas,
+        alumnos
+    ]) => {
+        dibujarTabla(empresas, alumnos);
+        console.log(empresas, alumnos);
+    }).catch((error) => {
         mostrarError();
         console.error(error);
-    }
+    });
 }
-
 
 
 async function fetchEmpresas() {
     const response = await fetch('/api/vista-empresas-tutores/all');
     if (response.status === 204) return [];
     if (!response.ok) throw new Error('No se encontraron empresas');
+    return await response.json();
+}
+
+async function fetchAlumnos() {
+    const response = await fetch('/api/vista-all-alumnos/all');
+    if (response.status === 204) return [];
+    if (!response.ok) throw new Error('Error al obtener los alumnos');
     return await response.json();
 }
 
@@ -67,7 +79,7 @@ function mostrarError() {
     wrapper.appendChild(errorMessageSection);
 }
 
-function dibujarTabla(empresas) {
+function dibujarTabla(empresas, alumnos) {
     const wrapper = document.getElementById('display-grid-wrapper');
     wrapper.innerHTML = "";
 
@@ -120,6 +132,37 @@ function dibujarTabla(empresas) {
     }
     if (estados.denegado.length > 0) {
         wrapper.appendChild(crearBloqueEstado('Empresas denegadas', estados.denegado));
+    }
+
+    const form = Form.getForm('empresa-form');
+    const search = form.getInput('propuesta_por');
+    if (search) {
+        searchInput.input.addEventListener('input', () => {
+            let query = searchInput.input.value;
+            query = (query || '').toLowerCase().trim();
+            console.log(query);
+            let options = [];
+            
+            alumnos.forEach(alumno => {
+                const [ name, email, nia, dni ] = [alumno.nombreAlumno, alumno.email, alumno.nia, alumno.dni];
+                const values = [
+                    (name || '').toLowerCase(),
+                    (email || '').toLowerCase(),
+                    (nia || '').toLowerCase(),
+                    (dni || '').toLowerCase()
+                ];
+                const match = values.some(val => val.includes(query));
+                console.log(match, values);
+                console.log(options);
+                if (match) {
+                    options.push({
+                        value: alumno.alumnoId,
+                        label: `${name} (${nia}) - ${email} - ${dni}`
+                    });
+                }
+            });
+            searchInput.updateDropdown(options, true);
+        });
     }
 }
 
