@@ -14,7 +14,7 @@ const firebaseConfig = {
     apiKey: "AIzaSyAd4xYzRu3vJEmUCkod0FkcMLQA90eNeTU",
     authDomain: "tfc-fct-3b0fa.firebaseapp.com",
     projectId: "tfc-fct-3b0fa",
-    storageBucket: "tfc-fct-3b0fa.firebasestorage.app",
+    storageBucket: "tfc-fct-3b0fa.appsot.app",
     messagingSenderId: "1090078079288",
     appId: "1:1090078079288:web:3f7df9b5e75370efb0a9cd",
     measurementId: "G-52M3VYWPJZ"
