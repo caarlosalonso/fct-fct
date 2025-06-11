@@ -8,11 +8,11 @@ export class ToggleSwitch extends Input {
     }
 
     init(form) {
-        super.init();
+        super.init(form);
         this.buildLabel();
         this.buildToggle();
         this.toggleElements();
-        this.form = form;
+        console.log('form: ', this.form);
     }
 
     buildLabel() {
