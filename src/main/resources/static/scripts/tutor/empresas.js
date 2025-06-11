@@ -156,7 +156,7 @@ function dibujarTabla(empresas, alumnos) {
                 console.log(options);
                 if (match) {
                     options.push({
-                        value: user.userId,
+                        value: alumno.userId,
                         label: `${name} (${nia}) - ${email} - ${dni}`
                     });
                 }
