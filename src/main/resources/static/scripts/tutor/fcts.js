@@ -170,10 +170,19 @@ function createCell(alumno, fcts, grupoTutor, empresas) {
     nombreSpan.textContent = `${alumno.nombreAlumno}`;
     bar.appendChild(nombreSpan);
 
+    const empresa = empresas.filter((empresa) => empresa.empresaId === fct.empresaId);
+    let tieneEmpresa = empresa.length > 0;
+    let renunciaAFCT = false;
+    if (!tieneEmpresa) {
+        if (fct.motivoRenuncia !== null) {
+            renunciaAFCT = true;
+        }
+    }
+
     const empresaSpan = document.createElement('span');
     empresaSpan.classList.add('empresa-nombre');
-    if (! alumno.nombreEmpresa) empresaSpan.classList.add('sin-empresa');
-    empresaSpan.textContent = `${alumno.nombreEmpresa || 'Sin empresa'}`;
+    if (! tieneEmpresa) empresaSpan.classList.add('sin-empresa');
+    empresaSpan.textContent = tieneEmpresa ? empresa[0].nombreEmpresa : (renunciaAFCT ? 'Renuncia' : 'Sin empresa');
     bar.appendChild(empresaSpan);
 
     const horasRestantesSpan = document.createElement('span');
