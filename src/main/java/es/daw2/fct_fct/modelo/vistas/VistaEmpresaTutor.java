@@ -40,19 +40,19 @@ public class VistaEmpresaTutor {
     private String address;
 
     @Column(name = "persona_contacto", nullable = false)
-    private String personaContacto;
+    private String persona_contacto;
 
     @Column(name = "fecha_contacto", nullable = false)
     private LocalDate fecha_contacto;
 
     @Column(name = "propuesta_por", nullable = false)
-    private Long propuestaPor;
+    private Long propuesta_por;
 
     @Column(name = "hay_convenio", nullable = false)
-    private Boolean hayConvenio;
+    private Boolean hay_convenio;
 
     @Column(name = "numero_convenio", nullable = false)
-    private String numeroConvenio;
+    private String numero_convenio;
 
     @Column(name = "numero_plazas", nullable = false)
     private Integer numero_plazas;

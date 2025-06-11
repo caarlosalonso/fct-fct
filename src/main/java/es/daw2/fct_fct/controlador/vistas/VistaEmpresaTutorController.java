@@ -67,17 +67,17 @@ public class VistaEmpresaTutorController {
         empresa.setAddress(dto.address());
         empresa.setPhone(dto.phone());
         empresa.setEmail(dto.email());
-        empresa.setPersona_contacto(dto.personaContacto());
+        empresa.setPersona_contacto(dto.persona_contacto());
         empresa.setEstado(dto.estado());
         empresa.setObservaciones(dto.observaciones());
-        empresa.setNumero_convenio(dto.numeroConvenio());
+        empresa.setNumero_convenio(dto.numero_convenio());
         empresa.setNumero_plazas(dto.numero_plazas());
-        empresa.setHay_convenio(dto.hayConvenio());
+        empresa.setHay_convenio(dto.hay_convenio());
         empresa.setFecha_contacto(dto.fecha_contacto());
 
         // Actualizar propuesta_por si viene en el JSON
-        if (dto.propuestaPor() != null) {
-            userRepository.findById(dto.propuestaPor()).ifPresentOrElse(
+        if (dto.propuesta_por() != null) {
+            userRepository.findById(dto.propuesta_por()).ifPresentOrElse(
                 empresa::setPropuesta_por,
                 () -> empresa.setPropuesta_por(null)
             );
