@@ -292,6 +292,12 @@ function finish(form) {
     cargarEmpresas();
 }
 
+const estadosPosibles = {
+    PENDIENTE: 'Pendiente',
+    ACEPTADO: 'Aprobado',
+    DENEGADO: 'Denegado'
+}
+
 function editEmpresa(empresa) {
     hideAll();
 
@@ -317,7 +323,7 @@ function editEmpresa(empresa) {
     // Selector de estado
     const estadoSelect = document.getElementById('empresa-estado');
     if (estadoSelect && empresa.estado) {
-        estadoSelect.value = empresa.estado.toLowerCase();
+        estadoSelect.value = empresa.estado;
     }
 
     form.form.setAttribute('submit-text', 'Actualizar empresa');
