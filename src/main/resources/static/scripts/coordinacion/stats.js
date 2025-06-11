@@ -66,8 +66,14 @@ function build(cursos, fcts, grupos, ciclos, ciclosLectivos, stats) {
         <ul>
             ${stats.alumnosPorCicloLectivo.map(stat => `<li>${stat.nombre}: ${stat.totalAlumnos}</li>`).join('')}
         </ul>
-        <p>Alumnos que fueron a prácticas: ${stats.totalPracticas}</p>
-        <p>Alumnos que renunciaron: ${stats.totalRenuncias}</p>
+        <p>Prácticas por ciclo lectivo:</p>
+        <ul>
+            ${stats.practicasPorCicloLectivo.map(stat => `<li>${stat.nombre}: ${stat.totalPracticas}</li>`).join('')}
+        </ul>
+        <p>Renuncias por ciclo lectivo:</p>
+        <ul>
+            ${stats.renunciasPorCicloLectivo.map(stat => `<li>${stat.nombre}: ${stat.totalRenuncias}</li>`).join('')}
+        </ul>
     `;
     section.appendChild(statsDiv);
 }

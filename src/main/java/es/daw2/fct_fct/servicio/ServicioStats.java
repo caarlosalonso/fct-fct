@@ -26,15 +26,24 @@ public class ServicioStats {
         Map<Long, Long> alumnosPorCicloLectivo = fcts.stream()
             .collect(Collectors.groupingBy(fct -> fct.getCurso().getGrupo().getCicloLectivo().getId(), Collectors.counting()));
 
-        long totalPracticas = fcts.stream().filter(fct -> fct.getMotivoRenuncia() == null).count();
-        long totalRenuncias = fcts.stream().filter(fct -> fct.getMotivoRenuncia() != null).count();
+        Map<Long, Long> practicasPorCicloLectivo = fcts.stream()
+            .filter(fct -> fct.getMotivoRenuncia() == null)
+            .collect(Collectors.groupingBy(fct -> fct.getCurso().getGrupo().getCicloLectivo().getId(), Collectors.counting()));
+
+        Map<Long, Long> renunciasPorCicloLectivo = fcts.stream()
+            .filter(fct -> fct.getMotivoRenuncia() != null)
+            .collect(Collectors.groupingBy(fct -> fct.getCurso().getGrupo().getCicloLectivo().getId(), Collectors.counting()));
 
         return Map.of(
             "alumnosPorCicloLectivo", ciclosLectivos.stream()
                 .map(ciclo -> Map.of("nombre", ciclo.getNombre(), "totalAlumnos", alumnosPorCicloLectivo.getOrDefault(ciclo.getId(), 0L)))
                 .collect(Collectors.toList()),
-            "totalPracticas", totalPracticas,
-            "totalRenuncias", totalRenuncias
+            "practicasPorCicloLectivo", ciclosLectivos.stream()
+                .map(ciclo -> Map.of("nombre", ciclo.getNombre(), "totalPracticas", practicasPorCicloLectivo.getOrDefault(ciclo.getId(), 0L)))
+                .collect(Collectors.toList()),
+            "renunciasPorCicloLectivo", ciclosLectivos.stream()
+                .map(ciclo -> Map.of("nombre", ciclo.getNombre(), "totalRenuncias", renunciasPorCicloLectivo.getOrDefault(ciclo.getId(), 0L)))
+                .collect(Collectors.toList())
         );
     }
 }
