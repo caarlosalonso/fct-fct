@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import es.daw2.fct_fct.modelo.vistas.VistaAlumnoCiclos;
 import es.daw2.fct_fct.servicio.vistas.VistaAlumnoCiclosService;
 import es.daw2.fct_fct.utils.Role;
-import es.daw2.fct_fct.utils.SessionValidation;
+import es.daw2.fct_fct.utils.SessionsManager;
 import jakarta.servlet.http.HttpServletRequest;
 
 @RestController
@@ -33,7 +33,7 @@ public class VistaAlumnoCiclosController {
 
     @GetMapping("/alumno")
     public ResponseEntity<?> getById(HttpServletRequest request) {
-        ResponseEntity<?> validationResponse = SessionValidation.isValidSession(request, Role.ALUMNO);
+        ResponseEntity<?> validationResponse = SessionsManager.isValidSession(request, Role.ALUMNO);
         if (validationResponse != null) return validationResponse;
 
         Long alumnoId = (Long) request.getSession().getAttribute("child_id");

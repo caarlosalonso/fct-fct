@@ -20,7 +20,7 @@ import es.daw2.fct_fct.repositorio.RepositorioUser;
 import es.daw2.fct_fct.servicio.ServicioAlumno;
 import es.daw2.fct_fct.servicio.ServicioEmpresa;
 import es.daw2.fct_fct.utils.Role;
-import es.daw2.fct_fct.utils.SessionValidation;
+import es.daw2.fct_fct.utils.SessionsManager;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 
@@ -117,8 +117,8 @@ public class ControladorEmpresa extends CrudController<Long, Empresa, EmpresaDTO
 
     @PostMapping("/proponer")
     public ResponseEntity<?> proponerEmpresa(@RequestBody ProponerEmpresaDTO dto, HttpServletRequest request) {
-        ResponseEntity<?> sessionValidation = SessionValidation.isValidSession(request, Role.ALUMNO);
-        if (sessionValidation != null) return sessionValidation;
+        ResponseEntity<?> validationResponse = SessionsManager.isValidSession(request, Role.ALUMNO);
+        if (validationResponse != null) return validationResponse;
 
         Empresa nuevaEmpresa = new Empresa();
         nuevaEmpresa.setNombre(dto.nombre());

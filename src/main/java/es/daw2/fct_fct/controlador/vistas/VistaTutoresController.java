@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import es.daw2.fct_fct.modelo.vistas.VistaTutores;
 import es.daw2.fct_fct.servicio.vistas.VistaTutoresService;
 import es.daw2.fct_fct.utils.Role;
-import es.daw2.fct_fct.utils.SessionValidation;
+import es.daw2.fct_fct.utils.SessionsManager;
 import jakarta.servlet.http.HttpServletRequest;
 
 @RestController
@@ -32,8 +32,8 @@ public class VistaTutoresController {
 
     @GetMapping("/disponibles/{cicloId}")
     public ResponseEntity<?> obtenerTutoresSinGrupo(@PathVariable Long cicloId, HttpServletRequest request) {
-        ResponseEntity<?> sessionValidation = SessionValidation.isValidSession(request, Role.COORDINADOR);
-        if (sessionValidation != null) return sessionValidation;
+        ResponseEntity<?> validationResponse = SessionsManager.isValidSession(request, Role.COORDINADOR);
+        if (validationResponse != null) return validationResponse;
 
         List<VistaTutores> tutoresDisponibles = servicio.getTutoresSinGrupoEnCicloLectivo(cicloId);
         return ResponseEntity.ok(tutoresDisponibles);

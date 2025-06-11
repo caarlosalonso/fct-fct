@@ -18,7 +18,7 @@ import es.daw2.fct_fct.modelo.Grupo;
 import es.daw2.fct_fct.servicio.ServicioCicloLectivo;
 import es.daw2.fct_fct.servicio.ServicioGrupo;
 import es.daw2.fct_fct.utils.Role;
-import es.daw2.fct_fct.utils.SessionValidation;
+import es.daw2.fct_fct.utils.SessionsManager;
 import jakarta.servlet.http.HttpServletRequest;
 
 
@@ -45,8 +45,8 @@ public class ControladorCicloLectivo extends CrudController<Long, CicloLectivo, 
 
     @GetMapping("/actual")
     ResponseEntity<?> getById(HttpServletRequest request) {
-        ResponseEntity<?> sessionValidation = SessionValidation.isValidSession(request, Role.TUTOR, Role.ALUMNO, Role.COORDINADOR, Role.ADMIN);
-        if (sessionValidation != null) return sessionValidation;
+        ResponseEntity<?> validationResponse = SessionsManager.isValidSession(request, Role.TUTOR, Role.ALUMNO, Role.COORDINADOR, Role.ADMIN);
+        if (validationResponse != null) return validationResponse;
 
         Optional<CicloLectivo> cicloLectivoOpt = service.getCicloLectivoActual();
         if (!cicloLectivoOpt.isPresent()) return ResponseEntity.notFound().build();

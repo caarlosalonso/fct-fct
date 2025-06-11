@@ -5,7 +5,7 @@ import org.springframework.http.ResponseEntity;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 
-public class SessionValidation {
+public class SessionsManager {
 
     public static ResponseEntity<?> isValidSession(HttpServletRequest request, Role ...validRoles) {
         StringBuilder logging = new StringBuilder("Validando sesión - Roles: ");

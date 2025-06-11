@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import es.daw2.fct_fct.modelo.vistas.VistaGruposCiclos;
 import es.daw2.fct_fct.servicio.vistas.VistaGruposCiclosService;
 import es.daw2.fct_fct.utils.Role;
-import es.daw2.fct_fct.utils.SessionValidation;
+import es.daw2.fct_fct.utils.SessionsManager;
 import jakarta.servlet.http.HttpServletRequest;
 
 @RestController
@@ -32,7 +32,7 @@ public class VistaGruposCiclosController {
 
     @GetMapping("/tutor")
     public ResponseEntity<?> getById(HttpServletRequest request) {
-        ResponseEntity<?> validationResponse = SessionValidation.isValidSession(request, Role.TUTOR);
+        ResponseEntity<?> validationResponse = SessionsManager.isValidSession(request, Role.TUTOR);
         if (validationResponse != null) return validationResponse;
 
         Long tutorId = (Long) request.getSession().getAttribute("child_id");

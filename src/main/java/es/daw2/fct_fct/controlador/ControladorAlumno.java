@@ -15,7 +15,7 @@ import es.daw2.fct_fct.servicio.ServicioAlumno;
 import es.daw2.fct_fct.servicio.ServicioUser;
 import es.daw2.fct_fct.utils.PasswordUtils;
 import es.daw2.fct_fct.utils.Role;
-import es.daw2.fct_fct.utils.SessionValidation;
+import es.daw2.fct_fct.utils.SessionsManager;
 import jakarta.servlet.http.HttpServletRequest;
 
 import org.springframework.web.bind.annotation.GetMapping;
@@ -33,8 +33,8 @@ public class ControladorAlumno extends CrudController<Long, Alumno, AlumnoCreate
 
     @Override
     public ResponseEntity<?> create(@RequestBody AlumnoCreateDTO a, HttpServletRequest request) {
-        ResponseEntity<?> sessionValidation = SessionValidation.isValidSession(request, Role.TUTOR);
-        if (sessionValidation != null) return sessionValidation;
+        ResponseEntity<?> validationResponse = SessionsManager.isValidSession(request, Role.TUTOR);
+        if (validationResponse != null) return validationResponse;
 
         User newUser = new User();
         newUser.setName(a.nombreAlumno());
@@ -104,10 +104,10 @@ public class ControladorAlumno extends CrudController<Long, Alumno, AlumnoCreate
 
     @GetMapping("/self")
     public ResponseEntity<?> obtenerPorUsuarioActual(HttpServletRequest request) {
-        ResponseEntity<?> sessionValidation = SessionValidation.isValidSession(request, Role.ALUMNO);
-        if (sessionValidation != null) return sessionValidation;
+        ResponseEntity<?> validationResponse = SessionsManager.isValidSession(request, Role.ALUMNO);
+        if (validationResponse != null) return validationResponse;
 
-        Long userId = SessionValidation.getUserIdFromSession(request);
+        Long userId = SessionsManager.getUserIdFromSession(request);
         return service.getByUserId(userId)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());

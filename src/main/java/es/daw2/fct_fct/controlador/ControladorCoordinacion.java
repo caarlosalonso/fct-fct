@@ -16,7 +16,7 @@ import es.daw2.fct_fct.servicio.ServicioCoordinacion;
 import es.daw2.fct_fct.servicio.ServicioUser;
 import es.daw2.fct_fct.utils.PasswordUtils;
 import es.daw2.fct_fct.utils.Role;
-import es.daw2.fct_fct.utils.SessionValidation;
+import es.daw2.fct_fct.utils.SessionsManager;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 
@@ -34,8 +34,8 @@ public class ControladorCoordinacion extends CrudController<Long, Coordinacion, 
 
     @Override
     public ResponseEntity<?> create(@RequestBody CreateUserDTO c, HttpServletRequest request) {
-        ResponseEntity<?> sessionValidation = SessionValidation.isValidSession(request, Role.ADMIN);
-        if (sessionValidation != null) return sessionValidation;
+        ResponseEntity<?> validationResponse = SessionsManager.isValidSession(request, Role.ADMIN);
+        if (validationResponse != null) return validationResponse;
 
         User newUser = new User();
         newUser.setName(c.name());
@@ -100,10 +100,10 @@ public class ControladorCoordinacion extends CrudController<Long, Coordinacion, 
 
     @GetMapping("/self")
     public ResponseEntity<?> obtenerPorUsuarioActual(HttpServletRequest request) {
-        ResponseEntity<?> sessionValidation = SessionValidation.isValidSession(request, Role.COORDINADOR);
-        if (sessionValidation != null) return sessionValidation;
+        ResponseEntity<?> validationResponse = SessionsManager.isValidSession(request, Role.COORDINADOR);
+        if (validationResponse != null) return validationResponse;
 
-        Long userId = SessionValidation.getUserIdFromSession(request);
+        Long userId = SessionsManager.getUserIdFromSession(request);
         return service.getByUserId(userId)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
