@@ -186,7 +186,7 @@ function createCell(alumno, fcts, grupoTutor, empresas) {
             const empresaSpan = document.createElement('span');
             empresaSpan.classList.add('empresa-posible');
             const found = empresas.find(e => {
-                console.log(e, empresaId);
+                //console.log(e, empresaId);
                 return e.empresaId == empresaId
             });
             console.log("found:", found, empresas);
@@ -563,6 +563,8 @@ function agregarEmpresaPosible(alumno, empresas, empresasPosibles) {
     });
 
     search.onsubmit = () => {
+        console.log(empresasSelect.getValue());
+
         let posiblesEmpresas = alumno.posiblesEmpresas.split(';');
         if (posiblesEmpresas.includes('' + empresasSelect.getValue())) {
             clearModal(search, parent);
