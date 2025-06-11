@@ -284,22 +284,27 @@ function editEmpresa(empresa) {
 
         const estadoSelect = document.getElementById('empresa-estado');
         const data = {
+            empresaId: empresa.empresaId || empresa.id,
             nombre: form.getInput('empresa-nombre').getValue(),
             cif: form.getInput('empresa-cif').getValue(),
             sector: form.getInput('empresa-sector').getValue(),
             address: form.getInput('empresa-address').getValue(),
             phone: form.getInput('empresa-telefono').getValue(),
             email: form.getInput('empresa-email').getValue(),
-            persona_contacto: form.getInput('empresa-persona_contacto').getValue(),
-            propuesta_por: form.getInput('propuesta_por').getValue() ? parseInt(form.getInput('propuesta_por').getValue(), 10) : null,
+            personaContacto: form.getInput('empresa-persona_contacto').getValue(),
+            propuestaPor: form.getInput('propuesta_por').getValue() ? parseInt(form.getInput('propuesta_por').getValue(), 10) : null,
             observaciones: form.getInput('observaciones').getValue(),
-            numero_convenio: form.getInput('numero_convenio').getValue(),
+            numeroConvenio: form.getInput('numero_convenio').getValue(),
             numero_plazas: form.getInput('numero_plazas').getValue(),
-            fecha_contacto: form.getInput('fecha_contacto').getValue() ? new Date(form.getInput('fecha_contacto').getValue()).toISOString() : null,
-            estado: form.getInput('empresa-estado').getValue()
+            fecha_contacto: form.getInput('fecha_contacto').getValue() ? new Date(form.getInput('fecha_contacto').getValue()).toISOString().split('T')[0] : null,
+            estado: form.getInput('empresa-estado').getValue(),
+            tutor_empresaId: empresa.tutor_empresaId || null,
+            nombre_tutor: empresa.nombre_tutor || null,
+            userId: empresa.userId || null,
+            nombre_usuario: empresa.nombre_usuario || null
         };
 
-        fetch(`/api/vista-empresas-tutores/${empresa.id}`, {
+        fetch(`/api/vista-empresas-tutores/${empresa.empresa.id}`, {
             method: 'PUT',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(data)
