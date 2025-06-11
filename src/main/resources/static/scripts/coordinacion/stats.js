@@ -83,6 +83,15 @@ function build(cursos, fcts, grupos, ciclos, ciclosLectivos, stats) {
         </tbody>
     `;
     section.appendChild(statsTable);
+
+    const motivosDiv = document.createElement('div');
+    motivosDiv.innerHTML = `
+        <h3>Motivos por renunciar a las prácticas:</h3>
+        <ul>
+            ${Object.entries(stats.motivosRenuncia).map(([motivo, count]) => `<li>${motivo}: ${count}</li>`).join('')}
+        </ul>
+    `;
+    section.appendChild(motivosDiv);
 }
 
 window.addEventListener('FormsCreated', async (event) => {
