@@ -24,7 +24,7 @@ window.addEventListener('FormsCreated', (event) => {
             observaciones: observaciones
         }
 
-        fetch('/api/empresas/proponer', {
+        fetch('/api/empresa/proponer', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
