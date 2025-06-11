@@ -153,8 +153,8 @@ function build(cursoActual, grupoTutor, alumnosCurso, empresas, tutoresEmpresas,
 }
 
 function createCell(alumno, fcts, grupoTutor, empresas) {
-    const fct = fcts.filter(fct => fct.alumnoId === alumno.alumnoId)
-                    .filter(fct => fct.cicloId === grupoTutor.cicloId);
+    const fct = fcts.filter(fct => fct.curso.id === alumno.cursoId)
+                    .filter(fct => fct.curso.grupo.cicloLectivo.id === grupoTutor.cicloLectivoId);
 
     console.log(alumno, fct);
 
