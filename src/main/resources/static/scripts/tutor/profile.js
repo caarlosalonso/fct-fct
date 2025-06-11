@@ -60,7 +60,7 @@ function build(tutor) {
             form.submitFinish();
         });
     };
-    console.log(tutor);
+
     form.getInput('nombre').retrack(tutor.user.name || '');
     form.getInput('email').retrack(tutor.user.email || '');
 }
