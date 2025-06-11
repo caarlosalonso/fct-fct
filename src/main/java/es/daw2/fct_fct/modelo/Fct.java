@@ -49,13 +49,13 @@ public class Fct extends AbsBaseEntity {
     @Column(name = "fecha_inicio", nullable = true, columnDefinition = "DATE")
     private LocalDate fechaInicio;
 
-    @Column(name = "horas_semana", nullable = true, columnDefinition = "TINYINT DEFAULT 40")
+    @Column(name = "horas_semana", nullable = true, columnDefinition = "SMALLINT")
     private Integer horasSemana;
 
-    @Column(name = "no_lectivos", nullable = true, columnDefinition = "TINYINT")
+    @Column(name = "no_lectivos", nullable = true, columnDefinition = "SMALLINT")
     private Integer noLectivos;
 
-    @Column(name = "horas_practicas", nullable = true, columnDefinition = "TINYINT")
+    @Column(name = "horas_practicas", nullable = true, columnDefinition = "SMALLINT")
     private Integer horasPracticas;
 
     @Column(name = "fecha_fin", nullable = true, columnDefinition = "DATE")
