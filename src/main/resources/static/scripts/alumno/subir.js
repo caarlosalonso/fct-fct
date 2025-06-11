@@ -1,5 +1,5 @@
 const form = document.getElementById('alumno-form');
-const archivoInput = document.getElementById('archivo');
+const archivoInput = document.getElementById('file');
 const resultado = document.getElementById('resultado');
 
 form.addEventListener('submit', async (event) => {
