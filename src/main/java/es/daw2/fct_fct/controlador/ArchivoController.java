@@ -11,6 +11,9 @@ import org.springframework.web.multipart.MultipartFile;
 
 import es.daw2.fct_fct.modelo.User;
 import es.daw2.fct_fct.servicio.ServicioArchivo;
+import es.daw2.fct_fct.utils.Role;
+import es.daw2.fct_fct.utils.SessionsManager;
+import jakarta.servlet.http.HttpServletRequest;
 
 @RestController
 @RequestMapping("/api/archivo")
@@ -22,10 +25,18 @@ public class ArchivoController {
     @PostMapping("/subir")
     public ResponseEntity<String> subirArchivo(
         @AuthenticationPrincipal User user,
-        @RequestParam("archivo") MultipartFile archivo) {
+        @RequestParam("archivo") MultipartFile archivo,
+        HttpServletRequest request) {
+            SessionsManager.isValidSession(request, Role.ALUMNO, Role.TUTOR, Role.ADMIN, Role.COORDINADOR);
+            Long userId = (Long) SessionsManager.getUserIdFromSession(request);
+
+        if (userId == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Usuario no autenticado.");
+        }
+
             System.out.println("User id en subirArchivo: " + (user != null ? user.getId() : "null"));
     try {
-        String url = servicioArchivo.subirArchivo(user.getId(), archivo);
+        String url = servicioArchivo.subirArchivo(userId, archivo);
         return ResponseEntity.ok("Archivo subido correctamente. URL: " + url);
     } catch (IllegalArgumentException e) {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
