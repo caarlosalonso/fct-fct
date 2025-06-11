@@ -15,7 +15,6 @@ import lombok.NoArgsConstructor;
 @Table(name = "vista_alumno_ciclos")
 public class VistaAlumnoCiclos {
 
-    @Id
     @Column(name = "ciclo_lectivo_id")
     private Long cicloLectivoId;
 
@@ -31,6 +30,7 @@ public class VistaAlumnoCiclos {
     @Column(name = "grupo_nombre")
     private String grupoNombre;
 
+    @Id
     @Column(name = "alumno_id")
     private Long alumnoId;
 }
