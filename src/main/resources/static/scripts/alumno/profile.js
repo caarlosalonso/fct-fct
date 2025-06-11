@@ -1,5 +1,4 @@
 import { Form } from '../classes/Form.js';
-import { tableLoading, tableFail, createSVG, createClickableSVG } from '../functions.js';
 
 const FORM = 'info-form';
 

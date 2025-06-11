@@ -40,6 +40,22 @@
         </nav>
     </header>
     <main>
+        <section id="info-section" class="section">
+            <form id="info-form" method="POST" submit-text="Actualizar información">
+                <div class="inputs form-container">
+                    <div class="instance form-input grouped-inputs">
+                        <div class="form-group form-input">
+                            <input type="text" id="nombre" name="nombre" class="text-based input" label="Su nombre" data-required="true">
+                        </div>
+                    </div>
+                    <div class="instance form-input grouped-inputs">
+                        <div class="form-group form-input">
+                            <input type="text" id="email" name="email" class="text-based input" label="Su correo" data-required="true" data-show-validity="true">
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </section>
         <section id="password-section" class="section">
             <form id="password-form" method="POST" submit-text="Cambiar contraseña">
                 <div class="inputs form-container">

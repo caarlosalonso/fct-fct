@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import es.daw2.fct_fct.dto.CreateAlumnoDTO;
 import es.daw2.fct_fct.dto.CreateUserDTO;
+import es.daw2.fct_fct.dto.TutorUpdateInfoDTO;
 import es.daw2.fct_fct.modelo.Alumno;
 import es.daw2.fct_fct.modelo.Tutor;
 import es.daw2.fct_fct.modelo.User;
@@ -140,5 +141,29 @@ public class ControladorTutor extends CrudController<Long, Tutor, CreateUserDTO,
         return service.getByUserId(userId)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
+    }
+
+    @PutMapping("/update/{id}")
+    public ResponseEntity<?> updateByAlumno(@PathVariable Long id, @RequestBody TutorUpdateInfoDTO t, HttpServletRequest request) {
+        Optional<Tutor> optional = service.getById(id);
+
+        if(!optional.isPresent()){
+            return ResponseEntity.notFound().build();
+        }
+
+        Tutor tutor = optional.get();
+
+        tutor.getUser().setName(t.name());
+        tutor.getUser().setEmail(t.email());
+        servicioUser.update(tutor.getUser().getId(), tutor.getUser());
+
+        Optional<Tutor> tutorActualizado = service.update(id, tutor);
+        if (!tutorActualizado.isPresent()) {
+            return ResponseEntity.badRequest().body("No se ha podido actualizar el tutor con el id: " + id);
+        }
+
+        URI location = URI.create("/api/tutores/" + id);
+
+        return ResponseEntity.ok().location(location).body(tutorActualizado);
     }
 }
