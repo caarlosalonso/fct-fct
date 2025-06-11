@@ -59,12 +59,12 @@ function build(alumno) {
         const address = form.getInput('address').getValue();
 
         let updatedAlumno = {
-            nombreAlumno: nombre,
+            name: nombre,
             email: email,
-            dni: dni,
-            nia: nia,
-            nuss: nuss,
             phone: phone,
+            nia: nia,
+            dni: dni,
+            nuss: nuss,
             address: address
         };
 
@@ -93,7 +93,7 @@ function build(alumno) {
 
     form.getInput('nombre').retrack(alumno.user.name || '');
     form.getInput('email').retrack(alumno.user.email || '');
-    form.getInput('telefono').retrack(alumno.phone || '');
+    form.getInput('phone').retrack(alumno.phone || '');
     form.getInput('nia').retrack(alumno.nia || '');
     form.getInput('dni').retrack(alumno.dni || '');
     form.getInput('nuss').retrack(alumno.nuss || '');
