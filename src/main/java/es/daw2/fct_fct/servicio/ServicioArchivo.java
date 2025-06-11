@@ -9,11 +9,13 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.google.firebase.cloud.StorageClient;
 
+import es.daw2.fct_fct.modelo.Alumno;
 import es.daw2.fct_fct.modelo.vAlumno;
+import es.daw2.fct_fct.repositorio.RepositorioAlumno;
 import es.daw2.fct_fct.repositorio.RepositorioVAlumno;
 
 @Service
-public class ServicioArchivo extends AbstractService<Long, vAlumno, RepositorioVAlumno> {
+public class ServicioArchivo extends AbstractService<Long, Alumno, RepositorioAlumno> {
 
     public String subirArchivo(Long id, MultipartFile archivo) throws IOException {
 
@@ -22,24 +24,24 @@ public class ServicioArchivo extends AbstractService<Long, vAlumno, RepositorioV
 
         System.out.println("ID: " + id);
         System.out.println(
-            ((List<vAlumno>) repository.findAll()).stream()
-                .map(vAlumno::toString)
+            ((List<Alumno>) repository.findAll()).stream()
+                .map(Alumno::toString)
                 .toList()
         );
 
-        Optional<vAlumno> va = repository.findById(id);
+        Optional<Alumno> va = repository.findById(id);
         System.out.println("Alumno encontrado: " + va);
 
         if (va.isEmpty()) {
             throw new IllegalArgumentException("El usuario no es un alumno válido");
         }
 
-        vAlumno vAlumno = va.get();
+        Alumno alumno = va.get();
         String ruta = String.format("%d/%s/%d/%d/%s",
-            vAlumno.getAño(),
-            vAlumno.getCiclo(),
-            vAlumno.getGrupo(),
-            vAlumno.getId(),
+            /*vAlumno.getAño()*/ 2024,
+            /*vAlumno.getCiclo()*/ "DAW",
+            /*vAlumno.getGrupo()*/ 2,
+            /*vAlumno.getId()*/ alumno.getId(),
             archivo.getOriginalFilename());
 
         var blob = StorageClient.getInstance()
