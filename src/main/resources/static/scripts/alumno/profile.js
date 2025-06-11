@@ -75,9 +75,8 @@ function build(alumno) {
             body: JSON.stringify(updatedAlumno)
         })
         .then(response => {
-            if (response.status === 201) {
+            if (response.status === 200) {
                 promise();
-                form.reset();
                 form.showSuccess('Tu información se ha actualizado correctamente');
             } else {
                 form.showError('Error al actualizar tus datos');

@@ -46,9 +46,8 @@ function build(tutor) {
             body: JSON.stringify(updatedTutor)
         })
         .then(response => {
-            if (response.status === 201) {
+            if (response.status === 200) {
                 promise();
-                form.reset();
                 form.showSuccess('Su información se ha actualizado correctamente');
             } else {
                 form.showError('Error al actualizar sus datos');
