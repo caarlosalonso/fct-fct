@@ -111,7 +111,9 @@ function crearLista(tutorias, form, grupoTutor) {
 
         const estadoSpan = document.createElement('span');
         estadoSpan.classList.add('cell-value', 'cell-subtitle');
-        estadoSpan.textContent = `Estado: ${new Date(tutoria.fecha) < new Date() ? 'Pasada' : 'Próxima'}`;
+        const isPasada = new Date(tutoria.fecha) < new Date();
+        if (isPasada) estadoSpan.classList.add('pasada');
+        estadoSpan.textContent = `Estado: ${isPasada ? 'Pasada' : 'Próxima'}`;
         item.appendChild(estadoSpan);
 
         item.appendChild(

@@ -43,12 +43,17 @@
 }
 
 .tutoria-item {
+    color: #000000;
     display: grid;
     grid-template-columns: auto auto;
     width: 200px;
-    background-color: #606060;
+    background-color: #86c586;
     border-radius: var(--border-radius);
     padding: var(--border-radius);
+
+    &.pasada {
+        background-color: #c58686;
+    }
 }
 
 .cell-value {
