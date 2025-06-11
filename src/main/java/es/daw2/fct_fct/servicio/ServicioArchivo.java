@@ -1,6 +1,7 @@
 package es.daw2.fct_fct.servicio;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.stereotype.Service;
@@ -17,7 +18,15 @@ public class ServicioArchivo extends AbstractService<Long, vAlumno, RepositorioV
     public String subirArchivo(Long id, MultipartFile archivo) throws IOException {
 
         String bucketName = StorageClient.getInstance().bucket().getName();
+        System.out.println("Bucket Name: " + bucketName);
+
         System.out.println("ID: " + id);
+        System.out.println(
+            ((List<vAlumno>) repository.findAll()).stream()
+                .map(vAlumno::toString)
+                .toList()
+        );
+
         Optional<vAlumno> va = repository.findById(id);
         System.out.println("Alumno encontrado: " + va);
 
