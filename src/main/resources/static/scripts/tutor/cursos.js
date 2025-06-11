@@ -223,7 +223,7 @@ function crearLista(alumnosCurso, grupoTutor, form, empresas) {
 
         const ratingSpan = document.createElement('span');
         ratingSpan.classList.add('cell-value', 'cell-subtitle');
-        ratingSpan.textContent = (alumno.aExtraordinaria == 1 ? 'A extraordinaria' : `Promociona? ${RATING[alumno.rating]}`);
+        ratingSpan.textContent = (alumno.aExtraordinaria == true ? 'A extraordinaria' : `Promociona? ${RATING[alumno.rating]}`);
         item.appendChild(ratingSpan);
 
         const empresasPosibles = document.createElement('div');
