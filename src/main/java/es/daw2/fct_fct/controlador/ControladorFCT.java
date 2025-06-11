@@ -72,12 +72,15 @@ public class ControladorFCT extends CrudController<Long, Fct, Fct, Fct, Servicio
         System.out.println("Ping 11");
 
         if (dto.renuncia() == null) return ResponseEntity.badRequest().body("El campo 'renuncia' es obligatorio");
+        System.out.println("Ping 12");
 
         if (dto.renuncia()) {
+            System.out.println("Ping 121");
             fct.setMotivoRenuncia(dto.motivoRenuncia());
             fct.setApto(false);
             service.save(fct);
             URI location = URI.create("/api/fct/" + fct.getId());
+            System.out.println("Ping 122");
             return ResponseEntity.created(location).body(fct);
         }
 
@@ -86,7 +89,7 @@ public class ControladorFCT extends CrudController<Long, Fct, Fct, Fct, Servicio
             return ResponseEntity.notFound().build();
         }
         fct.setEmpresa(empresaOpt.get());
-        System.out.println("Ping 12");
+        System.out.println("Ping 13");
 
         if (dto.tutorEmpresaId() != null) {
             Optional<TutorEmpresa> tutorOpt = servicioTutorEmpresa.getById(dto.tutorEmpresaId());
@@ -95,7 +98,7 @@ public class ControladorFCT extends CrudController<Long, Fct, Fct, Fct, Servicio
             }
             fct.setTutorEmpresa(tutorOpt.get());
         }
-        System.out.println("Ping 13");
+        System.out.println("Ping 14");
 
         fct.setFechaInicio(dto.fechaInicio());
         fct.setHorasSemana(dto.horasSemanales());
