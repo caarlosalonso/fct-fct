@@ -474,7 +474,7 @@ function setInputsToUpdate(form, alumno) {
     form.getInput('rating').retrack(RATING[alumno.rating]);
     form.getInput('observaciones').retrack(alumno.observaciones || '');
 
-    form.form.querySelector('#submit').textContent = 'Actualizar alumno';
+    form.form.querySelector('.submit-button').textContent = 'Actualizar alumno';
 }
 
 function removeAlumnoFromGrupo(form, alumnoId, grupoId) {

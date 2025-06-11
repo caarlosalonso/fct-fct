@@ -27,7 +27,7 @@ body {
     width: 100%;
 }
 
-#submit {
+.submit-button {
     background-color: var(--success-color);
     color: var(--text-color);
     border: none;

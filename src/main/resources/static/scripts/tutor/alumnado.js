@@ -137,5 +137,5 @@ function setInputsToCreate(form) {
     form.getInput('address').retrack('');
     form.getInput('convocatoria').retrack('');
 
-    form.form.querySelector('#submit').textContent = 'Crear alumno';
+    form.form.querySelector('.submit-button').textContent = 'Crear alumno';
 }

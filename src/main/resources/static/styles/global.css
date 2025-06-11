@@ -215,7 +215,7 @@ input.text-based {
     transition: 300ms ease-in-out;
     width: 200px;
 
-    &#submit {
+    &.submit-button {
         background-color: #00d107;
 
         &:hover {
@@ -223,7 +223,7 @@ input.text-based {
         }
     }
 
-    &#delete {
+    &.delete-button {
         background-color: #ff4949;
 
         &:hover {

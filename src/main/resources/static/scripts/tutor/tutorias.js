@@ -171,7 +171,7 @@ function setInputsToCreate(form, grupoTutor) {
 
     form.getInput('fecha').retrack('');
 
-    form.form.querySelector('#submit').textContent = 'Crear tutoría';
+    form.form.querySelector('.submit-button').textContent = 'Crear tutoría';
 }
 
 function setInputsToUpdate(form, tutoria) {
@@ -208,7 +208,7 @@ function setInputsToUpdate(form, tutoria) {
 
     form.getInput('fecha').retrack(tutoria.fecha);
 
-    form.form.querySelector('#submit').textContent = 'Actualizar tutoría';
+    form.form.querySelector('.submit-button').textContent = 'Actualizar tutoría';
 }
 
 function removeTutoria(form, tutoria) {

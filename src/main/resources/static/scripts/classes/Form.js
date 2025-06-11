@@ -86,8 +86,7 @@ export class Form {
 
         this.submit = document.createElement('button');
         this.submit.type = 'submit';
-        this.submit.id = 'submit';
-        this.submit.classList.add('form-buttons');
+        this.submit.classList.add('form-buttons', 'submit-button');
 
         this.submit.textContent = Utility.getAttributeValueOrDefault('submit-text', 'Submit', this.form);
         wrapper.appendChild(this.submit);
