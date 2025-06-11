@@ -88,7 +88,10 @@ function build(cursos, fcts, grupos, ciclos, ciclosLectivos, stats) {
     motivosDiv.innerHTML = `
         <h3>Motivos por renunciar a las prácticas:</h3>
         <ul>
-            ${Object.entries(stats.motivosRenuncia).map(([motivo, count]) => `<li>${motivo}: ${count}</li>`).join('')}
+            ${Object.entries(stats.motivosRenuncia)
+                .sort(([, countA], [, countB]) => countB - countA)
+                .map(([motivo, count]) => `<li>${count}: ${motivo}</li>`)
+                .join('')}
         </ul>
     `;
     section.appendChild(motivosDiv);
