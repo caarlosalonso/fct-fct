@@ -95,7 +95,7 @@ function build(cursoActual, grupoTutor, alumnosCurso, empresas, tutoresEmpresas,
                                 .sort((a, b) => a.nombreAlumno.localeCompare(b.nombreAlumno));
 
     alumnosCurso.forEach((alumno) => {
-        const cell = createCell(alumno, fcts, grupoTutor);
+        const cell = createCell(alumno, fcts, grupoTutor, empresas);
         if (alumno.rating === 'VERDE') {
             verdes.appendChild(cell);
         } else if (alumno.rating === 'AMARILLO') {
@@ -115,7 +115,7 @@ function build(cursoActual, grupoTutor, alumnosCurso, empresas, tutoresEmpresas,
     });
 }
 
-function createCell(alumno, fcts, grupoTutor) {
+function createCell(alumno, fcts, grupoTutor, empresas) {
     const cell = document.createElement('div');
     cell.classList.add('alumno-cell', 'collapsed');
 
