@@ -29,7 +29,16 @@ form.addEventListener('submit', async (event) => {
     }
 
     try {
-        // 1. Pedir el custom token al backend usando la sesión
+        // 1. Obtener la ruta personalizada del backend
+        const rutaRes = await fetch(`/api/ficheros/ruta-personalizada?fileName=${encodeURIComponent(file.name)}`, {
+            credentials: 'same-origin'
+        });
+        if (!rutaRes.ok) {
+            throw new Error('No se pudo obtener la ruta personalizada');
+        }
+        const { ruta } = await rutaRes.json();
+
+        // 2. Pedir el custom token al backend usando la sesión
         const tokenRes = await fetch('/auth/firebaseToken', {
             credentials: 'same-origin'
         });
@@ -38,14 +47,14 @@ form.addEventListener('submit', async (event) => {
         }
         const { firebaseToken } = await tokenRes.json();
 
-        // 2. Autenticación en Firebase con el custom token
+        // 3. Autenticación en Firebase con el custom token
         await signInWithCustomToken(auth, firebaseToken);
 
-        // 3. Subir el archivo a Firebase Storage
-        const storageRef = ref(storage, 'uploads/' + file.name);
+        // 4. Subir el archivo a Firebase Storage en la ruta personalizada
+        const storageRef = ref(storage, ruta);
         await uploadBytes(storageRef, file);
 
-        // 4. Obtener URL de descarga
+        // 5. Obtener URL de descarga
         const url = await getDownloadURL(storageRef);
         alert('Archivo subido correctamente: ' + url);
     } catch (err) {
