@@ -17,13 +17,12 @@ import es.daw2.fct_fct.servicio.ServicioUser;
 import jakarta.servlet.http.HttpSession;
 
 @RestController
-@RequestMapping("/auth")
 public class AuthController {
 
     @Autowired
     ServicioUser ServicioUser;
 
-    @PostMapping("/login")
+    @PostMapping("/api/users/login")
     public ResponseEntity<?> login(@RequestParam String email, @RequestParam String password, HttpSession session) {
         User u = ServicioUser.findByEmailAndPassword(email, password);
         if (u == null) {
@@ -33,7 +32,7 @@ public class AuthController {
         return ResponseEntity.ok(Map.of("mensaje", "Login correcto"));
     }
 
-    @GetMapping("/firebaseToken")
+    @GetMapping("/auth/firebaseToken")
     public ResponseEntity<?> getFirebaseToken(HttpSession session) throws Exception {
         Object userIdObj = session.getAttribute("userId");
         if (userIdObj == null) {
