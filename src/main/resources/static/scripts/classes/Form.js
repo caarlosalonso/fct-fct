@@ -59,7 +59,7 @@ export class Form {
             }
         });
         this.entries.forEach((input) => {
-            input.init(this.form);
+            input.init(this);
             input.input.addEventListener('input', (event) => {
                 input.states.errorAffected = false;
             });
