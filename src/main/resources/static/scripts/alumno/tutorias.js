@@ -43,10 +43,6 @@ async function fetchCursoAlumno() {
 }
 
 function build(tutorias, cursoActual, cursoAlumno) {
-    console.log('Tutorías:', tutorias);
-    console.log('Curso Actual:', cursoActual);
-    console.log('Curso Alumno:', cursoAlumno);
-
     crearLista(tutorias);
 
     const displaySection = document.getElementById(SECTION);
@@ -94,7 +90,7 @@ function crearLista(tutorias) {
         const estadoSpan = document.createElement('span');
         estadoSpan.classList.add('cell-value', 'cell-subtitle');
         const isPasada = new Date(tutoria.fecha) < new Date();
-        if (isPasada) estadoSpan.classList.add('pasada');
+        if (isPasada) item.classList.add('pasada');
         estadoSpan.textContent = `Estado: ${isPasada ? 'Pasada' : 'Próxima'}`;
         item.appendChild(estadoSpan);
     });
