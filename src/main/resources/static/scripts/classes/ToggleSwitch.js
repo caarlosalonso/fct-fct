@@ -5,6 +5,7 @@ export class ToggleSwitch extends Input {
         super(input);
         this.checked = this.input.getAttribute('data-checked') === 'true';
         this.id = this.input.getAttribute('id');
+        this.getValue = () => this.input.checked;
     }
 
     init(form) {
