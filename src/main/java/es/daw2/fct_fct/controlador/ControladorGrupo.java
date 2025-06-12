@@ -74,7 +74,7 @@ public class ControladorGrupo extends CrudController<Long, Grupo, CreateGrupoDTO
         List<Grupo> items = service.list();
         if (items == null) return ResponseEntity.badRequest().build();
         if (items.isEmpty()) return ResponseEntity.noContent().build();
-
+/*
         GrupoAllDTO[] grupoAllDTO = items.stream()
             .map(grupo -> new GrupoAllDTO(
                 grupo.getId(),
@@ -84,8 +84,8 @@ public class ControladorGrupo extends CrudController<Long, Grupo, CreateGrupoDTO
                 grupo.getHorario())
             )
             .toArray(GrupoAllDTO[]::new);
-
-        return ResponseEntity.ok(grupoAllDTO);
+ */
+        return ResponseEntity.ok(items);
     }
 
     // getById ya existe en CrudController
