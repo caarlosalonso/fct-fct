@@ -163,36 +163,22 @@ function createAlumnos(alumnos) {
     document.getElementById('alumnos-list-container').classList.remove('empty');
 
     alumnos.forEach(alumno => {
-        createAlumnoCell(alumno, Form.getForm('alumno-form'));
+        const alumnoElement = document.createElement('div');
+        alumnoElement.classList.add('alumno', 'cell');
+        alumnoElement.id = `alumno-${alumno.id}`;
+
+        const nameElement = document.createElement('p');
+        nameElement.textContent = `Nombre: ${alumno.name}`;
+        alumnoElement.appendChild(nameElement);
+
+        const niaElement = document.createElement('p');
+        niaElement.textContent = `NIA: ${alumno.nia}`;
+        alumnoElement.appendChild(niaElement);
+
+        const emailElement = document.createElement('p');
+        emailElement.textContent = `Correo: ${alumno.email}`;
+        alumnoElement.appendChild(emailElement);
+
+        alumnosSelection.appendChild(alumnoElement);
     });
-}
-
-const map = [];
-
-function createAlumnoCell(alumno, form) {
-    const alumnosList = document.getElementById('alumnos-list-scroll');
-    const alumnoElement = document.createElement('div');
-    alumnoElement.classList.add('alumno', 'cell');
-    alumnoElement.id = `alumno-${alumno.id}`;
-    alumnoElement.textContent = alumno.name;
-    alumnosList.appendChild(alumnoElement);
-
-    map.push({
-        id: alumno.id,
-        element: alumnoElement,
-        data: alumno
-    });
-
-    alumnoElement.addEventListener('click', (event) => {
-        updateInputs(alumno);
-    });
-}
-
-function updateInputs(alumno) {
-    document.getElementById('nombre').value = alumno.name;
-    document.getElementById('email').value = alumno.email;
-    document.getElementById('phone').value = alumno.telefonoAlumno;
-    document.getElementById('nia').value = alumno.nia;
-    document.getElementById('dni').value = alumno.dni;
-    document.getElementById('nuss').value = alumno.nuss;
 }
