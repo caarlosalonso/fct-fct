@@ -72,7 +72,7 @@ public class ServicioArchivo extends AbstractService<Long, User, RepositorioUser
                 tipoFinal,
                 user.getName()
             ),
-            String.format("%s de %s e ha subido un nuevo %s para sus prácticas.\nPor favor, revise el archivo adjunto.",
+            String.format("%s de %s ha subido un nuevo %s para sus prácticas.\nPor favor, revise el archivo adjunto.",
                 user.getName(),
                 String.format("%dº de %s",
                     grupo.getNumero(),
