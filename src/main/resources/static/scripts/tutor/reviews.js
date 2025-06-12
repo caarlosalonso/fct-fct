@@ -43,4 +43,26 @@ function build(reviews) {
         section.appendChild(message);
         return;
     }
+
+    reviews.forEach((review) => {
+        const reviewDiv = document.createElement('div');
+        reviewDiv.className = 'review';
+        section.appendChild(reviewDiv);
+
+        const title = document.createElement('h3');
+        title.textContent = review.empresa.nombre;
+        reviewDiv.appendChild(title);
+
+        const score = document.createElement('p');
+        score.textContent = `Puntuación: ${review.score} / 5`;
+        reviewDiv.appendChild(score);
+
+        const content = document.createElement('p');
+        content.textContent = review.comment;
+        reviewDiv.appendChild(content);
+
+        const author = document.createElement('p');
+        author.textContent = `Autor: ${review.user.nombre}`;
+        reviewDiv.appendChild(author);
+    });
 }
