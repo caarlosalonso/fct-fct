@@ -1,6 +1,5 @@
 package es.daw2.fct_fct.servicio;
 
-import java.util.List;
 import java.util.Optional;
 import org.springframework.stereotype.Service;
 

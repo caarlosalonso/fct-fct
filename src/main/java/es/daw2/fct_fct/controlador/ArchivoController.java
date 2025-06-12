@@ -26,6 +26,7 @@ public class ArchivoController {
     public ResponseEntity<String> subirArchivo(
         @AuthenticationPrincipal User user,
         @RequestParam("archivo") MultipartFile archivo,
+        @RequestParam("tipo") String tipo,
         HttpServletRequest request) {
             SessionsManager.isValidSession(request, Role.ALUMNO, Role.TUTOR, Role.ADMIN, Role.COORDINADOR);
             Long userId = (Long) SessionsManager.getUserIdFromSession(request);
@@ -35,7 +36,7 @@ public class ArchivoController {
         }
 
     try {
-        String url = servicioArchivo.subirArchivo(userId, archivo);
+        String url = servicioArchivo.subirArchivo(userId, archivo, tipo);
         return ResponseEntity.ok("Archivo subido correctamente. URL: " + url);
     } catch (IllegalArgumentException e) {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());

@@ -16,38 +16,28 @@ import es.daw2.fct_fct.modelo.CicloLectivo;
 import es.daw2.fct_fct.modelo.Curso;
 import es.daw2.fct_fct.modelo.Grupo;
 import es.daw2.fct_fct.modelo.User;
-import es.daw2.fct_fct.repositorio.RepositorioAlumno;
-import es.daw2.fct_fct.repositorio.RepositorioCicloLectivo;
-import es.daw2.fct_fct.repositorio.RepositorioCiclos;
 import es.daw2.fct_fct.repositorio.RepositorioCurso;
-import es.daw2.fct_fct.repositorio.RepositorioGrupos;
 import es.daw2.fct_fct.repositorio.RepositorioUser;
 
 @Service
 public class ServicioArchivo extends AbstractService<Long, User, RepositorioUser> {
 
     @Autowired
-    private RepositorioAlumno repositorioAlumno;
-    @Autowired
-    private RepositorioCicloLectivo repositorioCicloLectivo;
-    @Autowired
-    private RepositorioCiclos repositorioCiclos;
-    @Autowired
-    private RepositorioGrupos repositorioGrupos;
+    private ServicioAlumno servicioAlumno;
     @Autowired
     private RepositorioCurso repositorioCurso;
     @Autowired
     private ServicioCicloLectivo servicioCicloLectivo;
 
-    public String subirArchivo(Long id, MultipartFile archivo) throws IOException {
-
+    public String subirArchivo(Long id, MultipartFile archivo, String tipo) throws IOException {
         String bucketName = StorageClient.getInstance().bucket().getName();
+
         Optional<User> va = repository.findById(id);
 
         if (va.isEmpty()) throw new IllegalArgumentException("El usuario no es un alumno válido");
 
         User user = va.get();
-        Alumno al = repositorioAlumno.findById(user.getId())
+        Alumno al = servicioAlumno.getByUserId(user.getId())
             .orElseThrow(() -> new IllegalArgumentException("El usuario no es un alumno válido"));
 
         List<Curso> cursos = ((List<Curso>) repositorioCurso.findAll())
@@ -60,14 +50,27 @@ public class ServicioArchivo extends AbstractService<Long, User, RepositorioUser
         Curso curso = cursos.get(0);
         Grupo grupo = curso.getGrupo();
         Ciclo ciclo = grupo.getCiclo();
+
         CicloLectivo cicloLectivoActual = servicioCicloLectivo.getCicloLectivoActual()
             .orElseThrow(() -> new IllegalArgumentException("No hay ciclo lectivo actual"));
 
-        String ruta = String.format("%d/%s/%d/%s",
-            cicloLectivoActual.getFechaInicio().getYear(),
-            ciclo.getAcronimo(),
-            grupo.getNumero(),
-            user.getName());
+        String ruta;
+        if (tipo == null || tipo.equals("OTRO")) {
+            ruta = String.format("%d/%s/%d/%s/%s",
+                cicloLectivoActual.getFechaInicio().getYear(),
+                ciclo.getAcronimo(),
+                grupo.getNumero(),
+                user.getName(),
+                archivo.getOriginalFilename());
+        } else {
+            ruta = String.format("%d/%s/%d/%s/%s",
+                cicloLectivoActual.getFechaInicio().getYear(),
+                ciclo.getAcronimo(),
+                grupo.getNumero(),
+                user.getName(),
+                tipo,
+                archivo.getOriginalFilename());
+        }
 
         var blob = StorageClient.getInstance()
                                 .bucket()

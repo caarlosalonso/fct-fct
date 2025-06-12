@@ -12,6 +12,12 @@ export class FileInput extends Input {
             return allowedExtensions.includes(`.${fileExtension}`);*/
             return true;
         };
+        this.getValue = () => {
+            return this.input.files;
+        }
+        this.isEmpty = () => {
+            return this.input.files.length === 0;
+        }
     }
 
     init(form) {
