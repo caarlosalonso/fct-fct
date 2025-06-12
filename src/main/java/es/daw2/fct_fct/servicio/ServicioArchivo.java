@@ -63,7 +63,7 @@ public class ServicioArchivo extends AbstractService<Long, User, RepositorioUser
                 user.getName(),
                 archivo.getOriginalFilename());
         } else {
-            ruta = String.format("%d/%s/%d/%s/%s",
+            ruta = String.format("%d/%s/%d/%s/%s/%s",
                 cicloLectivoActual.getFechaInicio().getYear(),
                 ciclo.getAcronimo(),
                 grupo.getNumero(),
