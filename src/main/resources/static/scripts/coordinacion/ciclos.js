@@ -256,7 +256,7 @@ function createCicloCell(ciclo, rowIdx) {
     // Create title span
     const titleSpan = document.createElement('span');
     titleSpan.classList.add('cell-title', 'row-header-span');
-    titleSpan.textContent = `${ciclo.name} `;
+    titleSpan.textContent = `${ciclo.name}`;
     cellContent.appendChild(titleSpan);
     
     const acronymSpan = document.createElement('span');
@@ -316,7 +316,7 @@ function createFilledCell(year, ciclo, grupo) {
 
     const tutorSpan = document.createElement('span');
     tutorSpan.classList.add('cell-subtitle');
-    tutorSpan.textContent = tutor || 'Falta tutor';
+    tutorSpan.textContent = grupo.tutor.user.name || 'Falta tutor';
     cell.appendChild(tutorSpan);
 
     // Create subtitle span
@@ -454,6 +454,7 @@ async function addGrupo(ciclo, cicloLectivo, numero) {
 
     form.getInput('grupo-numero').retrack(numero);
     form.getInput('grupo-horario').retrack('');
+    form.getInput('tutor').retrack('');
 
     form.form.setAttribute('submit-text', 'Crear grupo');
     form.submit.textContent = 'Crear grupo';
@@ -626,14 +627,16 @@ function editGrupo(grupo) {
 
     console.log(grupo);
     form.onsubmit = (event) => {
-    const numero = form.getInput('grupo-numero').getValue();
-    const horario = form.getInput('grupo-horario').getValue();
+        const numero = form.getInput('grupo-numero').getValue();
+        const horario = form.getInput('grupo-horario').getValue();
+        const tutor = form.getInput('tutor').getValue();
 
         const data = {
             ciclo: grupo.cicloId,
             cicloLectivo: grupo.cicloLectivoId,
             numero: numero,
-            horario: horario
+            horario: horario,
+            tutor_id: tutor
         }
 
         fetch(`/api/grupos/${grupo.id}`, {
@@ -660,6 +663,7 @@ function editGrupo(grupo) {
 
     form.getInput('grupo-numero').retrack(grupo.numero);
     form.getInput('grupo-horario').retrack(grupo.horario);
+    form.getInput('tutor').retrack(grupo.tutor.id);
 
     form.form.setAttribute('submit-text', 'Actualizar grupo');
     form.submit.textContent = 'Actualizar grupo';
