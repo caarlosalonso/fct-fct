@@ -3,7 +3,7 @@ section#reviews-section {
     flex-direction: column;
     align-items: center;
     gap: 20px;
-    width: 100%;
+    width: 90%;
     margin: 0 auto;
 }
 

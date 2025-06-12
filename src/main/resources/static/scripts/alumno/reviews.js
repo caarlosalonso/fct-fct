@@ -78,12 +78,12 @@ function build(empresas, fcts, cursos) {
         if (! filteredFCT) {
             const cursoNoFCT = document.createElement('p');
             cursoNoFCT.textContent = `¡No tienes FCT! Habla con tu tutor para obtener una empresa en al que hacer la FCT.`;
-            cursoNoFCT.classList.add('title');
+            cursoNoFCT.classList.add('text');
             cursoDiv.appendChild(cursoNoFCT);
 
             const cursoProponerEmpresa = document.createElement('p');
             cursoProponerEmpresa.textContent = `Si tienes una empresa en mente, la puedes proponer a través de este enlace: `;
-            cursoProponerEmpresa.classList.add('title');
+            cursoProponerEmpresa.classList.add('text');
             cursoDiv.appendChild(cursoProponerEmpresa);
 
             const link = document.createElement('a');
@@ -93,6 +93,44 @@ function build(empresas, fcts, cursos) {
             return;
         }
 
-        
+        if (! filteredFCT.motivoRenuncia) {
+            const renunciaFCT = document.createElement('p');
+            renunciaFCT.textContent = `Haz renunciado a las FCT, tu motivo de renuncia es: ${filteredFCT.motivoRenuncia}`;
+            renunciaFCT.classList.add('text', 'renuncia');
+            cursoDiv.appendChild(renunciaFCT);
+        }
+
+        const fctEmpresa = document.createElement('p');
+        fctEmpresa.textContent = `Haz hecho tus FCT con: ${filteredFCT.empresa.nombre}`;
+        fctEmpresa.classList.add('text', 'empresa');
+        cursoDiv.appendChild(fctEmpresa);
+
+        const fechas = document.createElement('p');
+        fechas.textContent = `Desde ${filteredFCT.fechaInicio} hasta ${filteredFCT.fechaFin}`;
+        fechas.classList.add('text', 'fechas');
+        cursoDiv.appendChild(fechas);
+
+        const horasHechas = document.createElement('p');
+        horasHechas.textContent = `Has hecho un total de ${filteredFCT.horas ? filteredFCT.horas : 0} horas.`;
+        horasHechas.classList.add('text', 'horas');
+        cursoDiv.appendChild(horasHechas);
+
+        const reviewDiv = document.createElement('div');
+        reviewDiv.classList.add('review', 'collapsed');
+        reviewDiv.id = `review-${filteredFCT.id}`;
+        cursoDiv.appendChild(reviewDiv);
+
+        const reviewHeader = document.createElement('p');
+        reviewHeader.textContent = 'Reseña de la FCT';
+        reviewHeader.classList.add('review-header');
+        reviewDiv.appendChild(reviewHeader);
+
+        const formDiv = document.createElement('div');
+        formDiv.innerHTML = `
+            <form id="review-form-${filteredFCT.empresa.id}">
+
+            </form>
+        `;
+        reviewDiv.appendChild(formDiv);
     });
 }
