@@ -2,8 +2,6 @@ package es.daw2.fct_fct.modelo;
 
 import java.time.LocalDateTime;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import jakarta.persistence.AttributeOverride;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -25,12 +23,10 @@ import lombok.NoArgsConstructor;
 @AttributeOverride(name = "id", column = @Column(name = "review_id", nullable = false, columnDefinition = "BIGINT"))
 public class Review extends AbsBaseEntity {
 
-    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
 
-    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "empresa_id", nullable = false)
     private Empresa empresa;
