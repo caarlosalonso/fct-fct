@@ -69,7 +69,30 @@ function build(empresas, fcts, cursos) {
         section.appendChild(cursoDiv);
 
         const cursoTitle = document.createElement('p');
-        cursoTitle.textContent = `Curso: ${curso.grupo.cicloLectivo.nombre} - ${curso.grupo.numero}º de ${curso.grupo.ciclo.acronimo}`;
+        cursoTitle.textContent = `${curso.grupo.numero}º de ${curso.grupo.ciclo.acronimo} - ${curso.grupo.cicloLectivo.nombre}`;
+        cursoTitle.classList.add('title');
         cursoDiv.appendChild(cursoTitle);
+
+        const filteredFCT = fcts.find(fct => fct.curso.id === curso.id);
+        console.log("FCT Filtrada: ", filteredFCT);
+        if (! filteredFCT) {
+            const cursoNoFCT = document.createElement('p');
+            cursoNoFCT.textContent = `¡No tienes FCT! Habla con tu tutor para obtener una empresa en al que hacer la FCT.`;
+            cursoNoFCT.classList.add('title');
+            cursoDiv.appendChild(cursoNoFCT);
+
+            const cursoProponerEmpresa = document.createElement('p');
+            cursoProponerEmpresa.textContent = `Si tienes una empresa en mente, la puedes proponer a través de este enlace: `;
+            cursoProponerEmpresa.classList.add('title');
+            cursoDiv.appendChild(cursoProponerEmpresa);
+
+            const link = document.createElement('a');
+            link.href = '\empresas';
+            link.textContent = 'Proponer empresa';
+            cursoProponerEmpresa.appendChild(link);
+            return;
+        }
+
+        
     });
 }
