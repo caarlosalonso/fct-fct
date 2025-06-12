@@ -203,9 +203,15 @@ function createCell(alumno, fcts, grupoTutor, empresas) {
     empresaSpan.textContent = tieneEmpresa ? empresa[0].nombreEmpresa : (renunciaAFCT ? 'Renuncia' : 'Sin empresa');
     bar.appendChild(empresaSpan);
 
+    let horasRestantes = grupoTutor.horasPracticas;
+    fctsDelAlumno.forEach((fctDelAlumno) => {
+        if (fctDelAlumno.id == fct.id) return;
+        horasRestantes -= fctDelAlumno.horasPracticas;
+    });
+
     const horasRestantesSpan = document.createElement('span');
     horasRestantesSpan.classList.add('alumno-horas-restantes');
-    horasRestantesSpan.textContent = `Horas restantes: ${fct.length > 0 ? grupoTutor.horasPracticas - fct[0].horasPracticas : grupoTutor.horasPracticas}`;
+    horasRestantesSpan.textContent = `Horas restantes: ${horasRestantes}`;
     bar.appendChild(horasRestantesSpan);
 
     const collapseSpan = document.createElement('span');
