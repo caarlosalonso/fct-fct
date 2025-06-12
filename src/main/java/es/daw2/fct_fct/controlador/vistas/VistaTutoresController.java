@@ -32,7 +32,7 @@ public class VistaTutoresController {
 
     @GetMapping("/disponibles/{cicloId}")
     public ResponseEntity<?> obtenerTutoresSinGrupo(@PathVariable Long cicloId, HttpServletRequest request) {
-        ResponseEntity<?> validationResponse = SessionsManager.isValidSession(request, Role.COORDINADOR);
+        ResponseEntity<?> validationResponse = SessionsManager.isValidSession(request, Role.COORDINADOR, Role.ADMIN);
         if (validationResponse != null) return validationResponse;
 
         List<VistaTutores> tutoresDisponibles = servicio.getTutoresSinGrupoEnCicloLectivo(cicloId);
