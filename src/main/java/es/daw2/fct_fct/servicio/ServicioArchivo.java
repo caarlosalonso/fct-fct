@@ -60,7 +60,7 @@ public class ServicioArchivo extends AbstractService<Long, User, RepositorioUser
 
         String tipoFinal;
         switch (tipo) {
-            case "ANEXO" -> tipoFinal = "anexo";
+            case "ANEXO7" -> tipoFinal = "anexo7";
             case "JUSTIFICANTE" -> tipoFinal = "justificante";
             case "CV" -> tipoFinal = "cv";
             default -> tipoFinal = "archivo";
