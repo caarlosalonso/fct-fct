@@ -174,6 +174,7 @@ function createCell(alumno, fcts, grupoTutor, empresas) {
 
     let tieneEmpresa = false;
     let renunciaAFCT = false;
+    let empresa;
     if (!fct) {
         tieneEmpresa = false;
     } else {
@@ -183,7 +184,7 @@ function createCell(alumno, fcts, grupoTutor, empresas) {
                 renunciaAFCT = true;
             }
         } else {
-            const empresa = empresas.filter((empresa) => empresa.empresaId === fct.empresa.id);
+            empresa = empresas.filter((empresa) => empresa.empresaId === fct.empresa.id);
             console.log('Empresa:', empresa);
             if (empresa.length === 0) {
                 if (fct.motivoRenuncia !== null) {
