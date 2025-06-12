@@ -3,6 +3,7 @@ package es.daw2.fct_fct.controlador;
 import java.net.URI;
 import java.util.Optional;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -10,14 +11,19 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import es.daw2.fct_fct.dto.CreateUserDTO;
 import es.daw2.fct_fct.dto.LoginRequestDTO;
 import es.daw2.fct_fct.dto.UserCreateDTO;
 import es.daw2.fct_fct.dto.UserDTO;
 import es.daw2.fct_fct.dto.UserResetPasswordDTO;
 import es.daw2.fct_fct.dto.UserResetPasswordTutorDTO;
 import es.daw2.fct_fct.modelo.User;
+import es.daw2.fct_fct.servicio.ServicioAlumno;
+import es.daw2.fct_fct.servicio.ServicioCoordinacion;
+import es.daw2.fct_fct.servicio.ServicioTutores;
 import es.daw2.fct_fct.servicio.ServicioUser;
 import es.daw2.fct_fct.utils.PasswordUtils;
+import es.daw2.fct_fct.utils.Role;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 
@@ -25,6 +31,14 @@ import jakarta.servlet.http.HttpSession;
 @RestController
 @RequestMapping("/api/users")
 public class ControladorUser extends CrudController<Long, User, UserCreateDTO, User, ServicioUser> {
+
+    @Autowired
+    private ServicioCoordinacion servicioCoordinacion;
+    @Autowired
+    private ServicioAlumno servicioAlumno;
+    @Autowired
+    private ServicioTutores servicioTutores;
+    
 
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody LoginRequestDTO loginRequestDTO,
@@ -48,9 +62,21 @@ public class ControladorUser extends CrudController<Long, User, UserCreateDTO, U
         );
 
         HttpSession newSession = request.getSession(true);
-        newSession.setAttribute("user", dto);
+        newSession.setAttribute("user", userFound.getId());
+        newSession.setAttribute("email", userFound.getEmail());
         newSession.setAttribute("role", userFound.getRole());
         newSession.setAttribute("nombre", userFound.getName());
+        System.out.println(newSession.getId() + " - " + userFound.getEmail() + " - " + userFound.getName() + " - " + userFound.getRole());
+
+        switch (userFound.getRole()) {
+            case Role.ADMIN -> newSession.setAttribute("child_id", userFound.getId());
+            case Role.COORDINADOR -> servicioCoordinacion.getByUserId(userFound.getId()).ifPresent(coordinacion -> newSession.setAttribute("child_id", coordinacion.getId()));
+            case Role.TUTOR -> servicioTutores.getByUserId(userFound.getId()).ifPresent(tutor -> newSession.setAttribute("child_id", tutor.getId()));
+            case Role.ALUMNO -> servicioAlumno.getByUserId(userFound.getId()).ifPresent(alumno -> newSession.setAttribute("child_id", alumno.getId()));
+            default -> {
+                return ResponseEntity.status(403).body("Forbidden: Invalid user role");
+            }
+        }
 
         return ResponseEntity.ok(dto);
     }
@@ -81,20 +107,15 @@ public class ControladorUser extends CrudController<Long, User, UserCreateDTO, U
         return ResponseEntity.notFound().build();
     }
 
-    @PostMapping("/password/{id}")
-    public ResponseEntity<?> changePassword(@PathVariable Long id, @RequestBody UserResetPasswordDTO entity, HttpServletRequest request) {
+    @PostMapping("/password")
+    public ResponseEntity<?> changePassword(@RequestBody UserResetPasswordDTO entity, HttpServletRequest request) {
         HttpSession session = request.getSession(false);
         if (session == null || session.getAttribute("user") == null) {
             return ResponseEntity.status(401).body("Unauthorized");
         }
-
-        Object sessionId = session.getAttribute("id");
-        if (sessionId == null || !(sessionId instanceof Long) || !((Long) sessionId).equals(id)) {
-            return ResponseEntity.status(403).body("Forbidden: You can only change your own password");
-        }
-
+        Long id = (Long) session.getAttribute("user");
+        
         Optional<User> userOptional = service.getById(id);
-
         if (userOptional.isEmpty()) {
             return ResponseEntity.notFound().build();
         }
@@ -124,7 +145,7 @@ public class ControladorUser extends CrudController<Long, User, UserCreateDTO, U
     }
 
     @Override
-    public ResponseEntity<?> create(@RequestBody UserCreateDTO dto) {
+    public ResponseEntity<?> create(@RequestBody UserCreateDTO dto, HttpServletRequest request) {
         // Map DTO to entity
         User newUser = new User();
         newUser.setName(dto.name());
@@ -132,11 +153,7 @@ public class ControladorUser extends CrudController<Long, User, UserCreateDTO, U
         newUser.setPassword(
             PasswordUtils.hashPassword(dto.password())
         );
-    /*  No se deberían crear 'users' así porque sí. Si se crea uno, debería ser
-        un ADMIN. Así que se debe verificar si los crea un ADMIN. Por ahora,
-        solo se permite la creación de ALUMNOS desde el controlador de Users.   */
-        newUser.setRole(User.Role.ALUMNO);
-        newUser.setUpdatedPasswordAt(null);
+        newUser.setRole(dto.role());
 
         if (service.checkEmailExists(newUser.getEmail())) {
             return ResponseEntity.status(409).body("Email already exists"); // Conflicto, ya existe un usuario con ese email
@@ -159,7 +176,7 @@ public class ControladorUser extends CrudController<Long, User, UserCreateDTO, U
     // getById ya existe en CrudController
 
     @Override
-    public ResponseEntity<?> update(@PathVariable Long id, @RequestBody User u){
+    public ResponseEntity<?> update(@PathVariable Long id, @RequestBody User u, HttpServletRequest request){
         Optional<User> optional = service.getById(id);
 
         if(!optional.isPresent()){
@@ -179,4 +196,32 @@ public class ControladorUser extends CrudController<Long, User, UserCreateDTO, U
     }
 
     // delete ya existe en CrudController
+
+    @PostMapping("/admin")
+    public ResponseEntity<?> create(@RequestBody CreateUserDTO c, HttpServletRequest request) {
+        HttpSession session = request.getSession(false);
+        if (session == null) return ResponseEntity.status(401).body("Unauthorized");
+        Object role = session.getAttribute("role");
+        if (role == null || ! role.equals(Role.ADMIN)) {
+            return ResponseEntity.status(403).body("Forbidden: Only admins can create coordinators");
+        }
+
+        User newUser = new User();
+        newUser.setName(c.name());
+        newUser.setEmail(c.email());
+        newUser.setPassword(
+            PasswordUtils.hashPassword(c.password())
+        );
+        newUser.setRole(Role.ADMIN);
+
+        if (service.checkEmailExists(newUser.getEmail())) {
+            return ResponseEntity.status(409).body("Email already exists"); // Conflicto, ya existe un usuario con ese email
+        }
+
+        User saved = service.save(newUser);
+
+        URI location = URI.create("/api/user/" + saved.getId());
+
+        return ResponseEntity.created(location).body(saved);
+    }
 }

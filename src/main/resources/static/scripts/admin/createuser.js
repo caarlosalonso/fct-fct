@@ -1,4 +1,4 @@
-import { Form } from './classes/Form.js';
+import { Form } from '../classes/Form.js';
 
     window.addEventListener('FormsCreated', (event) => {
         const form = Form.getForm('user-creation');
@@ -18,7 +18,7 @@ import { Form } from './classes/Form.js';
                 password: password
             };
 
-            fetch('/api/users/create', {
+            fetch('/api/users/admin', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'

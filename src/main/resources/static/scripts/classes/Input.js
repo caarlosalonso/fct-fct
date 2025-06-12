@@ -25,6 +25,7 @@ export class Input {
             'active':           false,
             'focus':            false,
             'required':         Utility.getBooleanAttribute(Input.ATTRIBUTES.REQUIRED, this.input),
+            'trueRequired':     Utility.getBooleanAttribute(Input.ATTRIBUTES.REQUIRED, this.input),
             'frozen':           Utility.getBooleanAttribute(Input.ATTRIBUTES.FROZEN, this.input),
             'frozenValue':      Utility.getElementValueByAttribute(Input.ATTRIBUTES.FROZEN, this.input),
             'tracked':          Utility.getBooleanAttribute(Input.ATTRIBUTES.TRACKED, this.input),
@@ -32,6 +33,7 @@ export class Input {
             'trackedValue':     Utility.getElementValueByAttribute(Input.ATTRIBUTES.TRACKED, this.input),
             'valid':            null,
             'showValidity':     Utility.getBooleanAttribute(Input.ATTRIBUTES.SHOW_VALIDITY, this.input),
+            'validate':         true,
             'errorAffected':    false
         }
     }
@@ -93,19 +95,12 @@ export class Input {
         this.label = document.createElement('p');
         this.label.classList.add('label');
         this.label.innerText = this.input.getAttribute('label');
-
-        /*  The label's height isn't computed until it is added to the DOM, but
-            it can't be added to DOM until it's position is computed, because,
-            if it's added later, it would slide into position which would look
-            bad. To fix this, the height is assumed to be 24px.                 */
-        /*                     parent's half height      label's half height   ?*/
-        let verticalPosition = this.parent.offsetHeight / 2 - 12             - 1;
-        this.label.style.top = `${verticalPosition}px`;
         this.parent.appendChild(this.label);
     }
 
     updateState() {
         const {label, states} = this;
+        if (!label || !states) return;
         label.classList.toggle('active', states.active);
         label.classList.toggle('focus', states.focus);
         label.classList.toggle('required', states.required);
@@ -123,11 +118,18 @@ export class Input {
         }
     }
 
+    shouldValidate() {
+        return this.states.validate;
+    }
+
     validate() {
+        if (!this.shouldValidate()) return true;
         return true;
     }
 
-    init() {}
+    init(form) {
+        this.form = form;
+    }
 
     isDifferent() {
         return false;
@@ -143,5 +145,11 @@ export class Input {
 
     setValue(value) {
         this.input.value = value;
+    }
+
+    forceActive() {
+        this.label.classList.remove('active');
+        this.states.active = true;
+        this.updateState();
     }
 }

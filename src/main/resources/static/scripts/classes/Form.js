@@ -9,6 +9,9 @@ import { DateInput } from "./DateInput.js";
 import { DNIInput } from "./DNIInput.js";
 import { NumberInput } from "./NumberInput.js";
 import { SelectInput } from "./SelectInput.js";
+import { DateTimeInput } from "./DateTimeInput.js";
+import { RangeInput } from "./RangeInput.js";
+import { ToggleSwitch } from "./ToggleSwitch.js";
 
 export class Form {
     static formMap = new Map();
@@ -22,10 +25,17 @@ export class Form {
 
     init() {
         this.getEntries();
-        this.buildLegend();
-        this.buildMessage();
-        this.buildSubmit();
-        this.buildEvents();
+        const showLegend = this.form.getAttribute('form-legend') !== 'false';
+        if (showLegend) this.buildLegend();
+
+        const showMessage = this.form.getAttribute('form-message') !== 'false';
+        if (showMessage) this.buildMessage();
+
+        const showSubmitButton = this.form.getAttribute('form-submit-button') !== 'false';
+        if (showSubmitButton) {
+            this.buildSubmit();
+            this.buildEvents();
+        }
 
         Form.formMap.set(this.form, this);
     }
@@ -33,20 +43,23 @@ export class Form {
     getEntries() {
         this.form.querySelectorAll('.input').forEach(input => {
             switch (input.getAttribute('type')) {
-                case 'email':       this.entries.push(new EmailInput(input));       break;
-                case 'password':    this.entries.push(new PasswordInput(input));    break;
-                case 'text':        this.entries.push(new TextInput(input));        break;
-                case 'tel':         this.entries.push(new TelInput(input));         break;
-                case 'file':        this.entries.push(new FileInput(input));        break;
-                case 'dni':         this.entries.push(new DNIInput(input));         break;
-                case 'date':        this.entries.push(new DateInput(input));        break;
-                case 'number':      this.entries.push(new NumberInput(input));      break;
-                case 'select':      this.entries.push(new SelectInput(input));      break;
-                default:            this.entries.push(new Input(input));            break;
+                case 'email':           this.entries.push(new EmailInput(input));       break;
+                case 'password':        this.entries.push(new PasswordInput(input));    break;
+                case 'text':            this.entries.push(new TextInput(input));        break;
+                case 'tel':             this.entries.push(new TelInput(input));         break;
+                case 'file':            this.entries.push(new FileInput(input));        break;
+                case 'dni':             this.entries.push(new DNIInput(input));         break;
+                case 'date':            this.entries.push(new DateInput(input));        break;
+                case 'number':          this.entries.push(new NumberInput(input));      break;
+                case 'select':          this.entries.push(new SelectInput(input));      break;
+                case 'datetime-local':  this.entries.push(new DateTimeInput(input));    break;
+                case 'range':           this.entries.push(new RangeInput(input));       break;
+                case 'toggle-switch':   this.entries.push(new ToggleSwitch(input));     break;
+                default:                this.entries.push(new Input(input));            break;
             }
         });
         this.entries.forEach((input) => {
-            input.init();
+            input.init(this);
             input.input.addEventListener('input', (event) => {
                 input.states.errorAffected = false;
             });
@@ -73,8 +86,7 @@ export class Form {
 
         this.submit = document.createElement('button');
         this.submit.type = 'submit';
-        this.submit.id = 'submit';
-        this.submit.classList.add('form-buttons');
+        this.submit.classList.add('form-buttons', 'submit-button');
 
         this.submit.textContent = Utility.getAttributeValueOrDefault('submit-text', 'Submit', this.form);
         wrapper.appendChild(this.submit);

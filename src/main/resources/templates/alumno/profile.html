@@ -14,75 +14,106 @@
     <title>Perfil - Alumno</title>
 
     <link rel="stylesheet" href="/styles/profile/profile.css">
+
+    <link rel="stylesheet" href="/styles/navigation.css">
 </head>
 <body>
-
+    <header>
+        <nav class="navbar navbar-expand-md">
+            <div class="container-fluid">
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav ms-auto">
+                        <li class="nav-item">
+                            <a href="/index" class="nav-link">Inicio</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="/tutorias" class="nav-link">Tutorías</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="/empresas" class="nav-link">Proponer Empresa</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="/fcts" class="nav-link">FCTs</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="/subir" class="nav-link">Subir archivo</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="/reviews" class="nav-link">Reseñar</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="/perfil" class="nav-link selected">Perfil</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
 
     <main>
-        <h1 id="titulo">Hola ....</h1>
-        <section id="password-section" class="section">
-            <form id="password-form" method="POST" submit-text="Cambiar contraseña">
+        <section id="info-section" class="section">
+            <p class="title">Información Personal</p>
+            <form id="info-form" method="POST" submit-text="Actualizar información">
                 <div class="inputs form-container">
                     <div class="instance form-input grouped-inputs">
                         <div class="form-group form-input">
-                            <input type="password" id="current-password" name="current-password" class="text-based input" label="Contraseña actual" data-required="true">
+                            <input type="text" id="nombre" name="nombre" class="text-based input" label="Tu nombre" data-required="true">
+                        </div>
+                    </div>
+                    <div class="instance form-input grouped-inputs">
+                        <div class="form-group form-input">
+                            <input type="text" id="email" name="email" class="text-based input" label="Tu correo" data-required="true" data-show-validity="true">
                         </div>
                         <div class="form-group form-input">
-                            <input type="password" id="new-password" name="new-password" class="text-based input" label="Nueva contraseña" data-required="true">
+                            <input type="text" id="telefono" name="telefono" class="text-based input" label="Tu teléfono" data-show-validity="true">
+                        </div>
+                    </div>
+                    <div class="instance form-input grouped-inputs">
+                        <div class="form-group form-input">
+                            <input type="text" id="nia" name="nia" class="text-based input" label="Tu NIA" data-freeze="true" data-show-validity="true">
                         </div>
                         <div class="form-group form-input">
-                            <input type="password" id="confirm-password" name="confirm-password" class="text-based input" label="Confirmar contraseña" data-required="true">
+                            <input type="dni" id="dni" name="dni" class="text-based input" label="Tu DNI" data-required="true" data-show-validity="true">
+                        </div>
+                        <div class="form-group form-input">
+                            <input type="text" id="nuss" name="nuss" class="text-based input" label="Tu NUSS" data-show-validity="true">
+                        </div>
+                    </div>
+                    <div class="instance form-input grouped-inputs">
+                        <div class="form-group form-input">
+                            <input type="text" id="address" name="address" class="text-based input" label="Tu dirección">
                         </div>
                     </div>
                 </div>
             </form>
         </section>
-        <div id="personal-data">
-            <h2 id="titulo2">Datos personales</h2>
-                <form id="alumno-profile-form" autocomplete="off">
-                    <div id="inputs" class="form-container">
-
-                        <div class="instance form-input grouped-inputs">
-                            <div class="form-group form-input">
-                                <input type="text" id="nombre" name="nombre" class="text-based input" label="Nombre" data-required="true" readonly>
-                            </div>
+        <section id="password-section" class="section">
+            <p class="title">Cambio de contraseña</p>
+            <form id="password-form" method="POST" submit-text="Cambiar contraseña">
+                <div class="inputs form-container">
+                    <div class="instance form-input grouped-inputs">
+                        <div class="form-group form-input">
+                            <input type="password" id="current-password" name="current-password" class="text-based input password" label="Contraseña actual" data-required="true">
                         </div>
-
-                        <div class="instance form-input grouped-inputs">
-                            <div class="form-group form-input">
-                                <input type="email" id="email" name="email" class="text-based input" label="Correo" data-show-validity="true" readonly>
-                            </div>
-
-                            <div class="form-group form-input">
-                                <input type="tel" id="telefono" name="telefono" class="text-based input" label="Teléfono" data-show-validity="true">
-                            </div>
+                        <div class="form-group form-input">
+                            <input type="password" id="new-password" name="new-password" class="text-based input password" label="Nueva contraseña" data-required="true">
                         </div>
-
-                        <div class="instance form-input grouped-inputs">
-                            <div class="form-group form-input">
-                                <input type="text" name="nia" id="nia" class="text-based input" label="NIA" data-show-validity="true" readonly>
-                            </div>
-
-                            <div class="form-group form-input">
-                                <input type="dni" name="dni" id="dni" class="text-based input" label="DNI" data-show-validity="true" readonly>
-                            </div>
-
-                            <div class="form-group form-input">
-                                <input type="text" name="nuss" id="nuss" class="text-based input" label="NUSS" data-show-validity="true">
-                            </div>
-                        </div>
-
-                        <div class="instance form-input grouped-inputs">
-                            <div class="form-group form-input">
-                                <input type="file" name="cv" id="cv" class="input" label="Curriculum Vitae" accept=".pdf">
-                            </div>
+                        <div class="form-group form-input">
+                            <input type="password" id="confirm-password" name="confirm-password" class="text-based input password" label="Confirmar contraseña" data-required="true">
                         </div>
                     </div>
-                    <button type="submit" class="btn btn-primary">Guardar</button>
-                </form>
-        </div>
+                </div>
+            </form>
+        </section>
+        <section id="logout-section" class="section">
+            <a href="/logout" class="logout">Cerrar sesión</a>
+        </section>
     </main>
 
+    <script type="module" src="/scripts/alumno/profile.js"></script>
     <script type="module" src="/scripts/profile/profile.js"></script>
 </body>
 </html>

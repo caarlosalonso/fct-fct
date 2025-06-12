@@ -11,10 +11,11 @@ export class DNIInput extends TextInput {
 
         this.input.type = "text";
 
-        this.letters = "TRWAGMYFPDXBNJZSQVHLCKE";
+        DNIInput.letters = "TRWAGMYFPDXBNJZSQVHLCKE";
         this.regex = /^[X-Z\d]\d{0,7}[A-Z]$/;
 
         this.validate = () => {
+            if (!this.shouldValidate()) return true;
             if (this.isEmpty()) return true;
 
             let dni = this.getValue();
@@ -26,12 +27,12 @@ export class DNIInput extends TextInput {
                 dni = dni.replace(letraInicial, this.nIEPrefixToNumber(letraInicial));
             }
 
-            return dni.slice(-1) === this.computeLetraControl(dni.slice(0, -1));
+            return dni.slice(-1) === DNIInput.computeLetraControl(dni.slice(0, -1));
         }
     }
 
-    init() {
-        super.init();
+    init(form) {
+        super.init(form);
         this.buildDNI();
         this.createEventListeners();
     }
@@ -69,7 +70,7 @@ export class DNIInput extends TextInput {
 
     static computeLetraControl(digits) {
         const num = parseInt(digits, 10);
-        return this.letters[num % 23];
+        return DNIInput.letters[parseInt(num % 23)];
     }
 
     static nIEPrefixToNumber(prefix) {

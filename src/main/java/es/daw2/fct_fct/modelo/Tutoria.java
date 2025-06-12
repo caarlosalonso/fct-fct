@@ -1,5 +1,7 @@
 package es.daw2.fct_fct.modelo;
 
+import java.time.LocalDateTime;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.AttributeOverride;
@@ -25,15 +27,10 @@ public class Tutoria extends AbsBaseEntity {
 
     @ManyToOne
     @JsonIgnore
-    @JoinColumn(name = "tutor_id")
-    private Tutor tutor;
-
-    @ManyToOne
-    @JsonIgnore
     @JoinColumn(name = "grupo_id")
     private Grupo grupo;
 
-    @Column(name = "year", nullable = false, columnDefinition = "SMALLINT")
-    private Short year;
+    @Column(name = "fecha", nullable = false, columnDefinition = "DATETIME")
+    private LocalDateTime fecha;
 
 }

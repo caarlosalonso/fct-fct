@@ -1,0 +1,72 @@
+/* ---------------------------------------------------------------------------- */
+/*                                   VARIABLES                                  */
+/* ---------------------------------------------------------------------------- */
+:root {
+    --background-color: #505050;
+    --background-color-invisible: #50505000;
+    --text-color: #ffffff;
+}
+
+#main-content {
+    width: 95%;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    transition: 200ms ease-in-out;
+}
+
+/* ---------------------------------------------------------------------------- */
+/*                                CURSO ACTUAL                                  */
+/* ---------------------------------------------------------------------------- */
+#curso-actual {
+    background-color: #606060;
+    border-radius: 15px 15px 0px 0px;
+    padding: 15px 15px 0px 15px;
+}
+
+.ciclo-info {
+    font-size: 1.2rem;
+}
+
+/* ---------------------------------------------------------------------------- */
+/*                                LISTAR SECTION                               */
+/* ---------------------------------------------------------------------------- */
+#listar {
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    justify-content: space-around;
+    background-color: var(--background-color);
+    border-radius: 0px 0px var(--border-radius) var(--border-radius);
+    padding: 10px 0px;
+    gap: 10px 0px;
+}
+
+.tutoria-item {
+    color: #000000;
+    display: grid;
+    grid-template-columns: auto auto;
+    width: 200px;
+    background-color: #86c586;
+    border-radius: var(--border-radius);
+    padding: var(--border-radius);
+
+    &.pasada {
+        background-color: #c58686;
+    }
+}
+
+.cell-value {
+    grid-column: auto / span 2;
+}
+
+
+/* ---------------------------------------------------------------------------- */
+/*                                     MEDIA                                    */
+/* ---------------------------------------------------------------------------- */
+@media (max-width: 600px) {
+    #main-content {
+        width: 100%;
+        margin: 0;
+    }
+}

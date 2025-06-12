@@ -14,30 +14,90 @@
     <title>Perfil - Tutor</title>
 
     <link rel="stylesheet" href="/styles/profile/profile.css">
+
+    <link rel="stylesheet" href="/styles/navigation.css">
 </head>
 <body>
-
-
+    <header>
+        <nav id="navbar">
+        <nav class="navbar navbar-expand-md">
+            <div class="container-fluid">
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav ms-auto">
+                        <li class="nav-item">
+                            <a href="/index" class="nav-link">Inicio</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="/cursos" class="nav-link">Cursos</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="/fcts" class="nav-link">FCTs</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="/tutorias" class="nav-link">Tutorías</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="/empresas" class="nav-link">Empresas</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="/reviews" class="nav-link">Reseñas</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="/alumnado" class="nav-link">Alumnado</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="/perfil" class="nav-link selected">Perfil</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
     <main>
-        <section id="password-section" class="section">
-            <form id="password-form" method="POST" submit-text="Cambiar contraseña">
+        <section id="info-section" class="section">
+            <p class="title">Información Personal</p>
+            <form id="info-form" method="POST" submit-text="Actualizar información">
                 <div class="inputs form-container">
                     <div class="instance form-input grouped-inputs">
                         <div class="form-group form-input">
-                            <input type="password" id="current-password" name="current-password" class="text-based input" label="Contraseña actual" data-required="true">
+                            <input type="text" id="nombre" name="nombre" class="text-based input" label="Su nombre" data-required="true">
                         </div>
+                    </div>
+                    <div class="instance form-input grouped-inputs">
                         <div class="form-group form-input">
-                            <input type="password" id="new-password" name="new-password" class="text-based input" label="Nueva contraseña" data-required="true">
-                        </div>
-                        <div class="form-group form-input">
-                            <input type="password" id="confirm-password" name="confirm-password" class="text-based input" label="Confirmar contraseña" data-required="true">
+                            <input type="text" id="email" name="email" class="text-based input" label="Su correo" data-required="true" data-show-validity="true">
                         </div>
                     </div>
                 </div>
             </form>
         </section>
+        <section id="password-section" class="section">
+            <p class="title">Cambio de contraseña</p>
+            <form id="password-form" method="POST" submit-text="Cambiar contraseña">
+                <div class="inputs form-container">
+                    <div class="instance form-input grouped-inputs">
+                        <div class="form-group form-input">
+                            <input type="password" id="current-password" name="current-password" class="text-based input password" label="Contraseña actual" data-required="true">
+                        </div>
+                        <div class="form-group form-input">
+                            <input type="password" id="new-password" name="new-password" class="text-based input password" label="Nueva contraseña" data-required="true">
+                        </div>
+                        <div class="form-group form-input">
+                            <input type="password" id="confirm-password" name="confirm-password" class="text-based input password" label="Confirmar contraseña" data-required="true">
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </section>
+        <section id="logout-section" class="section">
+            <a href="/logout" class="logout">Cerrar sesión</a>
+        </section>
     </main>
 
+    <script type="module" src="/scripts/tutor/profile.js"></script>
     <script type="module" src="/scripts/profile/profile.js"></script>
 </body>
 </html>

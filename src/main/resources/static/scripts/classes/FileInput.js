@@ -4,6 +4,7 @@ export class FileInput extends Input {
     constructor(input) {
         super(input);
         this.validate = () => {
+            if (!this.shouldValidate()) return true;
             /*const file = this.input.files[0];
             if (!file) return true; // No file selected, considered valid
             const allowedExtensions = this.input.getAttribute('accept')?.split(',') || [];
@@ -13,7 +14,8 @@ export class FileInput extends Input {
         };
     }
 
-    init() {
+    init(form) {
+        this.form = form;
         this.buildFileInput();
         this.createValidityElements();
     }

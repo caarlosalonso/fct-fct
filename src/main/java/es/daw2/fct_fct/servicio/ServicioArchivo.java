@@ -1,66 +1,82 @@
 package es.daw2.fct_fct.servicio;
 
-import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.OutputStream;
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.google.cloud.storage.Blob;
-import com.google.cloud.storage.Bucket;
 import com.google.firebase.cloud.StorageClient;
 
+import es.daw2.fct_fct.modelo.Alumno;
+import es.daw2.fct_fct.modelo.Ciclo;
+import es.daw2.fct_fct.modelo.CicloLectivo;
+import es.daw2.fct_fct.modelo.Curso;
+import es.daw2.fct_fct.modelo.Grupo;
 import es.daw2.fct_fct.modelo.User;
-import es.daw2.fct_fct.modelo.vAlumno;
-import es.daw2.fct_fct.repositorio.RepositorioVAlumno;
+import es.daw2.fct_fct.repositorio.RepositorioAlumno;
+import es.daw2.fct_fct.repositorio.RepositorioCicloLectivo;
+import es.daw2.fct_fct.repositorio.RepositorioCiclos;
+import es.daw2.fct_fct.repositorio.RepositorioCurso;
+import es.daw2.fct_fct.repositorio.RepositorioGrupos;
+import es.daw2.fct_fct.repositorio.RepositorioUser;
 
 @Service
-public class ServicioArchivo extends AbstractService<Long, vAlumno, RepositorioVAlumno> {
+public class ServicioArchivo extends AbstractService<Long, User, RepositorioUser> {
 
     @Autowired
-    private servicioVAlumno servicioVAlumno;
+    private RepositorioAlumno repositorioAlumno;
+    @Autowired
+    private RepositorioCicloLectivo repositorioCicloLectivo;
+    @Autowired
+    private RepositorioCiclos repositorioCiclos;
+    @Autowired
+    private RepositorioGrupos repositorioGrupos;
+    @Autowired
+    private RepositorioCurso repositorioCurso;
+    @Autowired
+    private ServicioCicloLectivo servicioCicloLectivo;
 
-    public void subirArchivo(User user, MultipartFile archivo) throws IOException {
-        Optional<vAlumno> va = servicioVAlumno.getByUserId(user.getId());
+    public String subirArchivo(Long id, MultipartFile archivo) throws IOException {
 
-        if (va.isEmpty()) {
-            throw new IllegalArgumentException("El usuario no es un alumno válido");
-        }
+        String bucketName = StorageClient.getInstance().bucket().getName();
+        Optional<User> va = repository.findById(id);
 
-        vAlumno vAlumno = va.get();
-        //Construir ruta: año/ciclo/curso/idAlumno/nombreArchivo
-        /*String ruta = String.format("%s/%s/%s/%s/%s",
-            vAlumno.getAño(),
-            vAlumno.getCiclo(),
-            vAlumno.getGrupo(),
-            vAlumno.getId(),
-            archivo.getOriginalFilename());*/
+        if (va.isEmpty()) throw new IllegalArgumentException("El usuario no es un alumno válido");
 
-        String ruta = String.format("%s",
-            archivo.getOriginalFilename());
-        
+        User user = va.get();
+        Alumno al = repositorioAlumno.findById(user.getId())
+            .orElseThrow(() -> new IllegalArgumentException("El usuario no es un alumno válido"));
 
-        // Crear el objeto en el bucket
-        StorageClient.getInstance()
-                    .bucket()
-                    .create(ruta, archivo.getBytes(), archivo.getContentType());
-    }
+        List<Curso> cursos = ((List<Curso>) repositorioCurso.findAll())
+            .stream()
+            .filter((curso) -> curso.getAlumno().getId() == al.getId())
+            .toList();
 
-    public File descargarArchivo(User user, String nombreArchivo) throws IOException {
-        Bucket bucketName = StorageClient.getInstance().bucket();
-        Blob blob = bucketName.get(nombreArchivo);
+        if (cursos.isEmpty()) throw new IllegalArgumentException("El alumno no tiene cursos asociados");
 
-        File tempFile = File.createTempFile("firebase-","-" + nombreArchivo);
-        try (OutputStream os = new FileOutputStream(tempFile)) {
-            blob.downloadTo(os);
-        } catch (IOException e) {
-            throw new IOException("Error al descargar el archivo: " + nombreArchivo, e);
-        }
+        Curso curso = cursos.get(0);
+        Grupo grupo = curso.getGrupo();
+        Ciclo ciclo = grupo.getCiclo();
+        CicloLectivo cicloLectivoActual = servicioCicloLectivo.getCicloLectivoActual()
+            .orElseThrow(() -> new IllegalArgumentException("No hay ciclo lectivo actual"));
 
-        return tempFile;
+        String ruta = String.format("%d/%s/%d/%s",
+            cicloLectivoActual.getFechaInicio().getYear(),
+            ciclo.getAcronimo(),
+            grupo.getNumero(),
+            user.getName());
+
+        var blob = StorageClient.getInstance()
+                                .bucket()
+                                .create(ruta, archivo.getBytes(), archivo.getContentType());
+
+        return String.format(
+            "https://firebasestorage.googleapis.com/v0/b/%s/o/%s?alt=media",
+            bucketName,
+            java.net.URLEncoder.encode(blob.getName(), java.nio.charset.StandardCharsets.UTF_8)
+        );
     }
 }

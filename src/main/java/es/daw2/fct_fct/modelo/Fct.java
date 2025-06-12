@@ -2,8 +2,6 @@ package es.daw2.fct_fct.modelo;
 
 import java.time.LocalDate;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import jakarta.persistence.AttributeOverride;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -26,29 +24,36 @@ import lombok.NoArgsConstructor;
 public class Fct extends AbsBaseEntity {
 
     @ManyToOne
-    @JsonIgnore
-    @JoinColumn(name = "alumno_id", nullable = false)
-    private Alumno alumno;
+    @JoinColumn(name = "curso_id", nullable = false)
+    private Curso curso;
 
     @ManyToOne
-    @JsonIgnore
-    @JoinColumn(name = "tutor_id")
-    private Tutor tutor;
-
-    @ManyToOne
-    @JsonIgnore
-    @JoinColumn(name = "empresa_id", nullable = false)
+    @JoinColumn(name = "empresa_id", nullable = true)
     private Empresa empresa;
 
     @ManyToOne
-    @JsonIgnore
-    @JoinColumn(name = "grupo_id")
-    private Grupo grupo;
+    @JoinColumn(name = "tutor_empresa_id", nullable = true)
+    private TutorEmpresa tutorEmpresa;
 
-    @Column(name = "fecha_inicio", nullable = true)
+    @Column(name = "motivo_renuncia", nullable = true, columnDefinition = "VARCHAR(45)")
+    private String motivoRenuncia;
+
+    @Column(name = "anexo_21", nullable = true, columnDefinition = "VARCHAR(5)")
+    private String anexo21;
+
+    @Column(name = "fecha_inicio", nullable = true, columnDefinition = "DATE")
     private LocalDate fechaInicio;
 
-    @Column(name = "fecha_fin", nullable = true)
+    @Column(name = "horas_semana", nullable = true, columnDefinition = "SMALLINT")
+    private Integer horasSemana;
+
+    @Column(name = "no_lectivos", nullable = true, columnDefinition = "SMALLINT")
+    private Integer noLectivos;
+
+    @Column(name = "horas_practicas", nullable = true, columnDefinition = "SMALLINT")
+    private Integer horasPracticas;
+
+    @Column(name = "fecha_fin", nullable = true, columnDefinition = "DATE")
     private LocalDate fechaFin;
 
     @Column(name = "observaciones", nullable = true, columnDefinition = "VARCHAR(2047)")

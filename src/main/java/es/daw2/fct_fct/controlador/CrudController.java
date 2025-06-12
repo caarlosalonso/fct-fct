@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import es.daw2.fct_fct.servicio.AbstractService;
+import jakarta.servlet.http.HttpServletRequest;
 
 /**
  * Abstract controller for CRUD operations.
@@ -32,13 +33,13 @@ public abstract class CrudController<Id, T, C, U, S extends AbstractService<Id, 
     
     // Crud
     @PostMapping("/create")
-    ResponseEntity<?> create(@RequestBody C dto) throws UnsupportedOperationException {
+    ResponseEntity<?> create(@RequestBody C dto, HttpServletRequest request) throws UnsupportedOperationException {
         throw new UnsupportedOperationException("Create operation is not supported");
     }
 
     // cRud
     @GetMapping("/all")
-    ResponseEntity<?> all() {
+    ResponseEntity<?> all(HttpServletRequest request) {
         List<T> items = service.list();
         if (items == null) return ResponseEntity.badRequest().build();
         if (items.isEmpty()) return ResponseEntity.noContent().build();
@@ -47,7 +48,7 @@ public abstract class CrudController<Id, T, C, U, S extends AbstractService<Id, 
 
     // cRud
     @GetMapping("/{id}")
-    ResponseEntity<?> getById(@PathVariable Id id) {
+    ResponseEntity<?> getById(@PathVariable Id id, HttpServletRequest request) {
         Optional<T> item = service.getById(id);
         if (!item.isPresent()) return ResponseEntity.notFound().build();
         return ResponseEntity.ok(item.get());
@@ -55,13 +56,13 @@ public abstract class CrudController<Id, T, C, U, S extends AbstractService<Id, 
 
     // crUd
     @PutMapping("/{id}")
-    ResponseEntity<?> update(@PathVariable Id id, @RequestBody U dto) throws UnsupportedOperationException {
+    ResponseEntity<?> update(@PathVariable Id id, @RequestBody U dto, HttpServletRequest request) throws UnsupportedOperationException {
         throw new UnsupportedOperationException("Update operation is not supported");
     }
 
     // cruD
     @DeleteMapping("/{id}")
-    ResponseEntity<?> delete(@PathVariable Id id) {
+    ResponseEntity<?> delete(@PathVariable Id id, HttpServletRequest request) {
         boolean deleted = service.delete(id);
         if (!deleted) return ResponseEntity.badRequest().body("No se ha podido eliminar el recurso con el id: " + id);
         return ResponseEntity.noContent().build();

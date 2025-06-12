@@ -4,6 +4,7 @@ export class TelInput extends TextInput {
     constructor(input) {
         super(input);
         this.validate = () => {
+            if (!this.shouldValidate()) return true;
             if (this.isEmpty()) return true;
             const val = String(this.input.value).replace(/\s/g, '');
             return /^\d{9}$/.test(val);
@@ -17,8 +18,8 @@ export class TelInput extends TextInput {
         }
     }
 
-    init() {
-        super.init();
+    init(form) {
+        super.init(form);
         this.input.setAttribute('type', 'tel');
         this.input.addEventListener('input', (event) => {
             this.input.value = this.format(this.input.value);

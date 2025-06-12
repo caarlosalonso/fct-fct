@@ -1,5 +1,7 @@
 package es.daw2.fct_fct.modelo;
 
+import java.time.LocalDate;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
@@ -12,20 +14,23 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "v_alumnos")
+@Table(name = "vAlumnos")
 public class vAlumno {
 
     @Id
-    @Column(name = "user_id", nullable = false, columnDefinition = "BIGINT")
+    @Column(name = "user_id")
     private Long id;
 
-    @Column(name = "acronimo" , nullable = false, columnDefinition = "VARCHAR(10)")
+    @Column(name = "nombre")
+    private String name;
+
+    @Column(name = "ciclo")
     private String ciclo;
 
-    @Column(name = "numero" , nullable = false, columnDefinition = "TINYINT")
-    private Short grupo;
+    @Column(name = "grupo")
+    private Integer grupo;
 
-    @Column(name = "fecha_inicio" , nullable = false, columnDefinition = "INT")
-    private Integer año;
+    @Column(name = "year")
+    private LocalDate año;
 
 }

@@ -6,25 +6,34 @@ export class SelectInput extends TextInput {
         this.options = [];
         this.dropdown = null;
         this.input.value = '';
+        this.hiddenValue = '';
         this.validate = () => {
+            if (!this.shouldValidate()) return true;
             if (this.isEmpty()) return true;
-
-            const selectedValue = this.input.value;
-            return this.options.some(option => option.value === selectedValue);
+            return this.options.some(option => option.value === this.hiddenValue);
         };
+
+        this.getValue = () => {
+            return this.hiddenValue;
+        }
     }
 
-    init() {
-        super.init();
+    init(form) {
+        super.init(form);
         this.buildSelect();
         this.createDropdown();
+        this.createOptions();
     }
 
     buildSelect() {
-        const options = this.input.getAttribute('data-options');
-        if (!options) return;
+        const givenOptions = this.input.getAttribute('data-options');
+        if (!givenOptions) {
+            this.options = [];
+            return;
+        }
 
-        options.split(';').forEach(option => {
+        this.options = [];
+        givenOptions.split(';').forEach(option => {
             const [value, label] = option.split(':');
             this.options.push({ value, label });
         });
@@ -32,22 +41,8 @@ export class SelectInput extends TextInput {
 
     createDropdown() {
         this.dropdown = document.createElement('div');
-        this.dropdown.classList.add('dropdown', 'collapsed');
+        this.dropdown.classList.add('dropdown');
         this.parent.appendChild(this.dropdown);
-
-        this.options.forEach(({ value, label }) => {
-            const optionElement = document.createElement('div');
-            optionElement.classList.add('dropdown-option');
-            optionElement.textContent = label;
-
-            optionElement.addEventListener('click', () => {
-                this.input.value = value;
-                this.input.dispatchEvent(new Event('input'));
-                this.hideDropdown();
-            });
-
-            this.dropdown.appendChild(optionElement);
-        });
 
         // Show dropdown on focus
         this.input.addEventListener('focus', () => {
@@ -56,7 +51,37 @@ export class SelectInput extends TextInput {
 
         // Hide dropdown on blur
         this.input.addEventListener('blur', () => {
-            this.hideDropdown();
+            setTimeout(() => {
+                this.hideDropdown();
+            }, 50);
+        });
+    }
+
+    createOptions() {
+        this.options.forEach(({ value, label }) => {
+            const optionElement = document.createElement('div');
+            optionElement.classList.add('dropdown-option');
+            optionElement.textContent = label;
+
+            optionElement.addEventListener('click', () => {
+                this.input.value = label;
+                this.hiddenValue = value;
+                this.states.active = true;
+                this.states.focus = false;
+                this.updateState();
+                this.hideDropdown();
+            });
+
+            this.dropdown.appendChild(optionElement);
+        });
+
+        this.input.addEventListener('input', () => {
+            const searchValue = this.input.value.trim().toLowerCase();
+            this.options.forEach(option => {
+                if (option.label.toLowerCase().includes(searchValue)) {
+                    this.hiddenValue = option.value;
+                }
+            });
         });
     }
 
@@ -76,5 +101,37 @@ export class SelectInput extends TextInput {
             this.input.style.borderBottomRightRadius = this.input.style.borderTopRightRadius;
             this.dropdown.style.display = "none";
         }, 200);
+    }
+
+    updateDropdown(array, interacting = false) {
+        while(this.dropdown && this.dropdown.firstChild) this.dropdown.removeChild(this.dropdown.firstChild);
+        this.options = (!array || !Array.isArray(array)) ? [] : array;
+        this.createOptions();
+
+        if (interacting) {
+            this.showDropdown();
+        }
+    }
+
+    retrack(value) {
+        if (value === null || value === undefined)
+            value = '';
+
+        value = this.format(value);
+
+        this.states.tracked = true;
+        this.states.trackedValue = value;
+        this.setValue(value);
+        this.states.changed = false;
+
+        if (value.length > 0) {
+            this.forceActive();
+        }
+        this.updateState();
+    }
+
+    setValue(value) {
+        this.input.hiddenValue = value;
+        this.input.value = this.options.find(option => option.value === value)?.label || value;
     }
 }

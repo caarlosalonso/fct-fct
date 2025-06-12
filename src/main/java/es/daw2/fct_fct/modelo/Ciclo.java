@@ -1,7 +1,5 @@
 package es.daw2.fct_fct.modelo;
 
-import java.time.LocalDateTime;
-
 import jakarta.persistence.AttributeOverride;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -35,7 +33,4 @@ public class Ciclo extends AbsBaseEntity {
 
     @Column(name = "horas_practicas", nullable = false, columnDefinition = "SMALLINT UNSIGNED")
     private Integer horasPracticas;
-
-    @Column(name = "deleted_at", nullable = true, columnDefinition = "DATETIME DEFAULT CURRENT_TIMESTAMP")
-    private LocalDateTime deletedAt;
 }

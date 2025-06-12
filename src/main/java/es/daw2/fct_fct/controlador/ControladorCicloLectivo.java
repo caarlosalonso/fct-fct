@@ -6,6 +6,7 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,6 +17,9 @@ import es.daw2.fct_fct.modelo.CicloLectivo;
 import es.daw2.fct_fct.modelo.Grupo;
 import es.daw2.fct_fct.servicio.ServicioCicloLectivo;
 import es.daw2.fct_fct.servicio.ServicioGrupo;
+import es.daw2.fct_fct.utils.Role;
+import es.daw2.fct_fct.utils.SessionsManager;
+import jakarta.servlet.http.HttpServletRequest;
 
 
 @RestController
@@ -26,10 +30,11 @@ public class ControladorCicloLectivo extends CrudController<Long, CicloLectivo, 
     private ServicioGrupo servicioGrupo;
 
     @Override
-    ResponseEntity<?> create(@RequestBody CicloLectivoCreateDTO dto) {
+    ResponseEntity<?> create(@RequestBody CicloLectivoCreateDTO dto, HttpServletRequest request) {
         CicloLectivo nuevoCicloLectivo = new CicloLectivo();
         nuevoCicloLectivo.setNombre(dto.nombre());
         nuevoCicloLectivo.setFechaInicio(dto.fechaInicio());
+        nuevoCicloLectivo.setFechaFin(dto.fechaFin());
 
         nuevoCicloLectivo = service.save(nuevoCicloLectivo);
         URI location = URI.create("/api/ciclos-lectivos/" + nuevoCicloLectivo.getId());
@@ -38,12 +43,20 @@ public class ControladorCicloLectivo extends CrudController<Long, CicloLectivo, 
 
     // all ya existe en CrudController
 
+    @GetMapping("/actual")
+    ResponseEntity<?> getById(HttpServletRequest request) {
+        ResponseEntity<?> validationResponse = SessionsManager.isValidSession(request, Role.TUTOR, Role.ALUMNO, Role.COORDINADOR, Role.ADMIN);
+        if (validationResponse != null) return validationResponse;
+
+        Optional<CicloLectivo> cicloLectivoOpt = service.getCicloLectivoActual();
+        if (!cicloLectivoOpt.isPresent()) return ResponseEntity.notFound().build();
+        return ResponseEntity.ok(cicloLectivoOpt.get());
+    }
+
     // getById ya existe en CrudController
 
     @Override
-    ResponseEntity<?> update(@PathVariable Long id, @RequestBody CicloLectivoCreateDTO dto) {
-        System.out.println(dto);
-        
+    ResponseEntity<?> update(@PathVariable Long id, @RequestBody CicloLectivoCreateDTO dto, HttpServletRequest request) {
         Optional<CicloLectivo> cicloLectivoOpt = service.getById(id);
         if (!cicloLectivoOpt.isPresent()) {
             return ResponseEntity.badRequest().body("No se encontró el ciclo lectivo con el id: " + id);
@@ -63,7 +76,7 @@ public class ControladorCicloLectivo extends CrudController<Long, CicloLectivo, 
     }
 
     @Override
-    ResponseEntity<?> delete(@PathVariable Long id) {
+    ResponseEntity<?> delete(@PathVariable Long id, HttpServletRequest request) {
         Optional<CicloLectivo> cicloLectivoOpt = service.getById(id);
         if (!cicloLectivoOpt.isPresent()) {
             return ResponseEntity.badRequest().body("No se encontró el ciclo lectivo con el id: " + id);

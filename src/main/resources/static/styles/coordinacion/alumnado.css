@@ -9,40 +9,6 @@
     --cell-height: 100px;
 }
 
-/* ---------------------------------------------------------------------------- */
-/*                                  NAVIGATION                                  */
-/* ---------------------------------------------------------------------------- */
-#navbar {
-    background-color: var(--background-color);
-    border-bottom: 1px solid #777777;
-    height: 70px;
-    margin-bottom: 15px;
-}
-
-.navigation.nav {
-    padding: 0px 15px;
-    display: flex;
-    justify-content: left;
-    align-items: center;
-    gap: 15px;
-    height: 100%;
-    width: 100%;
-}
-
-.navigation.nav-link {
-    color: var(--text-color);
-    background-color: #99ffff33;
-    border-radius: var(--border-radius);
-    text-decoration: none;
-    padding: 10px 15px;
-    font-size: 18px;
-    transition: 400ms ease-in-out;
-
-    &.active {
-        background-color: #99ffff66;
-        font-weight: bold;
-    }
-}
 
 /* ---------------------------------------------------------------------------- */
 /*                                CURSO SELECTION                               */
@@ -56,7 +22,7 @@
     gap: 30px;
 }
 
-.curso.nav-link {
+.grupo.nav-link {
     color: var(--text-color);
 
     &:hover {
@@ -187,25 +153,11 @@
     text-align: justify;
 }
 
-#forgot-password {
-    background-color: orange;
-
-    &:hover {
-        background-color: rgb(180, 117, 0);
-    }
-}
-
-.collapsed {
-    width: 0px;
-    margin: 0px;
-    padding: 0px;
-    border: 0px;
-}
 
 /* ---------------------------------------------------------------------------- */
-/*                                   SET INFO                                   */
+/*                                  SHOW INFO                                   */
 /* ---------------------------------------------------------------------------- */
-#set-info {
+#show-info {
     background-color: var(--background-color);
     border-radius: var(--border-radius);
     color: var(--text-color);
@@ -223,6 +175,31 @@
     border-bottom: 1px solid #777777;
     padding: 10px 0px 25px 0px;
     color: var(--text-color);
+}
+
+#alumno-info.form-container {
+    background: var(--background-color);
+    height: 100%;
+}
+
+label.label {
+    font-weight: bold;
+    color: #70a9ff;
+    top: -13px;
+    font-size: 15px;
+    background: var(--background-color);
+}
+
+p.data {
+    background: var(--background-color);
+    border: 1px solid #dee2e6;
+    border-radius: 6px;
+    min-height: 38px;
+    width: 100%;
+    padding: 0.5rem 0.75rem;
+    margin-bottom: 0;
+    font-size: 1rem;
+    color: var(--color-text);
 }
 
 

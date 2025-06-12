@@ -1,0 +1,137 @@
+/* ---------------------------------------------------------------------------- */
+/*                                   VARIABLES                                  */
+/* ---------------------------------------------------------------------------- */
+:root {
+    --background-color: #505050;
+    --background-color-invisible: #50505000;
+    --text-color: #ffffff;
+}
+
+#main-content {
+    width: 95%;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    transition: 200ms ease-in-out;
+}
+
+/* ---------------------------------------------------------------------------- */
+/*                                CURSO ACTUAL                                  */
+/* ---------------------------------------------------------------------------- */
+#curso-actual {
+    background-color: #606060;
+    border-radius: 15px 15px 0px 0px;
+    padding: 15px 15px 0px 15px;
+}
+
+.ciclo-info {
+    font-size: 1.2rem;
+}
+
+/* ---------------------------------------------------------------------------- */
+/*                                LISTAR SECTION                               */
+/* ---------------------------------------------------------------------------- */
+#listar {
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    justify-content: space-around;
+    background-color: var(--background-color);
+    border-radius: 0px;
+    padding: 10px 0px;
+    gap: 10px 0px;
+}
+
+.tutoria-item {
+    color: #000000;
+    display: grid;
+    grid-template-columns: auto auto;
+    width: 200px;
+    background-color: #86c586;
+    border-radius: var(--border-radius);
+    padding: var(--border-radius);
+
+    &.pasada {
+        background-color: #c58686;
+    }
+
+    &.add {
+        background-color: #707070;
+    }
+}
+
+.svg {
+    width: 100%;
+    max-height: 35px;
+}
+
+.cell-value {
+    grid-column: auto / span 2;
+}
+
+.edit-svg {
+    background-color: #ddabdd;
+    fill: #000000;
+    border-radius: 10px;
+    transition: 300ms ease-in-out;
+
+    &:hover {
+        cursor: pointer;
+        background-color: #b87ab8;
+        fill: #ffffff;
+    }
+}
+
+.delete-svg {
+    background-color: #ffbaba;
+    fill: #000000;
+    border-radius: 10px;
+    transition: 300ms ease-in-out;
+
+    &:hover {
+        cursor: pointer;
+        background-color: #ff7a7a;
+        fill: #ffffff;
+    }
+}
+
+.add {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    &:hover {
+        cursor: pointer;
+
+        & .add-svg {
+            fill: #00ff00;
+        }
+    }
+}
+
+.add-svg {
+    max-width: 35px;
+    max-height: 35px;
+    fill: #ffffff;
+    transition: 300ms ease-in-out;
+}
+
+/* ---------------------------------------------------------------------------- */
+/*                                   CREAR                                   */
+/* ---------------------------------------------------------------------------- */
+#crear-section {
+    background-color: var(--background-color);
+    border-radius: 0px 0px var(--border-radius) var(--border-radius);
+    padding: var(--border-radius);
+}
+
+
+/* ---------------------------------------------------------------------------- */
+/*                                     MEDIA                                    */
+/* ---------------------------------------------------------------------------- */
+@media (max-width: 600px) {
+    #main-content {
+        width: 100%;
+        margin: 0;
+    }
+}

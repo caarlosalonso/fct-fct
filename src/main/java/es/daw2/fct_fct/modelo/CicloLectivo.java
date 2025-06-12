@@ -1,7 +1,6 @@
 package es.daw2.fct_fct.modelo;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 
 import jakarta.persistence.AttributeOverride;
 import jakarta.persistence.Column;
@@ -27,6 +26,6 @@ public class CicloLectivo extends AbsBaseEntity {
     @Column(name = "fecha_inicio", nullable = false, columnDefinition = "DATE")
     private LocalDate fechaInicio;
 
-    @Column(name = "deleted_at", nullable = true, columnDefinition = "DATETIME DEFAULT CURRENT_TIMESTAMP")
-    private LocalDateTime deletedAt;
+    @Column(name = "fecha_fin", nullable = true, columnDefinition = "DATE")
+    private LocalDate fechaFin;
 }

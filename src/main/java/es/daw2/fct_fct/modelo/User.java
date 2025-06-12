@@ -2,6 +2,7 @@ package es.daw2.fct_fct.modelo;
 
 import java.time.LocalDateTime;
 
+import es.daw2.fct_fct.utils.Role;
 import jakarta.persistence.AttributeOverride;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -40,11 +41,4 @@ public class User extends AbsBaseEntity {
 
     @Column(name = "updated_password_at", nullable = true, columnDefinition = "DATETIME DEFAULT NULL")
     private LocalDateTime updatedPasswordAt;
-
-    public enum Role {
-        ADMIN,
-        TUTOR,
-        COORDINADOR,
-        ALUMNO
-    }
 }

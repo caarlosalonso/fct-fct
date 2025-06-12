@@ -4,12 +4,13 @@ export class PasswordInput extends TextInput {
     constructor(input) {
         super(input);
         this.validate = () => {
+            if (!this.shouldValidate()) return true;
             return true;
         }
     }
 
-    init() {
-        super.init();
+    init(form) {
+        super.init(form);
         this.buildPassword();
     }
 

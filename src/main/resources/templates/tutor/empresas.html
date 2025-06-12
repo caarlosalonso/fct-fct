@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <link rel="icon" type="image/png" sizes="32x32" href="https://site.educa.madrid.org/ies.arquitectoventurarodriguez.boadilla//wp-content/uploads/ies.arquitectoventurarodriguez.boadilla/2023/05/cropped-logo-ventura-rodriguez.jpg">
+    <link rel="icon" type="image/x-icon" href="https://site.educa.madrid.org/ies.arquitectoventurarodriguez.boadilla//wp-content/uploads/ies.arquitectoventurarodriguez.boadilla/2023/05/cropped-logo-ventura-rodriguez.jpg">
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4Q6Gf2aSP4eDXB8Miphtr37CMZZQ5oXLH2yaXMJ2w8e2ZtHTl7GptT4jmndRuHDT" crossorigin="anonymous">
+    <link rel="stylesheet" href="/styles/global.css">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/js/bootstrap.bundle.min.js" integrity="sha384-j1CDi7MgGQ12Z7Qab0qlWQ/Qqz24Gc6BM0thvEMVjHnfYGF0rmFCozFSxQBxwHKO" crossorigin="anonymous"></script>
+    <script type="module" src="/scripts/global.js"></script>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Empresas - Tutor</title>
+
+    <link rel="stylesheet" href="/styles/tutor/empresas.css">
+
+    <link rel="stylesheet" href="/styles/navigation.css">
+</head>
+<body>
+    <header>
+        <nav class="navbar navbar-expand-md">
+            <div class="container-fluid">
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav ms-auto">
+                        <li class="nav-item">
+                            <a href="/index" class="nav-link">Inicio</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="/cursos" class="nav-link">Cursos</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="/fcts" class="nav-link">FCTs</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="/tutorias" class="nav-link">Tutorías</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="/empresas" class="nav-link selected">Empresas</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="/reviews" class="nav-link">Reseñas</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="/alumnado" class="nav-link">Alumnado</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="/perfil" class="nav-link">Perfil</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+    <main>
+        <section id="display-section">
+            <div id="display-grid-wrapper">
+                <!-- Generated automatically -->
+            </div>
+            
+        </section>
+
+        <section id="empresa-section" class="section oculto">
+            <form id="empresa-form" method="POST" submit-text="Actualizar empresa">
+                <div class="inputs form-container">
+                    <div class="instance form-input grouped-inputs">
+                        <div class="form-group form-input">
+                            <input type="text" id="empresa-nombre" name="nombre" class="text-based input" label="Nombre de Empresa" data-required="true">
+                        </div>
+                    </div>
+                    <div class="instance form-input grouped-inputs">
+                        <div class="form-group form-input">
+                            <input type="text" id="empresa-cif" name="cif" class="text-based input" label="CIF" data-required="true">
+                        </div>
+                        <div class="form-group form-input">
+                            <input type="text" id="empresa-telefono" name="phone" class="text-based input" label="Teléfono" data-required="true" >
+                        </div>
+                        <div class="form-group form-input">
+                            <input type="email" id="empresa-email" name="email" class="text-based input" label="Email" data-required="true">
+                        </div>
+                    </div>
+                    <div class="instance form-input grouped-inputs">
+                        <div class="form-group form-input">
+                            <input type="text" id="empresa-sector" name="sector" class="text-based input" label="Sector" data-options="Informática:Informática;Comercio:Comercio;Otro:Otro" data-required="true" data-show-validity="true">
+                        </div>
+                        <div class="form-group form-input">
+                            <input type="text" id="empresa-address" name="address" class="text-based input" label="Dirección" data-required="true">
+                        </div>
+                    </div>
+                    <div class="instance form-input grouped-inputs">
+                        <div class="form-group form-input">
+                            <input type="text" id="persona_contacto" name="persona_contacto" class="text-based input" label="Persona de Contacto" data-required="true">
+                        </div>
+                        <div class="form-group form-input">
+                            <input type="date" id="fecha_contacto" name="fecha_contacto" class="text-based input" label="Fecha de Contacto">
+                        </div>
+                    </div>
+                    <div class="instance form-input grouped-inputs">
+                        <div class="form-group form-input">
+                            <input type="text" id="numero_convenio" name="numero_convenio" class="text-based input" label="Número Convenio">
+                        </div>
+                        <div class="form-group form-input">
+                            <input type="select" id="propuesta_por" name="propuesta_por" class="text-based input" label="Propuesta por">
+                        </div>
+                    </div>
+                    <div class="instance form-input grouped-inputs">
+                        <div class="form-group form-input">
+                            <input type="text" id="observaciones" name="observaciones" class="text-based input" label="Observaciones">
+                        </div>
+                    </div>
+                    <div class="instance form-input grouped-inputs">
+                        <div class="form-group form-input">
+                            <input type="text" id="numero_plazas" name="numero_plazas" class="text-based input" label="Número de Plazas">
+                        </div>
+                        <div class="form-group form-input">
+                            <input type="select" id="empresa-estado" name="empresa_estado" class="text-based input" label="Estado" data-required="true" data-options="PENDIENTE:Pendiente;ACEPTADO:Aprobado;DENEGADO:Denegado" data-show-validity="true">
+                        </div>
+                    </div>
+                </div>
+                <div class="form-error"></div>
+            </form>
+        </section>
+        <div id="add-empresa-btn-wrapper">
+            <svg id="add-empresa-btn" viewBox="0 0 48 48">
+                <rect x="0" y="18" width="48" height="12" rx="6" fill="#198754"/>
+                <rect x="18" y="0" width="12" height="48" rx="6" fill="#198754"/>
+                <path d="M 44 20 L 28 20 L 28 4 C 28 2 26 0 24 0 S 20 2 20 4 L 20 20 L 4 20 C 2 20 0 22 0 24 S 2 28 4 28 L 20 28 L 20 44 C 20 46 22 48 24 48 S 28 46 28 44 L 28 28 L 44 28 C 46 28 48 26 48 24 S 46 20 44 20 Z"/>
+            </svg>
+        </div>
+    </main>
+
+    <script type="module" src="/scripts/tutor/empresas.js"></script>
+</body>
+</html>

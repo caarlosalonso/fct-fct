@@ -4,17 +4,16 @@ import { Input } from './../classes/Input.js';
 window.addEventListener('FormsCreated', () => {
     const form = Form.getForm('password-form');
 
-    if (!! form) {
-        console.error('Password form found');
+    if (!form) {
+        console.error('Password form not found');
         return;
     }
 
-    const currentPassword = Input.getInput('current-password');
-    const newPassword = Input.getInput('new-password');
-    const confirmPassword = Input.getInput('confirm-password');
+    const currentPassword = form.getInput('current-password');
+    const newPassword = form.getInput('new-password');
+    const confirmPassword = form.getInput('confirm-password');
 
     form.onsubmit = (event) => {
-
         if (newPassword.getValue() !== confirmPassword.getValue()) {
             form.showError('New password and confirm password do not match.');
             return;
@@ -36,7 +35,7 @@ window.addEventListener('FormsCreated', () => {
             confirmPassword: confirmPassword.getValue()
         };
 
-        fetch(`/api/user/password/${id}`, {
+        fetch(`/api/users/password`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -49,6 +48,7 @@ window.addEventListener('FormsCreated', () => {
                 currentPassword.setValue('');
                 newPassword.setValue('');
                 confirmPassword.setValue('');
+                form.submitFinish();
             } else {
                 return response.json().then((error) => {
                     form.showError(error.message || 'An error occurred while changing the password.');
@@ -62,62 +62,28 @@ window.addEventListener('FormsCreated', () => {
 
     currentPassword.validate = () => {
         if (currentPassword.isEmpty()) return true;
-        if (currentPassword.getValue() === newPassword.getValue()) {
-            newPassword.showValidity();     //  Force revalidation of new password
-            return false;
-        }
-        return true;
+        return currentPassword.getValue() !== newPassword.getValue();
     }
 
     newPassword.validate = () => {
         if (newPassword.isEmpty()) return true;
         if (newPassword.getLength() < 8) return false;
-        if (newPassword.getValue() === currentPassword.getValue()) {
-            currentPassword.showValidity();     //  Force revalidation of current password
-            return false;
-        }
-        if (newPassword.getValue() !== confirmPassword.getValue()) {
-            confirmPassword.showValidity();     //  Force revalidation of confirm password
-            return false;
-        }
-        return true;
+        if (newPassword.getValue() === currentPassword.getValue()) return false;
+        return newPassword.getValue() === confirmPassword.getValue();
     }
 
     confirmPassword.validate = () => {
         if (confirmPassword.isEmpty()) return true;
-        if (confirmPassword.getValue() !== newPassword.getValue()) {
-            newPassword.showValidity();     //  Force revalidation of new password
-            return false;
-        }
-        return true;
+        return confirmPassword.getValue() === newPassword.getValue();
     }
-});
 
-const alumnoId = document.getElementById('alumno-id').value;
+    currentPassword.input.addEventListener('input', updateValidity);
+    newPassword.input.addEventListener('input', updateValidity);
+    confirmPassword.input.addEventListener('input', updateValidity);
 
-document.getElementById('alumno-profile-form').addEventListener('submit', async function(e) {
-    e.preventDefault();
-
-    const form = e.target;
-    const data = {
-        nombre: form.nombre.value,
-        email: form.email.value,
-        telefono: form.telefono.value,
-        nia: form.nia.value,
-        dni: form.dni.value,
-        nuss: form.nuss.value
-    };
-
-    // Cambia la URL por la de tu API REST
-    const response = await fetch('/api/alumnos/', {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(data)
-    });
-
-    if (response.ok) {
-        alert('Datos guardados correctamente');
-    } else {
-        alert('Error al guardar los datos');
+    function updateValidity() {
+        currentPassword.showValidity();
+        newPassword.showValidity();
+        confirmPassword.showValidity();
     }
 });

@@ -1,0 +1,129 @@
+#error-message-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+}
+
+.cross-svg {
+    max-width: 50px;
+    max-height: 50px;
+    fill: #ff0000;
+    animation: error-svg 1000ms;
+}
+
+@keyframes error-svg {
+    0% {
+        fill: #ffffff;
+        transform: rotate(15deg) scale(1.5);
+    }
+    100% {
+        fill: #ff0000;
+        transform: rotate(0deg) scale(1);
+    }
+}
+
+.section {
+    background-color: var(--background-color);
+    border-radius: var(--border-radius);
+    width: 90%;
+    margin: 0 auto;
+    padding: 15px;
+}
+
+.cell {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+    position: relative;
+    padding: 1px;
+    min-width: 250px;
+    min-height: 100px;
+
+    & > * {
+        transition: 400ms ease-in-out;
+    }
+
+    &.hoverable {
+        & > * {
+            z-index: 2;
+        }
+
+        &:hover > * {
+            transition: 300ms cubic-bezier(.5,-2,.5,2);
+            transform: scale(1.1);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            z-index: 5;
+        }
+    }
+}
+
+.cell-content {
+    gap: 10px;
+    border-radius: var(--border-radius);
+    background-color: var(--background-color);
+    width: 250px;
+    height: 100px;
+    border-radius: 8px;
+    padding: 5px;
+    &:hover {
+        cursor: pointer;
+    }
+
+    &.empty-cell {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 10px;
+
+        &:hover {
+            cursor: pointer;
+            
+            & > .plus-svg {
+                fill: #c3ffdc;
+            }
+        }
+    }
+
+    &.filled-cell {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+    }
+}
+
+.plus-svg {
+    max-width: 30px;
+    max-height: 30px;
+    transition: 300ms ease-in-out;
+    fill: #ffffff;
+    width: 100%;
+}
+
+.cell-title {
+    font-size: 1.1rem;
+    font-weight: bold;
+    margin: 0;
+}
+
+.cell-subtitle {
+    font-weight: normal;
+    font-style: italic;
+    font-size: 0.90rem;
+    margin: 0;
+}
+
+#coordinadores-section {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    width: 90%;
+    margin: 0px auto 30px auto;
+    padding: 10px;
+}

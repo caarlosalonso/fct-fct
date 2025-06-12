@@ -40,7 +40,7 @@ public class FirebaseConfig {
 
             FirebaseOptions options = FirebaseOptions.builder()
                 .setCredentials(GoogleCredentials.fromStream(serviceAccount))
-                .setStorageBucket("tfc-fct-3b0fa.appspot.com")
+                .setStorageBucket("tfc-fct-3b0fa.firebasestorage.app")
                 .build();
 
             if (FirebaseApp.getApps().isEmpty()) {

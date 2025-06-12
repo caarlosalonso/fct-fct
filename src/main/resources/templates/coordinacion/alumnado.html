@@ -14,116 +14,103 @@
     <title>Coordinación - Alumnado</title>
 
     <link rel="stylesheet" href="/styles/coordinacion/alumnado.css">
+
+    <link rel="stylesheet" href="/styles/navigation.css">
 </head>
 <body>
     <header>
-        <nav id="navbar">
-            <ul class="navigation nav">
-                <li class="navigation nav-item">
-                    <a href="/ciclos" class="navigation nav-link">Ciclos</a>
-                </li>
-                <li class="navigation nav-item">
-                    <a href="/alumnado" class="navigation nav-link active">Alumnado</a>
-                </li>
-            </ul>
+        <nav class="navbar navbar-expand-md">
+            <div class="container-fluid">
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav ms-auto">
+                        <li class="nav-item">
+                            <a href="/index" class="nav-link">Inicio</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="/ciclos" class="nav-link">Ciclos</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="/alumnado" class="nav-link selected">Alumnado</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="/tutores" class="nav-link">Tutores</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="/stats" class="nav-link">Estadísticas</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="/perfil" class="nav-link">Perfil</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
         </nav>
     </header>
-    <main id="loading">
-        <div class="loading-container">
-            <div class="spinner spinner-border text-primary" role="status">
+    <main id="main-content">
+        <section id="ciclo-lectivo-selection">
+            <div class="spinner spinner-border color-primary">
                 <span class="visually-hidden">Cargando...</span>
             </div>
-        </div>
-    </main>
-    <main id="main-content">
-        <section id="curso-selection">
-            <ul class="cursos nav nav-tabs" id="cursos">
-                <!-- Aquí se añadirán los cursos dinámicamente -->
-            </ul>
+        </section>
+        <section id="grupos-ciclos-selection">
+            <div class="spinner spinner-border color-primary">
+                <span class="visually-hidden">Cargando...</span>
+            </div>
         </section>
         <section id="alumnos-section">
             <div id="alumnos-list">
-                <div id="add" class="cell">
-                    <svg id="svg-add" fill="#ffffff" viewBox="0 0 48 48" width="40px">
-                        <g>
-                            <path d="M 44 20 L 28 20 L 28 4 C 28 2 26 0 24 0 S 20 2 20 4 L 20 20 L 4 20 C 2 20 0 22 0 24 S 2 28 4 28 L 20 28 L 20 44 C 20 46 22 48 24 48 S 28 46 28 44 L 28 28 L 44 28 C 46 28 48 26 48 24 S 46 20 44 20 Z"/>
-                        </g>
-                    </svg>
-                </div>
                 <div id="alumnos-list-container">
                     <div id="alumnos-list-scroll">
                         <!-- Aquí se añadirán los alumnos dinámicamente -->
                     </div>
                 </div>
             </div>
-
-            <div id="set-info">
+            <div id="show-info">
                 <h1 id="titulo">Información del alumno</h1>
-                <form id="alumno-form" method="POST" submit-text="Crear alumno">
-                    <div id="inputs" class="form-container">
-                        <div class="instance form-input grouped-inputs">
-                            <div class="form-group form-input">
-                                <input type="text" id="nombre" name="nombre" class="text-based input" label="Introduce su nombre" data-required="true">
-                            </div>
-                        </div>
-
-                        <div class="instance form-input grouped-inputs">
-                            <div class="form-group form-input">
-                                <input type="email" name="email" id="email" class="text-based input" label="Introduce su correo" data-show-validity="true">
-                            </div>
-
-                            <div class="form-group form-input">
-                                <input type="tel" name="phone" id="phone" class="text-based input" label="Introduce su teléfono" data-show-validity="true">
-                            </div>
-                        </div>
-
-                        <div class="instance form-input grouped-inputs">
-                            <div class="form-group form-input">
-                                <input type="text" name="nia" id="nia" class="text-based input" label="Introduce su NIA" data-show-validity="true">
-                            </div>
-
-                            <div class="form-group form-input">
-                                <input type="dni" name="dni" id="dni" class="text-based input" label="Introduce su DNI" data-show-validity="true">
-                            </div>
-
-                            <div class="form-group form-input">
-                                <input type="text" name="nuss" id="nuss" class="text-based input" label="Introduce su NUSS" data-show-validity="true">
-                            </div>
-                        </div>
-
-                        <div class="instance form-input grouped-inputs">
-                            <div class="form-group form-input">
-                                <input type="file" name="anexoOcho" id="anexoOcho" class="input" label="Anexo 8" accept=".pdf">
-                            </div>
-
-                            <div class="form-group form-input">
-                                <input type="file" name="cv" id="cv" class="input" label="Curriculum Vitae" accept=".pdf">
-                            </div>
-                        </div>
-
-                        <div class="instance form-input grouped-inputs">
-                            <div class="form-group form-input">
-                                <input type="text" name="empresa" id="empresa" class="text-based input" label="Introduce su Empresa">
-                            </div>
-                        </div>
-
-                        <div class="instance form-input grouped-inputs">
-                            <div class="form-group form-input">
-                                <input type="text" name="tutorEmpresa" id="tutorEmpresa" class="text-based input" label="Introduce su Tutor de Empresa">
-                            </div>
-                        </div>
-
-                        <div class="instance form-input grouped-inputs">
-                            <div class="form-group form-input">
-                                <input type="email" name="tutorEmpresaEmail" id="tutorEmpresaEmail" class="text-based input" label="Correo del Tutor de Empresa" data-show-validity="true">
-                            </div>
-                            <div class="form-group form-input">
-                                <input type="tel" name="tutorEmpresaPhone" id="tutorEmpresaPhone" class="text-based input" label="Teléfono del Tutor de Empresa" data-show-validity="true">
-                            </div>
+                <div id="alumno-info" class="form-container rounded p-4">
+                    <div class="instance form-input grouped-inputs mb-3">
+                        <div class="form-group form-input mb-2">
+                            <label for="nombre" class="label">Nombre:</label>
+                            <p id="nombre" class="data"></p>
                         </div>
                     </div>
 
-                </form>
+                    <div class="instance form-input grouped-inputs mb-3 d-flex gap-3">
+                        <div class="form-group form-input flex-fill">
+                            <label for="email" class="label">Correo:</label>
+                            <p id="email" class="data"></p>
+                        </div>
+                        <div class="form-group form-input flex-fill">
+                            <label for="phone" class="label">Teléfono:</label>
+                            <p id="phone" class="data"></p>
+                        </div>
+                    </div>
+
+                    <div class="instance form-input grouped-inputs mb-3 d-flex gap-3">
+                        <div class="form-group form-input flex-fill">
+                            <label for="nia" class="label">NIA:</label>
+                            <p id="nia" class="data"></p>
+                        </div>
+                        <div class="form-group form-input flex-fill">
+                            <label for="dni" class="label">DNI:</label>
+                            <p id="dni" class="data"></p>
+                        </div>
+                        <div class="form-group form-input flex-fill">
+                            <label for="nuss" class="label">NUSS:</label>
+                            <p id="nuss" class="data"></p>
+                        </div>
+                    </div>
+
+                    <div class="instance form-input grouped-inputs mb-3">
+                        <div class="form-group form-input">
+                            <label for="address" class="label">Dirección:</label>
+                            <p id="address" class="data"></p>
+                        </div>
+                    </div>
+                </div>
             </div>
         </section>
     </main>

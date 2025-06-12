@@ -5,8 +5,10 @@
     --border-radius: 12px;
     --margin-asterisk: 3px;
 
-    --primary-color: #2ad630;
-    --secondary-color: #6156fd;
+    --primary-color-rgb: 138, 132, 219;
+    --primary-color: rgb(var(--primary-color-rgb));
+    --secondary-color-rgb: 219, 132, 193;
+    --secondary-color: rgb(var(--secondary-color-rgb));
     --background-color: #303030;
     --text-color: #ffffff;
     --border-color: #eeeeee;
@@ -213,7 +215,7 @@ input.text-based {
     transition: 300ms ease-in-out;
     width: 200px;
 
-    &#submit {
+    &.submit-button {
         background-color: #00d107;
 
         &:hover {
@@ -221,7 +223,7 @@ input.text-based {
         }
     }
 
-    &#delete {
+    &.delete-button {
         background-color: #ff4949;
 
         &:hover {
@@ -387,6 +389,169 @@ input.password.text-based {
     &:hover {
         background-color: var(--focus-color);
         color: #000000;
+    }
+}
+
+
+/* ---------------------------------------------------------------------------- */
+/*                              TOGGLE SWITCH STYLES                            */
+/* ---------------------------------------------------------------------------- */
+.form-input {
+    & .toggle-wrapper {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+    }
+}
+
+.label {
+    &.toggle-label {
+        position: static;
+        transform: none;
+        background-color: transparent;
+        font-size: 1rem;
+        margin: 0;
+        padding: 0;
+        left: auto;
+        flex-shrink: 0;
+    }
+}
+
+.toggle-container {
+    display: inline-block;
+    cursor: pointer;
+    user-select: none;
+    outline: none;
+    transition: opacity 0.3s ease-in-out;
+    flex-shrink: 0;
+
+    &:focus {
+        outline: 2px solid var(--focus-color);
+        outline-offset: 2px;
+        border-radius: var(--border-radius);
+    }
+
+    &.frozen {
+        cursor: not-allowed;
+        opacity: 0.6;
+
+        & .toggle-track {
+            border-color: var(--frozen-color);
+            background-color: var(--disabled-color);
+        }
+
+        & .toggle-thumb {
+            background-color: var(--background-color);
+        }
+    }
+
+    &:hover {
+        & .toggle-track:not(.frozen) {
+            box-shadow: 0 0 0 8px rgba(var(--primary-color-rgb), 0.1);
+            border-color: var(--focus-color);
+        }
+        
+        & .toggle-track.active:not(.frozen) {
+            background-color: var(--secondary-color);
+            border-color: var(--secondary-color);
+        }
+        
+        & .toggle-thumb:not(.frozen) {
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+        }
+    }
+
+    &:active {
+        & .toggle-thumb:not(.frozen) {
+            transform: scale(0.95);
+        }
+        
+        & .toggle-thumb.active:not(.frozen) {
+            transform: translateX(24px) scale(0.95);
+        }
+    }
+
+    &.required {
+        & .toggle-track {
+            border-color: var(--required-color);
+        }
+    }
+
+    &.changed {
+        & .toggle-track {
+            border-color: var(--changed-color);
+            box-shadow: 0 0 0 2px rgba(var(--changed-color), 0.2);
+        }
+    }
+
+    &.success {
+        & .toggle-track.active {
+            background-color: var(--success-color);
+            border-color: var(--success-color);
+        }
+    }
+
+    &.error {
+        & .toggle-track.active {
+            background-color: var(--error-color);
+            border-color: var(--error-color);
+        }
+    }
+}
+
+.toggle-track {
+    width: 48px;
+    height: 24px;
+    background-color: var(--background-color);
+    border-radius: var(--border-radius);
+    position: relative;
+    transition: background-color 0.3s ease-in-out, border-color 0.3s ease-in-out;
+    border: 1px solid var(--border-color);
+
+    &.active {
+        background-color: var(--primary-color);
+        border-color: var(--primary-color);
+    }
+}
+
+.toggle-thumb {
+    width: 20px;
+    height: 20px;
+    background-color: var(--text-color);
+    border-radius: 50%;
+    position: absolute;
+    top: 1px;
+    left: 1px;
+    transition: transform 0.3s ease-in-out, box-shadow 0.2s ease-in-out;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+
+    &.active {
+        transform: translateX(24px);
+        background-color: var(--text-color);
+    }
+}
+
+@media (max-width: 768px) {
+    .toggle-track {
+        width: 44px;
+        height: 22px;
+    }
+
+    .toggle-thumb {
+        width: 18px;
+        height: 18px;
+        
+        &.active {
+            transform: translateX(22px);
+        }
+    }
+
+    .toggle-container {
+        &:active {
+            & .toggle-thumb.active:not(.frozen) {
+                transform: translateX(22px) scale(0.95);
+            }
+        }
     }
 }
 

@@ -7,11 +7,18 @@ export class TextInput extends Input {
             return this.states.tracked && this.input.value !== this.states.trackedValue;
         }
         this.getValue = function() {
-            return this.input.value.trim();
+            let val = this.input.value;
+            if (val === null || val === undefined) return null;
+            return val.trim();
+        }
+        this.validate = function() {
+            if (!this.shouldValidate()) return true;
+            return true;
         }
     }
 
-    init() {
+    init(form) {
+        super.init(form);
         this.buildLabel();
         this.buildInput();
         this.updateState();
@@ -73,7 +80,7 @@ export class TextInput extends Input {
      *
      * @param {string} value New value to track changes
      */
-    retrack(value, override = true) {
+    retrack(value) {
         if (value === null || value === undefined)
             value = '';
 
@@ -81,13 +88,13 @@ export class TextInput extends Input {
 
         this.states.tracked = true;
         this.states.trackedValue = value;
-        if (override) {
-            this.input.value = value;
-            this.states.changed = false;
-        }
-        this.states.active = !this.isEmpty();
+        this.input.value = value;
+        this.states.changed = false;
 
-        this.checkChange();
+        if (value.length > 0) {
+            this.forceActive();
+        }
+        this.updateState();
     }
 
     undoChanges() {

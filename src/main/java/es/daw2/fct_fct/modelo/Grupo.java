@@ -1,9 +1,5 @@
 package es.daw2.fct_fct.modelo;
 
-import java.time.LocalDateTime;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import jakarta.persistence.AttributeOverride;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -25,14 +21,16 @@ import lombok.NoArgsConstructor;
 public class Grupo extends AbsBaseEntity {
 
     @ManyToOne
-    @JsonIgnore
     @JoinColumn(name = "ciclo_id")
     private Ciclo ciclo;
 
     @ManyToOne
-    @JsonIgnore
     @JoinColumn(name = "ciclo_lectivo_id")
     private CicloLectivo cicloLectivo;
+
+    @ManyToOne
+    @JoinColumn(name = "tutor_id")
+    private Tutor tutor;
 
     @Column(name = "numero", nullable = false, columnDefinition = "TINYINT UNSIGNED")
     private Short numero;
@@ -42,7 +40,4 @@ public class Grupo extends AbsBaseEntity {
 
     @Column(name = "anexo_ocho", nullable = true, columnDefinition = "VARCHAR(255)")
     private String anexoOcho;
-
-    @Column(name = "deleted_at", nullable = true, columnDefinition = "DATETIME DEFAULT CURRENT_TIMESTAMP")
-    private LocalDateTime deletedAt;
 }
