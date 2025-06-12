@@ -73,7 +73,7 @@ function build(empresas, fcts, cursos, cicloLectivoActual) {
         return;
     }
 
-    cursos.filter((curso) => {
+    cursos.forEach((curso) => {
         const cursoDiv = document.createElement('div');
         cursoDiv.classList.add('curso');
         section.appendChild(cursoDiv);
@@ -196,5 +196,10 @@ function build(empresas, fcts, cursos, cicloLectivoActual) {
         reviewDiv.appendChild(formDiv);
     });
 
-    
+    const forms = document.querySelectorAll(`form`);
+    forms.forEach(form => {
+        new Form(form).init();
+        
+    });
+
 }
