@@ -21,7 +21,7 @@ function promise() {
 }
 
 async function fetchReviews() {
-    const response = await fetch('/api/view-reviews/all');
+    const response = await fetch('/api/reviews/all');
     if (response.status === 204) return [];
     if (!response.ok) throw new Error('Error al obtener las reseñas');
     return await response.json();
