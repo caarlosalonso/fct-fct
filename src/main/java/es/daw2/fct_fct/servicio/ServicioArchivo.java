@@ -28,6 +28,8 @@ public class ServicioArchivo extends AbstractService<Long, VistaAlumno, VistaAlu
             .filter(v -> v.getUserId() == id)
             .toList();
 
+        System.out.println(vas);
+
         if (vas.isEmpty()) throw new IllegalArgumentException("El usuario no es un alumno válido");
 
         Optional<CicloLectivo> cicloLectivoOpt = servicioCicloLectivo.getCicloLectivoActual();
@@ -39,7 +41,7 @@ public class ServicioArchivo extends AbstractService<Long, VistaAlumno, VistaAlu
             .filter(v -> v.getCicloLectivoId() == cicloLectivoOpt.get().getId())
             .findFirst();
 
-        if (va.isEmpty()) throw new IllegalArgumentException("El usuario no es un alumno válido");
+        if (va.isEmpty()) throw new IllegalArgumentException("El usuario no es un alumno válido 2");
 
         VistaAlumno user = va.get();
 

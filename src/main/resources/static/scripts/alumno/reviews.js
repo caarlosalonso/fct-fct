@@ -49,4 +49,8 @@ function build(empresas, fcts, cursos) {
     console.log('Empresas:', empresas);
     console.log('FCTs:', fcts);
     console.log('Cursos:', cursos);
+
+    empresas.filter((empresa) => {
+        
+    })
 }
