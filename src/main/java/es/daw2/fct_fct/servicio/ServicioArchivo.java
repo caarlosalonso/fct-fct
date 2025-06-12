@@ -74,12 +74,13 @@ public class ServicioArchivo extends AbstractService<Long, User, RepositorioUser
             ),
             String.format("%s de %s e ha subido un nuevo %s para sus prácticas.\nPor favor, revise el archivo adjunto.",
                 user.getName(),
-                String.format("%dº de $s",
+                String.format("%dº de %s",
                     grupo.getNumero(),
                     ciclo.getAcronimo()
                 ),
                 tipoFinal
             ),
+            archivo.getOriginalFilename(),
             archivo
         );
 
@@ -104,7 +105,10 @@ public class ServicioArchivo extends AbstractService<Long, User, RepositorioUser
 
         var blob = StorageClient.getInstance()
                                 .bucket()
-                                .create(ruta, archivo.getBytes(), archivo.getContentType());
+                                .create(ruta,
+                                        archivo.getBytes(),
+                                        archivo.getContentType()
+                                );
 
         return String.format(
             "https://firebasestorage.googleapis.com/v0/b/%s/o/%s?alt=media",
@@ -116,14 +120,14 @@ public class ServicioArchivo extends AbstractService<Long, User, RepositorioUser
     @Autowired
     private JavaMailSender mailSender;
 
-    public void sendEmailWithAttachment(String to, String subject, String body, MultipartFile attachment) throws MessagingException {
+    public void sendEmailWithAttachment(String to, String subject, String body, String name, MultipartFile attachment) throws MessagingException {
         MimeMessage message = mailSender.createMimeMessage();
         MimeMessageHelper helper = new MimeMessageHelper(message, true);
 
         helper.setTo(to);
         helper.setSubject(subject);
         helper.setText(body);
-        helper.addAttachment(attachment.getName(), attachment);
+        helper.addAttachment(name, attachment);
 
         mailSender.send(message);
     }
