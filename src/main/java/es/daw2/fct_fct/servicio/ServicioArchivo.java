@@ -62,6 +62,7 @@ public class ServicioArchivo extends AbstractService<Long, User, RepositorioUser
         switch (tipo) {
             case "ANEXO" -> tipoFinal = "anexo";
             case "JUSTIFICANTE" -> tipoFinal = "justificante";
+            case "CV" -> tipoFinal = "cv";
             default -> tipoFinal = "archivo";
         }
 
