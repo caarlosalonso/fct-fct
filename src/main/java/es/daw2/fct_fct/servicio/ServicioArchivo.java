@@ -29,7 +29,7 @@ public class ServicioArchivo extends AbstractService<Long, User, RepositorioUser
     @Autowired
     private ServicioCicloLectivo servicioCicloLectivo;
 
-    public String subirArchivo(Long id, MultipartFile archivo) throws IOException {
+    public String subirArchivo(Long id, MultipartFile archivo, String tipo) throws IOException {
         String bucketName = StorageClient.getInstance().bucket().getName();
 
         Optional<User> va = repository.findById(id);
@@ -54,12 +54,23 @@ public class ServicioArchivo extends AbstractService<Long, User, RepositorioUser
         CicloLectivo cicloLectivoActual = servicioCicloLectivo.getCicloLectivoActual()
             .orElseThrow(() -> new IllegalArgumentException("No hay ciclo lectivo actual"));
 
-        String ruta = String.format("%d/%s/%d/%s/%s",
-            cicloLectivoActual.getFechaInicio().getYear(),
-            ciclo.getAcronimo(),
-            grupo.getNumero(),
-            user.getName(),
-            archivo.getOriginalFilename());
+        String ruta;
+        if (tipo == null || tipo.equals("OTRO")) {
+            ruta = String.format("%d/%s/%d/%s/%s",
+                cicloLectivoActual.getFechaInicio().getYear(),
+                ciclo.getAcronimo(),
+                grupo.getNumero(),
+                user.getName(),
+                archivo.getOriginalFilename());
+        } else {
+            ruta = String.format("%d/%s/%d/%s/%s",
+                cicloLectivoActual.getFechaInicio().getYear(),
+                ciclo.getAcronimo(),
+                grupo.getNumero(),
+                user.getName(),
+                tipo,
+                archivo.getOriginalFilename());
+        }
 
         var blob = StorageClient.getInstance()
                                 .bucket()

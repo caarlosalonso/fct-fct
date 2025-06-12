@@ -21,9 +21,20 @@ window.addEventListener('FormsCreated', (event) => {
             resultado.innerText = "Selecciona un archivo.";
             return;
         }
+        const select = form.getInput('tipo');
+        if (!select) {
+            console.error('No se encontró el select con ID: tipo');
+            return;
+        }
+        const valor = select.getValue();
+        if (!valor) {
+            resultado.innerText = "Selecciona un tipo de archivo.";
+            return;
+        }
 
         const formData = new FormData();
         formData.append('archivo', archivo);
+        formData.append('tipo', valor);
 
         fetch('/api/archivo/subir', {
             method: 'POST',
