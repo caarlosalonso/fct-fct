@@ -1,68 +1,29 @@
-#main-content {
+section#fcts-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
     width: 90%;
     margin: 0 auto;
+}
+
+.curso {
     background-color: var(--background-color);
     border-radius: var(--border-radius);
     padding: var(--border-radius);
-    display: flex;
-    flex-direction: column;
-    gap: var(--border-radius);
-}
+    width: 100%;
 
-.section {
-    border-radius: var(--border-radius);
-    background-color: #505050;
-    padding: var(--border-radius);
-}
-
-.title {
-    margin: 0px 0px 10px 0px;
-    font-size: 1.5rem;
-    padding: 0px 0px;
-    border-bottom: 1px solid var(--border-color);
-}
-
-.alumnos {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-}
-
-.alumno-cell {
-    display: flex;
-    flex-direction: column;
-    gap: 5px;
-
-    &.collapsed {
-        height: 35px;
-        overflow: hidden;
-    }
-
-    &.expanded {
-        height: auto;
+    & .title {
+        text-align: center;
+        font-size: 1.6rem;
+        color: var(--primary-color);
+        margin-bottom: 10px;
+        border-bottom: 1px solid rgba(var(--primary-color-rgb), 0.6);
     }
 }
 
-p.alumno-bar {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    flex-wrap: nowrap;
-
-    &:hover {
-        cursor: pointer;
+@media screen and (max-width: 999px) {
+    section#fcts-section {
+        margin: 0;
     }
-}
-
-.empresa-nombre {
-    &.sin-empresa {
-        color: #ff8888;
-    }
-}
-
-p.info {
-    position: absolute;
-    bottom: -23px;
-    font-size: 0.8rem;
-    font-style: italic;
 }
