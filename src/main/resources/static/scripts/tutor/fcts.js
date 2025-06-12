@@ -177,16 +177,22 @@ function createCell(alumno, fcts, grupoTutor, empresas) {
     if (!fct) {
         tieneEmpresa = false;
     } else {
-        const empresa = empresas.filter((empresa) => empresa.empresaId === fct.empresa.id);
-        console.log('Empresa:', empresa);
-
-        if (empresa.length === 0) {
+        if (fct.empresa === undefined || fct.empresa === null) {
+            tieneEmpresa = false;
             if (fct.motivoRenuncia !== null) {
-                tieneEmpresa = true;
                 renunciaAFCT = true;
             }
         } else {
-            tieneEmpresa = true;
+            const empresa = empresas.filter((empresa) => empresa.empresaId === fct.empresa.id);
+            console.log('Empresa:', empresa);
+            if (empresa.length === 0) {
+                if (fct.motivoRenuncia !== null) {
+                    tieneEmpresa = true;
+                    renunciaAFCT = true;
+                }
+            } else {
+                tieneEmpresa = true;
+            }
         }
     }
 
