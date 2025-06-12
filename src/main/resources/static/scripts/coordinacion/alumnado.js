@@ -153,7 +153,7 @@ function createGruposCiclos(cicloLectivoId) {
 }
 
 function createAlumnos(alumnos) {
-    const alumnosSelection = document.getElementById('alumnos-list-scroll');
+    const alumnosSelection = document.getElementById('alumnos-list');
     alumnosSelection.innerHTML = '';
 
     if (alumnos.length === 0) {
