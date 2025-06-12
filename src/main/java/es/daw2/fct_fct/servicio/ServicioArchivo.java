@@ -27,7 +27,7 @@ import es.daw2.fct_fct.repositorio.RepositorioUser;
 public class ServicioArchivo extends AbstractService<Long, User, RepositorioUser> {
 
     @Autowired
-    private RepositorioAlumno repositorioAlumno;
+    private ServicioAlumno servicioAlumno;
     @Autowired
     private RepositorioCicloLectivo repositorioCicloLectivo;
     @Autowired
@@ -50,7 +50,7 @@ public class ServicioArchivo extends AbstractService<Long, User, RepositorioUser
         System.out.println("Ping: 3: " + va.isEmpty());
 
         User user = va.get();
-        Alumno al = repositorioAlumno.findById(user.getId())
+        Alumno al = servicioAlumno.getByUserId(user.getId())
             .orElseThrow(() -> new IllegalArgumentException("El usuario no es un alumno válido"));
 
         System.out.println("Ping: 4: " + al);
