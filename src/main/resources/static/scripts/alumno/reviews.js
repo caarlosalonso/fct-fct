@@ -50,7 +50,26 @@ function build(empresas, fcts, cursos) {
     console.log('FCTs:', fcts);
     console.log('Cursos:', cursos);
 
-    empresas.filter((empresa) => {
-        
-    })
+    const section = document.getElementById(SECTION);
+    if (!section) {
+        console.error(`No se encontró la sección con ID: ${SECTION}`);
+        return;
+    }
+    while(section.firstChild) section.removeChild(section.firstChild);
+    if (cursos.length === 0) {
+        const message = document.createElement('p');
+        message.textContent = 'No hay cursos disponibles.';
+        section.appendChild(message);
+        return;
+    }
+
+    cursos.filter((curso) => {
+        const cursoDiv = document.createElement('div');
+        cursoDiv.classList.add('curso');
+        section.appendChild(cursoDiv);
+
+        const cursoTitle = document.createElement('p');
+        cursoTitle.textContent = `Curso: ${curso.grupo.cicloLectivo.nombre} - ${curso.grupo.numero}º de ${curso.grupo.ciclo.acronimo}`;
+        cursoDiv.appendChild(cursoTitle);
+    });
 }
