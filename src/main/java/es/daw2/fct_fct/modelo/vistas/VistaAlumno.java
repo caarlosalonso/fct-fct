@@ -73,6 +73,9 @@ public class VistaAlumno {
     @Column(name = "nombre_ciclo_lectivo", nullable = false, length = 10)
     private String nombreCicloLectivo;
 
+    @Column(name = "acronimo", nullable = false)
+    private String acronimo;
+
     @Column(name = "grupo_nombre", nullable = false, length = 50)
     private String grupoNombre;
 }

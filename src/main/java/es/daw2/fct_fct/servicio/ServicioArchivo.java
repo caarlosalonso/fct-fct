@@ -1,45 +1,53 @@
 package es.daw2.fct_fct.servicio;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Optional;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.google.firebase.cloud.StorageClient;
 
-import es.daw2.fct_fct.modelo.Alumno;
-import es.daw2.fct_fct.modelo.User;
-import es.daw2.fct_fct.modelo.vAlumno;
-import es.daw2.fct_fct.repositorio.RepositorioUser;
-import es.daw2.fct_fct.repositorio.RepositorioVAlumno;
+import es.daw2.fct_fct.modelo.CicloLectivo;
+import es.daw2.fct_fct.modelo.vistas.VistaAlumno;
+import es.daw2.fct_fct.repositorio.vistas.VistaAlumnoRepository;
 
 @Service
-public class ServicioArchivo extends AbstractService<Long, User, RepositorioUser> {
+public class ServicioArchivo extends AbstractService<Long, VistaAlumno, VistaAlumnoRepository> {
+
+    @Autowired
+    private ServicioCicloLectivo servicioCicloLectivo;
 
     public String subirArchivo(Long id, MultipartFile archivo) throws IOException {
 
         String bucketName = StorageClient.getInstance().bucket().getName();
-        System.out.println("Bucket Name: " + bucketName);
+        List<VistaAlumno> vas = ((List<VistaAlumno>) repository.findAll())
+            .stream()
+            .filter(v -> v.getUserId() == id)
+            .toList();
 
-        System.out.println("ID: " + id);
-        
-        Optional<User> va = repository.findById(id);
-        System.out.println("Alumno encontrado: " + va);
+        if (vas.isEmpty()) throw new IllegalArgumentException("El usuario no es un alumno válido");
 
-        if (va.isEmpty()) {
-            throw new IllegalArgumentException("El usuario no es un alumno válido");
+        Optional<CicloLectivo> cicloLectivoOpt = servicioCicloLectivo.getCicloLectivoActual();
+        if (cicloLectivoOpt.isEmpty()) {
+            throw new IllegalArgumentException("No hay un ciclo lectivo activo");
         }
 
-        User user = va.get();
+        Optional<VistaAlumno> va = vas.stream()
+            .filter(v -> v.getCicloLectivoId() == cicloLectivoOpt.get().getId())
+            .findFirst();
+
+        if (va.isEmpty()) throw new IllegalArgumentException("El usuario no es un alumno válido");
+
+        VistaAlumno user = va.get();
+
         String ruta = String.format("%d/%s/%d/%d/%s",
-        /*
-            vAlumno.getAño(),
-            vAlumno.getCiclo(),
-            vAlumno.getGrupo(),
-            vAlumno.getId(),
-             */
-            2024, "DAM", 1, user.getId(),
+            user.getUserId(),
+            user.getAcronimo(),
+            user.getNumero(),
+            user.getNombreAlumno(),
             archivo.getOriginalFilename());
 
         var blob = StorageClient.getInstance()
