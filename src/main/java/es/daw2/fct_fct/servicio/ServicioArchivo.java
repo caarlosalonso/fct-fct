@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -18,6 +20,8 @@ import es.daw2.fct_fct.modelo.Grupo;
 import es.daw2.fct_fct.modelo.User;
 import es.daw2.fct_fct.repositorio.RepositorioCurso;
 import es.daw2.fct_fct.repositorio.RepositorioUser;
+import jakarta.mail.MessagingException;
+import jakarta.mail.internet.MimeMessage;
 
 @Service
 public class ServicioArchivo extends AbstractService<Long, User, RepositorioUser> {
@@ -29,7 +33,7 @@ public class ServicioArchivo extends AbstractService<Long, User, RepositorioUser
     @Autowired
     private ServicioCicloLectivo servicioCicloLectivo;
 
-    public String subirArchivo(Long id, MultipartFile archivo, String tipo) throws IOException {
+    public String subirArchivo(Long id, MultipartFile archivo, String tipo) throws IOException, MessagingException {
         String bucketName = StorageClient.getInstance().bucket().getName();
 
         Optional<User> va = repository.findById(id);
@@ -54,6 +58,31 @@ public class ServicioArchivo extends AbstractService<Long, User, RepositorioUser
         CicloLectivo cicloLectivoActual = servicioCicloLectivo.getCicloLectivoActual()
             .orElseThrow(() -> new IllegalArgumentException("No hay ciclo lectivo actual"));
 
+        String tipoFinal;
+        switch (tipo) {
+            case "ANEXO" -> tipoFinal = "anexo";
+            case "JUSTIFICANTE" -> tipoFinal = "justificante";
+            default -> tipoFinal = "archivo";
+        }
+
+        sendEmailWithAttachment(
+            grupo.getTutor().getUser().getEmail(),
+            String.format("Nuevo %s de %s",
+                tipoFinal,
+                user.getName()
+            ),
+            String.format("%s de %s e ha subido un nuevo %s para sus prácticas.\nPor favor, revise el archivo adjunto.",
+                user.getName(),
+                String.format("%dº de $s",
+                    grupo.getNumero(),
+                    ciclo.getAcronimo()
+                ),
+                tipoFinal
+            ),
+            archivo
+        );
+
+
         String ruta;
         if (tipo == null || tipo.equals("OTRO")) {
             ruta = String.format("%d/%s/%d/%s/%s",
@@ -68,7 +97,7 @@ public class ServicioArchivo extends AbstractService<Long, User, RepositorioUser
                 ciclo.getAcronimo(),
                 grupo.getNumero(),
                 user.getName(),
-                tipo,
+                tipoFinal,
                 archivo.getOriginalFilename());
         }
 
@@ -81,5 +110,31 @@ public class ServicioArchivo extends AbstractService<Long, User, RepositorioUser
             bucketName,
             java.net.URLEncoder.encode(blob.getName(), java.nio.charset.StandardCharsets.UTF_8)
         );
+    }
+
+    @Autowired
+    private JavaMailSender mailSender;
+
+    public void sendEmailWithAttachment(String to, String subject, String body, MultipartFile attachment) throws MessagingException {
+        MimeMessage message = mailSender.createMimeMessage();
+        MimeMessageHelper helper = new MimeMessageHelper(message, true);
+
+        helper.setTo(to);
+        helper.setSubject(subject);
+        helper.setText(body);
+        helper.addAttachment(attachment.getName(), attachment);
+
+        mailSender.send(message);
+    }
+
+    public void sendEmail(String to, String subject, String body) throws MessagingException {
+        MimeMessage message = mailSender.createMimeMessage();
+        MimeMessageHelper helper = new MimeMessageHelper(message, true);
+
+        helper.setTo(to);
+        helper.setSubject(subject);
+        helper.setText(body);
+
+        mailSender.send(message);
     }
 }

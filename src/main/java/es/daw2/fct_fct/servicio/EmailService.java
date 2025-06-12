@@ -20,7 +20,7 @@ public class EmailService {
 
     @Autowired
     private User user;
-
+/*
     public void sendEmailWithFireBaseAttachment(String to, String nombreArchivoEnFirebase) throws Exception {
         File archivo = servicioArchivo.descargarArchivo(user, nombreArchivoEnFirebase);
         try {
@@ -29,7 +29,7 @@ public class EmailService {
             archivo.delete();
         }
     }
-
+*/
     public void sendEmailWithAttachment(String to, String subject, String body, File attachment) throws MessagingException {
         MimeMessage message = mailSender.createMimeMessage();
         MimeMessageHelper helper = new MimeMessageHelper(message, true);

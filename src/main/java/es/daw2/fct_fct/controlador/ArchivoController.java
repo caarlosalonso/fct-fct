@@ -13,6 +13,7 @@ import es.daw2.fct_fct.modelo.User;
 import es.daw2.fct_fct.servicio.ServicioArchivo;
 import es.daw2.fct_fct.utils.Role;
 import es.daw2.fct_fct.utils.SessionsManager;
+import jakarta.mail.MessagingException;
 import jakarta.servlet.http.HttpServletRequest;
 
 @RestController
@@ -35,14 +36,17 @@ public class ArchivoController {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Usuario no autenticado.");
         }
 
-    try {
-        String url = servicioArchivo.subirArchivo(userId, archivo, tipo);
-        return ResponseEntity.ok("Archivo subido correctamente. URL: " + url);
-    } catch (IllegalArgumentException e) {
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
-    } catch (IOException e) {
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                            .body("Error al subir archivo a Firebase.");
+        try {
+            String url = servicioArchivo.subirArchivo(userId, archivo, tipo);
+            return ResponseEntity.ok("Archivo subido correctamente. URL: " + url);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        } catch (IOException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                                .body("Error al subir archivo a Firebase.");
+        } catch (MessagingException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                                .body("Error al enviar el correo de notificación.");
+        }
     }
-}
 }

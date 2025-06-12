@@ -17,7 +17,7 @@ public class EmailController {
 
     @Autowired
     private EmailService emailService;
-
+/*
     @PostMapping("/sendWithAttachment")
     public ResponseEntity<String> sendEmailWithAttachment(@RequestParam String to, @RequestParam String fileName) {
         try {
@@ -27,6 +27,7 @@ public class EmailController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error: " + e.getMessage());
         }
     }
+        */
 
     @PostMapping("/send")
     public ResponseEntity<String> sendEmail(@RequestParam String to, @RequestParam String subject, @RequestParam String body) {
