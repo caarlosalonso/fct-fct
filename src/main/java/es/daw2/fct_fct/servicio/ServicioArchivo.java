@@ -16,11 +16,7 @@ import es.daw2.fct_fct.modelo.CicloLectivo;
 import es.daw2.fct_fct.modelo.Curso;
 import es.daw2.fct_fct.modelo.Grupo;
 import es.daw2.fct_fct.modelo.User;
-import es.daw2.fct_fct.repositorio.RepositorioAlumno;
-import es.daw2.fct_fct.repositorio.RepositorioCicloLectivo;
-import es.daw2.fct_fct.repositorio.RepositorioCiclos;
 import es.daw2.fct_fct.repositorio.RepositorioCurso;
-import es.daw2.fct_fct.repositorio.RepositorioGrupos;
 import es.daw2.fct_fct.repositorio.RepositorioUser;
 
 @Service
