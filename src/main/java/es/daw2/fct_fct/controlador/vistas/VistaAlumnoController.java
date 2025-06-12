@@ -1,5 +1,7 @@
 package es.daw2.fct_fct.controlador.vistas;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -21,7 +23,12 @@ public class VistaAlumnoController {
 
     @GetMapping("/{id}")
     public ResponseEntity<?> getById(@PathVariable Long id) {
-        VistaAlumno alumno = servicio.obtenerPorId(id);
+        List<VistaAlumno> all = servicio.obtenerTodos();
+        VistaAlumno alumno = all.stream()
+                .filter(a -> a.getUserId().equals(id))
+                .findFirst()
+                .orElse(null);
+
         return (alumno != null) ? ResponseEntity.ok(alumno) : ResponseEntity.notFound().build();
     }
 }

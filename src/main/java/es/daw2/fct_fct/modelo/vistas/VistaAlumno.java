@@ -12,10 +12,10 @@ import org.hibernate.annotations.Immutable;
 @Table(name = "vista_alumnos")
 public class VistaAlumno {
 
-    @Id
     @Column(name = "tutor_id", nullable = false)
     private Long tutorId;
 
+    @Id
     @Column(name = "user_id", nullable = false)
     private Long userId;
 
