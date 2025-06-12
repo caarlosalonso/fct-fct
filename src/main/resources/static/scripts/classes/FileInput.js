@@ -15,6 +15,9 @@ export class FileInput extends Input {
         this.getValue = () => {
             return this.input.files;
         }
+        this.isEmpty = () => {
+            return this.input.files.length === 0;
+        }
     }
 
     init(form) {
