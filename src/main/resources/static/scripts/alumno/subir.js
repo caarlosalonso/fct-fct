@@ -16,7 +16,7 @@ window.addEventListener('FormsCreated', (event) => {
             console.error('No se encontró el input de archivo con ID: file');
             return;
         }
-        const archivo = archivoInput.files[0];
+        const archivo = archivoInput.getValue()[0];
         if (!archivo) {
             resultado.innerText = "Selecciona un archivo.";
             return;
