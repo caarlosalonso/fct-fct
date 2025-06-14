@@ -82,32 +82,27 @@ function createCiclosLectivos() {
         return;
     }
 
-    const ul = document.createElement('ul');
-    ul.classList.add('ciclos-lectivos', 'navi', 'navi-tabs');
-    ul.id = 'ciclos-lectivos';
-    cicloLectivoSelection.appendChild(ul);
-
     info.forEach((cicloLectivo) => {
-        const li = document.createElement('li');
-        li.classList.add('navi-item');
-        ul.appendChild(li);
+        const div = document.createElement('div');
+        div.classList.add('item');
+        cicloLectivoSelection.appendChild(div);
 
         const cicloLectivoText = document.createElement('p');
         cicloLectivoText.classList.add('cicloLectivo', 'navi-link');
         cicloLectivoText.id = `ciclo-lectivo-${cicloLectivo.id}`;
         cicloLectivoText.textContent = cicloLectivo.nombre;
-        li.appendChild(cicloLectivoText);
+        div.appendChild(cicloLectivoText);
 
-        li.addEventListener('click', () => {
+        div.addEventListener('click', () => {
             if (chosenCicloLectivo) chosenCicloLectivo.classList.remove('active');
-            li.classList.add('active');
-            chosenCicloLectivo = li;
+            div.classList.add('active');
+            chosenCicloLectivo = div;
             createGruposCiclos(cicloLectivo.id);
         });
 
         if (chosenCicloLectivo === null) {
-            li.classList.add('active');
-            chosenCicloLectivo = li;
+            div.classList.add('active');
+            chosenCicloLectivo = div;
             createGruposCiclos(cicloLectivo.id);
         }
     });
@@ -118,34 +113,29 @@ function createGruposCiclos(cicloLectivoId) {
     const gruposCiclosSelection = document.getElementById('grupos-ciclos-selection');
     gruposCiclosSelection.innerHTML = '';
 
-    const ul = document.createElement('ul');
-    ul.classList.add('grupos-ciclos', 'navi', 'navi-tabs');
-    ul.id = 'grupos-ciclos';
-    gruposCiclosSelection.appendChild(ul);
-
     const cicloLectivo = info.find(ciclo => ciclo.id === cicloLectivoId);
     if (cicloLectivo) {
         cicloLectivo.grupos.forEach((grupo) => {
-            const li = document.createElement('li');
-            li.classList.add('grupo', 'navi-item');
-            ul.appendChild(li);
+            const div = document.createElement('div');
+            div.classList.add('item');
+            gruposCiclosSelection.appendChild(div);
 
             const grupoText = document.createElement('p');
             grupoText.classList.add('curso', 'navi-link');
             grupoText.id = `grupo-${grupo.grupoId}`;
             grupoText.textContent = grupo.grupoNombre;
-            li.appendChild(grupoText);
+            div.appendChild(grupoText);
 
-            li.addEventListener('click', () => {
+            div.addEventListener('click', () => {
                 if (chosenGrupo) chosenGrupo.classList.remove('active');
-                li.classList.add('active');
-                chosenGrupo = li;
+                div.classList.add('active');
+                chosenGrupo = div;
                 createAlumnos(grupo.alumnos);
             });
 
             if (chosenGrupo === null) {
-                li.classList.add('active');
-                chosenGrupo = li;
+                div.classList.add('active');
+                chosenGrupo = div;
                 createAlumnos(grupo.alumnos);
             }
         });

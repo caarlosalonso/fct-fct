@@ -18,18 +18,19 @@
     padding: var(--border-radius);
 }
 
-section {
+.holder {
     width: 100%;
 }
 
-#ciclo-lectivos {
+#ciclo-lectivo-selection {
     display: flex;
     flex-direction: row;
     flex-wrap: nowrap;
     overflow-x: auto;
     overflow-y: hidden;
+    border-bottom: 1px solid var(--primary-color);
 
-    & > .nav-item {
+    & .item {
         color: var(--primary-color);
         border: 1px solid var(--primary-color);
         background-color: #303030;
@@ -51,12 +52,40 @@ section {
     }
 }
 
-#grupos-ciclos {
+#grupos {
+    background-color: #404040;
+    border-radius: 0 0 var(--border-radius) var(--border-radius);
+    padding: var(--border-radius);
+}
+
+#grupos-ciclos-selection {
     display: flex;
     flex-direction: row;
     flex-wrap: nowrap;
     overflow-x: auto;
     overflow-y: hidden;
+    border-bottom: 1px solid var(--secondary-color);
+
+    & > .item {
+        color: var(--secondary-color);
+        border: 1px solid var(--secondary-color);
+        background-color: #404040;
+        border-bottom: none;
+        border-radius: var(--border-radius) var(--border-radius) 0 0;
+
+        &:not(.active) {
+            color: #404040;
+            background-color: var(--secondary-color);
+        }
+
+        &:hover {
+            cursor: pointer;
+
+            &:not(.active) {
+                background-color: #99ffff33;
+            }
+        }
+    }
 }
 
 #alumnos-list {
