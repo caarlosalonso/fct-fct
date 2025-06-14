@@ -49,20 +49,24 @@ function build(reviews) {
         reviewDiv.className = 'review';
         section.appendChild(reviewDiv);
 
-        const title = document.createElement('h3');
+        const title = document.createElement('p');
+        title.className = 'review-title';
         title.textContent = review.empresa.nombre;
         reviewDiv.appendChild(title);
 
         const score = document.createElement('p');
+        score.className = 'review-score';
         score.textContent = `Puntuación: ${review.score} / 5`;
         reviewDiv.appendChild(score);
 
         const content = document.createElement('p');
+        content.className = 'review-content';
         content.textContent = review.comment;
         reviewDiv.appendChild(content);
 
         const author = document.createElement('p');
-        author.textContent = `Autor: ${review.user.nombre}`;
+        author.className = 'review-author';
+        author.textContent = `Autor: ${review.user.name}`;
         reviewDiv.appendChild(author);
     });
 }
