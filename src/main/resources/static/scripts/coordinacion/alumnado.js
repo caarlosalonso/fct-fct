@@ -60,7 +60,7 @@ function build(ciclosLectivos, gruposCiclos, alumnos) {
                     grupoId: grupo.grupoId,
                     grupoNombre: grupo.grupoNombre,
                     ciclo_id: grupo.cicloId,
-                    alumnos: alumnos.filter(alumno => alumno.grupoId === grupo.id)
+                    alumnos: alumnos.filter(alumno => alumno.grupoId === grupo.grupoId)
                 };
             })
         })
