@@ -58,9 +58,9 @@ function build(ciclosLectivos, gruposCiclos, alumnos) {
                 return {
                     cicloLectivoId: grupo.cicloLectivoId,
                     grupoId: grupo.grupoId,
-                    grupo_nombre: grupo.grupo_nombre,
+                    grupoNombre: grupo.grupoNombre,
                     ciclo_id: grupo.cicloId,
-                    alumnos: alumnos.filter(alumno => alumno.grupoCicloId === grupo.id)
+                    alumnos: alumnos.filter(alumno => alumno.grupoId === grupo.id)
                 };
             })
         })
@@ -133,7 +133,7 @@ function createGruposCiclos(cicloLectivoId) {
             const grupoText = document.createElement('p');
             grupoText.classList.add('curso', 'nav-link');
             grupoText.id = `grupo-${grupo.grupoId}`;
-            grupoText.textContent = grupo.grupo_nombre;
+            grupoText.textContent = grupo.grupoNombre;
             li.appendChild(grupoText);
 
             li.addEventListener('click', () => {
