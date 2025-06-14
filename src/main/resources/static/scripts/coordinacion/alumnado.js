@@ -44,6 +44,9 @@ const info = [];
 let chosenCicloLectivo = null;
 let chosenGrupo = null;
 
+let ciclosLectivos = [];
+let gruposCiclos = [];
+
 function build(ciclosLectivos, gruposCiclos, alumnos) {
     ciclosLectivos.sort((a, b) => new Date(a.fechaInicio) - new Date(b.fechaInicio));
     console.log(ciclosLectivos, gruposCiclos, alumnos);
@@ -94,9 +97,11 @@ function createCiclosLectivos() {
         div.appendChild(cicloLectivoText);
 
         div.addEventListener('click', () => {
-            if (chosenCicloLectivo) chosenCicloLectivo.classList.remove('active');
+            ciclosLectivos.forEach(item => item.classList.remove('active'));
             div.classList.add('active');
             chosenCicloLectivo = div;
+            gruposCiclos.forEach(item => item.classList.remove('active'));
+            chosenGrupo = null;
             createGruposCiclos(cicloLectivo.id);
         });
 
@@ -105,6 +110,8 @@ function createCiclosLectivos() {
             chosenCicloLectivo = div;
             createGruposCiclos(cicloLectivo.id);
         }
+
+        ciclosLectivos.push(div);
     });
 }
 
@@ -127,7 +134,7 @@ function createGruposCiclos(cicloLectivoId) {
             div.appendChild(grupoText);
 
             div.addEventListener('click', () => {
-                if (chosenGrupo) chosenGrupo.classList.remove('active');
+                gruposCiclos.forEach(item => item.classList.remove('active'));
                 div.classList.add('active');
                 chosenGrupo = div;
                 createAlumnos(grupo.alumnos);
@@ -139,6 +146,8 @@ function createGruposCiclos(cicloLectivoId) {
                 createAlumnos(grupo.alumnos);
             }
         });
+
+        gruposCiclos.push(div);
     }
 }
 
