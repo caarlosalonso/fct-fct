@@ -156,12 +156,6 @@ function createAlumnos(alumnos) {
     const alumnosSelection = document.getElementById('alumnos-list');
     alumnosSelection.innerHTML = '';
 
-    if (alumnos.length === 0) {
-        document.getElementById('alumnos-list-container').classList.add('empty');
-        return;
-    }
-    document.getElementById('alumnos-list-container').classList.remove('empty');
-
     alumnos.forEach(alumno => {
         const alumnoElement = document.createElement('div');
         alumnoElement.classList.add('alumno', 'cell');
