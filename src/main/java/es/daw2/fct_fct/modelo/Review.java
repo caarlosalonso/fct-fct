@@ -37,17 +37,12 @@ public class Review extends AbsBaseEntity {
     @Column(name = "comment", nullable = true, columnDefinition = "VARCHAR(2047)")
     private String comment;
 
-    @Column(name = "estado", nullable = false, columnDefinition = "ENUM('VISIBLE', 'ELIMINADO') DEFAULT 'VISIBLE'")
-    private Estado estado;
+    @Column(name = "estado", nullable = false, columnDefinition = "VARCHAR(10) DEFAULT 'VISIBLE'")
+    private String estado;
 
     @Column(name = "made_at", nullable = false, columnDefinition = "DATETIME DEFAULT CURRENT_TIMESTAMP")
     private LocalDateTime madeAt;
 
     @Column(name = "last_updated", nullable = false, columnDefinition = "DATETIME DEFAULT CURRENT_TIMESTAMP")
     private LocalDateTime lastUpdated;
-
-    public enum Estado {
-        VISIBLE,
-        ELIMINADO
-    }
 }

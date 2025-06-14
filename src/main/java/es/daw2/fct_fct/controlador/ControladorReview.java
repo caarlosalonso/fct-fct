@@ -20,7 +20,7 @@ public class ControladorReview extends CrudController<Long, Review, Review, Revi
     public ResponseEntity<?> create(@RequestBody Review review, HttpServletRequest request) {
         review.setMadeAt(LocalDateTime.now());
         review.setLastUpdated(LocalDateTime.now());
-        review.setEstado(Review.Estado.VISIBLE);
+        review.setEstado("VISIBLE");
         service.save(review);
 
         URI location = URI.create("/api/reviews/" + review.getId());
