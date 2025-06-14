@@ -1,7 +1,7 @@
 package es.daw2.fct_fct.controlador;
 
 import es.daw2.fct_fct.modelo.Review;
-import es.daw2.fct_fct.servicio.ReviewService;
+import es.daw2.fct_fct.servicio.ServicioReview;
 import jakarta.servlet.http.HttpServletRequest;
 
 import org.springframework.http.ResponseEntity;
@@ -13,7 +13,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/reviews")
-public class ReviewController extends CrudController<Long, Review, Review, Review, ReviewService> {
+public class ControladorReview extends CrudController<Long, Review, Review, Review, ServicioReview> {
 
     @Override
     public ResponseEntity<?> create(@RequestBody Review review, HttpServletRequest request) {
