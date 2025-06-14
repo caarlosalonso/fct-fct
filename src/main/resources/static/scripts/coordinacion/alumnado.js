@@ -83,17 +83,17 @@ function createCiclosLectivos() {
     }
 
     const ul = document.createElement('ul');
-    ul.classList.add('ciclos-lectivos', 'nav', 'nav-tabs');
+    ul.classList.add('ciclos-lectivos', 'navi', 'navi-tabs');
     ul.id = 'ciclos-lectivos';
     cicloLectivoSelection.appendChild(ul);
 
     info.forEach((cicloLectivo) => {
         const li = document.createElement('li');
-        li.classList.add('nav-item');
+        li.classList.add('navi-item');
         ul.appendChild(li);
 
         const cicloLectivoText = document.createElement('p');
-        cicloLectivoText.classList.add('cicloLectivo', 'nav-link');
+        cicloLectivoText.classList.add('cicloLectivo', 'navi-link');
         cicloLectivoText.id = `ciclo-lectivo-${cicloLectivo.id}`;
         cicloLectivoText.textContent = cicloLectivo.nombre;
         li.appendChild(cicloLectivoText);
@@ -119,7 +119,7 @@ function createGruposCiclos(cicloLectivoId) {
     gruposCiclosSelection.innerHTML = '';
 
     const ul = document.createElement('ul');
-    ul.classList.add('grupos-ciclos', 'nav', 'nav-tabs');
+    ul.classList.add('grupos-ciclos', 'navi', 'navi-tabs');
     ul.id = 'grupos-ciclos';
     gruposCiclosSelection.appendChild(ul);
 
@@ -127,11 +127,11 @@ function createGruposCiclos(cicloLectivoId) {
     if (cicloLectivo) {
         cicloLectivo.grupos.forEach((grupo) => {
             const li = document.createElement('li');
-            li.classList.add('grupo', 'nav-item');
+            li.classList.add('grupo', 'navi-item');
             ul.appendChild(li);
 
             const grupoText = document.createElement('p');
-            grupoText.classList.add('curso', 'nav-link');
+            grupoText.classList.add('curso', 'navi-link');
             grupoText.id = `grupo-${grupo.grupoId}`;
             grupoText.textContent = grupo.grupoNombre;
             li.appendChild(grupoText);

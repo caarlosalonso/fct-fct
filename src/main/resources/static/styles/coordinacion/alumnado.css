@@ -22,32 +22,51 @@ section {
     width: 100%;
 }
 
-#ciclo-lectivo, #grupos-ciclos {
+#ciclo-lectivos {
     display: flex;
     flex-direction: row;
     flex-wrap: nowrap;
-    overflow-x: scroll;
+    overflow-x: auto;
+    overflow-y: hidden;
+
+    & > .nav-item {
+        color: var(--primary-color);
+        border: 1px solid var(--primary-color);
+        background-color: #303030;
+        border-bottom: none;
+        border-radius: var(--border-radius) var(--border-radius) 0 0;
+
+        &:not(.active) {
+            color: #303030;
+            background-color: var(--primary-color);
+        }
+
+        &:hover {
+            cursor: pointer;
+
+            &:not(.active) {
+                background-color: #99ffff33;
+            }
+        }
+    }
+}
+
+#grupos-ciclos {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    overflow-y: hidden;
 }
 
 #alumnos-list {
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
-    overflow-y: scroll;
+    overflow-y: auto;
+    overflow-x: hidden;
     padding: 15px;
     gap: 30px;
-}
-
-.grupo.nav-link {
-    color: var(--text-color);
-
-    &:hover {
-        cursor: pointer;
-
-        &:not(.active) {
-            background-color: #99ffff33;
-        }
-    }
 }
 
 .cell {
