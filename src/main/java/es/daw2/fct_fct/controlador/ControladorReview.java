@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -24,6 +25,15 @@ public class ControladorReview extends CrudController<Long, Review, Review, Revi
 
         URI location = URI.create("/api/reviews/" + review.getId());
         return ResponseEntity.created(location).body(review);
+    }
+
+    @GetMapping("/all")
+    @Override
+    ResponseEntity<?> all(HttpServletRequest request) {
+        List<Review> items = service.list();
+        if (items == null) return ResponseEntity.badRequest().build();
+        if (items.isEmpty()) return ResponseEntity.noContent().build();
+        return ResponseEntity.ok(items);
     }
 
     @Override
