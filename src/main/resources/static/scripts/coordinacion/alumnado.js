@@ -88,7 +88,7 @@ function createCiclosLectivos() {
         cicloLectivoSelection.appendChild(div);
 
         const cicloLectivoText = document.createElement('p');
-        cicloLectivoText.classList.add('cicloLectivo', 'navi-link');
+        cicloLectivoText.classList.add('item-text');
         cicloLectivoText.id = `ciclo-lectivo-${cicloLectivo.id}`;
         cicloLectivoText.textContent = cicloLectivo.nombre;
         div.appendChild(cicloLectivoText);
@@ -121,7 +121,7 @@ function createGruposCiclos(cicloLectivoId) {
             gruposCiclosSelection.appendChild(div);
 
             const grupoText = document.createElement('p');
-            grupoText.classList.add('curso', 'navi-link');
+            grupoText.classList.add('item-text');
             grupoText.id = `grupo-${grupo.grupoId}`;
             grupoText.textContent = grupo.grupoNombre;
             div.appendChild(grupoText);

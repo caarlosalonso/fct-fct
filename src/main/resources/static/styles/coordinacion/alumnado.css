@@ -36,6 +36,7 @@
         background-color: #303030;
         border-bottom: none;
         border-radius: var(--border-radius) var(--border-radius) 0 0;
+        padding: 5px;
 
         &:not(.active) {
             color: #303030;
@@ -72,6 +73,7 @@
         background-color: #404040;
         border-bottom: none;
         border-radius: var(--border-radius) var(--border-radius) 0 0;
+        padding: 5px;
 
         &:not(.active) {
             color: #404040;
@@ -86,6 +88,10 @@
             }
         }
     }
+}
+
+.item-text {
+    margin: 0px;
 }
 
 #alumnos-list {
