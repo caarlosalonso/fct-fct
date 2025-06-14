@@ -4,7 +4,6 @@ import es.daw2.fct_fct.modelo.Review;
 import es.daw2.fct_fct.servicio.ReviewService;
 import jakarta.servlet.http.HttpServletRequest;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,15 +15,12 @@ import java.util.Optional;
 @RequestMapping("/api/reviews")
 public class ReviewController extends CrudController<Long, Review, Review, Review, ReviewService> {
 
-    @Autowired
-    private ReviewService reviewService;
-
     @Override
     public ResponseEntity<?> create(@RequestBody Review review, HttpServletRequest request) {
         review.setMadeAt(LocalDateTime.now());
         review.setLastUpdated(LocalDateTime.now());
         review.setEstado(Review.Estado.VISIBLE);
-        reviewService.save(review);
+        service.save(review);
 
         URI location = URI.create("/api/reviews/" + review.getId());
         return ResponseEntity.created(location).body(review);
@@ -32,7 +28,7 @@ public class ReviewController extends CrudController<Long, Review, Review, Revie
 
     @Override
     public ResponseEntity<?> update(@PathVariable Long id, @RequestBody Review updatedReview, HttpServletRequest request) {
-        Optional<Review> existingReview = reviewService.getById(id);
+        Optional<Review> existingReview = service.getById(id);
         if (existingReview.isEmpty()) {
             return ResponseEntity.notFound().build();
         }
@@ -43,7 +39,7 @@ public class ReviewController extends CrudController<Long, Review, Review, Revie
         review.setEstado(updatedReview.getEstado());
         review.setLastUpdated(LocalDateTime.now());
 
-        reviewService.save(review);
+        service.save(review);
 
         URI location = URI.create("/api/reviews/" + review.getId());
         return ResponseEntity.ok().location(location).body(review);
