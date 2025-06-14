@@ -54,19 +54,26 @@ function build(reviews) {
         title.textContent = review.empresa.nombre;
         reviewDiv.appendChild(title);
 
-        const score = document.createElement('p');
-        score.className = 'review-score';
-        score.textContent = `Puntuación: ${review.score} / 5`;
-        reviewDiv.appendChild(score);
-
-        const content = document.createElement('p');
-        content.className = 'review-content';
-        content.textContent = review.comment;
-        reviewDiv.appendChild(content);
-
         const author = document.createElement('p');
         author.className = 'review-author';
-        author.textContent = `Autor: ${review.user.name}`;
+        author.textContent = `Autor:`;
         reviewDiv.appendChild(author);
+
+        const authorName = document.createElement('p');
+        authorName.className = 'review-author-name';
+        authorName.textContent = review.user.name;
+        reviewDiv.appendChild(authorName);
+
+        const score = document.createElement('p');
+        score.className = 'review-score';
+        score.innerHTML = `Puntuación: <span class="review-score-value">${review.score}</span> / 5`;
+        reviewDiv.appendChild(score);
+
+        if (review.comment && review.comment.trim() !== '') {
+            const content = document.createElement('p');
+            content.className = 'review-content';
+            content.textContent = review.comment;
+            reviewDiv.appendChild(content);
+        }
     });
 }

@@ -1,0 +1,53 @@
+#main-content {
+    margin: 0 auto;
+    width: 90%;
+
+}
+
+.review {
+    background-color: var(--background-color);
+    padding: var(--border-radius);
+    border-radius: var(--border-radius);
+    display: flex;
+    align-items: baseline;
+    flex-wrap: wrap;
+}
+
+.review-title {
+    font-size: 1.4rem;
+    margin: 0 0 5px 0;
+    padding: 0 10px 0 0;
+}
+
+.review-author {
+    font-size: 0.7rem;
+    margin: 0;
+    padding: 0 5px 0 0;
+}
+
+.review-author-name {
+    font-size: 0.7rem;
+    margin: 0;
+    font-style: italic;
+    color: var(--primary-color);
+}
+
+.review-score {
+    width: 100%;
+    margin: 0;
+}
+
+.review-score-value {
+    font-size: 1.2rem;
+    font-style: italic;
+    color: var(--secondary-color);
+}
+
+.review-content {
+    width: 100%;
+    min-height: 70px;
+    margin: 10px 0 0 0;
+    background-color: #505050;
+    padding: var(--border-radius);
+    border-radius: var(--border-radius);
+}
