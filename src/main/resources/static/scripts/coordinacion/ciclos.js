@@ -151,7 +151,7 @@ function drawTable(ciclos, ciclosLectivos, grupos) {
                 const cicloLectivo = ciclosLectivos[j];
 
                 // Find grupo for this ciclo, year, cicloLectivo
-                const grupo = grupos.find(g => g.cicloId === ciclo.id && g.cicloLectivoId === cicloLectivo.id && g.numero === year);
+                const grupo = grupos.find(g => g.ciclo.id === ciclo.id && g.cicloLectivo.id === cicloLectivo.id && g.numero === year);
 
                 const cell = document.createElement('div');
                 cell.classList.add('cell', 'hoverable');
