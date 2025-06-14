@@ -38,7 +38,7 @@
         border-radius: var(--border-radius) var(--border-radius) 0 0;
         padding: 5px;
 
-        &:not(.active) {
+        &.active {
             color: #303030;
             background-color: var(--primary-color);
         }
@@ -46,7 +46,7 @@
         &:hover {
             cursor: pointer;
 
-            &:not(.active) {
+            &.active {
                 background-color: #99ffff33;
             }
         }
@@ -75,7 +75,7 @@
         border-radius: var(--border-radius) var(--border-radius) 0 0;
         padding: 5px;
 
-        &:not(.active) {
+        &.active {
             color: #404040;
             background-color: var(--secondary-color);
         }
@@ -83,7 +83,7 @@
         &:hover {
             cursor: pointer;
 
-            &:not(.active) {
+            &.active {
                 background-color: #99ffff33;
             }
         }
