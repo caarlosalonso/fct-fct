@@ -31,7 +31,9 @@ public class ControladorReview extends CrudController<Long, Review, Review, Revi
     @Override
     ResponseEntity<?> all(HttpServletRequest request) {
         List<Review> items = service.list();
+        System.out.println(items);
         if (items == null) return ResponseEntity.badRequest().build();
+        System.out.println("Items: " + items.size());
         if (items.isEmpty()) return ResponseEntity.noContent().build();
         return ResponseEntity.ok(items);
     }
