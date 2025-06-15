@@ -116,9 +116,16 @@ function createCiclosLectivos() {
 }
 
 function createGruposCiclos(cicloLectivoId) {
-    console.log(`Creating grupos ciclos for cicloLectivoId: ${cicloLectivoId}`);
     const gruposCiclosSelection = document.getElementById('grupos-ciclos-selection');
     gruposCiclosSelection.innerHTML = '';
+
+    if (cicloLectivoId < 0) {
+        gruposCiclosSelection.classList.add('empty');
+        const emptyMessage = document.createElement('p');
+        emptyMessage.textContent = 'No hay grupos disponibles';
+        gruposCiclosSelection.appendChild(emptyMessage);
+        return;
+    }
 
     const cicloLectivo = info.find(ciclo => ciclo.id === cicloLectivoId);
     if (cicloLectivo) {
