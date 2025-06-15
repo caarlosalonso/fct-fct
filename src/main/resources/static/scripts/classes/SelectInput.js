@@ -117,16 +117,14 @@ export class SelectInput extends TextInput {
         if (value === null || value === undefined)
             value = '';
 
-        value = this.format(value);
-
         this.states.tracked = true;
         this.states.trackedValue = value;
         this.setValue(value);
         this.states.changed = false;
 
-        if (value.length > 0) {
+        //if (value.length > 0) {
             this.forceActive();
-        }
+        //}
         this.updateState();
     }
 
