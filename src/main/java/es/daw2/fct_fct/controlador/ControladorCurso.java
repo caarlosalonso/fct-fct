@@ -91,6 +91,7 @@ public class ControladorCurso extends CrudController<Long, Curso, Curso, Curso, 
         curso.setAlumno(alumno);
         curso.setHorasHechas((short) 0);
         curso.setRating("VERDE");
+        curso.setPosiblesEmpresas("");
         curso.setObservaciones("");
 
         service.save(curso);

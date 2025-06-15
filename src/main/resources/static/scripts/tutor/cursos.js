@@ -96,7 +96,7 @@ function build(alumnos, cursoActual, grupoTutor, alumnosCurso, empresas) {
     const asignar = Form.getForm('alumno-search-form');
     const searchInput = asignar.getInput('search');
     if (searchInput) {
-        searchInput.input.addEventListener('input', () => {
+        const searchDo = () => {
             let query = searchInput.input.value;
             query = (query || '').toLowerCase().trim();
             let options = [];
@@ -118,7 +118,10 @@ function build(alumnos, cursoActual, grupoTutor, alumnosCurso, empresas) {
                 }
             });
             searchInput.updateDropdown(options, true);
-        });
+        }
+
+        searchInput.input.addEventListener('input', searchDo);
+        searchInput.input.addEventListener('focus', searchDo);
     }
 
     asignar.onsubmit = () => {
