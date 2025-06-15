@@ -91,6 +91,7 @@ async function fetchGrupos() {
 
 async function fetchTutores() {
     const response = await fetch(`/api/tutores/all`);
+    if (response.status === 204) return [];
     if (!response.ok) throw new Error('Error al obtener tutores disponibles');
     return await response.json();
 }
