@@ -203,6 +203,22 @@ function drawTable(ciclos, ciclosLectivos, grupos, tutores) {
         });
     });
 
+    const form = Form.getForm('grupo-form');
+
+    if (tutores.length === 0) {
+        form.getInput('tutor').options.push({
+            value: -1,
+            label: 'No hay tutores disponibles'
+        });
+    }
+    let options = [];
+    tutores.forEach(tutor => {
+        const [value, label] = [tutor.id, tutor.name];
+        options.push({value, label});
+    });
+    form.getInput('tutor').updateDropdown(options);
+
+
     setTimeout(() => {
         gridData.scrollLeft = gridData.scrollWidth;
     }, 0);
@@ -398,26 +414,6 @@ async function addGrupo(ciclo, cicloLectivo, numero, tutores) {
 
     const form = Form.getForm('grupo-form');
     form.form.parentNode.classList.remove('collapsed');
-
-    form.getInput('tutor').options = [];
-
-    try {
-        if (tutores.length === 0) {
-            form.getInput('tutor').options.push({
-                value: -1,
-                label: 'No hay tutores disponibles'
-            });
-        }
-
-        let options = [];
-        tutores.forEach(tutor => {
-            const [value, label] = [tutor.id, tutor.name];
-            options.push({value, label});
-        });
-        form.getInput('tutor').updateDropdown(options);
-    } catch (error) {
-        console.error(error);
-    }
 
     form.onsubmit = (event) => {
         const cicloLectivoId = cicloLectivo.id;
@@ -632,7 +628,6 @@ function editGrupo(grupo) {
     const form = Form.getForm('grupo-form');
     form.form.parentNode.classList.remove('collapsed');
 
-    console.log(grupo);
     form.onsubmit = (event) => {
         const numero = form.getInput('grupo-numero').getValue();
         const horario = form.getInput('grupo-horario').getValue();
