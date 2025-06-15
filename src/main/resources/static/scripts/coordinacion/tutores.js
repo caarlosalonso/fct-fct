@@ -33,8 +33,6 @@ async function fetchTutores() {
 }
 
 function buildTutoresTable(tutores) {
-    console.log(tutores);
-
     const tutoresSection = document.getElementById(SECTION);
     while (tutoresSection.firstChild) tutoresSection.removeChild(tutoresSection.firstChild);
 
@@ -83,7 +81,6 @@ window.addEventListener('FormsCreated', () => {
 
 function setInputsToCreate() {
     const form = Form.getForm(FORM);
-    console.log(form);
 
     if (!form) {
         console.error(`Form with ID "${FORM}" not found.`);
@@ -99,9 +96,7 @@ function setInputsToCreate() {
             name: nombre,
             email: email,
             password: password
-        }
-
-        console.log(data)
+        };
 
         fetch('/api/tutores/create', {
             method: 'POST',
@@ -111,7 +106,6 @@ function setInputsToCreate() {
             body: JSON.stringify(data)
         })
         .then((response) => {
-            console.log(response);
             if (response.status === 201 || response.ok) {
                 form.showSuccess('Tutor creado correctamente.');
                 form.reset();
@@ -120,6 +114,9 @@ function setInputsToCreate() {
         })
         .catch((error) => {
             form.showError(`Error al crear el tutor: ${error.message}`);
+        })
+        .finally(() => {
+            form.submitFinish();
         });
     }
 
@@ -133,7 +130,6 @@ function setInputsToCreate() {
 
 function setInputsToUpdate(tutores, tutorId) {
     const form = Form.getForm(FORM);
-    console.log(form);
 
     if (!form) {
         console.error(`Form with ID "${FORM}" not found.`);

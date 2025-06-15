@@ -30,7 +30,7 @@ import jakarta.servlet.http.HttpServletRequest;
 
 @RestController
 @RequestMapping("/api/tutores")
-public class ControladorTutor extends CrudController<Long, Tutor, CreateUserDTO, Tutor, ServicioTutores> {
+public class ControladorTutor extends CrudController<Long, Tutor, CreateUserDTO, CreateUserDTO, ServicioTutores> {
 
     @Override
     public ResponseEntity<?> create(@RequestBody CreateUserDTO t, HttpServletRequest request) {
@@ -65,21 +65,32 @@ public class ControladorTutor extends CrudController<Long, Tutor, CreateUserDTO,
     // getById ya existe en CrudController
 
     @Override
-    public ResponseEntity<?> update(@PathVariable Long id, @RequestBody Tutor a, HttpServletRequest request){
+    public ResponseEntity<?> update(@PathVariable Long id, @RequestBody CreateUserDTO a, HttpServletRequest request){
         Optional<Tutor> optional = service.getById(id);
 
         if(!optional.isPresent()){
             return ResponseEntity.notFound().build();
         }
 
-        a.setId(id);
+        Optional<User> userOptional = servicioUser.getById(optional.get().getUser().getId());
+        if (!userOptional.isPresent()) {
+            return ResponseEntity.notFound().build();
+        }
 
-        Optional<Tutor> tutorActualizado = service.update(id, a);
+        User user = userOptional.get();
+
+        user.setName(a.name());
+        user.setEmail(a.email());
+        user.setPassword(
+            PasswordUtils.hashPassword(a.password())
+        );
+
+        Optional<Tutor> tutorActualizado = service.update(id, optional.get());
         if (!tutorActualizado.isPresent()) {
             return ResponseEntity.badRequest().body("No se ha podido actualizar el tutor con el id: " + id);
         }
 
-        URI location = URI.create("/api/tutores/" + a.getId());
+        URI location = URI.create("/api/tutores/" + optional.get().getId());
 
         return ResponseEntity.ok().location(location).body(tutorActualizado);
     }
