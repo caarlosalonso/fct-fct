@@ -474,7 +474,7 @@ function searchTutorEmpresa(alumnoId, tutoresEmpresas) {
         return;
     }
 
-    console.log(empresaSelect.getValue());
+    console.log(empresasSelect.getValue());
     tutoresEmpresas = tutoresEmpresas.filter((tutorEmpresa) => tutorEmpresa.empresa.id === empresasSelect.getValue());
 
     const searchDo = () => {
