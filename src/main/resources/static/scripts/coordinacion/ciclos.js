@@ -404,7 +404,7 @@ async function addGrupo(ciclo, cicloLectivo, numero) {
 
         let options = [];
         array.forEach(tutor => {
-            const [value, label] = [tutor.tutorId, tutor.name];
+            const [value, label] = [tutor.tutor.id, tutor.name];
             options.push({value, label});
         });
         form.getInput('tutor').updateDropdown(options);
