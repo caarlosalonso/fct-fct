@@ -1,7 +1,6 @@
 package es.daw2.fct_fct.controlador;
 
 import es.daw2.fct_fct.dto.CreateReviewDTO;
-import es.daw2.fct_fct.modelo.Alumno;
 import es.daw2.fct_fct.modelo.Empresa;
 import es.daw2.fct_fct.modelo.Review;
 import es.daw2.fct_fct.modelo.User;
@@ -47,6 +46,8 @@ public class ControladorReview extends CrudController<Long, Review, CreateReview
         Review newReview = new Review();
         newReview.setEmpresa(empresaOptional.get());
         newReview.setUser(userOptional.get());
+        newReview.setScore((byte) dto.puntuacion());
+        newReview.setComment(dto.comentario());
         newReview.setMadeAt(LocalDateTime.now());
         newReview.setLastUpdated(LocalDateTime.now());
         newReview.setEstado("VISIBLE");
