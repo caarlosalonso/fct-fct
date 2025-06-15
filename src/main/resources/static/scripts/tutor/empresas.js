@@ -1,3 +1,5 @@
+import { Form } from '../classes/Form.js';
+
 if (!HTMLInputElement.prototype.isEmpty) {
     HTMLInputElement.prototype.isEmpty = function() {
         return !this.value || this.value.trim() === '';
@@ -14,11 +16,7 @@ if (!HTMLTextAreaElement.prototype.isEmpty) {
     };
 }
 
-import { Form } from '../classes/Form.js';
-
-let TIMEOUT;
-
-document.addEventListener('FormsCreated', () => {
+document.addEventListener('DOMContentLoaded', () => {
     const addBtn = document.getElementById('add-empresa-btn');
     if (addBtn) {
         addBtn.addEventListener('click', addEmpresa);
