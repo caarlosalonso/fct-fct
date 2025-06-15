@@ -1,10 +1,14 @@
 package es.daw2.fct_fct.controlador;
 
 import es.daw2.fct_fct.dto.CreateReviewDTO;
+import es.daw2.fct_fct.modelo.Alumno;
 import es.daw2.fct_fct.modelo.Empresa;
 import es.daw2.fct_fct.modelo.Review;
+import es.daw2.fct_fct.modelo.User;
 import es.daw2.fct_fct.servicio.ServicioEmpresa;
 import es.daw2.fct_fct.servicio.ServicioReview;
+import es.daw2.fct_fct.servicio.ServicioUser;
+import es.daw2.fct_fct.utils.SessionsManager;
 import jakarta.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +26,9 @@ public class ControladorReview extends CrudController<Long, Review, CreateReview
 
     @Autowired
     private ServicioEmpresa servicioEmpresa;
+
+    @Autowired
+    private ServicioUser servicioUser;
     
     @Override
     public ResponseEntity<?> create(@RequestBody CreateReviewDTO dto, HttpServletRequest request) {
@@ -30,7 +37,16 @@ public class ControladorReview extends CrudController<Long, Review, CreateReview
             return ResponseEntity.badRequest().body("Empresa no encontrada");
         }
 
+        Long userId = SessionsManager.getUserIdFromSession(request);
+
+        Optional<User> userOptional = servicioUser.getById(userId);
+        if (userOptional.isEmpty()) {
+            return ResponseEntity.badRequest().body("User no encontrado");
+        }
+
         Review newReview = new Review();
+        newReview.setEmpresa(empresaOptional.get());
+        newReview.setUser(userOptional.get());
         newReview.setMadeAt(LocalDateTime.now());
         newReview.setLastUpdated(LocalDateTime.now());
         newReview.setEstado("VISIBLE");
