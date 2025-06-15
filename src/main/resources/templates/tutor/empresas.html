@@ -130,6 +130,33 @@
                 <path d="M 44 20 L 28 20 L 28 4 C 28 2 26 0 24 0 S 20 2 20 4 L 20 20 L 4 20 C 2 20 0 22 0 24 S 2 28 4 28 L 20 28 L 20 44 C 20 46 22 48 24 48 S 28 46 28 44 L 28 28 L 44 28 C 46 28 48 26 48 24 S 46 20 44 20 Z"/>
             </svg>
         </div>
+        <section id="tutores-empresas-section">
+            <form id="tutores-empresas-form" submit-text="Crear tutor empresa">
+                <div class="inputs form-container">
+                    <div class="instance form-input grouped-inputs">
+                        <div class="form-group form-input">
+                            <input type="select" id="search-empresa" name="search-empresa" class="text-based input" label="Buscar empresa" data-show-validity="true" data-required="true">
+                        </div>
+                    </div>
+                    <div class="instance form-input grouped-inputs">
+                        <div class="form-group form-input">
+                            <input type="text" id="tutor-nombre" name="tutor-nombre" class="text-based input" label="Nombre del Tutor" data-show-validity="true" data-required="true">
+                        </div>
+                        <div class="form-group form-input">
+                            <input type="email" id="tutor-email" name="tutor-email" class="text-based input" label="Email del Tutor" data-show-validity="true" data-required="true">
+                        </div>
+                    </div>
+                    <div class="instance form-input grouped-inputs">
+                        <div class="form-group form-input">
+                            <input type="tel" id="tutor-tel" name="tutor-tel" class="text-based input" label="Teléfono del Tutor" data-show-validity="true" data-required="true">
+                        </div>
+                        <div class="form-group form-input">
+                            <input type="dni" id="tutor-dni" name="tutor-dni" class="text-based input" label="DNI del Tutor" data-show-validity="true" data-required="true">
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </section>
     </main>
 
     <script type="module" src="/scripts/tutor/empresas.js"></script>
