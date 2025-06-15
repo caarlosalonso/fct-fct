@@ -384,6 +384,12 @@ async function fetchTutoresDisponibles(cicloLectivo) {
     return await response.json();
 }
 
+async function fetchTutores() {
+    const response = await fetch(`/api/tutores/all`);
+    if (!response.ok) throw new Error('Error al obtener tutores disponibles');
+    return await response.json();
+}
+
 async function addGrupo(ciclo, cicloLectivo, numero) {
     collapseAll();
 
@@ -393,7 +399,8 @@ async function addGrupo(ciclo, cicloLectivo, numero) {
     form.getInput('tutor').options = [];
 
     try {
-        const array = await fetchTutoresDisponibles(cicloLectivo);
+        //const array = await fetchTutoresDisponibles(cicloLectivo);
+        const array = await fetchTutores();
 
         if (array.length === 0) {
             form.getInput('tutor').options.push({
