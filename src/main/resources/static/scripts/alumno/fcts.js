@@ -78,59 +78,6 @@ function build(empresas, fcts, cursos, cicloLectivoActual) {
         cursoDiv.classList.add('curso');
         section.appendChild(cursoDiv);
 
-        if (curso.grupo.cicloLectivo.id == cicloLectivoActual.id) {
-            const cursoTitle = document.createElement('p');
-            cursoTitle.textContent = `${curso.grupo.numero}º de ${curso.grupo.ciclo.acronimo} - ${curso.grupo.cicloLectivo.nombre}`;
-            cursoTitle.classList.add('title');
-            cursoDiv.appendChild(cursoTitle);
-
-            const filteredFCT = fcts.find(fct => fct.curso.id === curso.id);
-            console.log("FCT Filtrada: ", filteredFCT);
-            if (! filteredFCT) {
-                const cursoNoFCT = document.createElement('p');
-                cursoNoFCT.textContent = `¡No tienes FCT! Habla con tu tutor para obtener una empresa en al que hacer la FCT.`;
-                cursoNoFCT.classList.add('text');
-                cursoDiv.appendChild(cursoNoFCT);
-
-                const cursoProponerEmpresa = document.createElement('p');
-                cursoProponerEmpresa.textContent = `Si tienes una empresa en mente, la puedes proponer a través de este enlace: `;
-                cursoProponerEmpresa.classList.add('text');
-                cursoDiv.appendChild(cursoProponerEmpresa);
-
-                const link = document.createElement('a');
-                link.href = '\empresas';
-                link.textContent = 'Proponer empresa';
-                cursoProponerEmpresa.appendChild(link);
-                return;
-            }
-
-            if (filteredFCT.motivoRenuncia) {
-                const renunciaFCT = document.createElement('p');
-                renunciaFCT.textContent = `Haz renunciado a las FCT, tu motivo de renuncia es: ${filteredFCT.motivoRenuncia}`;
-                renunciaFCT.classList.add('text', 'renuncia');
-                cursoDiv.appendChild(renunciaFCT);
-            }
-
-            const fctEmpresa = document.createElement('p');
-            fctEmpresa.textContent = `Harás tus FCT con: ${filteredFCT.empresa.nombre}`;
-            fctEmpresa.classList.add('text', 'empresa');
-            cursoDiv.appendChild(fctEmpresa);
-
-            const fechas = document.createElement('p');
-            fechas.textContent = `Desde ${filteredFCT.fechaInicio} hasta ${filteredFCT.fechaFin}`;
-            fechas.classList.add('text', 'fechas');
-            cursoDiv.appendChild(fechas);
-
-            const horasHechas = document.createElement('p');
-            horasHechas.textContent = `Con un total de ${filteredFCT.horasPracticas} horas.`;
-            horasHechas.classList.add('text', 'horas');
-            cursoDiv.appendChild(horasHechas);
-            return;
-        }
-
-
-
-
         const cursoTitle = document.createElement('p');
         cursoTitle.textContent = `${curso.grupo.numero}º de ${curso.grupo.ciclo.acronimo} - ${curso.grupo.cicloLectivo.nombre}`;
         cursoTitle.classList.add('title');
