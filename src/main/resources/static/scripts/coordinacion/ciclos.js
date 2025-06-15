@@ -401,6 +401,7 @@ async function addGrupo(ciclo, cicloLectivo, numero) {
     try {
         //const array = await fetchTutoresDisponibles(cicloLectivo);
         const array = await fetchTutores();
+        console.log(array);
 
         if (array.length === 0) {
             form.getInput('tutor').options.push({
