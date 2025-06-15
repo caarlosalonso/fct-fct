@@ -53,7 +53,7 @@ function tutoresEmpresas(empresas) {
     const tutorTel = form.getInput('tutor-tel');
     const tutorDni = form.getInput('tutor-dni');
 
-    tutorSearch.input.addEventListener('input', () => {
+    const searchDo = () => {
         let query = tutorSearch.input.value;
         query = (query || '').toLowerCase().trim();
         let options = [];
@@ -75,7 +75,10 @@ function tutoresEmpresas(empresas) {
             }
         });
         tutorSearch.updateDropdown(options, true);
-    });
+    }
+
+    tutorSearch.input.addEventListener('input', searchDo);
+    tutorSearch.input.addEventListener('focus', searchDo);
 
     form.onsubmit = () => {
         const data = {
