@@ -162,7 +162,7 @@ function build(empresas, fcts, cursos, cicloLectivoActual) {
                 comentario: comentario.getValue()
             }
 
-            fetch('/api/fcts/review', {
+            fetch('/api/reviews/create', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
