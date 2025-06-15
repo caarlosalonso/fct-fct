@@ -59,7 +59,7 @@ function tutoresEmpresas(empresas) {
         let options = [];
 
         empresas.forEach(empresa => {
-            const [ nombre, cif, email ] = [empresa.nombreEmpresa, empresa.cif, empresa.email];
+            const [ nombre, cif, email ] = [empresa.nombre, empresa.cif, empresa.email];
             const values = [
                 (nombre || '').toLowerCase(),
                 (cif || '').toLowerCase(),
