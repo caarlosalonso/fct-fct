@@ -53,9 +53,9 @@ export class NumberInput extends TextInput {
         this.setValue(value);
         this.states.changed = false;
 
-        if (value.length > 0) {
+        //if (value.length > 0) {
             this.forceActive();
-        }
+        //}
         this.updateState();
     }
 }
