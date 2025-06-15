@@ -474,10 +474,10 @@ function searchTutorEmpresa(alumnoId, tutoresEmpresas) {
         return;
     }
 
-    console.log(empresasSelect.getValue());
-    tutoresEmpresas = tutoresEmpresas.filter((tutorEmpresa) => tutorEmpresa.empresa.id === empresasSelect.getValue());
-
     const searchDo = () => {
+        console.log(empresasSelect.getValue());
+        tutoresEmpresas = tutoresEmpresas.filter((tutorEmpresa) => tutorEmpresa.empresa.id === empresasSelect.getValue());
+
         let query = tutoresSelect.input.value;
         query = (query || '').toLowerCase().trim();
         let options = [];
