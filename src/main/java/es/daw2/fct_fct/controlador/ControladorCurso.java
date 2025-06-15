@@ -54,22 +54,27 @@ public class ControladorCurso extends CrudController<Long, Curso, Curso, Curso, 
 
     @PostMapping("/alumno")
     public ResponseEntity<?> addAlumnoToGrupo(@RequestBody AlumnoGrupoDTO dto, HttpServletRequest request) {
+        System.out.println("DTO: " + dto);
+
         Optional<CicloLectivo> clopt = servicioCicloLectivo.getById(dto.idCicloLectivo());
         if (clopt.isEmpty()) {
             return ResponseEntity.notFound().build();
         }
+        System.out.println("Ciclo Lectivo: " + clopt.get());
 
         Optional<Grupo> grupoOpt = servicioGrupo.getById(dto.idGrupo());
         if (grupoOpt.isEmpty()) {
             return ResponseEntity.notFound().build();
         }
         Grupo grupo = grupoOpt.get();
+        System.out.println("Grupo: " + grupo);
 
         Optional<Alumno> alumnoOpt = servicioAlumno.getById(dto.idAlumno());
         if (alumnoOpt.isEmpty()) {
             return ResponseEntity.notFound().build();
         }
         Alumno alumno = alumnoOpt.get();
+        System.out.println("Alumno: " + alumno);
 
         List<Long> lg = servicioGrupo.list()
             .stream()

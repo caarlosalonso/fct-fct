@@ -90,6 +90,8 @@ async function fetchEmpresas() {
 }
 
 function build(alumnos, cursoActual, grupoTutor, alumnosCurso, empresas) {
+    console.log('Alumnos:', alumnos);
+
     const form = Form.getForm('alumno-form');
     crearLista(alumnosCurso, grupoTutor, form, empresas);
 
