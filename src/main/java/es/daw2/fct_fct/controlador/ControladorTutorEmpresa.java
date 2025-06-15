@@ -3,28 +3,47 @@ package es.daw2.fct_fct.controlador;
 import java.net.URI;
 import java.util.Optional;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import es.daw2.fct_fct.dto.CreateTutorEmpresaDTO;
+import es.daw2.fct_fct.modelo.Empresa;
 import es.daw2.fct_fct.modelo.TutorEmpresa;
+import es.daw2.fct_fct.servicio.ServicioEmpresa;
 import es.daw2.fct_fct.servicio.ServicioTutorEmpresa;
 import jakarta.servlet.http.HttpServletRequest;
 
 
 @RestController
 @RequestMapping("/api/tutores-empresas")
-public class ControladorTutorEmpresa extends CrudController<Long, TutorEmpresa, TutorEmpresa, TutorEmpresa, ServicioTutorEmpresa> {
+public class ControladorTutorEmpresa extends CrudController<Long, TutorEmpresa, CreateTutorEmpresaDTO, TutorEmpresa, ServicioTutorEmpresa> {
+
+    @Autowired
+    private ServicioEmpresa servicioEmpresa;
 
     @Override
-    public ResponseEntity<?> create(@RequestBody TutorEmpresa t, HttpServletRequest request) {
-        service.save(t);
+    public ResponseEntity<?> create(@RequestBody CreateTutorEmpresaDTO t, HttpServletRequest request) {
+        TutorEmpresa tutorEmpresa = new TutorEmpresa();
 
-        URI location = URI.create("/api/tutores-empresas/" + t.getId());
+        Optional<Empresa> empresa = servicioEmpresa.getById(t.empresaId());
+        if (!empresa.isPresent()) {
+            return ResponseEntity.badRequest().body("No existe una empresa con el id: " + t.empresaId());
+        }
 
-        return ResponseEntity.created(location).body(t);
+        tutorEmpresa.setEmpresa(empresa.get());
+        tutorEmpresa.setNombre(t.nombre());
+        tutorEmpresa.setEmail(t.email());
+        tutorEmpresa.setTelefono(t.telefono());
+        tutorEmpresa.setDni(t.dni());
+
+        TutorEmpresa tutorSaved = service.save(tutorEmpresa);
+
+        URI location = URI.create("/api/tutores-empresas/" + tutorSaved.getId());
+        return ResponseEntity.created(location).body(tutorSaved);
     }
 
     // all ya existe en CrudController
