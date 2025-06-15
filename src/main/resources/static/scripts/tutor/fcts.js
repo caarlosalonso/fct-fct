@@ -425,7 +425,7 @@ function searchEmpresa(alumnoId, empresas) {
         return;
     }
 
-    empresasSelect.input.addEventListener('input', () => {
+    const searchDo = () => {
         let query = empresasSelect.input.value;
         query = (query || '').toLowerCase().trim();
         let options = [];
@@ -450,7 +450,10 @@ function searchEmpresa(alumnoId, empresas) {
             }
         });
         empresasSelect.updateDropdown(options, true);
-    });
+    }
+
+    empresasSelect.input.addEventListener('input', searchDo);
+    empresasSelect.input.addEventListener('focus', searchDo);
 }
 
 function searchTutorEmpresa(alumnoId, tutoresEmpresas) {
@@ -473,7 +476,7 @@ function searchTutorEmpresa(alumnoId, tutoresEmpresas) {
 
     tutoresEmpresas = tutoresEmpresas.filter((tutorEmpresa) => tutorEmpresa.empresaId === empresasSelect.getValue());
 
-    tutoresSelect.input.addEventListener('input', () => {
+    const searchDo = () => {
         let query = tutoresSelect.input.value;
         query = (query || '').toLowerCase().trim();
         let options = [];
@@ -494,7 +497,10 @@ function searchTutorEmpresa(alumnoId, tutoresEmpresas) {
             }
         });
         tutoresSelect.updateDropdown(options, true);
-    });
+    }
+
+    tutoresSelect.input.addEventListener('input', searchDo);
+    tutoresSelect.input.addEventListener('focus', searchDo);
 }
 
 function onsubmit(alumnoId, cursoId) {
