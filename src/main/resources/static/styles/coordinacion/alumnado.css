@@ -46,9 +46,11 @@
 
         &:hover {
             cursor: pointer;
+            background-color: rgba(138, 132, 219, 0.3);
 
             &.active {
-                background-color: #99ffff33;
+                background-color: rgba(138, 132, 219, 0.6);
+                color: #ffffff;
             }
         }
     }
@@ -84,9 +86,11 @@
 
         &:hover {
             cursor: pointer;
+            background-color: rgba(219, 132, 193, 0.3);
 
             &.active {
-                background-color: #99ffff33;
+                background-color: rgba(219, 132, 193, 0.6);
+                color: #ffffff;
             }
         }
     }
