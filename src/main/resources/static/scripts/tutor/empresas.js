@@ -18,7 +18,11 @@ import { Form } from '../classes/Form.js';
 
 let TIMEOUT;
 
-window.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('FormsCreated', () => {
+    const addBtn = document.getElementById('add-empresa-btn');
+    if (addBtn) {
+        addBtn.addEventListener('click', addEmpresa);
+    }
     cargarEmpresas();
 });
 
@@ -34,6 +38,7 @@ function cargarEmpresas() {
         alumnos
     ]) => {
         dibujarTabla(empresas, alumnos);
+        tutoresEmpresas(empresas);
         console.log(empresas, alumnos);
     }).catch((error) => {
         mostrarError();
@@ -41,6 +46,70 @@ function cargarEmpresas() {
     });
 }
 
+function tutoresEmpresas(empresas) {
+    const form = Form.getForm('tutores-empresas-form');
+    const tutorSearch = form.getInput('search-empresa');
+    const tutorNombre = form.getInput('tutor-nombre');
+    const tutorEmail = form.getInput('tutor-email');
+    const tutorTel = form.getInput('tutor-tel');
+    const tutorDni = form.getInput('tutor-dni');
+
+    tutorSearch.input.addEventListener('input', () => {
+        let query = tutorSearch.input.value;
+        query = (query || '').toLowerCase().trim();
+        let options = [];
+
+        empresas.filter((empresa) => empresa.estado !== "DENEGADO")
+            .forEach(empresa => {
+            const [ nombre, cif, email ] = [empresa.nombreEmpresa, empresa.cif, empresa.email];
+            const values = [
+                (nombre || '').toLowerCase(),
+                (cif || '').toLowerCase(),
+                (email || '').toLowerCase()
+            ];
+
+            const match = values.some(val => val.includes(query));
+            if (match) {
+                options.push({
+                    value: empresa.empresaId,
+                    label: `${nombre} (${cif ? cif : 'Sin CIF'}) - ${email ? email : 'Sin email'}`,
+                });
+            }
+        });
+        tutorSearch.updateDropdown(options, true);
+    });
+
+    form.onsubmit = () => {
+        const data = {
+            empresaId: tutorSearch.getValue(),
+            nombre: tutorNombre.getValue(),
+            email: tutorEmail.getValue(),
+            telefono: tutorTel.getValue(),
+            dni: tutorDni.getValue()
+        }
+
+        fetch('/api/tutores-empresas/create', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
+        })
+        .then((response) => {
+            if (response.status === 204) {
+                formulario.showSuccess('FCT creado con éxito.');
+            } else {
+                formulario.showError('Error al crear el FCT. Por favor, revisa los datos introducidos.');
+            }
+        })
+        .catch((error) => {
+            formulario.showError('Error al crear el FCT. Por favor, revisa los datos introducidos.');
+        })
+        .finally(() => {
+            formulario.submitFinish();
+        });
+    }
+}
 
 async function fetchEmpresas() {
     const response = await fetch('/api/vista-empresas-tutores/all');
@@ -471,11 +540,3 @@ function addEmpresa() {
     form.form.setAttribute('submit-text', 'Crear empresa');
     form.submit.textContent = 'Crear empresa';
 }
-
-document.addEventListener('DOMContentLoaded', () => {
-    
-    const addBtn = document.getElementById('add-empresa-btn');
-    if (addBtn) {
-        addBtn.addEventListener('click', addEmpresa);
-    }
-});
