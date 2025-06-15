@@ -26,7 +26,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 function cargarEmpresas() {
     mostrarCargando();
-
+    console.log("Cargando empresas y alumnos...");
     Promise.all([
         fetchEmpresas(),
         fetchAlumnos()
@@ -35,9 +35,10 @@ function cargarEmpresas() {
         empresas,
         alumnos
     ]) => {
+        console.log("Empresas:", empresas);
+        console.log("Alumnos:", alumnos);
         dibujarTabla(empresas, alumnos);
         tutoresEmpresas(empresas);
-        console.log(empresas, alumnos);
     }).catch((error) => {
         mostrarError();
         console.error(error);
@@ -57,8 +58,7 @@ function tutoresEmpresas(empresas) {
         query = (query || '').toLowerCase().trim();
         let options = [];
 
-        empresas.filter((empresa) => empresa.estado !== "DENEGADO")
-            .forEach(empresa => {
+        empresas.forEach(empresa => {
             const [ nombre, cif, email ] = [empresa.nombreEmpresa, empresa.cif, empresa.email];
             const values = [
                 (nombre || '').toLowerCase(),
