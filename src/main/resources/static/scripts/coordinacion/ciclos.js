@@ -51,14 +51,16 @@ function promise() {
     Promise.all([
         fetchCiclos(),
         fetchCiclosLectivos(),
-        fetchGrupos()
+        fetchGrupos(),
+        fetchTutores()
     ]).then(
         ([
             ciclos,
             ciclosLectivos,
-            grupos
+            grupos,
+            tutores
         ]) => {
-            drawTable(ciclos, ciclosLectivos, grupos);
+            drawTable(ciclos, ciclosLectivos, grupos, tutores);
         }
     ).catch((error) => {
         tableFail(SECTION, TIMEOUT, promise);
@@ -87,10 +89,17 @@ async function fetchGrupos() {
     return await response.json();
 }
 
-function drawTable(ciclos, ciclosLectivos, grupos) {
+async function fetchTutores() {
+    const response = await fetch(`/api/tutores/all`);
+    if (!response.ok) throw new Error('Error al obtener tutores disponibles');
+    return await response.json();
+}
+
+function drawTable(ciclos, ciclosLectivos, grupos, tutores) {
     console.log('Ciclos:', ciclos);
     console.log('Ciclos Lectivos:', ciclosLectivos);
     console.log('Grupos:', grupos);
+    console.log('Tutores:', tutores);
 
     const ciclosList = [];
     ciclosLectivos.sort((a, b) => new Date(a.fechaInicio) - new Date(b.fechaInicio));
@@ -160,10 +169,10 @@ function drawTable(ciclos, ciclosLectivos, grupos) {
                 gridData.appendChild(cell);
 
                 const display = grupo ?
-                                createFilledCell(year, ciclo, grupo) :
-                                createEmptyCell(ciclo, cicloLectivo, year);
+                                createFilledCell(year, ciclo, grupo, tutores) :
+                                createEmptyCell(ciclo, cicloLectivo, year, tutores);
                 if (!grupo) cell.onclick = () => {
-                    addGrupo(ciclo, cicloLectivo, year);
+                    addGrupo(ciclo, cicloLectivo, year, tutores);
                 }
                 cell.appendChild(display);
             }
@@ -304,7 +313,7 @@ function createCicloCell(ciclo, rowIdx) {
     return cicloHeader;
 }
 
-function createFilledCell(year, ciclo, grupo) {
+function createFilledCell(year, ciclo, grupo, tutores) {
     const cell = document.createElement('div');
     cell.className = 'cell-content filled-cell';
 
@@ -345,7 +354,7 @@ function createFilledCell(year, ciclo, grupo) {
     return cell;
 }
 
-function createEmptyCell(ciclo, cicloLectivo, numero) {
+function createEmptyCell(ciclo, cicloLectivo, numero, tutores) {
     const cell = document.createElement('div');
     cell.className = 'cell-content empty-cell add-element';
     cell.appendChild(createAddSVG());
@@ -384,13 +393,7 @@ async function fetchTutoresDisponibles(cicloLectivo) {
     return await response.json();
 }
 
-async function fetchTutores() {
-    const response = await fetch(`/api/tutores/all`);
-    if (!response.ok) throw new Error('Error al obtener tutores disponibles');
-    return await response.json();
-}
-
-async function addGrupo(ciclo, cicloLectivo, numero) {
+async function addGrupo(ciclo, cicloLectivo, numero, tutores) {
     collapseAll();
 
     const form = Form.getForm('grupo-form');
@@ -399,11 +402,7 @@ async function addGrupo(ciclo, cicloLectivo, numero) {
     form.getInput('tutor').options = [];
 
     try {
-        //const array = await fetchTutoresDisponibles(cicloLectivo);
-        const array = await fetchTutores();
-        console.log(array);
-
-        if (array.length === 0) {
+        if (tutores.length === 0) {
             form.getInput('tutor').options.push({
                 value: -1,
                 label: 'No hay tutores disponibles'
@@ -411,8 +410,8 @@ async function addGrupo(ciclo, cicloLectivo, numero) {
         }
 
         let options = [];
-        array.forEach(tutor => {
-            const [value, label] = [tutor.tutor.id, tutor.name];
+        tutores.forEach(tutor => {
+            const [value, label] = [tutor.id, tutor.name];
             options.push({value, label});
         });
         form.getInput('tutor').updateDropdown(options);
