@@ -60,38 +60,63 @@ function build(cursos, fcts, grupos, ciclos, ciclosLectivos, stats) {
     while (section.firstChild) section.removeChild(section.firstChild);
 
     const statsTable = document.createElement('table');
-    statsTable.innerHTML = `
-        <thead>
-            <tr>
-                <th>Ciclo Lectivo</th>
-                <th>Cantidad de Alumnos</th>
-                <th>Cantidad que va a Prácticas</th>
-                <th>Cantidad que Renuncia</th>
-                <th>Cantidad que Titula</th>
-            </tr>
-        </thead>
-        <tbody>
-            ${stats.alumnosPorCicloLectivo.map((stat, index) => `
+    if (stats.alumnosPorCicloLectivo.length === 0) {
+        statsTable.innerHTML = `
+            <thead>
                 <tr>
-                    <td>${stat.nombre}</td>
-                    <td>${stat.totalAlumnos}</td>
-                    <td>${stats.practicasPorCicloLectivo[index]?.totalPracticas || 0}</td>
-                    <td>${stats.renunciasPorCicloLectivo[index]?.totalRenuncias || 0}</td>
-                    <td>${stats.titulanPorCicloLectivo[index]?.totalTitulan || 0}</td>
+                    <th>Ciclo Lectivo</th>
+                    <th>Cantidad de Alumnos</th>
+                    <th>Cantidad que va a Prácticas</th>
+                    <th>Cantidad que Renuncia</th>
+                    <th>Cantidad que Titula</th>
                 </tr>
-            `).join('')}
-        </tbody>
-    `;
+            </thead>
+            <tbody>
+                <tr>
+                    <td>-</td>
+                    <td>-</td>
+                    <td>-</td>
+                    <td>-</td>
+                    <td>-</td>
+                </tr>
+            </tbody>
+        `;
+    } else {
+        statsTable.innerHTML = `
+            <thead>
+                <tr>
+                    <th>Ciclo Lectivo</th>
+                    <th>Cantidad de Alumnos</th>
+                    <th>Cantidad que va a Prácticas</th>
+                    <th>Cantidad que Renuncia</th>
+                    <th>Cantidad que Titula</th>
+                </tr>
+            </thead>
+            <tbody>
+                ${stats.alumnosPorCicloLectivo.map((stat, index) => `
+                    <tr>
+                        <td>${stat.nombre}</td>
+                        <td>${stat.totalAlumnos}</td>
+                        <td>${stats.practicasPorCicloLectivo[index]?.totalPracticas || 0}</td>
+                        <td>${stats.renunciasPorCicloLectivo[index]?.totalRenuncias || 0}</td>
+                        <td>${stats.titulanPorCicloLectivo[index]?.totalTitulan || 0}</td>
+                    </tr>
+                `).join('')}
+            </tbody>
+        `;
+    }
     section.appendChild(statsTable);
+
+    const motivosList = Object.entries(stats.motivosRenuncia)
+        .sort(([, countA], [, countB]) => countB - countA)
+        .map(([motivo, count]) => `<li>${count}: ${motivo}</li>`)
+        .join('');
 
     const motivosDiv = document.createElement('div');
     motivosDiv.innerHTML = `
         <h3>Motivos por renunciar a las prácticas:</h3>
         <ul>
-            ${Object.entries(stats.motivosRenuncia)
-                .sort(([, countA], [, countB]) => countB - countA)
-                .map(([motivo, count]) => `<li>${count}: ${motivo}</li>`)
-                .join('')}
+            ${motivosList.length > 0 ? motivosList : '<li>No hay motivos registrados</li>'}
         </ul>
     `;
     section.appendChild(motivosDiv);
