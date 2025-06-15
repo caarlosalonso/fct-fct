@@ -2,8 +2,6 @@ package es.daw2.fct_fct.modelo;
 
 import java.time.LocalDate;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-
 import jakarta.persistence.AttributeOverride;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -27,7 +25,6 @@ import lombok.NoArgsConstructor;
 public class Empresa extends AbsBaseEntity {
 
     @ManyToOne
-    @JsonIgnoreProperties({"empresas", "hibernateLazyInitializer", "handler"})
     @JoinColumn(name = "propuesta_por")
     private User propuesta_por;
 

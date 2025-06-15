@@ -104,7 +104,7 @@ function build(empresas, fcts, cursos, cicloLectivoActual) {
                 return;
             }
 
-            if (! filteredFCT.motivoRenuncia) {
+            if (filteredFCT.motivoRenuncia) {
                 const renunciaFCT = document.createElement('p');
                 renunciaFCT.textContent = `Haz renunciado a las FCT, tu motivo de renuncia es: ${filteredFCT.motivoRenuncia}`;
                 renunciaFCT.classList.add('text', 'renuncia');

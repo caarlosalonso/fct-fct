@@ -396,7 +396,7 @@ function editEmpresa(empresa) {
     form.getInput('numero_plazas').retrack(empresa.numero_plazas);
     form.getInput('fecha_contacto').retrack(empresa.fecha_contacto ? new Date(empresa.fecha_contacto).toISOString().split('T')[0] : '');
     form.getInput('observaciones').retrack(empresa.observaciones);
-    form.getInput('propuesta_por').retrack(empresa.propuesta_por ? empresa.propuesta_por.id : '');
+    form.getInput('propuesta_por').retrack(empresa.propuesta_por.user.id);
 
     // Selector de estado
     const estadoSelect = document.getElementById('empresa-estado');
