@@ -13,6 +13,17 @@ export class NumberInput extends TextInput {
         this.step = Utility.getAttributeValueOrDefault('data-step', '1', this.input);
         if (isNaN(parseFloat(this.step))) this.step = '1';
         this.input.setAttribute('step', this.step);
+
+        this.format = (value) => {
+            if (value === null || value === undefined) return '';
+            if (typeof value === 'number') return value.toString();
+            if (typeof value === 'string') {
+                const parsed = parseFloat(value);
+                return isNaN(parsed) ? '' : parsed.toString();
+            }
+            return this.minimum !== null ? this.minimum : 0;
+        }
+
         this.validate = () => {
             if (!this.shouldValidate()) return true;
             if (this.isEmpty()) return true;
@@ -29,5 +40,22 @@ export class NumberInput extends TextInput {
 
     init(form) {
         super.init(form);
+    }
+
+    retrack(value) {
+        if (value === null || value === undefined)
+            value = this.minimum !== null ? this.minimum : 0;
+
+        value = this.format(value);
+
+        this.states.tracked = true;
+        this.states.trackedValue = value;
+        this.setValue(value);
+        this.states.changed = false;
+
+        if (value.length > 0) {
+            this.forceActive();
+        }
+        this.updateState();
     }
 }
