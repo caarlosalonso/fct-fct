@@ -95,16 +95,16 @@ function tutoresEmpresas(empresas) {
         })
         .then((response) => {
             if (response.status === 204) {
-                formulario.showSuccess('FCT creado con éxito.');
+                form.showSuccess('FCT creado con éxito.');
             } else {
-                formulario.showError('Error al crear el FCT. Por favor, revisa los datos introducidos.');
+                form.showError('Error al crear el FCT. Por favor, revisa los datos introducidos.');
             }
         })
         .catch((error) => {
-            formulario.showError('Error al crear el FCT. Por favor, revisa los datos introducidos.');
+            form.showError('Error al crear el FCT. Por favor, revisa los datos introducidos.');
         })
         .finally(() => {
-            formulario.submitFinish();
+            form.submitFinish();
         });
     }
 }
