@@ -147,7 +147,41 @@ function build(empresas, fcts, cursos, cicloLectivoActual) {
     const forms = document.querySelectorAll(`form`);
     forms.forEach(form => {
         new Form(form).init();
-        
-    });
 
+        const formulario = Form.getForm(form.id);
+
+        const id = form.id.split('-')[2];
+
+        formulario.onsubmit = () => {
+            const puntuacion = formulario.getInput(`score-${id}`);
+            const comentario = formulario.getInput(`comment-${id}`);
+
+            const data = {
+                empresaId: id,
+                puntuacion: puntuacion.getValue(),
+                comentario: comentario.getValue()
+            }
+
+            fetch('/api/fcts/review', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            })
+            .then((response) => {
+                if (response.ok || response.status === 201) {
+                    formulario.reset();
+                    formulario.showSuccess('Reseña enviada correctamente.');
+                } else {
+                    formulario.showError('Error al enviar la reseña. Inténtalo de nuevo más tarde.');
+                }
+            }).catch((error) => {
+                formulario.showError('Error al enviar la reseña. Inténtalo de nuevo más tarde.');
+            })
+            .finally(() => {
+                formulario.submitFinish();
+            });
+        };
+    });
 }

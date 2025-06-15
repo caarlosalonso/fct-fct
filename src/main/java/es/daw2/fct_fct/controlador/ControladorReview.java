@@ -1,9 +1,13 @@
 package es.daw2.fct_fct.controlador;
 
+import es.daw2.fct_fct.dto.CreateReviewDTO;
+import es.daw2.fct_fct.modelo.Empresa;
 import es.daw2.fct_fct.modelo.Review;
+import es.daw2.fct_fct.servicio.ServicioEmpresa;
 import es.daw2.fct_fct.servicio.ServicioReview;
 import jakarta.servlet.http.HttpServletRequest;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -14,17 +18,26 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/reviews")
-public class ControladorReview extends CrudController<Long, Review, Review, Review, ServicioReview> {
+public class ControladorReview extends CrudController<Long, Review, CreateReviewDTO, Review, ServicioReview> {
 
+    @Autowired
+    private ServicioEmpresa servicioEmpresa;
+    
     @Override
-    public ResponseEntity<?> create(@RequestBody Review review, HttpServletRequest request) {
-        review.setMadeAt(LocalDateTime.now());
-        review.setLastUpdated(LocalDateTime.now());
-        review.setEstado("VISIBLE");
-        service.save(review);
+    public ResponseEntity<?> create(@RequestBody CreateReviewDTO dto, HttpServletRequest request) {
+        Optional<Empresa> empresaOptional = servicioEmpresa.getById(dto.empresaId());
+        if (empresaOptional.isEmpty()) {
+            return ResponseEntity.badRequest().body("Empresa no encontrada");
+        }
 
-        URI location = URI.create("/api/reviews/" + review.getId());
-        return ResponseEntity.created(location).body(review);
+        Review newReview = new Review();
+        newReview.setMadeAt(LocalDateTime.now());
+        newReview.setLastUpdated(LocalDateTime.now());
+        newReview.setEstado("VISIBLE");
+        service.save(newReview);
+
+        URI location = URI.create("/api/reviews/" + newReview.getId());
+        return ResponseEntity.created(location).body(newReview);
     }
 
     @GetMapping("/all")
