@@ -213,9 +213,10 @@ function drawTable(ciclos, ciclosLectivos, grupos, tutores) {
     }
     let options = [];
     tutores.forEach(tutor => {
-        const [value, label] = [tutor.id, tutor.name];
+        const [value, label] = [tutor.id, tutor.user.name];
         options.push({value, label});
     });
+    console.log(options);
     form.getInput('tutor').updateDropdown(options);
 
 
