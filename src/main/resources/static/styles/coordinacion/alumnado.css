@@ -106,6 +106,7 @@
 
 .cell {
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
     height: var(--cell-height);
@@ -117,6 +118,8 @@
     padding: var(--border-radius);
 }
 
-.alumno {
-    text-align: justify;
+.alumno-nombre
+.alumno-nia
+.alumno-email {
+    
 }

@@ -145,9 +145,9 @@ function createGruposCiclos(cicloLectivoId) {
                 chosenGrupo = div;
                 createAlumnos(grupo.alumnos);
             }
-        });
 
-        gruposCiclos.push(div);
+            gruposCiclos.push(div);
+        });
     }
 }
 
@@ -161,15 +161,15 @@ function createAlumnos(alumnos) {
         alumnoElement.id = `alumno-${alumno.id}`;
 
         const nameElement = document.createElement('p');
-        nameElement.textContent = `Nombre: ${alumno.name}`;
+        nameElement.innerHTML = `Nombre: <span class="alumno-nombre">${alumno.nombreAlumno}</span>`;
         alumnoElement.appendChild(nameElement);
 
         const niaElement = document.createElement('p');
-        niaElement.textContent = `NIA: ${alumno.nia}`;
+        niaElement.innerHTML = `NIA: <span class="alumno-nia">${alumno.nia}</span>`;
         alumnoElement.appendChild(niaElement);
 
         const emailElement = document.createElement('p');
-        emailElement.textContent = `Correo: ${alumno.email}`;
+        emailElement.innerHTML = `Correo: <span class="alumno-email">${alumno.email}</span>`;
         alumnoElement.appendChild(emailElement);
 
         alumnosSelection.appendChild(alumnoElement);
