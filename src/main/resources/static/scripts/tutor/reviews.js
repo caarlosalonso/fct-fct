@@ -75,5 +75,14 @@ function build(reviews) {
             content.textContent = review.comment;
             reviewDiv.appendChild(content);
         }
+
+        const date = document.createElement('p');
+        date.className = 'review-date';
+        date.textContent = new Date(review.createdAt).toLocaleDateString('es-ES', {
+            year: 'numeric',
+            month: '2-digit',
+            day: '2-digit'
+        });
+        reviewDiv.appendChild(date);
     });
 }
