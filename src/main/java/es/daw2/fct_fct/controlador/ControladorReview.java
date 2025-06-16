@@ -49,6 +49,7 @@ public class ControladorReview extends CrudController<Long, Review, CreateReview
         newReview.setScore((byte) dto.puntuacion());
         newReview.setComment(dto.comentario());
         newReview.setMadeAt(LocalDateTime.now());
+        newReview.setLastUpdated(LocalDateTime.now());
         newReview.setEstado("VISIBLE");
         service.save(newReview);
 
