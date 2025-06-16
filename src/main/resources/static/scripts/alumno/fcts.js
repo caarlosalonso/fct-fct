@@ -102,7 +102,7 @@ function build(empresas, fcts, cursos, cicloLectivoActual) {
         }
 
         const fctEmpresa = document.createElement('p');
-        fctEmpresa.textContent = `Haz hecho tus FCT con: ${filteredFCT.empresa.nombre}`;
+        fctEmpresa.textContent = `La empresa de tus FCT es: ${filteredFCT.empresa.nombre}`;
         fctEmpresa.classList.add('text', 'empresa');
         cursoDiv.appendChild(fctEmpresa);
 
@@ -112,7 +112,7 @@ function build(empresas, fcts, cursos, cicloLectivoActual) {
         cursoDiv.appendChild(fechas);
 
         const horasHechas = document.createElement('p');
-        horasHechas.textContent = `Has hecho un total de ${filteredFCT.horasPracticas} horas.`;
+        horasHechas.textContent = `Es un total de ${filteredFCT.horasPracticas} horas.`;
         horasHechas.classList.add('text', 'horas');
         cursoDiv.appendChild(horasHechas);
 
